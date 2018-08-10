@@ -4,8 +4,8 @@ public class User {
     private int uid;
     private String email;
     private String phone;//
-    private int password;//
-    private String nickName;//昵称
+    private String password;//
+    private String nickname;//昵称
     private int sex;//性别
     private String introduce;//自我简介
     private int grade;//等级
@@ -14,28 +14,7 @@ public class User {
     private int isspeak;//是不是能发言0能，1被禁言
     private String timeofban;//被禁截止时间
 
-    public int getIsadmin() {
-        return isadmin;
-    }
-
-    public void setIsadmin(int isadmin) {
-        this.isadmin = isadmin;
-    }
-
-    public int getIsspeak() {
-        return isspeak;
-    }
-
-    public void setIsspeak(int isspeak) {
-        this.isspeak = isspeak;
-    }
-
-    public String getTimeofban() {
-        return timeofban;
-    }
-
-    public void setTimeofban(String timeofban) {
-        this.timeofban = timeofban;
+    public User() {
     }
 
     public int getUid() {
@@ -54,22 +33,28 @@ public class User {
         this.email = email;
     }
 
+    public String getPhone() {
+        return phone;
+    }
 
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
-    public int getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(int password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 
-    public String getNickName() {
-        return nickName;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public int getSex() {
@@ -103,12 +88,29 @@ public class User {
     public void setScore(int score) {
         this.score = score;
     }
-    public String getPhone() {
-        return phone;
+
+    public int getIsadmin() {
+        return isadmin;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setIsadmin(int isadmin) {
+        this.isadmin = isadmin;
+    }
+
+    public int getIsspeak() {
+        return isspeak;
+    }
+
+    public void setIsspeak(int isspeak) {
+        this.isspeak = isspeak;
+    }
+
+    public String getTimeofban() {
+        return timeofban;
+    }
+
+    public void setTimeofban(String timeofban) {
+        this.timeofban = timeofban;
     }
 
     @Override
@@ -117,8 +119,8 @@ public class User {
                 "uid=" + uid +
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
-                ", password=" + password +
-                ", nickName='" + nickName + '\'' +
+                ", password='" + password + '\'' +
+                ", nickname='" + nickname + '\'' +
                 ", sex=" + sex +
                 ", introduce='" + introduce + '\'' +
                 ", grade=" + grade +
@@ -127,8 +129,5 @@ public class User {
                 ", isspeak=" + isspeak +
                 ", timeofban='" + timeofban + '\'' +
                 '}';
-    }
-
-    public User() {
     }
 }
