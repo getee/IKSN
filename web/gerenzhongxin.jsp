@@ -112,9 +112,12 @@
 			</div>
 			<div class="col-md-6">
 										<!-- Button trigger modal -->
-						<button type="button" class="btn btn-info btn-sm glyphicon glyphicon-edit" data-toggle="modal" data-target="#myModal" style="margin-left: 60%">
-						  修改个人资料
-						</button>
+				<button type="button" class="btn btn-info btn-sm glyphicon glyphicon-edit" data-toggle="modal" data-target="#myModal" style="margin-left: 60%">
+					修改个人资料
+				</button>
+				<button  type="button"  color="#FFFFFF" class="btn btn-info btn-sm glyphicon glyphicon-edit" data-toggle="modal" style="margin-left: 60%; margin-top:2%">
+					<a href="zhanghao.jsp" ><font color="#FFFFFF">个人账号设置</font></a>
+				</button>
 
 						<!-- Modal -->
 						<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="margin-top: 10%">
@@ -126,31 +129,47 @@
 							  </div>
 							  <div class="modal-body">
 							<!--修改表单-->
-						  		<form>
-								  <div class="form-group">
-									<label for="exampleInputEmail1">昵称</label>
-									<input type="text" class="form-control" id="" placeholder="NickName">
-								  </div>
-								  
-								  <div class="form-group">
-									<label class="radio-inline">
-									  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> 男
-									</label>
-									<label class="radio-inline">
-									  <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> 女
-								 	</label>	
-								  </div>
-								  
-								  <div class="form-group">
-									<label for="exampleInputEmail1">邮箱</label>
-									<input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email" disabled>
-								  </div>
-								  <div class="form-group">
-									<label for="exampleInputPassword1">手机号码</label>
-									<input type="number" class="form-control" id="exampleInputPassword1" placeholder="" disabled>
-								  </div>
-								  
-								</form>
+								  <form>
+									  <div class="form-group">
+										  <label for="exampleInputEmail1">昵称</label>
+										  <input type="text" class="form-control" id="" placeholder="NickName">
+									  </div>
+
+									  <div class="form-group">
+										  <label class="radio-inline">
+											  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> 男
+										  </label>
+										  <label class="radio-inline">
+											  <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> 女
+										  </label>
+									  </div>
+
+									  <div class="form-group">
+										  <label for="exampleInputEmail1">邮箱</label>
+										  <div class="input-group">
+											  <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email1"  disabled>
+											  <span class="input-group-btn">
+                                          <button class="btn btn-default" type="button">修改</button>
+                                        </span>
+										  </div>
+									  </div>
+
+									  <div class="form-group">
+										  <label for="exampleInputPassword1">手机号码</label>
+										  <div class="input-group">
+											  <input type="number" class="form-control" id="exampleInputPassword1" placeholder="Phone"  disabled>
+											  <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button">修改</button>
+                                      </span>
+										  </div>
+									  </div>
+
+									  <div class="form-group">
+										  <label for="exampleInputEmail1">自我简介</label>
+										  <input type="text" class="form-control" id="" placeholder="自我简介">
+									  </div>
+
+								  </form>
 							  </div>
 							  <div class="modal-footer">
 								<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
