@@ -1,8 +1,11 @@
 package group.first.iksn.service;
 
+import group.first.iksn.model.bean.Notice;
 import group.first.iksn.model.bean.User;
 import group.first.iksn.model.dao.UserDAO;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component("userService")
 public class UserServiceImp implements UserService {
@@ -19,5 +22,11 @@ public class UserServiceImp implements UserService {
     public boolean register(User u) {
 
         return userDAO.addUser(u);
+    }
+
+    public List<Notice> receiveNotice() {
+        return userDAO.receiveNotice();
+
+
     }
 }
