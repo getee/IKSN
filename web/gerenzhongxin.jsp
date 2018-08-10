@@ -72,7 +72,11 @@
 					  e.preventDefault()
 					  $(this).tab('show')
 					});
-			
+			$('#myTabs5 a').click(function (e) {
+					  e.preventDefault()
+					  $(this).tab('show')
+					});
+
 		
 			
 		});  
@@ -173,6 +177,7 @@
     <li id="myTabs2" role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">我的收藏</a></li>
     <li id="myTabs3" role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">我的关注</a></li>
     <li id="myTabs4" role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">我的粉丝</a></li>
+    <li id="myTabs5" role="presentation"><a href="#jubao" aria-controls="jubao" role="tab" data-toggle="tab">举报管理</a></li>
   </ul>
 
   <!-- Tab panes -->
@@ -293,6 +298,18 @@
     		
     	</div>
     </div>
+
+	  <div role="tabpanel" class="tab-pane" id="jubao">
+		  <div class="row " style="margin: auto">
+		  </div>
+		  <!--    	文章内容-->
+		  <div class="row" style="margin:auto;border-bottom-style:solid;border-bottom-width:2px;border-bottom-color:#E9E9E9"><h4><a class="text-muted" href="#">举报内容</a><small style="margin-left: 80% ">2017-8-2</small><small style="margin-left:3%;cursor: pointer" class="glyphicon glyphicon-trash"></small></h4>
+		  </div>
+		  <div class="row" style="margin:auto;border-bottom-style:solid;border-bottom-width:2px;border-bottom-color:#E9E9E9"><h4><a class="text-muted" href="#">举报内容</a><small style="margin-left: 80% ">2017-8-2</small><small style="margin-left:3%;cursor: pointer" class="glyphicon glyphicon-trash"></small></h4>
+		  </div>
+		  <div class="row" style="margin:auto;border-bottom-style:solid;border-bottom-width:2px;border-bottom-color:#E9E9E9"><h4><a class="text-muted" href="#">举报内容</a><small style="margin-left: 80% ">2017-8-2</small><small style="margin-left:3%;cursor: pointer" class="glyphicon glyphicon-trash"></small></h4>
+		  </div>
+	  </div>
   </div>
 
 </div>
