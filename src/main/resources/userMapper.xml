@@ -7,6 +7,10 @@
     <select id="getUsers" resultType="User">
         SELECT * from user;
     </select>
+    <select id="checkPhone"  resultType="User">
+        SELECT  * from user WHERE PHONE=#{phone}
+
+    </select>
     <insert id="addUser" parameterType="User">
         insert into user(phone,password) values (#{phone},#{password})
     </insert>

@@ -20,4 +20,14 @@ public class UserServiceImp implements UserService {
 
         return userDAO.addUser(u);
     }
+
+    public boolean checkPhone(String p) {
+        User u=userDAO.checkPhone(p);
+        if (u==null){
+            return false;
+        }
+        else
+            return  true;
+    }
+
 }

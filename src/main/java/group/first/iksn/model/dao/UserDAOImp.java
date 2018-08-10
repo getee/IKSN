@@ -22,4 +22,10 @@ public class UserDAOImp extends BaseDAOImp implements UserDAO {
 
         return null;
     }
+
+    @Override
+    public User checkPhone(String phone) {
+       User u=getSqlSession().getMapper(UserDAO.class).checkPhone(phone);
+        return u;
+    }
 }
