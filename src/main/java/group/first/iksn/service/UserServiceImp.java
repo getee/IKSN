@@ -20,6 +20,7 @@ public class UserServiceImp implements UserService {
     }
 
     public boolean register(User u) {
+        System.out.println(u);
 
         return userDAO.addUser(u);
     }

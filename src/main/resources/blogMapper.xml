@@ -6,19 +6,13 @@
 
 
 <mapper namespace="group.first.iksn.model.dao.BlogDAO">
-    <select id="detailedBlogSearchResultMap" resultType="searchResultMap">
-       select
-           b.id as bid,
-           b.title as title,
-           b.content as content,
-           b.classify as classify,
-           u.id as uid,
-           u.
+    <select id="detailedBlogSearchResultMap" resultMap="searchResultMap">
+
 
     </select>
 
      <!--定义的一个reaultmap结果集合来存储关联查询到的详细的博客，类型是自定义类型-->
-    <resultMap id="searchResultMap" type="blog">
+    <resultMap id="searchResultMap" type="Blog">
 
     </resultMap>
 

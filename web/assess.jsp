@@ -5,6 +5,11 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>评估</title>
+    <%
+        String path = request.getContextPath();
+        String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+    %>
+    <base href="<%=basePath%>">
     <link href="../bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 

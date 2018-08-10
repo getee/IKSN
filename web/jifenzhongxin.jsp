@@ -7,7 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
     <title>Bootstrap 101 Template</title>
-
+	  <%
+		  String path = request.getContextPath();
+		  String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+	  %>
+	  <base href="<%=basePath%>">
     <!-- Bootstrap -->
     <link href="bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 

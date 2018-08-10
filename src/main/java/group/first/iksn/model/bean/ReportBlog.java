@@ -2,29 +2,18 @@ package group.first.iksn.model.bean;
 
 public class ReportBlog {
     private int id;//举报博客表id
-    private  int  rid;//资源id
+    private  int  bid;//博客id
     private  int uid;//举报者id
     private  String  reason;//举报原因
 
-    public ReportBlog(int id, int rid, int uid, String reason) {
+    public ReportBlog() {
+    }
+
+    public ReportBlog(int id, int bid, int uid, String reason) {
         this.id = id;
-        this.rid = rid;
+        this.bid = bid;
         this.uid = uid;
         this.reason = reason;
-    }
-
-    public ReportBlog() {
-        super();
-    }
-
-    @Override
-    public String toString() {
-        return "ReportBlog{" +
-                "id=" + id +
-                ", rid=" + rid +
-                ", uid=" + uid +
-                ", reason='" + reason + '\'' +
-                '}';
     }
 
     public int getId() {
@@ -35,12 +24,12 @@ public class ReportBlog {
         this.id = id;
     }
 
-    public int getRid() {
-        return rid;
+    public int getBid() {
+        return bid;
     }
 
-    public void setRid(int rid) {
-        this.rid = rid;
+    public void setBid(int bid) {
+        this.bid = bid;
     }
 
     public int getUid() {
@@ -57,5 +46,15 @@ public class ReportBlog {
 
     public void setReason(String reason) {
         this.reason = reason;
+    }
+
+    @Override
+    public String toString() {
+        return "ReportBlog{" +
+                "id=" + id +
+                ", bid=" + bid +
+                ", uid=" + uid +
+                ", reason='" + reason + '\'' +
+                '}';
     }
 }

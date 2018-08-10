@@ -4,6 +4,12 @@
 <head>
     <title>完整demo</title>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <%
+        String path = request.getContextPath();
+        String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+    %>
+    <base href="<%=basePath%>">
+
     <link rel="stylesheet" type="text/css" href="bootstrap-3.3.7/dist/css/bootstrap.min.css">
     <script src="js/jquery-3.3.1.js"></script>
     <script src="bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
