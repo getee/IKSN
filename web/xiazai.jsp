@@ -30,7 +30,7 @@
         <ul class="nav nav-tabs"  style="margin-left:15%;" >
             <li ><a href="xiazhai.jsp">下载首页</a></li>
             <li ><a href="#">我的资源</a></li>
-            <li ><a href="#">上传资源赚积分</a></li>
+            <li ><a href="upload.jsp">上传资源赚积分</a></li>
             <li ><a href="#">已下载</a></li>
             <li ><a href="#">我的收藏</a></li>
         </ul>
