@@ -11,4 +11,5 @@ public interface UserDAO {
 
     public User getId(int uid);
     User checkPhone(String phone);
+    User checkEmail(String email);
 }

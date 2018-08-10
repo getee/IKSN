@@ -3,6 +3,7 @@ package group.first.iksn.service;
 import group.first.iksn.model.bean.Notice;
 import group.first.iksn.model.bean.User;
 import group.first.iksn.model.dao.UserDAO;
+import group.first.iksn.util.MD5;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -20,17 +21,29 @@ public class UserServiceImp implements UserService {
     }
 
     public boolean register(User u) {
-        System.out.println(u);
 
+        //加密
+        String mdpassword=MD5.MD5(u.getPassword());
+        System.out.println(mdpassword);
+        u.setPassword(mdpassword);
         return userDAO.addUser(u);
     }
     public List<Notice> receiveNotice() {
         return userDAO.receiveNotice();
 
-
     }
     public boolean checkPhone(String p) {
         User u=userDAO.checkPhone(p);
+        if (u==null){
+            return false;
+        }
+        else
+            return  true;
+    }
+
+    @Override
+    public boolean checkEmail(String eamil) {
+        User u=userDAO.checkEmail(eamil);
         if (u==null){
             return false;
         }
