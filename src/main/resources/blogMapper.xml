@@ -11,6 +11,9 @@
 
     </select>
 
+    <insert id="processAddBlog" parameterType="Blog" useGeneratedKeys="true" keyColumn="bid">
+        insert into blog(title,content,time,classify) values (#{title},#{content},#{time},#{classify})
+    </insert>
      <!--定义的一个reaultmap结果集合来存储关联查询到的详细的博客，类型是自定义类型-->
     <resultMap id="searchResultMap" type="Blog">
 

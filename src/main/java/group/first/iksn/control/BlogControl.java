@@ -10,6 +10,9 @@ import org.apache.ibatis.jdbc.Null;
 
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 @Controller
 @RequestMapping("/blog")
@@ -47,6 +50,10 @@ public class BlogControl {
 
 @RequestMapping(value = "/addBlog",method = RequestMethod.POST)
     public  String  addBlog(@ModelAttribute ("blog")  Blog blog){
+        Date d = new Date();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String nowtime = df.format(d);
+        blog.setTime(nowtime);
         System.out.println(blog);
         boolean result=blogService.addBlogService(blog);
         if(result==false)
