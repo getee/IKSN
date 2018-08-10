@@ -7,8 +7,6 @@ import group.first.iksn.util.HttpUtil;
 import group.first.iksn.util.IndustrySMS;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,6 +40,7 @@ public class UserControl {
 
     /**
      * 收到的通知消息
+     * @author BruceLee
      * @return
      */
     @RequestMapping("/receiveNotice")

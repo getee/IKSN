@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -127,24 +128,29 @@
 		<li class="active">未读通知：0</li>
 		<li><a href="#">标记已读</a></li>
 		<li><a href="#">清空所有通知</a></li>
-  
+
 </ol>
 		</nav>
 	</div>
 <!--	通知-->
+
+
+
 	<div class="row well" style="margin: auto;height: 700px;">
 		<div class="col-md-8">
-			<div class="row well"><h4>This is you first Message</h4></div>
-			<div class="row well"><h4>This is you first Message</h4></div>
+			<c:forEach var="notice" items="${allNotices}">
+			<div class="row well"><h4>${notice.content}</h4></div>
+			</c:forEach>
 		</div>
 		<div class="col-md-4">
-			<div class="row well"><h4><small>7-23</small></h4></div>
-			<div class="row well"><h4><small>6-21</small></h4></div>
+			<c:forEach var="notice" items="${allNotices}">
+			<div class="row well"><h4><small>${notice.time}</small></h4></div>
+			</c:forEach>
 		</div>
 	</div>
 <!--	新建私信模块-->
-	
-  
+
+
 </div>
 
 
@@ -162,7 +168,7 @@
 </div>
 	  </div>
 	</nav>
-	
+
 </div>
 <!--底部信息-结束-->
 	</div>

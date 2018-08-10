@@ -123,7 +123,7 @@
 		<nav>
 			<ul class="nav nav-tabs">
 			  <li role="presentation"><a href="user/receiveNotice">通知</a></li>
-			  <li role="presentation"><a href="#">私信</a></li>
+			  <li role="presentation"><a href="wodexiaoxi.jsp">私信</a></li>
 			  <li role="presentation"><a href="shouxiaoxi.jsp">@我</a></li>
 			</ul>
 		</nav>
