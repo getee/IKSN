@@ -54,10 +54,10 @@
     </div>
     <div>
 
-        <form  id="form" action="/blog/publishBlog" method="post">
+        <form  id="form" action="/blog/addBlog" method="post">
             <!--标题-->
             <div class="input-group input-group-lg" style="width: 1024px;height:15px; margin: auto;">
-                <input type="text" class="form-control" id="biaoti" placeholder="请输入文章标题">
+                <input type="text" class="form-control" id="biaoti"  name="title" placeholder="请输入文章标题">
             </div>
             <!--分类-->
 
@@ -77,11 +77,10 @@
 
 
                 <label style="width: 15px;width: 80px;" >博客分类：</label>
-                <select id="Type2">
+                <select id="Type2" name="classify">
                     <option value="0">选择分类</option>
                     <option value="28">人工智能</option>
                     <option value="1">移动开发</option>
-
                 </select>
                 <span class="required">*</span>
 
@@ -93,12 +92,12 @@
 
             <!--博客内容-->
             <div style="width:1024px;height:470px;margin:auto;margin-top: 100px;">
-                <script id="editor" type="text/plain" name="editor"></script>
+                <textarea id="editor"  type="text/plain" name="content"></textarea>
             </div>
             <!--提交博客-->
 
             <center>
-                <button type="button" class="btn btn-info">发表博客</button>
+                <button type="submit" class="btn btn-info">发表博客</button>
                  <button type="button" class="btn btn-info">保存</button>
                 <button type="button" class="btn btn-info">返回</button>
             </center>

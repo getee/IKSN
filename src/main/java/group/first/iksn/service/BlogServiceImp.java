@@ -1,6 +1,7 @@
 package group.first.iksn.service;
 
 
+import group.first.iksn.model.bean.Blog;
 import group.first.iksn.model.dao.BlogDAO;
 import org.springframework.stereotype.Component;
 
@@ -22,5 +23,12 @@ public class BlogServiceImp implements BlogService {
      */
     public String deleteIllegalblog() {
         return null;
+    }
+
+
+
+    @Override
+    public boolean addBlogService(Blog blog) {
+        return blogDAO.processAddBlog(blog);
     }
 }
