@@ -5,7 +5,10 @@
 <configuration>
     <typeAliases>
         <typeAlias type="group.first.iksn.model.bean.User" alias="User"></typeAlias>
+        <typeAlias type="group.first.iksn.model.bean.Notice" alias="Notice"></typeAlias>
     </typeAliases>
+
+
 
     <environments default="development">
         <environment id="development">
@@ -22,5 +25,6 @@
 
     <mappers>
         <mapper resource="userMapper.xml"></mapper>
+        <mapper resource="blogMapper.xml"></mapper>
     </mappers>
 </configuration>
