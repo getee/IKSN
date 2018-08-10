@@ -57,7 +57,7 @@
 			</div>
 	   </div>
 	   <div class="col-xs-6 col-md-3">
-		   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#delete" style="visibility: hidden">删除</button>
+		   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#delete" style="">删除</button>
 		   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sendBack" style="">下架</button>
 		   <button class="btn btn-primary" type="submit" value="1">
 			   订阅 <span class="badge">+</span>
@@ -108,14 +108,14 @@
             $("#sendBack-ok").click(function(){
                 $(this).prop("disabled","disabled");
                 $("#sendBack-ok-innerHtml").text("已退回");
-                $.get("/blog/managerDeleteBlogForReported?blog_id=5",function(data,status){
+                $.get("/blog/mSendBackIllegalblog?blog_id=2",function(data,status){
                     alert(data+status);
                 });
             });
             $("#delete-ok").click(function(){
                 $(this).prop("disabled","disabled");
                 $("#delete-ok-innerHtml").text("已删除");
-                $.get("/example/jquery/demo_test.asp",function(data,status){
+                $.get("/blog/mGetAllReportBlog",function(data,status){
                     alert("已删除");
                 });
             });

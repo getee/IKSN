@@ -18,5 +18,21 @@
     <resultMap id="searchResultMap" type="Blog">
 
     </resultMap>
+    <insert id="addIllegalblog" parameterType="IllegalBlog">
+        insert into illegalblog(bid,illegalcause) values (#{bid},#{illegalcause})
+    </insert>
+    <select id="getAllReportBlog" resultType="IllegalBlog">
+        select * from illegalblog
+    </select>
+    <!--结果集合用来存储查询illegalblog表级联查询blog表-->
+    <resultMap id="getBlogBy_IBlogId" type="IllegalBlog">
+        <id column="id" property="id"/>
+        <result column="bid" property="bid"/>
+        <result column="illegalcause" property="illegalcause"/>
 
+        <association property="blog" javaType="Blog">
+            <id column="bid" property="bid"/>
+            <result column="title" property="title"/>
+        </association>
+    </resultMap>
 </mapper>
