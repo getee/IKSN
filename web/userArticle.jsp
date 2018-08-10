@@ -45,21 +45,79 @@
 	
 <!--  用户名logo-->
    <div class="row">
-	   <div class="col-xs-12 col-md-10">
+	   <div class="col-xs-12 col-md-9">
 	   	    <div>
 				<h1 style="margin-left: 10%;color: azure">用户名</h1><small>Subtext for header</small>
 			</div>
 	   </div>
-	   <div class="col-xs-6 col-md-2">
-   			<form action="">
-	   		<button class="btn btn-primary" type="submit" value="1">
-			  订阅 <span class="badge">+</span>
-			</button>
-			</form>
+	   <div class="col-xs-6 col-md-3">
+		   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#delete" style="visibility: hidden">删除</button>
+		   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sendBack" style="">下架</button>
+		   <button class="btn btn-primary" type="submit" value="1">
+			   订阅 <span class="badge">+</span>
+		   </button>
 	   </div>
   </div>
 <!--用户名logo结束-->
-		  
+	<!--管理员权限-->
+	<div class="modal fade bs-example-modal-sm" id="delete" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" style="margin-top: 13%">
+		<div class="modal-dialog modal-sm" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+					<span class="label label-danger">删除文章</span>
+				</div>
+				<div id="delete-ok-innerHtml" class="modal-body">
+					确定删除吗？
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" id="delete-ok" class="btn btn-primary">OK</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade bs-example-modal-sm" id="sendBack" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" style="margin-top: 13%">
+		<div class="modal-dialog modal-sm" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+					<span class="label label-danger">下架文章</span>
+				</div>
+				<div id="sendBack-ok-innerHtml" class="modal-body">
+					确定退回至用户草稿吗？
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" id="sendBack-ok" class="btn btn-primary">OK</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+        $(document).ready(function(){
+            $("#sendBack-ok").click(function(){
+                $(this).prop("disabled","disabled");
+                $("#sendBack-ok-innerHtml").text("已退回");
+                $.get("/blog/managerDeleteBlogForReported?blog_id=5",function(data,status){
+                    alert(data+status);
+                });
+            });
+            $("#delete-ok").click(function(){
+                $(this).prop("disabled","disabled");
+                $("#delete-ok-innerHtml").text("已删除");
+                $.get("/example/jquery/demo_test.asp",function(data,status){
+                    alert("已删除");
+                });
+            });
+        });
+	</script>
+	<!---->
+
+
 		  
   <div class="row" style="background-color:#EBEBEB">
 <!--	  左边图标栏-->

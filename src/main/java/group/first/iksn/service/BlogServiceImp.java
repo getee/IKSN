@@ -15,4 +15,12 @@ public class BlogServiceImp implements BlogService {
     public void setBlogDAO(BlogDAO blogDAO) {
         this.blogDAO = blogDAO;
     }
+
+    /**
+     *
+     * @return
+     */
+    public String deleteIllegalblog() {
+        return null;
+    }
 }
