@@ -1,14 +1,13 @@
 package group.first.iksn.control;
 
 
+import group.first.iksn.model.bean.Blog;
 import group.first.iksn.service.BlogService;
 import group.first.iksn.util.EncodingTool;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.apache.ibatis.jdbc.Null;
 
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 
@@ -44,4 +43,21 @@ public class BlogControl {
         System.out.println("调用managerDeleteBlogForReported");
         return "success";
     }
+
+
+@RequestMapping(value = "/addBlog",method = RequestMethod.POST)
+    public  String  addBlog(@ModelAttribute ("blog")  Blog blog){
+        System.out.println(blog);
+        boolean result=blogService.addBlogService(blog);
+        if(result==false)
+        {
+            return "Writer";
+        }else
+        {
+            return "index";
+        }
+
+
+    }
+
 }
