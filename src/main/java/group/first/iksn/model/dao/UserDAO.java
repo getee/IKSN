@@ -10,4 +10,5 @@ public interface UserDAO {
     List<Notice> receiveNotice();
 
     public User getId(int uid);
+    User checkPhone(String phone);
 }

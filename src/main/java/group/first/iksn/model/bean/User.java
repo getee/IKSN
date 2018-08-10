@@ -3,7 +3,7 @@ package group.first.iksn.model.bean;
 public class User {
     private int uid;
     private String email;
-    private int phone;//
+    private String phone;//
     private int password;//
     private String nickName;//昵称
     private int sex;//性别
@@ -27,13 +27,7 @@ public class User {
         this.email = email;
     }
 
-    public int getPhone() {
-        return phone;
-    }
 
-    public void setPhone(int phone) {
-        this.phone = phone;
-    }
 
     public int getPassword() {
         return password;
@@ -82,7 +76,13 @@ public class User {
     public void setScore(int score) {
         this.score = score;
     }
+    public String getPhone() {
+        return phone;
+    }
 
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
     @Override
     public String toString() {
         return "User{" +
@@ -98,7 +98,7 @@ public class User {
                 '}';
     }
 
-    public User(int uid, String email, int phone, int password, String nickName, int sex, String introduce, int grade, int score) {
+    public User(int uid, String email, String phone, int password, String nickName, int sex, String introduce, int grade, int score) {
         this.uid = uid;
         this.email = email;
         this.phone = phone;
