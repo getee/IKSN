@@ -27,9 +27,9 @@
   <body style="background-color: #E9E9E9">
 
     <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
-    <script src="$js/jquery-3.3.1.js"></script>
+    <script src="js/jquery-3.3.1.js"></script>
     <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
-    <script src="$bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
+    <script src="bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
     <script>
 		$(document).ready(function(){
 			//所有li元素的点击事件
@@ -87,10 +87,35 @@
 					r+=360;
 				}
 			});
-		
+
 			
-		});  
-	 
+		});
+        //标记为已读或者是未读
+        function biaoji(){
+            var index=$("#biaoji").html();
+            if(index=="全部标记已读"){
+                $("#biaoji").html("全部标记为未读");
+                $.get("user/changeIsRead/1",function (data) {
+                    $("#weidutongzhi").html("未读通知："+data);
+
+                });
+
+            }else if(index=="全部标记为未读"){
+
+                $("#biaoji").html("全部标记已读");
+                $.get("user/changeIsRead/0",function (data) {
+                    $("#weidutongzhi").html("未读通知："+data);
+
+                });
+            }
+        }
+        //清空所有的通知
+		function qingkogntongzhi(uid) {
+            $.get("user/deleteNotice/"+uid,function(data){
+                window.location.reload();
+			});
+
+        }
 	</script>
     <!--	特效-->
 
@@ -116,7 +141,7 @@
 	<div class="row" style="margin-left: 0.5%;margin-top: -5px">
 		<nav>
 			<ul class="nav nav-tabs">
-  <li role="presentation"><a href="#">通知</a></li>
+  <li role="presentation"><a href="/user/receiveNotice">通知</a></li>
   <li role="presentation"><a href="wodexiaoxi.jsp">私信</a></li>
   <li role="presentation"><a href="shouxiaoxi.jsp">@我</a></li>
 </ul>
@@ -125,9 +150,9 @@
 	<div class="row" style="margin-left: 0.5%;margin-top: 5px">
 		<nav>
 		<ol class="breadcrumb">
-		<li class="active">未读通知：0</li>
-		<li><a href="#">标记已读</a></li>
-		<li><a href="#">清空所有通知</a></li>
+		<li id="weidutongzhi" class="active">未读通知：${notReadNum}</li>
+		<li><a id="biaoji" href="javascript:biaoji()">全部标记已读</a></li>
+		<li><a id="qingkongtongzhi" href="javascript:qingkogntongzhi(1)">清空所有通知</a></li>
 
 </ol>
 		</nav>
@@ -139,7 +164,7 @@
 	<div class="row well" style="margin: auto;height: 700px;">
 		<div class="col-md-8">
 			<c:forEach var="notice" items="${allNotices}">
-			<div class="row well"><h4>${notice.content}</h4></div>
+				<div class="row well"><a href=""><h4>${notice.content}</h4></a></div>
 			</c:forEach>
 		</div>
 		<div class="col-md-4">

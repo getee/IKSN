@@ -10,4 +10,10 @@ public interface UserService {
     //检查用户注册时手机号是否被注册过
     boolean checkPhone(String p);
     List receiveNotice();
+    //更改通知是否已读的状态
+    boolean changeIsRead(int isRead);
+    //给需要收到通知的操作加通知
+    boolean addNotice(Notice notice);
+    //删除该id的用户的所有通知消息
+    boolean deleteNotice(int uid);
 }

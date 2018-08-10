@@ -1,5 +1,6 @@
 package group.first.iksn.control;
 
+import com.sun.org.glassfish.gmbal.ParameterNames;
 import group.first.iksn.model.bean.Notice;
 import group.first.iksn.model.bean.User;
 import group.first.iksn.service.UserService;
@@ -7,10 +8,7 @@ import group.first.iksn.util.HttpUtil;
 import group.first.iksn.util.IndustrySMS;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
@@ -39,16 +37,55 @@ public class UserControl {
     }
 
     /**
-     * 收到的通知消息
+     * 查询收到的通知消息
      * @author BruceLee
      * @return
      */
     @RequestMapping("/receiveNotice")
     public String receiveNotice(Model model){
-        System.out.println("receiveNotice");
-        List<Notice> allNotices=userService.receiveNotice();
-        model.addAttribute("allNotices",allNotices);
+        int index=0;//定义一个计数器来记录未读的通知数量
+        List<Notice> allNotices=userService.receiveNotice();//遍历出所有的通知
+        for (Notice notice:allNotices) {
+            if(notice.getIsread()==0){
+                index+=1;
+            }
+        }
+        model.addAttribute("notReadNum",index);//返回未读的消息数量
+        model.addAttribute("allNotices",allNotices);//返回所有的消息
         return "tongzhi";
+    }
+    /**
+     * 更改通知消息是已读或者是未读
+     * @author BruceLee
+     * @return
+     */
+    @RequestMapping("/changeIsRead/{isRead}")
+    @ResponseBody
+    public String changeIsRead(@PathVariable("isRead") int isRead){
+        boolean result=userService.changeIsRead(isRead);//isRead 为前台传入的参数0或者1，表示已读或者未读
+        if(result){
+            int index=0;//定义一个计数器来记录未读的通知数量
+            List<Notice> allNotices=userService.receiveNotice();//遍历出所有的通知
+            for (Notice notice:allNotices) {
+                if(notice.getIsread()==0){
+                    index+=1;
+                }
+            }
+            return String.valueOf(index);//ajax返回未读数量，进行实时更新
+        }else{
+            return null;
+        }
+    }
+
+    /**
+     * 清空所有的通知消息
+     * @author BruceLee
+     */
+    @RequestMapping("/deleteNotice/{uid}")
+    @ResponseBody
+    public void deleteNotice(@PathVariable("uid") int uid){
+        boolean result=userService.deleteNotice(uid);
+
     }
     /**
      * 本方法用于前台注册页面获取手机验证码

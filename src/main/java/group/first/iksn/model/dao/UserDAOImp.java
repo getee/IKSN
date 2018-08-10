@@ -38,6 +38,25 @@ public class UserDAOImp extends BaseDAOImp implements UserDAO {
         }
     }
 
+    /**
+     * 根据传入的参数来判断是已读还是未读进行更改状态
+     * @author BruceLee
+     * @param isRead
+     * @return
+     */
+    @Override
+    public boolean changeIsRead(int isRead) {
+        try{
+            getSqlSession().getMapper(UserDAO.class).changeIsRead(isRead);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+
+
+    }
+
     public User getId(int uid) {
 
         return null;
@@ -47,5 +66,40 @@ public class UserDAOImp extends BaseDAOImp implements UserDAO {
     public User checkPhone(String phone) {
        User u=getSqlSession().getMapper(UserDAO.class).checkPhone(phone);
         return u;
+    }
+
+    /**
+     * 添加基于某个用户的各种通知信息（被关注，评论，点赞，举报等消息）
+     * @author BruceLee
+     * @param notice
+     * @return
+     */
+    @Override
+    public boolean addNotice(Notice notice) {
+        try{
+            getSqlSession().getMapper(UserDAO.class).addNotice(notice);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+
+        }
+    }
+
+    /**
+     * 清空某个用户所有的通知消息
+     * @author BruceLee
+     * @param uid
+     * @return
+     */
+    @Override
+    public boolean deleteNotice(int uid) {
+        try{
+            getSqlSession().getMapper(UserDAO.class).deleteNotice(uid);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
     }
 }

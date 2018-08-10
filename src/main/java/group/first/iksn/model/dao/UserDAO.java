@@ -8,7 +8,9 @@ import java.util.List;
 public interface UserDAO {
     public boolean addUser(User u);
     List<Notice> receiveNotice();
-
+    boolean changeIsRead(int isRead);
     public User getId(int uid);
     User checkPhone(String phone);
+    boolean addNotice(Notice notice);
+    boolean deleteNotice(int uid);
 }

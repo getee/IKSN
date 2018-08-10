@@ -14,7 +14,17 @@
     <insert id="addUser" parameterType="User">
         insert into user(phone,password) values (#{phone},#{password})
     </insert>
-<select id="receiveNotice" resultType="Notice">
+
+    <select id="receiveNotice" resultType="Notice">
     select  * from notice;
-</select>
+    </select>
+    <update id="changeIsRead" parameterType="Notice">
+        update notice set ISREAD=#{isRead};
+    </update>
+    <insert id="addNotice" parameterType="Notice">
+        insert into notice(UID,CONTENT,TIME,ISREAD,TYPE) values (#{uid},#{content},#{time},#{inread},#{type});
+    </insert>
+    <delete id="deleteNotice" parameterType="Notice">
+        delete from notice where UID=#{uid};
+    </delete>
 </mapper>

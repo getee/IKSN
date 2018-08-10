@@ -29,6 +29,22 @@ public class UserServiceImp implements UserService {
 
 
     }
+
+    @Override
+    public boolean changeIsRead(int isRead) {
+        return userDAO.changeIsRead(isRead);
+    }
+
+    @Override
+    public boolean addNotice(Notice notice) {
+        return userDAO.addNotice(notice);
+    }
+
+    @Override
+    public boolean deleteNotice(int uid) {
+        return userDAO.deleteNotice(uid);
+    }
+
     public boolean checkPhone(String p) {
         User u=userDAO.checkPhone(p);
         if (u==null){
