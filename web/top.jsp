@@ -6,7 +6,10 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
+<%--<link href="../js/demo.css" rel="stylesheet" type="text/css" />
+<link href="../js/searchMeme.css" rel="stylesheet" type="text/css" />
+<script src="../js/jquery-3.3.1.js" type="text/javascript"></script>
+<script src="../js/jquery.searchMeme.js" type="text/javascript"></script>--%>
     <script>
         //后期整理导航栏以及特效以该页面为准
 
@@ -104,11 +107,18 @@
                     <li><a href="#">商城</a></li>
                     <li><a href="#">VIP</a></li>
                 </ul>
-                <form class="navbar-form navbar-left">
+                <form class="navbar-form navbar-left" method="post" action="/blog/blogSearch">
                     <div class="form-group">
-                        <input id="topSearch" type="text" class="form-control" placeholder="Fuck you">
+                        <input id="topSearch" type="text" class="form-control" placeholder="Fuck you" name="content">
                     </div>
-                    <button type="submit" class="btn btn-default">搜索</button>
+                    <button id="bSearch" type="submit"  class="btn btn-default" >搜索</button>
+
+                        <%--<div class="demo" style="height: 40px">
+                            <input type="text" id="search-orange" />
+                            <div class="clear">
+                            </div>
+                        </div>--%>
+
                 </form>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a class="glyphicon glyphicon-pencil" href="Writer.jsp"> 写博客</a></li>
@@ -119,6 +129,30 @@
         </div><!-- /.container-fluid -->
     </nav>
 </div>
+<script>
+    $(document).ready(function () {
+       $("#bSearch").click
+    });
+</script>
 <!--	导航栏结束-->
+<%--<script type="text/javascript">
 
+    $(document).ready(function () {
+
+        var searchOrange = $('#search-orange').searchMeme({ onSearch: function (searchText) {
+
+                setTimeout(function () {
+
+                    searchOrange.searchMeme({ searchComplete: true });
+
+                }, 3000);
+
+            }
+
+            , buttonPlacement: 'left', button: 'orange'
+
+        });
+    });
+
+</script>--%>
 
