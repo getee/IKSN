@@ -1,15 +1,16 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="C" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>无标题文档</title>
-    <link href="bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <title>评估</title>
+    <link href="../bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 
     <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
-    <script type="text/javascript" src="js/jquery-3.3.1.js"></script>
-    <script type="text/javascript" src="bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../js/jquery-3.3.1.js"></script>
+    <script type="text/javascript" src="../bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
     <!--CSS-->
     <style type="text/css">
 
@@ -128,42 +129,29 @@
 
 
 
-                <!--第三个div-->
-                <div style=" height:50px;">
-                    <div  style=" height:28px; width:200px; padding:15px 20px;  float:left">
-                        <label style="font-size:16px">
-                            所需:
-                            <em style="color:#FACC16;font-size:22px">1</em>
-                            积分/C币
-                        </label>
-                    </div>
 
-
-
-                    <div class="float" style=" height:40px; width:140px;  background-color: #E7567F; margin-right:40px;" >
-                        <a href="#" > <div style="height:30px; margin-top:5px"><img src="img/vip.jpg">开通VIP</div></a>
-                    </div>
-
-                    <div class="float" style="height:38px;width:120px;margin-right:20px;border:1px solid;border-color:#95E2E8;">
-                        <a  href="assess.jsp" ><div style="height:20px; margin-top:8px">立即下载</div></a>
-                    </div>
-
-                </div>
             </div>
 
             <!--左第一大块div结束-->
 
             <!--左第二个div-->
-            <div  style="height:55px; margin-top:10px; background-color:#FFFFFF">
-                <h4 style=" padding:16px 20px; margin-bottom:0; font-weight:normal">
-                    评论
-                    <span  style="font-size:14px; margin-left:20px; font-weight:normal;">共有0条</span>
-                </h4>
+            <form role="form">
+            <div class="form-group">
+                <label for="name">评价</label>
+                <input type="text" class="form-control" id="name"
+                       placeholder="请输入我的评价">
+            </div>
+            <div class="form-group">
+                评分:<select name="age">
+                <C:forEach var="a" begin="1" end="10">
+                    <option value="${a}">${a}分</option>
+                </C:forEach>
+            </select><br/>
             </div>
 
-            <!--左第三个div-->
-            <div  style="height:400px; margin-top:10px; background-color:#FFFFFF">
-            </div>
+            <button type="submit" class="btn btn-default">提交</button>
+        </form>
+
         </div>
 
 
