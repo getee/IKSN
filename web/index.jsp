@@ -248,48 +248,130 @@
 								<h4 class="modal-title" id="myModalLabel">快速注册</h4>
 							  </div>
 							  <div class="modal-body">
-							<!--修改表单-->
-						  		<form>
+							<!--注册表单-->
+						  		<form action="/user/register" method="post">
 								  <div class="form-group">
 									<label for="exampleInputEmail1">昵称</label>
-									<input type="text" class="form-control" id="username" placeholder="NickName">
+									<input type="text" class="form-control" name="register.nickname" id="username" placeholder="NickName">
 								  </div> 
 								  <div class="form-group">
 									<label for="exampleInputPassword1">密码</label>
-									<input type="password" class="form-control" id="password0" placeholder="Password">
+									<input type="password" class="form-control" name="register.password" id="password0" placeholder="Password">
 								  </div>
 								  <div class="form-group">
 									<label for="exampleInputPassword1">确认密码</label>
-									<input type="password" class="form-control" id="password1" placeholder="Password">
+									<input type="password" class="form-control" id="password1" placeholder="Password" >
 								  </div>
 								  
 								  <div class="form-group">
 									<label class="radio-inline">
-									  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> 男
+									  <input type="radio" name="register.sex" id="inlineRadio1" value="1"> 男
 									</label>
 									<label class="radio-inline">
-									  <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> 女
+									  <input type="radio" name="register.sex" id="inlineRadio2" value="2"> 女
 								 	</label>	
 								  </div>
 								  
 								  <div class="form-group">
 									<label for="exampleInputEmail1">邮箱</label>
-									<input type="email" class="form-control" id="exampleInputEmail2" placeholder="Email">
+									<input type="email" name="register.email" class="form-control" id="exampleInputEmail2" placeholder="Email">
 								  </div>
 								  <div class="form-group">
 									<label for="exampleInputPassword1">手机号码</label>
-									<input type="number" class="form-control" id="exampleInputNum1" placeholder="">
+									<input type="text" name="register.phone" class="form-control" id="phone" placeholder="phone">
 								  </div>
-								  
+									<div id="yzm" class="form-group" style="display: none">
+										<label for="exampleInputPassword1"></label>
+										<input style="width: 80%;float: left" type="text" class="form-control" id="exampleInputNum11" placeholder="">
+                                        <button style="width: 17%" id="yz" type="button" class="btn btn-primary" disabled="true">获取验证码</button>
+									</div>
+                                    <div class="modal-footer" >
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                        <button id="zc" type="submit" class="btn btn-primary" disabled="true">注册</button>
+                                    </div>
 								</form>
 							  </div>
-							  <div class="modal-footer">
-								<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-								<button type="button" class="btn btn-primary">保存修改</button>
-							  </div>
+
 							</div>
 						  </div>
 						</div>
+
+                  <!--检查两次的密码是否一致-->
+                  <script>
+
+                          $("#password1").blur(function () {
+                             // alert($("#password1").val());
+                              if($("#password0").val()!=null&$("#password1").val()!=null){
+                                  if($("#password0").val()!= $("#password1").val()){
+                                      $("#password1").attr("type","text");
+                                      $("#password1").val("两次密码不一致，请再次输入！");
+                                      $("#password1").css("font-size","10px");
+                                      $("#password1").css("color","red");
+                                  }
+                              }
+                          });
+                          $("#password1").focus(function () {
+                              $("#password1").attr("type","password");
+                              $("#password1").val("");
+                              $("#password1").css("color","");
+                          });
+                  </script>
+                  <!--显示验证码一栏-->
+                  <script>
+
+                      $("#phone").focus(function(){
+                        $("#yzm").show();
+                          $("#phone").val("");
+                          $("#phone").css("font-size","14px");
+                          $("#phone").css("color","");
+                      });
+
+                  </script>
+                  <!--手机验证码处理及是否为11位手机号码-->
+                  <script>
+                      $("#phone").blur(function () {
+                          //验证是否为11位手机号
+                          var myreg=/^[1][3,4,5,7,8,9][0-9]{9}$/;
+                          var p=$("#phone").val();
+                          if (myreg.test(p)){
+                              $.get("/user/checkphone?phone="+$("#phone").val());
+                              var me="${chmessage}";
+                              if(me!=null){
+                                  if(me==false){
+                                        alert(me);
+                                      $("#yz").attr("disabled",false);
+                                  }
+                                  else {
+                                      $("#phone").val("手机号已经被注册！");
+                                      $("#phone").css("font-size","10px");
+                                      $("#phone").css("color","red");
+                                  }
+                              }
+                          }
+                          else {
+                              alert("asdsadsad")
+                          }
+                      });
+                      //获取验证码
+                      $("#yz").click(function () {
+                                t=60;
+                                $.get("/user/captcha?to="+$("#phone").val());
+                                $("#yz").attr("disabled",true);
+                                //定时器
+                                timeraaa=setInterval(timecount,1000);
+                      });
+                      function timecount() {
+
+                          $("#yz").html(t);
+                            t=t-1;
+                          if(t==-1){
+                              clearInterval(timeraaa);
+                              $("#yz").html("再次发送");
+                              $("#yz").attr("disabled",false);
+                              $("#zc").attr("disabled",false);
+                          }
+                      }
+                  </script>
 			  	<!--			  登陆结束-->
 <!--			  	今日推荐开始-->
 				  <div class="span12" style="margin-top: 30px; background-color:#FFFFFF">

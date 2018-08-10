@@ -2,7 +2,9 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
   <head>
-    <meta charset="utf-8">
+
+
+	  <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
@@ -19,6 +21,12 @@
     <![endif]-->
   </head>
   <body style="background-color: #E9E9E9">
+  <%
+	  String path = request.getContextPath();
+	  String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+  %>
+
+  <base href="<%=basePath%>">
 
     <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
     <script src="js/jquery-3.3.1.js"></script>
@@ -98,7 +106,7 @@
 	  <tr>
 	  	<td style="cursor: pointer"><a href="gerenzhongxin.jsp"><h4>个人中心</h4></a></td>
 	  	<td style="cursor: pointer"><a href="wodexiaoxi.jsp"><h4>我的消息</h4></a></td>
-	  	<td style="cursor: pointer"><a href="#"><h4>积分</h4></a></td>
+	  	<td style="cursor: pointer"><a href="jifenzhongxin.jsp"><h4>积分</h4></a></td>
 	  	<td style="cursor: pointer"><a href="writingCenter.jsp"><h4>我的博客</h4></a></td>
 	  	<td style="cursor: pointer"><a href="#"><h4>我的下载</h4></a></td>
 	  	
@@ -110,10 +118,10 @@
 	<div class="row" style="margin-left: 0.5%;margin-top: -5px">
 		<nav>
 			<ul class="nav nav-tabs">
-  <li role="presentation"><a href="tongzhi.jsp">通知</a></li>
-  <li role="presentation"><a href="#">私信</a></li>
-  <li role="presentation"><a href="tongzhi.jsp">@我</a></li>
-</ul>
+			  <li role="presentation"><a href="user/receiveNotice">通知</a></li>
+			  <li role="presentation"><a href="#">私信</a></li>
+			  <li role="presentation"><a href="shouxiaoxi.jsp">@我</a></li>
+			</ul>
 		</nav>
 	</div>
 <!--	私信-->
@@ -136,7 +144,7 @@
 			</div><!-- /input-group -->
 		  </div><!-- /.col-lg-6 -->
 		</div><!-- /.row -->
-	<div class="row">
+		<div class="row">
 			
 		<div class="col-xs-12 col-md-6 ">
 			 <div class="checkbox">
