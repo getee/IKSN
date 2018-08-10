@@ -3,38 +3,11 @@ package group.first.iksn.model.bean;
 public class Blog {
     private int bid;//博客id
     private String title;//博客标题
-    private String context;//博客内容,根据富文本制定
+    private String content;//博客内容,根据富文本制定
     private  String time;//博客发布时间
     private  String link;//博客链接
     private  int points;//博客点赞数
     private int classify;//博客分类
-
-    public Blog(int bid, String title, String context, String time, String link, int points, int classify) {
-        this.bid = bid;
-        this.title = title;
-        this.context = context;
-        this.time = time;
-        this.link = link;
-        this.points = points;
-        this.classify = classify;
-    }
-
-    public Blog() {
-        super();
-    }
-
-    @Override
-    public String toString() {
-        return "Blog{" +
-                "bid=" + bid +
-                ", title='" + title + '\'' +
-                ", context='" + context + '\'' +
-                ", time='" + time + '\'' +
-                ", link='" + link + '\'' +
-                ", points=" + points +
-                ", classify=" + classify +
-                '}';
-    }
 
     public int getBid() {
         return bid;
@@ -52,12 +25,12 @@ public class Blog {
         this.title = title;
     }
 
-    public String getContext() {
-        return context;
+    public String getContent() {
+        return content;
     }
 
-    public void setContext(String context) {
-        this.context = context;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public String getTime() {
@@ -89,6 +62,32 @@ public class Blog {
     }
 
     public void setClassify(int classify) {
+        this.classify = classify;
+    }
+
+    @Override
+    public String toString() {
+        return "Blog{" +
+                "bid=" + bid +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", time='" + time + '\'' +
+                ", link='" + link + '\'' +
+                ", points=" + points +
+                ", classify=" + classify +
+                '}';
+    }
+
+    public Blog() {
+    }
+
+    public Blog(int bid, String title, String content, String time, String link, int points, int classify) {
+        this.bid = bid;
+        this.title = title;
+        this.content = content;
+        this.time = time;
+        this.link = link;
+        this.points = points;
         this.classify = classify;
     }
 }
