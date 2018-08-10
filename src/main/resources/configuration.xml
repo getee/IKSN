@@ -5,6 +5,7 @@
 <configuration>
     <typeAliases>
         <typeAlias type="group.first.iksn.model.bean.User" alias="User"></typeAlias>
+        <typeAlias type="group.first.iksn.model.bean.Notice" alias="Notice"></typeAlias>
     </typeAliases>
 
 
