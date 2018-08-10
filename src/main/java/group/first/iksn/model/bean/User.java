@@ -13,8 +13,16 @@ public class User {
     private int isadmin;//是不是管理员
     private int isspeak;//是不是能发言0能，1被禁言
     private String timeofban;//被禁截止时间
-
+    private String picturepath;
     public User() {
+    }
+
+    public String getPicturepath() {
+        return picturepath;
+    }
+
+    public void setPicturepath(String picturepath) {
+        this.picturepath = picturepath;
     }
 
     public int getUid() {
@@ -128,6 +136,7 @@ public class User {
                 ", isadmin=" + isadmin +
                 ", isspeak=" + isspeak +
                 ", timeofban='" + timeofban + '\'' +
+                ", picturepath='" + picturepath + '\'' +
                 '}';
     }
 }

@@ -1,5 +1,6 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java"  isELIgnored="false" %>
 <!doctype html>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
 	<meta charset="utf-8">
@@ -257,11 +258,11 @@
 						  		<form action="/user/register" method="post">
 								  <div class="form-group">
 									<label for="exampleInputEmail1">昵称</label>
-									<input type="text" class="form-control" name="register.nickname" id="username" placeholder="NickName">
+									<input type="text" class="form-control" name="nickname" id="username" placeholder="NickName">
 								  </div> 
 								  <div class="form-group">
 									<label for="exampleInputPassword1">密码</label>
-									<input type="password" class="form-control" name="register.password" id="password0" placeholder="Password">
+									<input type="password" class="form-control" name="password" id="password0" placeholder="Password">
 								  </div>
 								  <div class="form-group">
 									<label for="exampleInputPassword1">确认密码</label>
@@ -270,29 +271,29 @@
 								  
 								  <div class="form-group">
 									<label class="radio-inline">
-									  <input type="radio" name="register.sex" id="inlineRadio1" value="1"> 男
+									  <input type="radio" name="sex" id="inlineRadio1" value="1"> 男
 									</label>
 									<label class="radio-inline">
-									  <input type="radio" name="register.sex" id="inlineRadio2" value="2"> 女
+									  <input type="radio" name="sex" id="inlineRadio2" value="2"> 女
 								 	</label>	
 								  </div>
 								  
 								  <div class="form-group">
 									<label for="exampleInputEmail1">邮箱</label>
-									<input type="email" name="register.email" class="form-control" id="exampleInputEmail2" placeholder="Email">
+									<input type="email" name="email" class="form-control" id="mail" placeholder="Email">
 								  </div>
 								  <div class="form-group">
 									<label for="exampleInputPassword1">手机号码</label>
-									<input type="text" name="register.phone" class="form-control" id="phone" placeholder="phone">
+									<input type="text" name="phone" class="form-control" id="phone" placeholder="phone">
 								  </div>
 									<div id="yzm" class="form-group" style="display: none">
 										<label for="exampleInputPassword1"></label>
-										<input style="width: 80%;float: left" type="text" class="form-control" id="exampleInputNum11" placeholder="">
-                                        <button style="width: 17%" id="yz" type="button" class="btn btn-primary" disabled="true">获取验证码</button>
+										<input style="width: 80%;float: left" type="text" class="form-control" id="captcha" placeholder="">
+                                        <button style="width: 17%" id="yz" type="button" class="btn btn-primary">获取验证码</button>
 									</div>
                                     <div class="modal-footer" >
                                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                                        <button id="zc" type="submit" class="btn btn-primary" disabled="true">注册</button>
+                                        <button id="zc" type="submit" class="btn btn-primary" disabled="true" >注册</button>
                                     </div>
 								</form>
 							  </div>
@@ -300,7 +301,21 @@
 							</div>
 						  </div>
 						</div>
-
+				  <!--提示是否注册成功-->
+				  <c:if test="${result !=null}">
+				  <c:choose>
+					  <c:when test="${result}">
+						  <script>
+							  alert("注册成功，快去登录吧！");
+						  </script>
+					  </c:when>
+					  <c:otherwise>
+						  <script>
+                              alert("注册失败，请检查后再次注册！");
+						  </script>
+					  </c:otherwise>
+				  </c:choose>
+				  </c:if>
                   <!--检查两次的密码是否一致-->
                   <script>
 
@@ -321,6 +336,36 @@
                               $("#password1").css("color","");
                           });
                   </script>
+				  <!--检查邮箱格式及是否存在-->
+				  <script>
+                      $("#mail").blur(function () {
+                          //验证是否为正确的邮箱
+                          var myreg=  /^[-_A-Za-z0-9]+@([_A-Za-z0-9]+\.)+[A-Za-z0-9]{2,3}$/;
+                          var p=$("#mail").val();
+                          //alert(myreg.test(p));
+                          if (myreg.test(p)){
+                              $.get("/user/checkemail?email="+$("#mail").val(),function (ms) {
+                                  if(ms=="success"){
+                                  }
+                                  else {
+                                      $("#mail").val("邮箱已经被注册！");
+                                      $("#mail").css("font-size","10px");
+                                      $("#mail").css("color","red");
+                                  }
+                              });
+                          }
+                          else {
+                              $("#mail").val("请输入正确的邮箱！");
+                              $("#mail").css("font-size","10px");
+                              $("#mail").css("color","red");
+                          }
+                      });
+                      $("#mail").focus(function(){
+                          $("#mail").val("");
+                          $("#mail").css("font-size","14px");
+                          $("#mail").css("color","");
+                      });
+				   </script>
                   <!--显示验证码一栏-->
                   <script>
 
@@ -330,40 +375,50 @@
                           $("#phone").css("font-size","14px");
                           $("#phone").css("color","");
                       });
-
+                      $("#captcha").focus(function(){
+							$("#captcha").val("");
+                          $("#captcha").css("font-size","14px");
+                          $("#captcha").css("color","");
+                      });
                   </script>
+
                   <!--手机验证码处理及是否为11位手机号码-->
                   <script>
-                      $("#phone").blur(function () {
+					  captcha="";
+                      // $("#phone").blur(function () {
+                      //
+                      // });
+
+                      //获取验证码
+                      $("#yz").click(function () {
                           //验证是否为11位手机号
                           var myreg=/^[1][3,4,5,7,8,9][0-9]{9}$/;
                           var p=$("#phone").val();
                           if (myreg.test(p)){
-                              $.get("/user/checkphone?phone="+$("#phone").val());
-                              var me="${chmessage}";
-                              if(me!=null){
-                                  if(me==false){
-                                        alert(me);
-                                      $("#yz").attr("disabled",false);
+                              $.get("/user/checkphone?phone="+$("#phone").val(),function (ms) {
+                                  if(ms=="success"){
+                                      // $("#yz").attr("disabled",false);
+                                      //计时器
+                                      t=60;
+                                      $.get("/user/captcha?to="+$("#phone").val(),function (msg) {
+                                          captcha=msg;
+                                      });
+                                       $("#yz").attr("disabled",true);
+                                      //定时器
+                                      timeraaa=setInterval(timecount,1000);
                                   }
                                   else {
                                       $("#phone").val("手机号已经被注册！");
                                       $("#phone").css("font-size","10px");
                                       $("#phone").css("color","red");
                                   }
-                              }
+                              });
                           }
                           else {
-                              alert("asdsadsad")
+                              $("#phone").val("请输入正确的手机号！");
+                              $("#phone").css("font-size","10px");
+                              $("#phone").css("color","red");
                           }
-                      });
-                      //获取验证码
-                      $("#yz").click(function () {
-                                t=60;
-                                $.get("/user/captcha?to="+$("#phone").val());
-                                $("#yz").attr("disabled",true);
-                                //定时器
-                                timeraaa=setInterval(timecount,1000);
                       });
                       function timecount() {
 
@@ -373,10 +428,31 @@
                               clearInterval(timeraaa);
                               $("#yz").html("再次发送");
                               $("#yz").attr("disabled",false);
-                              $("#zc").attr("disabled",false);
+
                           }
                       }
                   </script>
+				  <!--验证验证码是否正确-->
+				  <script>
+                      count=0;
+                      $("#captcha").keyup(function () {
+                          count=count+1;
+                          if(count==6){
+                              //alert(count);
+                              count=0;
+								msg=captcha;
+							//	alert(msg);
+                              if(msg==$("#captcha").val()){
+                                  $("#zc").attr("disabled",false);
+                              }
+                              else {
+                                  $("#captcha").val("验证码错误请重新输入！");
+                                  $("#captcha").css("font-size","10px");
+                                  $("#captcha").css("color","red");
+                              }
+                          }
+                      });
+				  </script>
 			  	<!--			  登陆结束-->
 <!--			  	今日推荐开始-->
 				  <div class="span12" style="margin-top: 30px; background-color:#FFFFFF">

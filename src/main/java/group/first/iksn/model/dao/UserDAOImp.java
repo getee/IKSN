@@ -14,7 +14,6 @@ public class UserDAOImp extends BaseDAOImp implements UserDAO {
             isOK=getSqlSession().getMapper(UserDAO.class).addUser(u);
             return isOK;
         }catch (Exception e){
-            System.out.println("应该先判断用户已存在，避免之后再捕获");
             e.printStackTrace();
             return false;
         }
@@ -65,6 +64,12 @@ public class UserDAOImp extends BaseDAOImp implements UserDAO {
     @Override
     public User checkPhone(String phone) {
        User u=getSqlSession().getMapper(UserDAO.class).checkPhone(phone);
+        return u;
+    }
+
+    @Override
+    public User checkEmail(String email) {
+        User u=getSqlSession().getMapper(UserDAO.class).checkEmail(email);
         return u;
     }
 

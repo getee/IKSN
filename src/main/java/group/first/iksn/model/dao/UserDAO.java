@@ -11,6 +11,7 @@ public interface UserDAO {
     boolean changeIsRead(int isRead);
     public User getId(int uid);
     User checkPhone(String phone);
+    User checkEmail(String email);
     boolean addNotice(Notice notice);
     boolean deleteNotice(int uid);
 }
