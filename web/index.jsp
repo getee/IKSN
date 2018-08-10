@@ -289,7 +289,7 @@
 									<div id="yzm" class="form-group" style="display: none">
 										<label for="exampleInputPassword1"></label>
 										<input style="width: 80%;float: left" type="text" class="form-control" id="captcha" placeholder="">
-                                        <button style="width: 17%" id="yz" type="button" class="btn btn-primary" disabled="true">获取验证码</button>
+                                        <button style="width: 17%" id="yz" type="button" class="btn btn-primary">获取验证码</button>
 									</div>
                                     <div class="modal-footer" >
                                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -302,6 +302,7 @@
 						  </div>
 						</div>
 				  <!--提示是否注册成功-->
+				  <c:if test="${result !=null}">
 				  <c:choose>
 					  <c:when test="${result}">
 						  <script>
@@ -314,6 +315,7 @@
 						  </script>
 					  </c:otherwise>
 				  </c:choose>
+				  </c:if>
                   <!--检查两次的密码是否一致-->
                   <script>
 
@@ -336,10 +338,11 @@
                   </script>
 				  <!--检查邮箱格式及是否存在-->
 				  <script>
-                      $("#phone").blur(function () {
+                      $("#mail").blur(function () {
                           //验证是否为正确的邮箱
                           var myreg=  /^[-_A-Za-z0-9]+@([_A-Za-z0-9]+\.)+[A-Za-z0-9]{2,3}$/;
                           var p=$("#mail").val();
+                          //alert(myreg.test(p));
                           if (myreg.test(p)){
                               $.get("/user/checkemail?email="+$("#mail").val(),function (ms) {
                                   if(ms=="success"){
@@ -382,20 +385,33 @@
                   <!--手机验证码处理及是否为11位手机号码-->
                   <script>
 					  captcha="";
-                      $("#phone").blur(function () {
+                      // $("#phone").blur(function () {
+                      //
+                      // });
+
+                      //获取验证码
+                      $("#yz").click(function () {
                           //验证是否为11位手机号
                           var myreg=/^[1][3,4,5,7,8,9][0-9]{9}$/;
                           var p=$("#phone").val();
                           if (myreg.test(p)){
                               $.get("/user/checkphone?phone="+$("#phone").val(),function (ms) {
                                   if(ms=="success"){
-                                      $("#yz").attr("disabled",false);
-								  }
-								  else {
+                                      // $("#yz").attr("disabled",false);
+                                      //计时器
+                                      t=60;
+                                      $.get("/user/captcha?to="+$("#phone").val(),function (msg) {
+                                          captcha=msg;
+                                      });
+                                       $("#yz").attr("disabled",true);
+                                      //定时器
+                                      timeraaa=setInterval(timecount,1000);
+                                  }
+                                  else {
                                       $("#phone").val("手机号已经被注册！");
                                       $("#phone").css("font-size","10px");
                                       $("#phone").css("color","red");
-								  }
+                                  }
                               });
                           }
                           else {
@@ -403,17 +419,6 @@
                               $("#phone").css("font-size","10px");
                               $("#phone").css("color","red");
                           }
-                      });
-
-                      //获取验证码
-                      $("#yz").click(function () {
-                                t=60;
-                                $.get("/user/captcha?to="+$("#phone").val(),function (msg) {
-                                    captcha=msg;
-                                });
-                                $("#yz").attr("disabled",true);
-                                //定时器
-                                timeraaa=setInterval(timecount,1000);
                       });
                       function timecount() {
 
