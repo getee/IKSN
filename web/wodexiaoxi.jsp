@@ -25,12 +25,7 @@
     <![endif]-->
   </head>
   <body style="background-color: #E9E9E9">
-  <%
-	  String path = request.getContextPath();
-	  String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-  %>
 
-  <base href="<%=basePath%>">
 
     <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
     <script src="js/jquery-3.3.1.js"></script>
