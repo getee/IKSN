@@ -1,6 +1,7 @@
 package group.first.iksn.service;
 
 import group.first.iksn.model.bean.CollectResource;
+import group.first.iksn.model.bean.ReportResource;
 import group.first.iksn.model.bean.ResourceComments;
 
 public interface ResourceService {
@@ -8,4 +9,6 @@ public interface ResourceService {
     boolean assess(ResourceComments c);
     //收藏资源
     boolean houseResource(CollectResource h);
+    //举报资源
+    boolean reportResource(ReportResource reportResource);
 }

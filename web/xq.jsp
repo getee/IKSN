@@ -128,7 +128,36 @@
 
                             <a href="#" onclick="shoucang()"><img src="img/sc.jpg">&nbsp;收藏</a>&nbsp;&nbsp;&nbsp;&nbsp;
                             <a href="#"><img src="img/pl.jpg">&nbsp;评论</a>&nbsp;&nbsp;&nbsp;&nbsp;
-                            <a href="#"><img src="img/jb.jpg">&nbsp;举报</a>
+                            <a data-toggle="modal" data-target="#modal-container-830220"><img src="img/jb.jpg">&nbsp;举报</a>
+                            <!-- 模态框（Modal） -->
+                            <!-- Modal -->
+                            <div class="modal fade" id="modal-container-830220" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="margin-top: 20%">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title" id="myModalLabel">举报原因</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <!--								文本域-->
+                                            <form action="/resource/reportResource" method="">
+                                                资源ID：<input name="rid" type="text" value="1"/>
+                                                举报人ID：<input name="uid" type="text" value="1"/>
+                                                <textarea name="reason" class="form-control" rows="3"></textarea>
+                                                <div class="modal-footer">
+                                                    <!--<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                                    <button type="button" class="btn btn-primary">提交</button>-->
+                                                </div>
+                                                <input type="submit" value="提交"/>
+                                            </form>
+                                            <!--								-->
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.modal-content -->
                         </div>
                     </div>
 

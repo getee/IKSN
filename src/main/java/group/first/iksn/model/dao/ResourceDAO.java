@@ -1,6 +1,7 @@
 package group.first.iksn.model.dao;
 
 import group.first.iksn.model.bean.CollectResource;
+import group.first.iksn.model.bean.ReportResource;
 import group.first.iksn.model.bean.ResourceComments;
 
 public interface ResourceDAO {
@@ -8,4 +9,7 @@ public interface ResourceDAO {
      boolean assessResource(ResourceComments c);
 
     boolean collectResource(CollectResource h);
+
+    //举报资源
+    boolean reportResource(ReportResource reportResource);
 }
