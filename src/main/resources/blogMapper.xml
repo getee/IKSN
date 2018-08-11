@@ -4,10 +4,38 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 
-
 <mapper namespace="group.first.iksn.model.dao.BlogDAO">
-    <select id="detailedBlogSearchResultMap" resultMap="searchResultMap">
+    <!--定义的一个reaultmap结果集合来存储关联查询到的详细的博客，类型是自定义类型-->
+    <resultMap id="searchBlog" type="Blog">
 
+        <id property="bid" column="bid"></id>
+        <result property="title" column="title"></result>
+        <result property="content" column="content"></result>
+        <result property="classify" column="classify"></result>
+        <result property="link" column="link"></result>
+        <result property="points" column="points"></result>
+        <result property="time" column="time"></result>
+
+        <association property="blogTag" javaType="BlogTag">
+            <id property="id" column="id"></id>
+            <result property="bid" column="bid"></result>
+            <result property="btag" column="btag"></result>
+        </association>
+
+        <association property="userToBlog" javaType="UserToBlog">
+            <id property="id" column="id"></id>
+            <result property="uid" column="uid"></result>
+            <result property="bid" column="bid"></result>
+            <result property="isdraft" column="isdraft"></result>
+            <result property="ispublic" column="ispublic"></result>
+            <result property="blogtype" column="blogtype"></result>
+        </association>
+    </resultMap>
+
+    <select id="processScanBlog" resultMap="searchBlog">
+        select b.* ,u.*,t.* from blog as b
+        inner join usertoblog as u on u.bid=b.bid
+        inner join blogtag as t on t.bid=b.bid
 
     </select>
 
@@ -31,6 +59,14 @@
       delete from reportblog where id = #{id}
     </delete>
 
+
+    <insert id="processAddBlogTag" parameterType="BlogTag" useGeneratedKeys="true" keyColumn="id">
+        insert into blogtag(bid,btag) values (#{bid},#{btag})
+    </insert>
+
+    <insert id="processAddUserToBlog" parameterType="UserToBlog" useGeneratedKeys="true" keyColumn="id">
+        insert into usertoblog(uid,bid,ISDRAFT,ISPUBLIC,BLOGTYPE) values (#{uid},#{bid},#{isdraft},#{ispublic},#{blogtype})
+    </insert>
     <!--结果集合用来存储查询ReportBlog表级联查询blog表-->
     <resultMap id="getBlogBy_Reportbid" type="ReportBlog">
         <id column="id" property="id"/>
@@ -46,4 +82,5 @@
 		select  i.ID,i.BID,i.REASON,b.TITLE  from reportblog as i
 		inner join blog as b on   i.BID=b.BID ORDER BY i.ID desc limit 0,3;
 	</select>
+
 </mapper>
