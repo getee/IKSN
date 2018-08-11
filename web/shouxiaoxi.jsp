@@ -114,9 +114,9 @@
         <div class="row" style="margin-left: 0.5%;margin-top: -5px">
             <nav>
                 <ul class="nav nav-tabs">
-                    <li role="presentation"><a href="/user/receiveNotice">通知</a></li>
-                    <li role="presentation"><a href="wodexiaoxi.jsp">私信</a></li>
-                    <li role="presentation"><a href="#">@我</a></li>
+                    <li role="presentation"><a href="/user/receiveNotice/1">通知</a></li>
+                    <li role="presentation"><a href="/user/listAllFriends/1/1">私信</a></li>
+                    <li role="presentation"><a href="/user/receiveMessage">@我</a></li>
                 </ul>
             </nav>
         </div>

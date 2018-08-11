@@ -1,5 +1,6 @@
 package group.first.iksn.service;
 
+import group.first.iksn.model.bean.Message;
 import group.first.iksn.model.bean.Notice;
 import group.first.iksn.model.bean.User;
 import group.first.iksn.model.dao.UserDAO;
@@ -28,14 +29,14 @@ public class UserServiceImp implements UserService {
         u.setPassword(mdpassword);
         return userDAO.addUser(u);
     }
-    public List<Notice> receiveNotice() {
-        return userDAO.receiveNotice();
+    public List<Notice> receiveNotice(int uid) {
+        return userDAO.receiveNotice(uid);
 
     }
 
     @Override
-    public boolean changeIsRead(int isRead) {
-        return userDAO.changeIsRead(isRead);
+    public boolean changeIsRead(int isRead,int uid) {
+        return userDAO.changeIsRead(isRead,uid);
     }
 
     @Override
@@ -47,6 +48,30 @@ public class UserServiceImp implements UserService {
     public boolean deleteNotice(int uid) {
         return userDAO.deleteNotice(uid);
     }
+
+    @Override
+    public boolean sendMessage(Message message) {
+        //判断收件人是不是该用户的好友或者用户不存在
+        List isAttenedResult=userDAO.checkIsAttention(message.getFromid(),message.getToid());
+        if(isAttenedResult!=null){
+            return userDAO.sendMessage(message);
+        }else{
+            return false;
+
+        }
+
+    }
+
+    @Override
+    public List<User> listAllFriends(int uid,int nowPage) {
+        return userDAO.listAllFriends(uid,nowPage);
+    }
+
+    @Override
+    public int friendNum(int uid) {
+        return userDAO.friendNum(uid);
+    }
+
 
     public boolean checkPhone(String p) {
         User u=userDAO.checkPhone(p);

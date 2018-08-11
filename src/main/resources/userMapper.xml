@@ -18,10 +18,10 @@
     </insert>
 
     <select id="receiveNotice" resultType="Notice">
-    select  * from notice;
+    select  * from notice where UID=#{uid};
     </select>
     <update id="changeIsRead" parameterType="Notice">
-        update notice set ISREAD=#{isRead};
+        update notice set ISREAD=#{isRead} where UID=#{uid};
     </update>
     <insert id="addNotice" parameterType="Notice">
         insert into notice(UID,CONTENT,TIME,ISREAD,TYPE) values (#{uid},#{content},#{time},#{inread},#{type});
@@ -29,4 +29,22 @@
     <delete id="deleteNotice" parameterType="Notice">
         delete from notice where UID=#{uid};
     </delete>
+    <insert id="sendMessage" parameterType="Message">
+        insert into message(FROMID,TOID,CONTENT,TIME) values (#{fromid},#{toid},#{content},#{time});
+    </insert>
+    <select id="getAllMessages" resultType="Message">
+        select * from message where TOID=#{toid}
+    </select>
+    <delete id="deleteAllMessages" parameterType="Message">
+        delete from message where TOID=#{toid}
+    </delete>
+    <select id="checkIsAttention" resultType="Attention">
+        select * from attention where SELFID=#{selfid} and ATTENID=#{attenid}
+    </select>
+    <select id="listAllFriends" resultType="User">
+        select * from user  where UID in (select ATTENID from attention where SELFID=#{selfid}) order by UID asc limit #{nowPage},5;
+    </select>
+    <select id="friendNum" resultType="Integer">
+        select count(*) from user where UID in (select ATTENID from attention where SELFID=#{selfid});
+    </select>
 </mapper>

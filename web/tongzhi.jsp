@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -95,16 +96,17 @@
             var index=$("#biaoji").html();
             if(index=="全部标记已读"){
                 $("#biaoji").html("全部标记为未读");
-                $.get("user/changeIsRead/1",function (data) {
+                $.get("user/changeIsRead/1/1",function (data) {
                     $("#weidutongzhi").html("未读通知："+data);
-
+                    $(".noticeContext").css("backgroundColor","white");
                 });
 
             }else if(index=="全部标记为未读"){
 
                 $("#biaoji").html("全部标记已读");
-                $.get("user/changeIsRead/0",function (data) {
+                $.get("user/changeIsRead/0/1",function (data) {
                     $("#weidutongzhi").html("未读通知："+data);
+                    $(".noticeContext").css("backgroundColor","black");
 
                 });
             }
@@ -129,7 +131,7 @@
 	<table class="table well" style="margin: 0px">
 	  <tr>
 	  	<td style="cursor: pointer"><a href="gerenzhongxin.jsp"><h4>个人中心</h4></a></td>
-	  	<td style="cursor: pointer"><a href="wodexiaoxi.jsp"><h4>我的消息</h4></a></td>
+	  	<td style="cursor: pointer"><a href="/user/listAllFriends/1/1"><h4>我的消息</h4></a></td>
 	  	<td style="cursor: pointer"><a href="jifenzhongxin.jsp"><h4>积分</h4></a></td>
 	  	<td style="cursor: pointer"><a href="writingCenter.jsp"><h4>我的博客</h4></a></td>
 	  	<td style="cursor: pointer"><a href="#"><h4>我的下载</h4></a></td>
@@ -141,8 +143,8 @@
 	<div class="row" style="margin-left: 0.5%;margin-top: -5px">
 		<nav>
 			<ul class="nav nav-tabs">
-  <li role="presentation"><a href="/user/receiveNotice">通知</a></li>
-  <li role="presentation"><a href="wodexiaoxi.jsp">私信</a></li>
+  <li role="presentation"><a href="/user/receiveNotice/1">通知</a></li>
+  <li role="presentation"><a href="/user/listAllFriends/1/1">私信</a></li>
   <li role="presentation"><a href="shouxiaoxi.jsp">@我</a></li>
 </ul>
 		</nav>
@@ -164,12 +166,27 @@
 	<div class="row well" style="margin: auto;height: 700px;">
 		<div class="col-md-8">
 			<c:forEach var="notice" items="${allNotices}">
-				<div class="row well"><a href=""><h4>${notice.content}</h4></a></div>
+				<c:choose>
+					<c:when test="${notice.isread==0}">
+					<div  class="row well noticeContext" style="background-color: black"><a href=""><h4>${notice.content}</h4></a></div>
+					</c:when>
+					<c:otherwise>
+					<div  class="row well noticeContext"><a href=""><h4>${notice.content}</h4></a></div>
+
+					</c:otherwise>
+				</c:choose>
 			</c:forEach>
 		</div>
 		<div class="col-md-4">
 			<c:forEach var="notice" items="${allNotices}">
-			<div class="row well"><h4><small>${notice.time}</small></h4></div>
+				<c:choose>
+					<c:when test="${notice.isread==0}">
+						<div class="row well noticeContext" style="background-color: black"><h4><small>${notice.time}</small></h4></div>
+					</c:when>
+					<c:otherwise>
+					<div class="row well noticeContext"><h4><small>${notice.time}</small></h4></div>
+					</c:otherwise>
+				</c:choose>
 			</c:forEach>
 		</div>
 	</div>
