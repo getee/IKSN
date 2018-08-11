@@ -7,6 +7,8 @@
         <typeAlias type="group.first.iksn.model.bean.User" alias="User"></typeAlias>
         <typeAlias type="group.first.iksn.model.bean.Notice" alias="Notice"></typeAlias>
         <typeAlias type="group.first.iksn.model.bean.Blog" alias="Blog"></typeAlias>
+        <typeAlias type="group.first.iksn.model.bean.ResourceComments" alias="ResourceComments"></typeAlias>
+        <typeAlias type="group.first.iksn.model.bean.CollectResource" alias="CollectResource"></typeAlias>
         <typeAlias type="group.first.iksn.model.bean.IllegalBlog" alias="IllegalBlog"></typeAlias>
     </typeAliases>
 
@@ -28,5 +30,6 @@
     <mappers>
         <mapper resource="userMapper.xml"></mapper>
         <mapper resource="blogMapper.xml"></mapper>
+        <mapper resource="resourceMapper.xml"></mapper>
     </mappers>
 </configuration>
