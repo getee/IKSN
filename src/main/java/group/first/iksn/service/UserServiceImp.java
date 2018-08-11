@@ -51,4 +51,28 @@ public class UserServiceImp implements UserService {
             return  true;
     }
 
+    @Override
+    public User login(String emailorphone, String password) {
+
+        System.out.println(emailorphone+":"+password);
+        String email= "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
+        String phone="^(13[0-9]|15[0-9]|153|15[6-9]|180|18[23]|18[5-9])\\d{8}$";
+        password=MD5.MD5(password);
+        if(emailorphone.matches(email)){
+            System.out.println("邮箱");
+            email=emailorphone;
+            return userDAO.loginByEmail(email,password);
+        }
+        else if (emailorphone.matches(phone)){
+            System.out.println("手机号");
+            phone=emailorphone;
+            return userDAO.loginByPhone(phone,password);
+        }
+        else {
+            System.out.println("都不是");
+            return null;
+        }
+
+    }
+
 }
