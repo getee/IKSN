@@ -4,6 +4,15 @@ public class IllegalBlog {
     private int id;//违规表id
     private  int bid;//违规博客id
     private  String illegalcause;//违规原因
+    private Blog blog;
+
+    public Blog getBlog() {
+        return blog;
+    }
+
+    public void setBlog(Blog blog) {
+        this.blog = blog;
+    }
 
     public IllegalBlog(int id, int bid, String illegalcause) {
         this.id = id;
