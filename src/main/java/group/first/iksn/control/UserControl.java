@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import org.springframework.web.bind.annotation.*;
@@ -51,6 +52,24 @@ public class UserControl {
         boolean isRegister = userService.register(user);
         System.out.println(user);
         model.addAttribute("result",isRegister);
+        return "index";
+    }
+    //登录方法
+    @RequestMapping(value = "/login",method = RequestMethod.POST)
+    public String login(String emailorphone, String password, HttpSession session,Model model){
+        User user=userService.login(emailorphone,password);
+
+        if (user!=null){
+            session.setAttribute("loginresult",user);
+            model.addAttribute("logmes",true);
+            System.out.println(model);
+        }
+        else {
+            model.addAttribute("logmes",false);
+            System.out.println(model);
+        }
+
+
         return "index";
     }
 

@@ -27,7 +27,12 @@
     <![endif]-->
   </head>
   <body style="background-color: #E9E9E9">
+  <%
+	  String path = request.getContextPath();
+	  String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+  %>
 
+  <base href="<%=basePath%>">
 
 
 

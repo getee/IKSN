@@ -30,7 +30,7 @@
         <ul class="nav nav-tabs"  style="margin-left:15%;" >
             <li ><a href="xiazhai.jsp">下载首页</a></li>
             <li ><a href="#">我的资源</a></li>
-            <li ><a href="#">上传资源赚积分</a></li>
+            <li ><a href="upload.jsp">上传资源赚积分</a></li>
             <li ><a href="#">已下载</a></li>
             <li ><a href="#">我的收藏</a></li>
         </ul>
@@ -276,7 +276,7 @@
                                             <a href="xq.jsp"> <img src="img/2.svg"></a>
                                         </div>
                                         <div style="height:20px; width:66%; float:left; margin-top:15px; margin-left:40px;  font-size:20px ; color:#000000;">
-                                            <a href="xq.jsp"> 仿安居客地图找房源码</a>
+                                            <a href="/resource/downResource?rid=1"> 仿安居客地图找房源码</a>
                                         </div>
                                         <div style="height:30px; width:82%; float:left;margin-top:12px; margin-left:40px;font-size:14px;">
                                             <div style="width:250px; height:30px;  float:left">

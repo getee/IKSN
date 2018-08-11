@@ -122,45 +122,37 @@
                    <img src="img/xx.jpg">&nbsp;&nbsp;
                   </span>
                         <span> 综合评分：<em>0</em></span>
-
                         <div style="float:right; width:250px;">
                             <a href="#"><img src="img/sc.jpg">&nbsp;收藏</a>&nbsp;&nbsp;&nbsp;&nbsp;
                             <a href="#"><img src="img/pl.jpg">&nbsp;评论</a>&nbsp;&nbsp;&nbsp;&nbsp;
                             <a href="#"><img src="img/jb.jpg">&nbsp;举报</a>
                         </div>
                     </div>
-
                 </div>
-
-
-
-
             </div>
-
             <!--左第一大块div结束-->
-
             <!--左第二个div-->
-            <form role="form">
+            <form action="/resource/assess" method="post">
+                <div class="form-group">
+                    uid:<input type="text" name="uid"><br>
+                </div>
+                <div class="form-group">
+                    rid:<input type="text" name="rid" ><br>
+            </div>
             <div class="form-group">
                 <label for="name">评价</label>
-                <input type="text" class="form-control" id="name"
-                       placeholder="请输入我的评价">
+                <input type="text" class="form-control" id="name" name="comment">
             </div>
             <div class="form-group">
-                评分:<select name="age">
+                评分:<select name="star">
                 <C:forEach var="a" begin="1" end="10">
                     <option value="${a}">${a}分</option>
                 </C:forEach>
             </select><br/>
             </div>
-
-            <button type="submit" class="btn btn-default">提交</button>
+            <button type="submit" class="btn btn-default" value="assess">提交</button>
         </form>
-
         </div>
-
-
-
         <div class="col-xs-4 well">
             <!--右边第一块上传资源的div-->
             <div style="height:50px; width:300px; background-color:#E33F3F">

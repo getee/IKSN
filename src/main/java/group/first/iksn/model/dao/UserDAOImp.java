@@ -189,4 +189,14 @@ public class UserDAOImp extends BaseDAOImp implements UserDAO {
             return 0;
         }
     }
+
+    @Override
+    public User loginByEmail(String email, String password) {
+        return  getSqlSession().getMapper(UserDAO.class).loginByEmail(email,password);
+    }
+
+    @Override
+    public User loginByPhone(String phone, String password) {
+        return getSqlSession().getMapper(UserDAO.class).loginByPhone(phone,password);
+    }
 }

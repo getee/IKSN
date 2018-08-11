@@ -13,6 +13,12 @@
     <select id="checkEmail"  resultType="User">
         SELECT  * from user WHERE EMAIL=#{email}
     </select>
+    <select id="loginByEmail" resultType="User">
+        SELECT * FROM  user WHERE  EMAIL=#{0} and PASSWORD =#{1}
+    </select>
+    <select id="loginByPhone" resultType="User">
+        SELECT * FROM  user WHERE PHONE=#{0} and PASSWORD =#{1}
+    </select>
     <insert id="addUser" parameterType="User">
         insert into user(NICKNAME,PASSWORD,SEX,EMAIL,PHONE) values (#{nickname},#{password},#{sex},#{email},#{phone})
     </insert>

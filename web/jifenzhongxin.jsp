@@ -118,7 +118,7 @@
 <div class="row" style="background-color:#E9E9E9;margin-left: 15%;margin-right: 15%">
 	<table class="table well" style="margin: 0px">
 	  <tr>
-	  	<td style="cursor: pointer"><a class="text-muted" href="gerenzhongxin.jsp"><h4>个人中心</h4></a></td>
+	  	<td style="cursor: pointer"><a class="text-muted" href="/blog/mGetAllReportBlog"><h4>个人中心</h4></a></td>
 	  	<td style="cursor: pointer"><a class="text-muted" href="/user/listAllFriends/1/1"><h4>我的消息</h4></a></td>
 	  	<td style="cursor: pointer"><a class="text-muted" href="jifenzhongxin.jsp"><h4>积分</h4></a></td>
 	  	<td style="cursor: pointer"><a class="text-muted" href="writingCenter.jsp"><h4>我的博客</h4></a></td>

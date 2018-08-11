@@ -26,4 +26,6 @@ public interface UserService {
     //列出该用户的所有关注的人
     List<User> listAllFriends(int uid,int nowPage);
     int friendNum(int uid);
+    //根据登录方法
+    User login(String emailorphone,String password);
 }

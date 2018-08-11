@@ -15,6 +15,9 @@ public interface UserDAO {
     public User getId(int uid);
     User checkPhone(String phone);
     User checkEmail(String email);
+
+    User loginByEmail(String email,String password);
+    User loginByPhone( String phone, String password);
     boolean addNotice(Notice notice);
     boolean deleteNotice(int uid);
     boolean sendMessage(Message message);
