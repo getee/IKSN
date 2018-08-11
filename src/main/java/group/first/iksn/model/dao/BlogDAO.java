@@ -3,6 +3,7 @@ package group.first.iksn.model.dao;
 
 import group.first.iksn.model.bean.Blog;
 import group.first.iksn.model.bean.IllegalBlog;
+import group.first.iksn.model.bean.ReportBlog;
 
 import java.util.List;
 import group.first.iksn.model.bean.BlogTag;
@@ -23,5 +24,6 @@ public interface BlogDAO {
     public List<Blog> processScanBlog(int bid);
 
     boolean addIllegalblog(IllegalBlog blog);
-    List<IllegalBlog> getAllReportBlog();
+    List<ReportBlog> getAllReportBlog();
+    boolean deleteBlogFromReport(ReportBlog blog);
 }

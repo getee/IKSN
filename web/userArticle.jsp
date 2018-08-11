@@ -67,6 +67,7 @@
 	<!--用户名logo结束-->
 	   </div>
 	   <div class="col-xs-6 col-md-3">
+		   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#comeback" style="">返回举报页</button>
 		   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#delete" style="">删除</button>
 		   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sendBack" style="">下架</button>
 		   <button class="btn btn-primary" type="submit" value="1">
@@ -115,10 +116,17 @@
 	</div>
 	<script>
         $(document).ready(function(){
+            $("#comeback").click(function(){
+                $.get("/blog/mGetAllReportBlog",function(data,status){
+
+                    alert(data+status);
+                });
+            });
             $("#sendBack-ok").click(function(){
                 $(this).prop("disabled","disabled");
-                $("#sendBack-ok-innerHtml").text("已退回");
                 $.get("/blog/mSendBackIllegalblog?blog_id=1",function(data,status){
+                    $("#sendBack-ok-innerHtml").text("已退回");
+                    $("#sendBack-ok").prop("disabled","disabled");
                     alert(data+status);
                 });
             });

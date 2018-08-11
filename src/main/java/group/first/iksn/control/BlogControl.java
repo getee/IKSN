@@ -5,6 +5,7 @@ import group.first.iksn.model.bean.IllegalBlog;
 import group.first.iksn.model.bean.Blog;
 import group.first.iksn.model.bean.BlogTag;
 import group.first.iksn.model.bean.UserToBlog;
+import group.first.iksn.model.bean.ReportBlog;
 import group.first.iksn.service.BlogService;
 import group.first.iksn.util.EncodingTool;
 import org.springframework.stereotype.Controller;
@@ -126,12 +127,32 @@ public class BlogControl {
      */
     @RequestMapping(value = "/mGetAllReportBlog")
     public String mGetAllReportBlog(Model model){
-        List<IllegalBlog> reportBlogs=blogService.getAllReportBlog();
+        List<ReportBlog> reportBlogs=blogService.getAllReportBlog();
         System.out.println(reportBlogs);
-        for (IllegalBlog i:reportBlogs){
+        for (ReportBlog i:reportBlogs){
             System.out.println(i.getBlog());
         }
         model.addAttribute("ReportBlogList",reportBlogs);
         return  "gerenzhongxin";
     }
+
+    /**
+     * 管理员驳回举报信息，认为该博客并无违规之处
+     * wenbin
+     * @return
+     */
+    @RequestMapping("/mReject_oneReportblog/{id}")
+    @ResponseBody
+    public String mReject_oneReportblog(@PathVariable int id){
+        ReportBlog blog=new ReportBlog();
+        blog.setId(id);
+
+        boolean RejectResult=blogService.Reject_oneReportblog(blog);
+        if(RejectResult){
+            return "success";
+        }else{
+            return "error";
+        }
+    }
+
 }
