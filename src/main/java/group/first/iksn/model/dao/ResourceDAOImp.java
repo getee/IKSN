@@ -26,4 +26,13 @@ public class ResourceDAOImp extends BaseDAOImp implements ResourceDAO {
         System.out.println(h);
         return getSqlSession().getMapper(ResourceDAO.class).collectResource(h);
     }
+
+    @Override
+    public int downnum(Integer rid) {
+        System.out.println(rid);
+       int num=getSqlSession().getMapper(ResourceDAO.class).downnum(rid);
+       return  num;
+    }
+
+
 }

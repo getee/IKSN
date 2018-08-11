@@ -6,7 +6,8 @@ import group.first.iksn.service.ResourceService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import  group.first.iksn.util.EncodingTool;
+import org.springframework.web.bind.annotation.RequestParam;
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/resource")
@@ -55,5 +56,16 @@ public class ResourceControl {
         {
             return "xq";
         }
+        }
+
+    /**
+     * 资源下载次数
+      */
+@RequestMapping("/downResource")
+    public String downResource(@RequestParam("rid") Integer rid,HttpServletRequest request){
+    System.out.println(rid);
+    int c=resourceService.downResource(rid);
+    request.setAttribute("num",c);
+    return  "xq";
         }
 }

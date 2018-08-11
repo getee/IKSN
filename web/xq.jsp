@@ -116,14 +116,9 @@
                 <div class="border" style=" height:45px;">
                     <div style=" height:25px; width:600px;  margin-top:10px; margin-left:20px">
                   <span>
-                   <img src="img/xx.jpg">&nbsp;&nbsp;
-                   <img src="img/xx.jpg">&nbsp;&nbsp;
-                   <img src="img/xx.jpg">&nbsp;&nbsp;
-                   <img src="img/xx.jpg">&nbsp;&nbsp;
-                   <img src="img/xx.jpg">&nbsp;&nbsp;
+                   下载次数：${requestScope.num}&nbsp;&nbsp;&nbsp;&nbsp;
                   </span>
-                        <span> 综合评分：<em>0</em></span>
-
+                        <span> 综合评分：<em>7.9</em></span>
                         <div style="float:right; width:250px;">
 
                             <a href="#" onclick="shoucang()"><img src="img/sc.jpg">&nbsp;收藏</a>&nbsp;&nbsp;&nbsp;&nbsp;
