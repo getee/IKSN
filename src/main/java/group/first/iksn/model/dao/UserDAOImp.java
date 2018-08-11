@@ -39,8 +39,37 @@ public class UserDAOImp extends BaseDAOImp implements UserDAO {
         }
     }
 
+    @Override
+    public List<Message> receiveMessage(int uid) {
+        try {
+            List<Message> allMessages=getSqlSession().getMapper(UserDAO.class).receiveMessage(uid);
+            System.out.println("查询到的私信："+allMessages);
+            return allMessages;
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     /**
-     * 根据传入的参数来判断是已读还是未读进行更改状态
+     * 查询消息发送方的用户信息
+     * @param uid
+     * @return
+     */
+    @Override
+    public List<User> listSendMessageUser(int uid) {
+        try{
+            List<User> sendMessageUsers=getSqlSession().getMapper(UserDAO.class).listSendMessageUser(uid);
+            return sendMessageUsers;
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * 根据传入的参数来判断通知是已读还是未读进行更改状态
      * @author BruceLee
      * @param isRead
      * @return
@@ -56,6 +85,22 @@ public class UserDAOImp extends BaseDAOImp implements UserDAO {
         }
 
 
+    }
+    /**
+     * 根据传入的参数来判断私信是已读还是未读进行更改状态
+     * @author BruceLee
+     * @param isRead
+     * @return
+     */
+    @Override
+    public boolean changeMessageIsRead(int isRead, int uid) {
+        try{
+            getSqlSession().getMapper(UserDAO.class).changeMessageIsRead(isRead,uid);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public User getId(int uid) {
@@ -103,6 +148,22 @@ public class UserDAOImp extends BaseDAOImp implements UserDAO {
     public boolean deleteNotice(int uid) {
         try{
             getSqlSession().getMapper(UserDAO.class).deleteNotice(uid);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+    /**
+     * 清空某个用户所有的私信
+     * @author BruceLee
+     * @param uid
+     * @return
+     */
+    @Override
+    public boolean deleteMessage(int uid) {
+        try{
+            getSqlSession().getMapper(UserDAO.class).deleteMessage(uid);
             return true;
         }catch (Exception e){
             e.printStackTrace();
