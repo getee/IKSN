@@ -99,6 +99,9 @@ public class BlogControl {
     public String mGetAllReportBlog(Model model){
         List<IllegalBlog> reportBlogs=blogService.getAllReportBlog();
         System.out.println(reportBlogs);
+        for (IllegalBlog i:reportBlogs){
+            System.out.println(i.getBlog());
+        }
         model.addAttribute("ReportBlogList",reportBlogs);
         return  "gerenzhongxin";
     }

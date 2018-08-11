@@ -108,7 +108,7 @@
             $("#sendBack-ok").click(function(){
                 $(this).prop("disabled","disabled");
                 $("#sendBack-ok-innerHtml").text("已退回");
-                $.get("/blog/mSendBackIllegalblog?blog_id=2",function(data,status){
+                $.get("/blog/mSendBackIllegalblog?blog_id=1",function(data,status){
                     alert(data+status);
                 });
             });
