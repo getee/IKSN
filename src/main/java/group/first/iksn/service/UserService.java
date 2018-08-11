@@ -14,4 +14,6 @@ public interface UserService {
     List receiveNotice();
     //检查邮箱是否重复
     boolean checkEmail(String eamil);
+    //根据登录方法
+    User login(String emailorphone,String password);
 }
