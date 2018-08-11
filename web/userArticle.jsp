@@ -1,70 +1,71 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <!doctype html>
 <html>
 <head>
 	<meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>无标题文档</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>无标题文档</title>
 	<%
 		String path = request.getContextPath();
 		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 	%>
 	<base href="<%=basePath%>">
 
- <link type="text/css" href="bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/bootstrap.css" rel="stylesheet">
+	<link type="text/css" href="bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/bootstrap.css" rel="stylesheet">
 	<link rel="stylesheet" href="bootstrap-3.3.7/dist/css/bootstrap-theme.css" crossorigin="anonymous">
-	
+
 	<script src="js/jquery-3.3.1.js"></script>
 	<script src="bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
 	<script src="js/depend.js"></script>
-<style>
-	.li-left{
-		display:block;
-		width:40px;
-		height:40px;
-		background-color:#FBFBFB;
-		text-align: center;
-		margin-top: 5px;
-		border-radius: 5px
-	}
-	#div-left{
-		position: fixed;top: 30%;left: 2%;
-	}
-	#toTop {display: none;text-decoration: none;position: fixed;bottom: 10px;right: 10px;overflow: hidden;width: 40px;height: 40px;border: none;text-indent: 100%; background-image: url(image/goTop.jpg);background-size: 100% 100%;text-align: center;}
-	.icon-observer{
-		display:block;width: 30px;height: 30px;border: none;background-size: 100% 100%;text-align: center;border-radius: 20px
-	}
-</style>	
-	
+	<style>
+		.li-left{
+			display:block;
+			width:40px;
+			height:40px;
+			background-color:#FBFBFB;
+			text-align: center;
+			margin-top: 5px;
+			border-radius: 5px
+		}
+		#div-left{
+			position: fixed;top: 30%;left: 2%;
+		}
+		#toTop {display: none;text-decoration: none;position: fixed;bottom: 10px;right: 10px;overflow: hidden;width: 40px;height: 40px;border: none;text-indent: 100%; background-image: url(image/goTop.jpg);background-size: 100% 100%;text-align: center;}
+		.icon-observer{
+			display:block;width: 30px;height: 30px;border: none;background-size: 100% 100%;text-align: center;border-radius: 20px
+		}
+	</style>
+
 </head>
 
-<body> 
+<body>
 
 <div id="fluid_Div" class="container-fluid" style="background-color:#574949">
 
 
- <!--	导航栏-->
-    <%@ include file="top.jsp"%>
-<!--	导航栏结束-->
-	
-<!--  用户名logo-->
-   <div class="row">
-	   <div class="col-xs-12 col-md-9">
-	   	    <div>
+	<!--	导航栏-->
+	<%@ include file="top.jsp"%>
+	<!--	导航栏结束-->
+
+	<!--  用户名logo-->
+	<div class="row">
+		<div class="col-xs-12 col-md-9">
+			<div>
 				<h1 style="margin-left: 10%;color: azure">用户名</h1><small>Subtext for header</small>
 			</div>
-	   </div>
-	   <div class="col-xs-6 col-md-3">
-		   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#delete" style="visibility: hidden">删除</button>
-		   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sendBack" style="">下架</button>
-		   <button class="btn btn-primary" type="submit" value="1">
-			   订阅 <span class="badge">+</span>
-		   </button>
-	   </div>
-  </div>
-<!--用户名logo结束-->
+		</div>
+		<div class="col-xs-6 col-md-3">
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#delete" style="visibility: hidden">删除</button>
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sendBack" style="">下架</button>
+			<button class="btn btn-primary" type="submit" value="1">
+				订阅 <span class="badge">+</span>
+			</button>
+		</div>
+	</div>
+	<!--用户名logo结束-->
 	<!--管理员权限-->
 	<div class="modal fade bs-example-modal-sm" id="delete" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" style="margin-top: 13%">
 		<div class="modal-dialog modal-sm" role="document">
@@ -124,263 +125,264 @@
 	<!---->
 
 
-		  
-  <div class="row" style="background-color:#EBEBEB">
-<!--	  左边图标栏-->
-	  <div class="col-xs-12 col-md-1">
-	  	
-		<div class="container-fluid">
-							<!--		点赞、评论、分享 	已经调到最底部-->
-		</div>
-	  </div>
-<!--	  左边栏结束-->
-  
-  
-	  <div class="col-xs-6 col-md-11">
-<!--	11  -->
-	  	<div class="container-fluid">
-	  
-<!--	  下面一行分为831列-->
-		  <div class="row">
-				<div class="col-xs-6 col-md-8" >
-<!--				推送正文-->
-					<div class="span12" style="background-color:#FFFFFF;padding-left: 25px;padding-right: 25px">
-						<p>&nbsp;</p>
-<!--						文章标题-->
-						<div>
-							<h2>标题这是正文标题</h2>
-							  <h5 style="color:#928F8F;">2018年8月2日16：05：25</h5>
-							  <h5 style="color:#928F8F;float: right">阅读数：3555</h5>
-						</div>
-					
-<!--						作者简介-->
-						<div>
-						  <h3>作者简介</h3>
-						  <div style="width: 90%;margin-left: 30px; background-color:#EEF0F4;color:#5F5E5E">
-								<div style="height: 10px"></div>
-								<p style="margin-left: 15px">唐文彬，一个穷的只剩下雄霸天下的男人</p>
-								<div style="height: 10px"></div>
-						  </div>
-						</div>
-<!--						简介结束-->
-						<h2>
-							正文
-						</h2>
-						<p>
-							本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-						</p>
-						<p>
-							本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-						</p>
-						<p>
-							本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-						</p>
-						<p>
-							本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-						</p>
-						<p>
-							本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-						</p>
-						<p>
-							本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-						</p>
-						<p>
-							本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-						</p>
-						<p>
-							本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-						</p>
-						<p>
-							本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-						</p>
-						<p>
-							本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-						</p>
-						<p>
-							本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-						</p>
-						<p>
-							本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-						</p>
-						<p>
-							本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-						</p>
-						<p>
-							本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-						</p>
-						
-						<p>
-							<a class="btn" href="#">查看更多 »</a>
-						</p>
-					</div>	
-					
-<!--					评论开始-->
-					<div class="span12" style="background-color:#A29E9E;padding: 25px">
-			<!-- Button trigger modal -->
-					有疑问？就说一说
-					<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-					  我要评论
-					</button>
 
-					<!-- Modal -->
-					<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="margin-top: 20%">
-					  <div class="modal-dialog" role="document">
-						<div class="modal-content">
-						  <div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-							<h4 class="modal-title" id="myModalLabel">我的评论</h4>
-						  </div>
-						  <div class="modal-body">
-<!--								文本域-->
-								<form action="" method="">
-									<textarea class="form-control" rows="3"></textarea>
-									
-								</form>
-<!--								-->
-								
-						  </div>
-						  <div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-							<button type="button" class="btn btn-primary">评论</button>
-						  </div>
-						</div>
-					  </div>
-					</div>
-					</div>				
-				
-<!--				别人的品论-->
-					<div class="span12" style="background-color:#FFFFFF;padding-left: 25px;padding-right: 25px">
-						<ul>
-						<hr>
-							<li>
-								<div style="">
-									<div style="float: left"><a class="icon-observer" href="#" style="background-image: url(image/3_qq.jpg)"></a></div>
-									<div style="margin-top: 5px">
-										<a href="#">用户名</a>
-										<h5 style="color:#928F8F;float: right">2018年8月2日16：05：25</h5>&nbsp;
-										<h5 style="color:#928F8F;float: right">#1楼</h5>
-									</div>
+	<div class="row" style="background-color:#EBEBEB">
+		<!--	  左边图标栏-->
+		<div class="col-xs-12 col-md-1">
+
+			<div class="container-fluid">
+				<!--		点赞、评论、分享 	已经调到最底部-->
+			</div>
+		</div>
+		<!--	  左边栏结束-->
+
+
+		<div class="col-xs-6 col-md-11">
+			<!--	11  -->
+			<div class="container-fluid">
+
+				<!--	  下面一行分为831列-->
+				<div class="row">
+					<div class="col-xs-6 col-md-8" >
+						<!--				推送正文-->
+						<div class="span12" style="background-color:#FFFFFF;padding-left: 25px;padding-right: 25px">
+							<p>&nbsp;</p>
+							<!--						文章标题-->
+							<div>
+								<h2>标题这是正文标题</h2>
+								<h5 style="color:#928F8F;">2018年8月2日16：05：25</h5>
+								<h5 style="color:#928F8F;margin-left:  600px">阅读数：3555</h5>
+								<a href="alterBlog.jsp" style="float: right;margin-top: -28px">编辑</a>
+							</div>
+
+							<!--						作者简介-->
+							<div>
+								<h3>作者简介</h3>
+								<div style="width: 90%;margin-left: 30px; background-color:#EEF0F4;color:#5F5E5E">
+									<div style="height: 10px"></div>
+									<p style="margin-left: 15px">唐文彬，一个穷的只剩下雄霸天下的男人</p>
+									<div style="height: 10px"></div>
 								</div>
-							  	<h5 style="margin: 25px 10px 10px 50px">作者写的666</h5>
-							  	
-							</li>
-							<hr>
-							
-							<li>
-								<div style="">
-									<div style="float: left"><a class="icon-observer" href="#" style="background-image: url(image/3_qq.jpg)"></a></div>
-									<div style="margin-top: 5px">
-										<a href="#">用户名</a>
-										<h5 style="color:#928F8F;float: right">2018年8月2日16：05：25</h5>&nbsp;
-										<h5 style="color:#928F8F;float: right">#2楼</h5>
-									</div>
-								</div>
-							  	<h5 style="margin: 25px 10px 10px 50px">作者写的666</h5>
-							  	
-							</li>
-							<hr>
-							
-							<li>
-								<div style="">
-									<div style="float: left"><a class="icon-observer" href="#" style="background-image: url(image/3_qq.jpg)"></a></div>
-									<div style="margin-top: 5px">
-										<a href="#">用户名</a>
-										<h5 style="color:#928F8F;float: right">2018年8月2日16：05：25</h5>&nbsp;
-										<h5 style="color:#928F8F;float: right">#3楼</h5>
-									</div>
-								</div>
-							  	<h5 style="margin: 25px 10px 10px 50px">作者写的666</h5>
-							  	
-							</li>
-							<hr>
-							
+							</div>
+							<!--						简介结束-->
+							<h2>
+								正文
+							</h2>
 							<p>
-							<a class="btn" href="#">查看更多 »</a>
+								本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
 							</p>
-						</ul>
+							<p>
+								本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
+							</p>
+							<p>
+								本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
+							</p>
+							<p>
+								本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
+							</p>
+							<p>
+								本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
+							</p>
+							<p>
+								本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
+							</p>
+							<p>
+								本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
+							</p>
+							<p>
+								本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
+							</p>
+							<p>
+								本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
+							</p>
+							<p>
+								本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
+							</p>
+							<p>
+								本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
+							</p>
+							<p>
+								本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
+							</p>
+							<p>
+								本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
+							</p>
+							<p>
+								本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
+							</p>
+
+							<p>
+								<a class="btn" href="#">查看更多 »</a>
+							</p>
+						</div>
+
+						<!--					评论开始-->
+						<div class="span12" style="background-color:#A29E9E;padding: 25px">
+							<!-- Button trigger modal -->
+							有疑问？就说一说
+							<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+								我要评论
+							</button>
+
+							<!-- Modal -->
+							<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="margin-top: 20%">
+								<div class="modal-dialog" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+											<h4 class="modal-title" id="myModalLabel">我的评论</h4>
+										</div>
+										<div class="modal-body">
+											<!--								文本域-->
+											<form action="" method="">
+												<textarea class="form-control" rows="3"></textarea>
+
+											</form>
+											<!--								-->
+
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+											<button type="button" class="btn btn-primary">评论</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!--				别人的品论-->
+						<div class="span12" style="background-color:#FFFFFF;padding-left: 25px;padding-right: 25px">
+							<ul>
+								<hr>
+								<li>
+									<div style="">
+										<div style="float: left"><a class="icon-observer" href="#" style="background-image: url(image/3_qq.jpg)"></a></div>
+										<div style="margin-top: 5px">
+											<a href="#">用户名</a>
+											<h5 style="color:#928F8F;float: right">2018年8月2日16：05：25</h5>&nbsp;
+											<h5 style="color:#928F8F;float: right">#1楼</h5>
+										</div>
+									</div>
+									<h5 style="margin: 25px 10px 10px 50px">作者写的666</h5>
+
+								</li>
+								<hr>
+
+								<li>
+									<div style="">
+										<div style="float: left"><a class="icon-observer" href="#" style="background-image: url(image/3_qq.jpg)"></a></div>
+										<div style="margin-top: 5px">
+											<a href="#">用户名</a>
+											<h5 style="color:#928F8F;float: right">2018年8月2日16：05：25</h5>&nbsp;
+											<h5 style="color:#928F8F;float: right">#2楼</h5>
+										</div>
+									</div>
+									<h5 style="margin: 25px 10px 10px 50px">作者写的666</h5>
+
+								</li>
+								<hr>
+
+								<li>
+									<div style="">
+										<div style="float: left"><a class="icon-observer" href="#" style="background-image: url(image/3_qq.jpg)"></a></div>
+										<div style="margin-top: 5px">
+											<a href="#">用户名</a>
+											<h5 style="color:#928F8F;float: right">2018年8月2日16：05：25</h5>&nbsp;
+											<h5 style="color:#928F8F;float: right">#3楼</h5>
+										</div>
+									</div>
+									<h5 style="margin: 25px 10px 10px 50px">作者写的666</h5>
+
+								</li>
+								<hr>
+
+								<p>
+									<a class="btn" href="#">查看更多 »</a>
+								</p>
+							</ul>
+						</div>
+						<!--					评论结束-->
+
 					</div>
-<!--					评论结束-->
-					
+
+					<div class="col-xs-6 col-md-3">
+						<!--			  	个人资料开始-->
+						<div class="span12" style="margin-top: 10px; background-color:#FFFFFF">
+							<div style="margin-top: 20px">
+								<table class="table table-striped">
+									<thead>
+									<tr>
+										<th colspan="4">|个人资料</th>
+									</tr>
+									</thead>
+									<tbody>
+									<tr>
+										<td colspan="3"><h3><a href="tarenzhongxin.jsp">雄霸天下的男人</a><small></small></h3></td>
+										<td>
+											<form action="">
+												<button type="submit" class="btn btn-default" value="1">关注</button>
+											</form>
+										</td>
+									</tr>
+									<tr>
+										<td>原创<p>123</p></td>
+										<td>粉丝<p>123</p></td>
+										<td>喜欢<p>123</p></td>
+										<td>评论<p>123</p></td>
+									</tr>
+									<tr >
+										<td colspan="2">等级:&nbsp;<span>35</span></td>
+										<td colspan="2">访问:&nbsp;<span>3W+</span></td>
+									</tr>
+									<tr >
+										<td colspan="2">积分:&nbsp;<span>3500</span></td>
+										<td colspan="2">排名:&nbsp;<span>1W+</span></td>
+									</tr>
+									<tr >
+										<td colspan="2">勋章:&nbsp;<span>35</span></td>
+										<td colspan="2">&nbsp;<span></span></td>
+									</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<!-- 个人资料结束-->
+
+						<!--博主专栏开始-->
+						<div class="span12" style="margin-top: 30px; background-color:#FFFFFF">
+							<p><h4>------------</h4></p>
+							<p><h4>博主专栏</h4></p>
+							<div class="thumbnail">
+								<div style="float: left;width: 60px;height: 80px"><img style="width: 60px;height: 80px" src="img/timg.jpg" alt="..." ></div>
+								<div style="background-color:#C2CBC8">
+									<a href="#">
+										<h3>Thumbnail label</h3>
+										<p>...</p>
+									</a>
+								</div>
+							</div>
+
+							<div class="thumbnail">
+								<div style="float: left;width: 60px;height: 80px"><img style="width: 60px;height: 80px" src="img/timg.jpg" alt="..." ></div>
+								<div style="background-color:#C2CBC8">
+									<a href="#">
+										<h3>Thumbnail label</h3>
+										<p>...</p>
+									</a>
+								</div>
+							</div>
+
+						</div>
+						<!--博主专栏结束-->
+
+					</div><div class="col-xs-6 col-md-1" style="background-color:#F10609"></div>
+
+					<!-- 831列结束-->
 				</div>
 
-			  <div class="col-xs-6 col-md-3">
-<!--			  	个人资料开始-->
-			  	<div class="span12" style="margin-top: 10px; background-color:#FFFFFF">
-			  	  <div style="margin-top: 20px">
-					<table class="table table-striped">
-					  <thead>
-						<tr>
-							<th colspan="4">|个人资料</th>
-						</tr>
-					  </thead>
-					  <tbody>
-						<tr>
-						  <td colspan="3"><h3><a href="tarenzhongxin.jsp">雄霸天下的男人</a><small></small></h3></td>
-						  <td>
-						  	<form action="">
-						  		<button type="submit" class="btn btn-default" value="1">关注</button>
-						  	</form>
-						  </td>
-						</tr>
-						<tr>
-						  <td>原创<p>123</p></td>
-						  <td>粉丝<p>123</p></td>
-						  <td>喜欢<p>123</p></td>
-						  <td>评论<p>123</p></td>
-						</tr>
-						<tr >
-						  <td colspan="2">等级:&nbsp;<span>35</span></td>
-						  <td colspan="2">访问:&nbsp;<span>3W+</span></td>
-						</tr>
-						<tr >
-						  <td colspan="2">积分:&nbsp;<span>3500</span></td>
-						  <td colspan="2">排名:&nbsp;<span>1W+</span></td>
-						</tr>
-						<tr >
-						  <td colspan="2">勋章:&nbsp;<span>35</span></td>
-						  <td colspan="2">&nbsp;<span></span></td>
-						</tr>
-					  </tbody>
-                </table>
-				</div>
-			  	</div>
-			  	<!-- 个人资料结束-->
-			  	
-				<!--博主专栏开始-->
-				  <div class="span12" style="margin-top: 30px; background-color:#FFFFFF">
-				  	<p><h4>------------</h4></p>
-				  	<p><h4>博主专栏</h4></p>
-				  	<div class="thumbnail">
-					  <div style="float: left;width: 60px;height: 80px"><img style="width: 60px;height: 80px" src="img/timg.jpg" alt="..." ></div>
-					  <div style="background-color:#C2CBC8">
-					  	<a href="#">
-							<h3>Thumbnail label</h3>
-							<p>...</p>
-						</a>
-					  </div>
-					</div>
-					
-					<div class="thumbnail">
-					  <div style="float: left;width: 60px;height: 80px"><img style="width: 60px;height: 80px" src="img/timg.jpg" alt="..." ></div>
-					  <div style="background-color:#C2CBC8">
-					  	<a href="#">
-							<h3>Thumbnail label</h3>
-							<p>...</p>
-						</a>
-					  </div>
-					</div>
-					
-				  </div>
-			<!--博主专栏结束-->
-		  
-			  </div><div class="col-xs-6 col-md-1" style="background-color:#F10609"></div>
-			
-			<!-- 831列结束-->  
-		  </div>
-		
+			</div>
+			<!--	10end	-->
 		</div>
-<!--	10end	-->
-	  </div>
 	</div>
 </div>
 

@@ -7,6 +7,8 @@
         <typeAlias type="group.first.iksn.model.bean.User" alias="User"></typeAlias>
         <typeAlias type="group.first.iksn.model.bean.Notice" alias="Notice"></typeAlias>
         <typeAlias type="group.first.iksn.model.bean.Blog" alias="Blog"></typeAlias>
+        <typeAlias type="group.first.iksn.model.bean.BlogTag" alias="BlogTag"></typeAlias>
+        <typeAlias type="group.first.iksn.model.bean.UserToBlog" alias="UserToBlog"></typeAlias>
     </typeAliases>
 
 
