@@ -10,6 +10,7 @@
         <typeAlias type="group.first.iksn.model.bean.ResourceComments" alias="ResourceComments"></typeAlias>
         <typeAlias type="group.first.iksn.model.bean.CollectResource" alias="CollectResource"></typeAlias>
         <typeAlias type="group.first.iksn.model.bean.IllegalBlog" alias="IllegalBlog"></typeAlias>
+        <typeAlias type="group.first.iksn.model.bean.ReportBlog" alias="ReportBlog"></typeAlias>
     </typeAliases>
 
 

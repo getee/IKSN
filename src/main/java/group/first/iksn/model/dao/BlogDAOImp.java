@@ -2,6 +2,7 @@ package group.first.iksn.model.dao;
 
 import group.first.iksn.model.bean.Blog;
 import group.first.iksn.model.bean.IllegalBlog;
+import group.first.iksn.model.bean.ReportBlog;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -44,8 +45,8 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
      * @return
      */
     @Override
-    public List<IllegalBlog> getAllReportBlog() {
-        List<IllegalBlog> allReportBlog=null;
+    public List<ReportBlog> getAllReportBlog() {
+        List<ReportBlog> allReportBlog=null;
         try {
             allReportBlog=getSqlSession().getMapper(BlogDAO.class).getAllReportBlog();
 
@@ -54,5 +55,23 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
             e.printStackTrace();
         }
         return allReportBlog;
+    }
+
+    /**
+     * 从reportBlog表中删除一个选中行
+     * wenbin
+     * @param blog
+     * @return
+     */
+    @Override
+    public boolean deleteBlogFromReport(ReportBlog blog) {
+        boolean isOK=false;
+        try{
+            isOK=getSqlSession().getMapper(BlogDAO.class).deleteBlogFromReport(blog);
+        }catch (Exception e){
+            System.out.println("这是添加违规博客出错了");
+            e.printStackTrace();
+        }
+        return isOK;
     }
 }
