@@ -70,11 +70,12 @@
             <div class="col-md-12" style="left: 460px;top: 20px">
                 <div class="row">
                     <div class="col-md-10">
+                        <center>
                         <button type="button" class="btn btn-info">返回</button>
-
                         <!-- 表示一个成功的或积极的动作 -->
                         <button type="button" class="btn btn-info">保存</button>
                         <button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#myModal">发布博客</button>
+                        </center>
                     </div>
                 </div>
             </div>

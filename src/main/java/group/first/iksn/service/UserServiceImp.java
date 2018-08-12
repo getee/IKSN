@@ -35,8 +35,23 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
+    public List receiveMessage(int uid) {
+        return userDAO.receiveMessage(uid);
+    }
+
+    @Override
+    public List listSendMessageUser(int uid) {
+        return userDAO.listSendMessageUser(uid);
+    }
+
+    @Override
     public boolean changeIsRead(int isRead,int uid) {
         return userDAO.changeIsRead(isRead,uid);
+    }
+
+    @Override
+    public boolean changeMessageIsRead(int isRead, int uid) {
+        return userDAO.changeMessageIsRead(isRead, uid);
     }
 
     @Override
@@ -47,6 +62,10 @@ public class UserServiceImp implements UserService {
     @Override
     public boolean deleteNotice(int uid) {
         return userDAO.deleteNotice(uid);
+    }
+    @Override
+    public boolean deleteMessage(int uid) {
+        return userDAO.deleteMessage(uid);
     }
 
     @Override
