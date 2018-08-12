@@ -24,7 +24,6 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 import java.io.UnsupportedEncodingException;
@@ -113,15 +112,47 @@ public class UserControl {
             return null;
         }
     }
+    /**
+     * 更改私信是已读或者是未读
+     * @author BruceLee
+     * @return
+     */
+    @RequestMapping("/changeMessageIsRead/{isRead}/{uid}")
+    @ResponseBody
+    public String changeMessageIsRead(@PathVariable("isRead") int isRead,@PathVariable("uid") int uid){
+        boolean result=userService.changeMessageIsRead(isRead,uid);//isRead 为前台传入的参数0或者1，表示已读或者未读
+        if(result){
+            int index=0;//定义一个计数器来记录未读的通知数量
+            List<Message> allMessage=userService.receiveMessage(uid);//遍历出所有的通知
+            for (Message message:allMessage) {
+                if(message.getIsread()==0){
+                    index+=1;
+                }
+            }
+            return String.valueOf(index);//ajax返回未读数量，进行实时更新
+        }else{
+            return null;
+        }
+    }
 
     /**
-     * 清空所有的通知消息
+     * 清空该用户下所有的通知消息
      * @author BruceLee
      */
     @RequestMapping("/deleteNotice/{uid}")
     @ResponseBody
     public void deleteNotice(@PathVariable("uid") int uid){
         boolean result=userService.deleteNotice(uid);
+
+    }
+    /**
+     * 清空该用户所有的私信
+     * @author BruceLee
+     */
+    @RequestMapping("/deleteMessage/{uid}")
+    @ResponseBody
+    public void deleteMessage(@PathVariable("uid") int uid){
+        boolean result=userService.deleteMessage(uid);
 
     }
 
@@ -131,15 +162,15 @@ public class UserControl {
      * @return
      */
     @RequestMapping("/sendMessage/{fromid}")
-    public String  sendMessage(@ModelAttribute("sendMessage")Message message,@PathVariable("fromid") int fromid,RedirectAttributes model){
+    public String  sendMessage(@ModelAttribute("sendMessage")Message message,@PathVariable("fromid") int fromid,Model model){
         //Calendar calendar=Calendar.getInstance();
         message.setFromid(fromid);
-        try {
-            String content=new String(message.getContent().getBytes("ISO8859-1"),"utf-8");
-            message.setContent(content);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            String content=new String(message.getContent().getBytes("ISO-8859-1"),"utf-8");
+//            message.setContent(content);
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
         message.setTime(new Date().toLocaleString());
         try{
             System.out.println(message);
@@ -176,12 +207,23 @@ public class UserControl {
         return "wodexiaoxi";
         }
     /**
-     * 查询收到的私信
+     * 查询该用户收到的私信
      * @author BruceLee
      * @return
      */
-    @RequestMapping("/receiveMessage")
-    public String receiveMessage(){
+    @RequestMapping("/receiveMessage/{uid}")
+    public String receiveMessage(@PathVariable("uid") int uid,Model model){
+        int index=0;//定义一个计数器来记录未读的通知数量
+        List<User> allSendMessageUsers=userService.listSendMessageUser(uid);
+        List<Message> allMessages=userService.receiveMessage(uid);//遍历该用户所有的私信
+        for (Message message:allMessages) {
+            if(message.getIsread()==0){
+                index+=1;
+            }
+        }
+        model.addAttribute("notReadMessageNum",index);//返回未读的消息数量
+        model.addAttribute("allMessages",allMessages);//返回所有的消息
+        model.addAttribute("allSendMessageUsers",allSendMessageUsers);
         return "shouxiaoxi";
     }
     /**

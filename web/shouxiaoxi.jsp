@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -88,7 +89,33 @@
 
 
     });
+    //标记为已读或者是未读
+    function biaoji(){
+        var index=$("#biaoji").html();
+        if(index=="全部标记已读"){
+            $("#biaoji").html("全部标记为未读");
+            $.get("user/changeMessageIsRead/1/${sessionScope.loginresult.uid}",function (data) {
+                $("#weidutongzhi").html("未读通知："+data);
+                $(".noticeContext").css("backgroundColor","white");
+            });
 
+        }else if(index=="全部标记为未读"){
+
+            $("#biaoji").html("全部标记已读");
+            $.get("user/changeMessageIsRead/0/${sessionScope.loginresult.uid}",function (data) {
+                $("#weidutongzhi").html("未读通知："+data);
+                $(".noticeContext").css("backgroundColor","black");
+
+            });
+        }
+    }
+    //清空所有的通知
+    function qingkogntongzhi(uid) {
+        $.get("user/deleteMessage/"+uid,function(data){
+            window.location.reload();
+        });
+
+    }
 </script>
 <!--	特效-->
 
@@ -102,7 +129,7 @@
         <table class="table well" style="margin: 0px">
             <tr>
                 <td style="cursor: pointer"><a href="gerenzhongxin.jsp"><h4>个人中心</h4></a></td>
-                <td style="cursor: pointer"><a href="wodexiaoxi.jsp"><h4>我的消息</h4></a></td>
+                <td style="cursor: pointer"><a href="/user/listAllFriends/${sessionScope.loginresult.uid}/1"><h4>我的消息</h4></a></td>
                 <td style="cursor: pointer"><a href="jifenzhongxin.jsp"><h4>积分</h4></a></td>
                 <td style="cursor: pointer"><a href="writingCenter.jsp"><h4>我的博客</h4></a></td>
                 <td style="cursor: pointer"><a href="#"><h4>我的下载</h4></a></td>
@@ -114,18 +141,18 @@
         <div class="row" style="margin-left: 0.5%;margin-top: -5px">
             <nav>
                 <ul class="nav nav-tabs">
-                    <li role="presentation"><a href="/user/receiveNotice/1">通知</a></li>
-                    <li role="presentation"><a href="/user/listAllFriends/1/1">私信</a></li>
-                    <li role="presentation"><a href="/user/receiveMessage">@我</a></li>
+                    <li role="presentation"><a href="/user/receiveNotice/${sessionScope.loginresult.uid}">通知</a></li>
+                    <li role="presentation"><a href="/user/listAllFriends/${sessionScope.loginresult.uid}/1">私信</a></li>
+                    <li role="presentation"><a href="/user/receiveMessage/${sessionScope.loginresult.uid}">@我</a></li>
                 </ul>
             </nav>
         </div>
         <div class="row" style="margin-left: 0.5%;margin-top: 5px">
             <nav>
                 <ol class="breadcrumb">
-                    <li class="active">未读通知：0</li>
-                    <li><a href="#">标记已读</a></li>
-                    <li><a href="#">清空所有通知</a></li>
+                    <li id="weidutongzhi" class="active">未读私信：${notReadMessageNum}</li>
+                    <li><a id="biaoji" href="javascript:biaoji()">全部标记已读</a></li>
+                    <li><a id="qingkongtongzhi" href="javascript:qingkogntongzhi(${sessionScope.loginresult.uid})">清空所有私信</a></li>
 
                 </ol>
             </nav>
@@ -133,16 +160,43 @@
         <!--	通知-->
         <div class="row well" style="margin: auto;height: 700px;">
             <div class="col-md-8">
-                <div class="row well"><h4>This is you first Message</h4></div>
-                <div class="row well"><h4>This is you first Message</h4></div>
+                <c:forEach var="message" items="${allMessages}">
+                    <c:forEach var="user" items="${allSendMessageUsers}">
+                        <c:if test="${user.uid eq message.fromid}">
+                            <c:choose>
+                                <c:when test="${message.isread==0}">
+                                    <div class="row well noticeContext" style="background-color: black"><a href=""><h4>${user.nickname}(${user.email}):${message.content}</h4></a></div>
+                                </c:when>
+                                <c:otherwise>
+                                    <div class="row well noticeContext"><a href=""><h4>${user.nickname}(${user.email}):${message.content}</h4></a></div>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:if>
+                    </c:forEach>
+
+                </c:forEach>
+
             </div>
             <div class="col-md-4">
-                <div class="row well"><h4><small>7-23</small></h4></div>
-                <div class="row well"><h4><small>6-21</small></h4></div>
+                <c:forEach var="message" items="${allMessages}">
+                    <c:forEach var="user" items="${allSendMessageUsers}">
+                        <c:if test="${user.uid eq message.fromid}">
+                            <c:choose>
+                                <c:when test="${message.isread==0}">
+                                    <div class="row well noticeContext" style="background-color: black"><a><h4><small>${message.time}</small></h4></a></div>
+                                </c:when>
+                                <c:otherwise>
+                                    <div class="row well noticeContext"><a><h4><small>${message.time}</small></h4></a></div>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:if>
+                    </c:forEach>
+
+                </c:forEach>
+
             </div>
         </div>
-        <!--	新建私信模块-->
-
+        <%--通知结束--%>
 
     </div>
 

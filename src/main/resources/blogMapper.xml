@@ -46,16 +46,24 @@
     <resultMap id="searchResultMap" type="Blog">
 
     </resultMap>
+    <!--向illegalblog表中插入违规博客信息-->
     <insert id="addIllegalblog" parameterType="IllegalBlog">
         insert into illegalblog(bid,illegalcause) values (#{bid},#{illegalcause})
     </insert>
+    <!--从illegalblog表中获取所有博客信息-->
     <select id="getAllReportBlog111" resultType="IllegalBlog">
         select * from illegalblog
     </select>
+    <!--从reportBlog表中根据id删除一个选中行-->
+    <delete id="deleteBlogFromReport" parameterType="ReportBlog">
+      delete from reportblog where id = #{id}
+    </delete>
+
     <!--结果集合用来存储查询illegalblog表级联查询blog表-->
     <resultMap id="getBlogBy_IBlogId" type="IllegalBlog">
         <id column="id" property="id"/>
         <result column="illegalcause" property="illegalcause"/>
+
 
         <association property="blog" column="bid" javaType="Blog">
             <id column="bid" property="bid"/>
@@ -73,8 +81,22 @@
     <insert id="processAddUserToBlog" parameterType="UserToBlog" useGeneratedKeys="true" keyColumn="id">
         insert into usertoblog(uid,bid,ISDRAFT,ISPUBLIC,BLOGTYPE) values (#{uid},#{bid},#{isdraft},#{ispublic},#{blogtype})
     </insert>
+    <!--结果集合用来存储查询ReportBlog表级联查询blog表-->
+    <resultMap id="getBlogBy_Reportbid" type="ReportBlog">
+        <id column="id" property="id"/>
+        <result column="uid" property="uid"/>
+        <result column="reason" property="reason"/>
 
 
+        <association property="blog" column="bid" javaType="Blog">
+            <id column="bid" property="bid"/>
+            <result column="title" property="title"/>
+        </association>
+    </resultMap>
+    <select id="getAllReportBlog" resultMap="getBlogBy_Reportbid">
+		select  i.ID,i.BID,i.REASON,b.TITLE  from reportblog as i
+		inner join blog as b on   i.BID=b.BID ORDER BY i.ID desc limit 0,3;
+	</select>
 
 
 </mapper>

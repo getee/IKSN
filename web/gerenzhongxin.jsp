@@ -98,7 +98,7 @@
 	<table class="table well" style="margin: 0px">
 	  <tr>
 	  	<td style="cursor: pointer"><a class="text-muted" href="gerenzhongxin.jsp"><h4>个人中心</h4></a></td>
-	  	<td style="cursor: pointer"><a class="text-muted" href="/user/listAllFriends/1/1"><h4>我的消息</h4></a></td>
+	  	<td style="cursor: pointer"><a class="text-muted" href="/user/listAllFriends/${sessionScope.loginresult.uid}/1"><h4>我的消息</h4></a></td>
 	  	<td style="cursor: pointer"><a class="text-muted" href="jifenzhongxin.jsp"><h4>积分</h4></a></td>
 	  	<td style="cursor: pointer"><a class="text-muted" href="writingCenter.jsp"><h4>我的博客</h4></a></td>
 	  	<td style="cursor: pointer"><a class="text-muted" href="#"><h4>我的下载</h4></a></td>
@@ -330,8 +330,13 @@
 		  <!--    	文章内容-->
 
           <c:forEach var="item" items="${ReportBlogList}">
-              <div class="row" style="margin:auto;border-bottom-style:solid;border-bottom-width:2px;border-bottom-color:#E9E9E9"><h4><a class="text-muted" href="#">${item.blog.title}</a></h4>
-				  <small style="margin-left: 2% ">举报原因：${item.illegalcause}</small><small style="margin-left: 50% ">2017-8-2</small><small style="margin-left:3%;cursor: pointer" class="glyphicon glyphicon-trash"></small>
+              <div id="${item.id}" class="row" style="margin:auto;border-bottom-style:solid;border-bottom-width:2px;border-bottom-color:#E9E9E9">
+                  <div class="col-xs-12 col-md-8"><h4><a class="text-muted" href="userArticle.jsp">${item.blog.title}</a></h4><small style="margin-left: 2% ">举报原因：${item.reason}</small></div>
+                  <div class="col-xs-6 col-md-4"><small style="margin-right: 20% ">2017-8-2</small>
+                      <a href="javascript:delete_oneReportBlog(${item.id})">
+                          <small id="del_oneReportBlog" data-toggle="modal" style="margin-right:3%;cursor: pointer" class="glyphicon glyphicon-trash"></small>
+                      </a>
+                  </div>
               </div>
           </c:forEach>
 		  <div class="row" style="margin:auto;border-bottom-style:solid;border-bottom-width:2px;border-bottom-color:#E9E9E9"><h4><a class="text-muted" href="#">举报内容</a><small style="margin-left: 80% ">2017-8-2</small><small style="margin-left:3%;cursor: pointer" class="glyphicon glyphicon-trash"></small></h4>
@@ -342,6 +347,22 @@
 </div>
 </div>
 
+<!--管理员权限-->
+
+<script>
+    function delete_oneReportBlog(url){
+        var  userChoice=window.confirm("您确认要删除这个商品吗?");
+        var a="blog/mReject_oneReportblog/"+url;
+        if(userChoice)
+        {
+            $.get(a,function(data,status){
+                $("#"+url).hide();
+
+            });
+            //location.href="blog/mReject_oneReportblog/"+url;
+        }
+    }
+</script>
 
 
 

@@ -27,12 +27,7 @@
     <![endif]-->
   </head>
   <body style="background-color: #E9E9E9">
-  <%
-	  String path = request.getContextPath();
-	  String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-  %>
 
-  <base href="<%=basePath%>">
 
 
 
@@ -128,7 +123,7 @@
 
             if(nowPage-1>0){
 
-                window.location="/user/listAllFriends/1/"+(nowPage-1);
+                window.location="/user/listAllFriends/${sessionScope.loginresult.uid}/"+(nowPage-1);
             }else{
 
 
@@ -138,7 +133,7 @@
             var maxPage;
             friendNums%5==0?maxPage=(friendNums/5):maxPage=(friendNums/5+1);
             if((nowPage*1+1)<=maxPage){
-                window.location="/user/listAllFriends/1/"+(nowPage*1+1);
+                window.location="/user/listAllFriends/${sessionScope.loginresult.uid}/"+(nowPage*1+1);
             }else{
 
             }
@@ -155,7 +150,7 @@
 	<table class="table well" style="margin: 0px">
 	  <tr>
 	  	<td style="cursor: pointer"><a href="gerenzhongxin.jsp"><h4>个人中心</h4></a></td>
-	  	<td style="cursor: pointer"><a href="/user/listAllFriends/1/1"><h4>我的消息</h4></a></td>
+	  	<td style="cursor: pointer"><a href="/user/listAllFriends/${sessionScope.loginresult.uid}/1"><h4>我的消息</h4></a></td>
 	  	<td style="cursor: pointer"><a href="jifenzhongxin.jsp"><h4>积分</h4></a></td>
 	  	<td style="cursor: pointer"><a href="writingCenter.jsp"><h4>我的博客</h4></a></td>
 	  	<td style="cursor: pointer"><a href="#"><h4>我的下载</h4></a></td>
@@ -168,9 +163,9 @@
 	<div class="row" style="margin-left: 0.5%;margin-top: -5px">
 		<nav>
 			<ul class="nav nav-tabs">
-			  <li role="presentation"><a href="user/receiveNotice/1">通知</a></li>
-			  <li role="presentation"><a href="/user/listAllFriends/1/1">私信</a></li>
-			  <li role="presentation"><a href="shouxiaoxi.jsp">@我</a></li>
+			  <li role="presentation"><a href="user/receiveNotice/${sessionScope.loginresult.uid}">通知</a></li>
+			  <li role="presentation"><a href="/user/listAllFriends/${sessionScope.loginresult.uid}/1">私信</a></li>
+			  <li role="presentation"><a href="/user/receiveMessage/${sessionScope.loginresult.uid}">@我</a></li>
 			</ul>
 		</nav>
 	</div>
@@ -303,10 +298,10 @@
 		</div>
 <!--		表单-->
 	<div class="row well" style="margin: auto">
-		<form action="/user/sendMessage/1" method="post">
+		<form action="/user/sendMessage/${sessionScope.loginresult.uid}" method="post">
 		  <div class="form-group">
 			<label for="exampleInputEmail1">发送给</label>
-			<input type="text" name="toid" class="form-control" id="exampleInputEmail1" placeholder="发送给有效的收件人" required>
+			<input type="text" name="toid" class="form-control" id="exampleInputEmail1" placeholder="发送给有效的收件人" required readonly>
 		  </div>
 		  <div class="form-group">
 			<label for="exampleInputPassword1">内容</label>

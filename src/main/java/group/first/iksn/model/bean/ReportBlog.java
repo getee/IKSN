@@ -6,6 +6,16 @@ public class ReportBlog {
     private  int uid;//举报者id
     private  String  reason;//举报原因
 
+    private Blog blog;
+
+    public Blog getBlog() {
+        return blog;
+    }
+
+    public void setBlog(Blog blog) {
+        this.blog = blog;
+    }
+
     public ReportBlog() {
     }
 

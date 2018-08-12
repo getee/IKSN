@@ -64,6 +64,82 @@
 		</div>
 	</div>
 	<!--用户名logo结束-->
+	   </div>
+	   <div class="col-xs-6 col-md-3">
+		   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#comeback" style="">返回举报页</button>
+		   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#delete" style="">删除</button>
+		   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sendBack" style="">下架</button>
+		   <button class="btn btn-primary" type="submit" value="1">
+			   订阅 <span class="badge">+</span>
+		   </button>
+	   </div>
+  </div>
+<!--用户名logo结束-->
+	<!--管理员权限-->
+	<div class="modal fade bs-example-modal-sm" id="delete" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" style="margin-top: 13%">
+		<div class="modal-dialog modal-sm" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+					<span class="label label-danger">删除文章</span>
+				</div>
+				<div id="delete-ok-innerHtml" class="modal-body">
+					确定删除吗？
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" id="delete-ok" class="btn btn-primary">OK</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade bs-example-modal-sm" id="sendBack" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" style="margin-top: 13%">
+		<div class="modal-dialog modal-sm" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+					<span class="label label-danger">下架文章</span>
+				</div>
+				<div id="sendBack-ok-innerHtml" class="modal-body">
+					确定退回至用户草稿吗？
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" id="sendBack-ok" class="btn btn-primary">OK</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+        $(document).ready(function(){
+            $("#comeback").click(function(){
+                $.get("/blog/mGetAllReportBlog",function(data,status){
+
+                    alert(data+status);
+                });
+            });
+            $("#sendBack-ok").click(function(){
+                $(this).prop("disabled","disabled");
+                $.get("/blog/mSendBackIllegalblog?blog_id=1",function(data,status){
+                    $("#sendBack-ok-innerHtml").text("已退回");
+                    $("#sendBack-ok").prop("disabled","disabled");
+                    alert(data+status);
+                });
+            });
+            $("#delete-ok").click(function(){
+                $(this).prop("disabled","disabled");
+                $("#delete-ok-innerHtml").text("已删除");
+                $.get("/blog/mGetAllReportBlog",function(data,status){
+                    alert("已删除");
+                });
+            });
+        });
+	</script>
+	<!---->
+
 
 
 	<div class="row" style="background-color:#EBEBEB">

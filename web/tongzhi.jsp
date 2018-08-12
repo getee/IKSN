@@ -96,7 +96,7 @@
             var index=$("#biaoji").html();
             if(index=="全部标记已读"){
                 $("#biaoji").html("全部标记为未读");
-                $.get("user/changeIsRead/1/1",function (data) {
+                $.get("user/changeIsRead/1/${sessionScope.loginresult.uid}",function (data) {
                     $("#weidutongzhi").html("未读通知："+data);
                     $(".noticeContext").css("backgroundColor","white");
                 });
@@ -104,7 +104,7 @@
             }else if(index=="全部标记为未读"){
 
                 $("#biaoji").html("全部标记已读");
-                $.get("user/changeIsRead/0/1",function (data) {
+                $.get("user/changeIsRead/0/${sessionScope.loginresult.uid}",function (data) {
                     $("#weidutongzhi").html("未读通知："+data);
                     $(".noticeContext").css("backgroundColor","black");
 
@@ -131,7 +131,7 @@
 	<table class="table well" style="margin: 0px">
 	  <tr>
 	  	<td style="cursor: pointer"><a href="gerenzhongxin.jsp"><h4>个人中心</h4></a></td>
-	  	<td style="cursor: pointer"><a href="/user/listAllFriends/1/1"><h4>我的消息</h4></a></td>
+	  	<td style="cursor: pointer"><a href="/user/listAllFriends/${sessionScope.loginresult.uid}/1"><h4>我的消息</h4></a></td>
 	  	<td style="cursor: pointer"><a href="jifenzhongxin.jsp"><h4>积分</h4></a></td>
 	  	<td style="cursor: pointer"><a href="writingCenter.jsp"><h4>我的博客</h4></a></td>
 	  	<td style="cursor: pointer"><a href="#"><h4>我的下载</h4></a></td>
@@ -143,9 +143,9 @@
 	<div class="row" style="margin-left: 0.5%;margin-top: -5px">
 		<nav>
 			<ul class="nav nav-tabs">
-  <li role="presentation"><a href="/user/receiveNotice/1">通知</a></li>
-  <li role="presentation"><a href="/user/listAllFriends/1/1">私信</a></li>
-  <li role="presentation"><a href="shouxiaoxi.jsp">@我</a></li>
+  <li role="presentation"><a href="/user/receiveNotice/${sessionScope.loginresult.uid}">通知</a></li>
+  <li role="presentation"><a href="/user/listAllFriends/${sessionScope.loginresult.uid}/1">私信</a></li>
+  <li role="presentation"><a href="/user/receiveMessage/${sessionScope.loginresult.uid}">@我</a></li>
 </ul>
 		</nav>
 	</div>
@@ -154,7 +154,7 @@
 		<ol class="breadcrumb">
 		<li id="weidutongzhi" class="active">未读通知：${notReadNum}</li>
 		<li><a id="biaoji" href="javascript:biaoji()">全部标记已读</a></li>
-		<li><a id="qingkongtongzhi" href="javascript:qingkogntongzhi(1)">清空所有通知</a></li>
+		<li><a id="qingkongtongzhi" href="javascript:qingkogntongzhi(${sessionScope.loginresult.uid})">清空所有通知</a></li>
 
 </ol>
 		</nav>

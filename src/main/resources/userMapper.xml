@@ -26,14 +26,27 @@
     <select id="receiveNotice" resultType="Notice">
     select  * from notice where UID=#{uid};
     </select>
+    <select id="receiveMessage" resultType="Message">
+    select  * from message where TOID=#{toid};
+    </select>
+    <!--查询到发送消息人的信息-->
+    <select id="listSendMessageUser" resultType="User">
+        select  * from user where UID in (select FROMID from message where TOID=#{toid});
+    </select>
     <update id="changeIsRead" parameterType="Notice">
         update notice set ISREAD=#{isRead} where UID=#{uid};
+    </update>
+    <update id="changeMessageIsRead" parameterType="Message">
+        update message set ISREAD=#{isRead} where TOID=#{uid};
     </update>
     <insert id="addNotice" parameterType="Notice">
         insert into notice(UID,CONTENT,TIME,ISREAD,TYPE) values (#{uid},#{content},#{time},#{inread},#{type});
     </insert>
     <delete id="deleteNotice" parameterType="Notice">
         delete from notice where UID=#{uid};
+    </delete>
+    <delete id="deleteMessage" parameterType="Message">
+        delete from message where TOID=#{uid};
     </delete>
     <insert id="sendMessage" parameterType="Message">
         insert into message(FROMID,TOID,CONTENT,TIME) values (#{fromid},#{toid},#{content},#{time});
