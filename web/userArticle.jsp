@@ -57,24 +57,16 @@
 			</div>
 		</div>
 		<div class="col-xs-6 col-md-3">
-			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#delete" style="visibility: hidden">删除</button>
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#comeback" style="">返回举报页</button>
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#delete" style="">删除</button>
 			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sendBack" style="">下架</button>
 			<button class="btn btn-primary" type="submit" value="1">
 				订阅 <span class="badge">+</span>
 			</button>
 		</div>
 	</div>
-	<!--用户名logo结束-->
-	   </div>
-	   <div class="col-xs-6 col-md-3">
-		   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#comeback" style="">返回举报页</button>
-		   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#delete" style="">删除</button>
-		   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sendBack" style="">下架</button>
-		   <button class="btn btn-primary" type="submit" value="1">
-			   订阅 <span class="badge">+</span>
-		   </button>
-	   </div>
-  </div>
+
+
 <!--用户名logo结束-->
 	<!--管理员权限-->
 	<div class="modal fade bs-example-modal-sm" id="delete" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" style="margin-top: 13%">
@@ -124,7 +116,7 @@
             });
             $("#sendBack-ok").click(function(){
                 $(this).prop("disabled","disabled");
-                $.get("/blog/mSendBackIllegalblog?blog_id=1",function(data,status){
+                $.get("/blog/mSendBackIllegalblog?blog_id=2",function(data,status){
                     $("#sendBack-ok-innerHtml").text("已退回");
                     $("#sendBack-ok").prop("disabled","disabled");
                     alert(data+status);

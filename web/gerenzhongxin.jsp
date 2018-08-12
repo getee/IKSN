@@ -351,7 +351,7 @@
 
 <script>
     function delete_oneReportBlog(url){
-        var  userChoice=window.confirm("您确认要删除这个商品吗?");
+        var  userChoice=window.confirm("您确认要去除这个博客吗?");
         var a="blog/mReject_oneReportblog/"+url;
         if(userChoice)
         {
