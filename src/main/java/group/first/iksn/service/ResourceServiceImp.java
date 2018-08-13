@@ -29,5 +29,10 @@ public class ResourceServiceImp  implements ResourceService{
         return resourceDAO.collectResource(h);
     }
 
+    @Override
+    public int downResource(Integer rid) {
+        return resourceDAO.downnum(rid);
+    }
+
 
 }
