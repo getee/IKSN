@@ -8,4 +8,6 @@ public interface ResourceDAO {
      boolean assessResource(ResourceComments c);
 
     boolean collectResource(CollectResource h);
+
+    int downnum(Integer rid);
 }

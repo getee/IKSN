@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: wenbin
@@ -61,9 +62,30 @@
                     $("#canvas").fadeOut(8000);
                 }
             });
-            //星空彩蛋
+            //启用弹出框
+            $(function () { $("[data-toggle='popover']").popover(); });
+            //当网页加载完毕后，用一个定时器10秒钟更新一次信息用来及时接收收到新的通知
+            if(${not empty sessionScope.loginresult}){
+                var nowNoticeNum=0;
+                var previousNoticeNum=0;
+                $.get("/user/timingReceivingNotice/${sessionScope.loginresult.uid}",function(data){
+                    nowNoticeNum=data;
+                });
+                setInterval(function(){
+                    $.get("/user/timingReceivingNotice/${sessionScope.loginresult.uid}",function(data){
+                        previousNoticeNum=nowNoticeNum;
+                        nowNoticeNum=data;
+                        if(nowNoticeNum>previousNoticeNum){
+
+                            $("[data-toggle='popover']").popover('show')
+                        }
+
+                    });
+                },10000);
+            }
 
         });
+
     </script>
 
 
@@ -78,6 +100,8 @@
     <div id="texiao" style="position: fixed;z-index: 10;width: 100%;height: 100%;margin: 0px; display: none">
         <iframe style="width: 100%;height: 100%" src="caidan/html/shandian.html"></iframe>
     </div>
+
+
 <!--	导航栏-->
 <div class="row">
     <nav class="navbar navbar-default">
@@ -106,10 +130,11 @@
                     <li><a href="#">问答</a></li>
                     <li><a href="#">商城</a></li>
                     <li><a href="#">VIP</a></li>
+                    <li><a data-toggle="popover" title="私信" data-container="body" data-placement="bottom" data-content="收到一条私信"></a></li>
                 </ul>
                 <form class="navbar-form navbar-left" method="post" action="/blog/blogSearch">
                     <div class="form-group">
-                        <input id="topSearch" type="text" class="form-control" placeholder="Fuck you" name="content">
+                        <input id="topSearch" type="text" class="form-control" placeholder="Search" name="content">
                     </div>
                     <button id="bSearch" type="submit"  class="btn btn-default" >搜索</button>
 
@@ -123,8 +148,38 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li><a class="glyphicon glyphicon-pencil" href="Writer.jsp"> 写博客</a></li>
                     <li><a class="glyphicon glyphicon-leaf" href="#">发Chat</a></li>
-                    <li><a class="glyphicon glyphicon-user" href="jifenzhongxin.jsp"></a></li>
+                    <li id="rw">
+                        <c:choose>
+                        <c:when test="${empty sessionScope.loginresult}">
+                        <a class="glyphicon glyphicon-user"href="index.jsp">
+                        </c:when>
+                        <c:otherwise>
+                        <a class="glyphicon glyphicon-user"href="jifenzhongxin.jsp">
+                        </c:otherwise>
+                        </c:choose>
+                            <span class="caret"></span>
+                        </a>
+                        <div id="xl" style="position: absolute;top:100%;left:0%;z-index: 10;display:none">
+                            <ul class="list-group" style="width:80px;cursor: pointer;font-size: 10px;color:#ebebeb">
+                                <c:choose>
+                                <c:when test="${sessionScope.loginresult==null}">
+                                    <li class="list-group-item"><a href="writingCenter.jsp">我的博客</a></li>
+                                    <li class="list-group-item"><a href="index.jsp">我的消息</a></li>
+                                    <li class="list-group-item"><a>退出登录</a></li>
+                                </c:when>
+                                <c:otherwise>
+                                    <li class="list-group-item"><a href="writingCenter.jsp">我的博客</a></li>
+                                    <li class="list-group-item"><a href="/user/listAllFriends/${sessionScope.loginresult.uid}/1">我的消息</a></li>
+                                    <li class="list-group-item"><a>退出登录</a></li>
+
+                                </c:otherwise>
+                                </c:choose>
+                            </ul>
+                        </div>
+                    </li>
+
                 </ul>
+
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav>
@@ -132,6 +187,12 @@
 <script>
     $(document).ready(function () {
        $("#bSearch").click
+    });
+    $("#rw").mouseover(function(){
+        $("#xl").css("display","block");
+    });
+    $("#rw").mouseout(function(){
+        $("#xl").css("display","none");
     });
 </script>
 <!--	导航栏结束-->

@@ -32,9 +32,8 @@
 
 <body>
 
-
 <div id="fluid_Div" class="container-fluid" style="background-color:#F4EEEE;">
- 
+
   <!-- Stack the columns on mobile by making one full-width and the other half-width -->	
 <!--  标题-->
    <div class="row" style="background-image: url(img/2de797545de56274f03a5920eb3a1.jpg);background-size:cover;background-repeat: no-repeat;">
@@ -45,6 +44,8 @@
   </div>
 <!--  导航-->
 <%@ include file="top.jsp"%>
+
+</div>
 		  <!--		  导航结束-->
   <div class="row" style="background-color:#EBEBEB">
 <!--	  左边导航栏-->
@@ -209,31 +210,28 @@
 <!--			  <div class="col-xs-6 col-md-1" style="background-color:#F10609"></div>-->
 			  <div class="col-xs-6 col-md-3">
 <!--			  	登陆开始-->
-			  	<div class="span12" style="margin-top: 10px; background-color:#FFFFFF">
-			  	  <div style="padding: 10px">
+			  	<div id="dlks"  class="span12" style="margin-top: 10px; background-color:#FFFFFF">
+			  	  <div id="dl" style="padding: 10px">
 <!--					登陆表单-->
-					<form>
+					<form action="/user/login" method="post">
 					  <div class="form-group">
 						<label for="exampleInputEmail1"></label>
-						<input type="text" class="form-control" id="exampleInputEmail1" placeholder="username" required>
+						<input type="text" name="emailorphone" class="form-control" id="exampleInputEmail1" placeholder="username" required>
 					  </div>
 					  <div class="form-group">
 						<label for="exampleInputPassword1"></label>
-						<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+						<input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
 					  </div>
 					  <div class="checkbox">
 						<label>
 						  <input type="checkbox"> 记住密码
 						</label>
 					  </div>
+
 					  <button type="submit" class="btn btn-default">登陆</button>
 					  <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">
 						  注册
 						</button>
-						
-						
-						
-						
 					  <div style="float: right;margin-right: 10px"><a href="#" style="display: block;width: 35px;height: 35px">
 					  		<svg id="csdnc-qq" viewBox="0 0 1024 1024" width="50%" height="50%"><path d="M995.225278 683.917766c-22.357318-124.75725-116.394589-206.44964-116.394589-206.44964 13.454213-113.237258-35.811532-133.347467-35.811532-133.347467C832.665386-6.257774 518.616173-0.142222 511.982933 0.028444 505.389516-0.142222 191.283414-6.257774 180.986532 344.120659c0 0-49.237301 20.110209-35.811532 133.347467 0 0-94.008826 81.69239-116.394589 206.44964 0 0-11.918214 210.750437 107.434595 25.804783 0 0 26.851538 70.257731 76.088838 133.347467 0 0-88.035497 28.700425-80.554613 103.253264 0 0-3.015109 83.086167 187.960764 77.397282 0 0 134.286133-10.012438 174.563439-64.511957H529.737944c40.305751 54.499519 174.563439 64.511957 174.563439 64.511957 190.918984 5.688885 187.983519-77.397282 187.983519-77.397282 7.423995-74.552839-80.554613-103.253264-80.554613-103.253264 49.208856-63.089736 76.060394-133.347467 76.060394-133.347467 119.324365 184.945654 107.434595-25.804783 107.434595-25.804783"></path></svg>
 					  </a></div>
@@ -241,10 +239,31 @@
 					  		<svg id="csdnc-wechat" viewBox="0 0 1228 1024" width="50%" height="50%"><path d="M873.608533 312.490667c-13.789867-1.8432-27.613867-2.4576-41.984-2.4576-206.404267 0-369.629867 157.764267-369.629866 351.778133 0 32.529067 4.8128 63.829333 13.824 93.2864a453.700267 453.700267 0 0 1-40.823467 1.8432c-54.5792 0-97.792-11.025067-152.3712-22.084267l-151.825067 77.960534 43.2128-133.8368C65.399467 601.053867 0 500.3264 0 378.1632 0 166.365867 195.618133 0 434.9952 0c213.6064 0 401.408 133.2224 438.613333 312.490667M1228.8 656.861867c0 100.078933-64.785067 189.098667-152.405333 256L1109.4016 1024l-119.3984-66.901333c-43.793067 11.025067-87.586133 22.698667-130.798933 22.698666-206.984533 0-369.595733-144.896-369.595734-322.935466 0-178.005333 162.6112-322.901333 369.595734-322.901334 195.618133 0 369.595733 144.896 369.595733 322.901334M348.023467 244.9408c0-33.757867-21.6064-55.842133-54.613334-55.842133-32.392533 0-65.399467 22.084267-65.399466 55.842133 0 33.1776 33.006933 55.261867 65.399466 55.261867 33.006933 0 54.613333-22.084267 54.613334-55.261867m445.781333 311.261867c0-22.084267-21.6064-44.202667-54.613333-44.202667-21.572267 0-43.178667 22.1184-43.178667 44.202667 0 22.698667 21.6064 44.8512 43.178667 44.8512 33.006933 0 54.613333-22.152533 54.613333-44.8512M652.219733 244.9408c0-33.757867-21.6064-55.842133-53.998933-55.842133-33.006933 0-65.399467 22.084267-65.399467 55.842133 0 33.1776 32.392533 55.261867 65.399467 55.261867 32.392533 0 53.998933-22.084267 53.998933-55.261867m380.996267 311.261867c0-22.084267-22.2208-44.202667-54.613333-44.202667-21.6064 0-43.178667 22.1184-43.178667 44.202667 0 22.698667 21.572267 44.8512 43.178667 44.8512 32.392533 0 54.613333-22.152533 54.613333-44.8512"></path></svg>
 					  </a></div>
 					</form>
-					
-					
 				</div>
 			  	</div>
+				  <!--提示-->
+
+				  <c:if test="${logmes!=null}">
+				<c:choose>
+					<c:when test="${logmes==true}">
+							<script>
+								$("#dl").attr("disabled",true);
+								$("#dlks").html("<img src='img/gg.jpg' width='279px' height='202px'/>")
+							</script>
+					</c:when>
+					<c:otherwise>
+						<div class='alert alert-warning alert-dismissible' role='alert'>
+							<button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+								<span aria-hidden='true'>&times;</span>
+							</button>
+							<strong>Warning!</strong> 用户名或密码错误！
+						</div>
+					</c:otherwise>
+				</c:choose>
+				  </c:if>
+
+
+
 			  	<!-- Modal -->
 						<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="margin-top: 10%">
 						  <div class="modal-dialog" role="document">
