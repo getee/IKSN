@@ -62,9 +62,30 @@
                     $("#canvas").fadeOut(8000);
                 }
             });
-            //星空彩蛋
+            //启用弹出框
+            $(function () { $("[data-toggle='popover']").popover(); });
+            //当网页加载完毕后，用一个定时器10秒钟更新一次信息用来及时接收收到新的通知
+            if(${not empty sessionScope.loginresult}){
+                var nowNoticeNum=0;
+                var previousNoticeNum=0;
+                $.get("/user/timingReceivingNotice/${sessionScope.loginresult.uid}",function(data){
+                    nowNoticeNum=data;
+                });
+                setInterval(function(){
+                    $.get("/user/timingReceivingNotice/${sessionScope.loginresult.uid}",function(data){
+                        previousNoticeNum=nowNoticeNum;
+                        nowNoticeNum=data;
+                        if(nowNoticeNum>previousNoticeNum){
+
+                            $("[data-toggle='popover']").popover('show')
+                        }
+
+                    });
+                },10000);
+            }
 
         });
+
     </script>
 
 
@@ -79,6 +100,8 @@
     <div id="texiao" style="position: fixed;z-index: 10;width: 100%;height: 100%;margin: 0px; display: none">
         <iframe style="width: 100%;height: 100%" src="caidan/html/shandian.html"></iframe>
     </div>
+
+
 <!--	导航栏-->
 <div class="row">
     <nav class="navbar navbar-default">
@@ -107,10 +130,11 @@
                     <li><a href="#">问答</a></li>
                     <li><a href="#">商城</a></li>
                     <li><a href="#">VIP</a></li>
+                    <li><a data-toggle="popover" title="私信" data-container="body" data-placement="bottom" data-content="收到一条私信"></a></li>
                 </ul>
                 <form class="navbar-form navbar-left" method="post" action="/blog/blogSearch">
                     <div class="form-group">
-                        <input id="topSearch" type="text" class="form-control" placeholder="Fuck you" name="content">
+                        <input id="topSearch" type="text" class="form-control" placeholder="Search" name="content">
                     </div>
                     <button id="bSearch" type="submit"  class="btn btn-default" >搜索</button>
 
@@ -153,6 +177,7 @@
                             </ul>
                         </div>
                     </li>
+
                 </ul>
 
             </div><!-- /.navbar-collapse -->

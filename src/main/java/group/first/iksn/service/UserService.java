@@ -33,6 +33,7 @@ public interface UserService {
     boolean deleteNotice(int uid);
     //删除该id的用户的所有私信
     boolean deleteMessage(int uid);
+    boolean deleteChooseFriend(int selfid,int attenid);
     //给某个用户发私信
     boolean sendMessage(Message message);
     //列出该用户的所有关注的人

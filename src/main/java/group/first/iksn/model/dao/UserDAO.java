@@ -26,6 +26,7 @@ public interface UserDAO {
     boolean addNotice(Notice notice);
     boolean deleteNotice(int uid);
     boolean deleteMessage(int uid);
+    boolean deleteChooseFriend(@Param("selfid") int selfid,@Param("attenid") int attenid);
     boolean sendMessage(Message message);
     List checkIsAttention(@Param("selfid") int selfid,@Param("attenid") int attenid);
     List listAllFriends(@Param("selfid") int uid,@Param("nowPage") int nowPage);

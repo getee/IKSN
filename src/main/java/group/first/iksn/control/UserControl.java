@@ -213,6 +213,34 @@ public class UserControl {
         model.addAttribute("allSendMessageUsers",allSendMessageUsers);
         return "shouxiaoxi";
     }
+
+    /**
+     * 定时刷新新的通知及时提示用户
+     * @author BruceLee
+     * @return
+     */
+    @RequestMapping("/timingReceivingNotice/{uid}")
+    @ResponseBody
+    public String timingReceivingNotice(@PathVariable("uid") int uid){
+        int nowNoticeNum=userService.listAllNoticeNum(uid);
+        return String.valueOf(nowNoticeNum);
+    }
+
+    /**
+     * 删除该用户选中的所有要删除关注的好友
+     * @author BruceLee
+     * @return
+     */
+    @RequestMapping("/deleteFriend/{uid}/{allFriendId}")
+    @ResponseBody
+    public String deleteFriend(@PathVariable("uid") int uid,@PathVariable("allFriendId") String  allFriendId){
+        String[] everyFriendId=allFriendId.split(",");
+        boolean deleteFriendResult=true;
+        for (int i=0;i<everyFriendId.length;i++){
+            deleteFriendResult=userService.deleteChooseFriend(uid,Integer.parseInt(everyFriendId[i]));
+        }
+        return deleteFriendResult==true?"success":"error";
+    }
     /**
      * 本方法用于前台注册页面获取手机验证码
      */

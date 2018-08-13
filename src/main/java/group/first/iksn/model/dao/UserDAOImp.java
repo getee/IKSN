@@ -202,6 +202,21 @@ public class UserDAOImp extends BaseDAOImp implements UserDAO {
             return false;
         }
     }
+    /**
+     * 删除用户选中的关注好友
+     * @author BruceLee
+     * @return
+     */
+    @Override
+    public boolean deleteChooseFriend(int selfid, int attenid) {
+        try{
+            getSqlSession().getMapper(UserDAO.class).deleteChooseFriend(selfid, attenid);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     /**
      * 发送私信fromID--toID

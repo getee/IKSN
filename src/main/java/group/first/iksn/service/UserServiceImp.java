@@ -78,16 +78,21 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
+    public boolean deleteChooseFriend(int selfid, int attenid) {
+        return userDAO.deleteChooseFriend(selfid, attenid);
+    }
+
+    @Override
     public boolean sendMessage(Message message) {
-        //判断收件人是不是该用户的好友或者用户不存在
+    /*    //判断收件人是不是该用户的好友或者用户不存在
         List isAttenedResult=userDAO.checkIsAttention(message.getFromid(),message.getToid());
         if(isAttenedResult!=null){
             return userDAO.sendMessage(message);
         }else{
             return false;
 
-        }
-
+        }*/
+        return userDAO.sendMessage(message);
     }
 
     @Override

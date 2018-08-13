@@ -72,4 +72,7 @@
     <select id="friendNum" resultType="Integer">
         select count(*) from user where UID in (select ATTENID from attention where SELFID=#{selfid});
     </select>
+    <delete id="deleteChooseFriend" parameterType="Attention">
+         delete from attention where SELFID=#{selfid} and ATTENID=#{attenid};
+    </delete>
 </mapper>
