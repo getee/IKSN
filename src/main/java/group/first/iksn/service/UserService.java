@@ -12,7 +12,11 @@ public interface UserService {
     //检查用户注册时手机号是否被注册过
     boolean checkPhone(String p);
     //查询该用户所有的通知
-    List receiveNotice(int uid);
+    List receiveNotice(int uid,int nowPage);
+    //查询未读通知数量
+    int listNotReadNoticeNum(int uid);
+    //查询所有通知数量
+    int listAllNoticeNum(int uid);
     //查询该用户所有的私信
     List receiveMessage(int uid);
     //查询发送私信方的用户信息

@@ -29,9 +29,18 @@ public class UserServiceImp implements UserService {
         u.setPassword(mdpassword);
         return userDAO.addUser(u);
     }
-    public List<Notice> receiveNotice(int uid) {
-        return userDAO.receiveNotice(uid);
+    public List<Notice> receiveNotice(int uid,int nowPage) {
+        return userDAO.receiveNotice(uid,nowPage);
 
+    }
+
+    @Override
+    public int listNotReadNoticeNum(int uid) {
+        return userDAO.listNotReadNoticeNum(uid);
+    }
+    @Override
+    public int listAllNoticeNum(int uid) {
+        return userDAO.listAllNoticeNum(uid);
     }
 
     @Override

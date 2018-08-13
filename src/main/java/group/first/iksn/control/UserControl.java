@@ -77,16 +77,14 @@ public class UserControl {
      * @author BruceLee
      * @return
      */
-    @RequestMapping("/receiveNotice/{uid}")
-    public String receiveNotice(@PathVariable("uid") int uid, Model model){
-        int index=0;//定义一个计数器来记录未读的通知数量
-        List<Notice> allNotices=userService.receiveNotice(uid);//遍历出所有的通知
-        for (Notice notice:allNotices) {
-            if(notice.getIsread()==0){
-                index+=1;
-            }
-        }
-        model.addAttribute("notReadNum",index);//返回未读的消息数量
+    @RequestMapping("/receiveNotice/{uid}/{nowPage}")
+    public String receiveNotice(@PathVariable("uid") int uid,@PathVariable("nowPage") int nowPage,Model model){
+        List<Notice> allNotices=userService.receiveNotice(uid,nowPage);//遍历出所有的通知
+        int notReadNoticeNum=userService.listNotReadNoticeNum(uid);
+        int AllNoticeNum=userService.listAllNoticeNum(uid);
+        model.addAttribute("nowNoticePage",nowPage);
+        model.addAttribute("AllNoticeNum",AllNoticeNum);
+        model.addAttribute("notReadNum",notReadNoticeNum);//返回未读的消息数量
         model.addAttribute("allNotices",allNotices);//返回所有的消息
         return "tongzhi";
     }
@@ -100,14 +98,8 @@ public class UserControl {
     public String changeIsRead(@PathVariable("isRead") int isRead,@PathVariable("uid") int uid){
         boolean result=userService.changeIsRead(isRead,uid);//isRead 为前台传入的参数0或者1，表示已读或者未读
         if(result){
-            int index=0;//定义一个计数器来记录未读的通知数量
-            List<Notice> allNotices=userService.receiveNotice(uid);//遍历出所有的通知
-            for (Notice notice:allNotices) {
-                if(notice.getIsread()==0){
-                    index+=1;
-                }
-            }
-            return String.valueOf(index);//ajax返回未读数量，进行实时更新
+            int notReadNoticeNum=userService.listNotReadNoticeNum(uid);
+            return String.valueOf(notReadNoticeNum);//ajax返回未读数量，进行实时更新
         }else{
             return null;
         }

@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: wenbin
@@ -124,14 +125,31 @@
                     <li><a class="glyphicon glyphicon-pencil" href="Writer.jsp"> 写博客</a></li>
                     <li><a class="glyphicon glyphicon-leaf" href="#">发Chat</a></li>
                     <li id="rw">
+                        <c:choose>
+                        <c:when test="${empty sessionScope.loginresult}">
+                        <a class="glyphicon glyphicon-user"href="index.jsp">
+                        </c:when>
+                        <c:otherwise>
                         <a class="glyphicon glyphicon-user"href="jifenzhongxin.jsp">
+                        </c:otherwise>
+                        </c:choose>
                             <span class="caret"></span>
                         </a>
                         <div id="xl" style="position: absolute;top:100%;left:0%;z-index: 10;display:none">
                             <ul class="list-group" style="width:80px;cursor: pointer;font-size: 10px;color:#ebebeb">
-                                <li class="list-group-item"><a href="writingCenter.jsp">我的博客</a></li>
-                                <li class="list-group-item"><a href="/user/listAllFriends/${sessionScope.loginresult.uid}/1">我的消息</a></li>
-                                <li class="list-group-item"><a>退出登录</a></li>
+                                <c:choose>
+                                <c:when test="${sessionScope.loginresult==null}">
+                                    <li class="list-group-item"><a href="writingCenter.jsp">我的博客</a></li>
+                                    <li class="list-group-item"><a href="index.jsp">我的消息</a></li>
+                                    <li class="list-group-item"><a>退出登录</a></li>
+                                </c:when>
+                                <c:otherwise>
+                                    <li class="list-group-item"><a href="writingCenter.jsp">我的博客</a></li>
+                                    <li class="list-group-item"><a href="/user/listAllFriends/${sessionScope.loginresult.uid}/1">我的消息</a></li>
+                                    <li class="list-group-item"><a>退出登录</a></li>
+
+                                </c:otherwise>
+                                </c:choose>
                             </ul>
                         </div>
                     </li>

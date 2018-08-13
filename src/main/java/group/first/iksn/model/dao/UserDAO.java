@@ -10,7 +10,9 @@ import java.util.List;
 
 public interface UserDAO {
     public boolean addUser(User u);
-    List<Notice> receiveNotice(int uid);
+    List<Notice> receiveNotice(@Param("uid") int uid,@Param("nowPage") int nowPage);
+    int listNotReadNoticeNum(@Param("uid") int uid);
+    int listAllNoticeNum(@Param("uid") int uid);
     List<Message> receiveMessage(int uid);
     List<User> listSendMessageUser(int uid);
     boolean changeIsRead(@Param("isRead") int isRead,@Param("uid") int uid);

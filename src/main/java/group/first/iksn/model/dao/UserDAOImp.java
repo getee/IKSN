@@ -27,15 +27,47 @@ public class UserDAOImp extends BaseDAOImp implements UserDAO {
      * @auther BruceLee
      * @return
      */
-    public List<Notice> receiveNotice(int uid) {
+    public List<Notice> receiveNotice(int uid,int nowPage) {
         try {
-            List<Notice> allNotice=getSqlSession().getMapper(UserDAO.class).receiveNotice(uid);
+            List<Notice> allNotice=getSqlSession().getMapper(UserDAO.class).receiveNotice(uid,(nowPage-1)*7);
             System.out.println("查询到的通知消息："+allNotice);
             return allNotice;
 
         }catch (Exception e){
             e.printStackTrace();
             return null;
+        }
+    }
+    /**
+     * 收到未读通知的数量
+     * @auther BruceLee
+     * @return
+     */
+    @Override
+    public int listNotReadNoticeNum(int uid) {
+        try {
+            int notReadNoticeNum=getSqlSession().getMapper(UserDAO.class).listNotReadNoticeNum(uid);
+            return notReadNoticeNum;
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+    /**
+     * 收到所有通知的数量
+     * @auther BruceLee
+     * @return
+     */
+    @Override
+    public int listAllNoticeNum(int uid) {
+        try {
+            int AllNoticeNum=getSqlSession().getMapper(UserDAO.class).listAllNoticeNum(uid);
+            return AllNoticeNum;
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return 0;
         }
     }
 

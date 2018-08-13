@@ -24,7 +24,13 @@
     </insert>
 
     <select id="receiveNotice" resultType="Notice">
-    select  * from notice where UID=#{uid};
+    select  * from notice where UID=#{uid} order by ID desc limit #{nowPage},7;
+    </select>
+    <select id="listAllNoticeNum" resultType="Integer">
+        select count(*)  from notice where UID=#{uid};
+    </select>
+    <select id="listNotReadNoticeNum" resultType="Integer">
+        select count(*)  from notice where UID=#{uid} and ISREAD=0;
     </select>
     <select id="receiveMessage" resultType="Message">
     select  * from message where TOID=#{toid};
