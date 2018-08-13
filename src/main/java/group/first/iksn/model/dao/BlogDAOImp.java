@@ -52,7 +52,7 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
         List<ReportBlog> allReportBlog=null;
         try {
             allReportBlog=getSqlSession().getMapper(BlogDAO.class).getAllReportBlog();
-
+            System.out.println("22222");
         }catch (Exception e){
             System.out.println("这是获取违规博客出错了");
             e.printStackTrace();

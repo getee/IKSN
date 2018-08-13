@@ -60,7 +60,7 @@
     </delete>
 
 
-    <insert id="processAddBlogTag" parameterType="BlogTag" useGeneratedKeys="true" keyColumn="id">
+     <insert id="processAddBlogTag" parameterType="BlogTag" useGeneratedKeys="true" keyColumn="id">
         insert into blogtag(bid,btag) values (#{bid},#{btag})
     </insert>
 
@@ -73,6 +73,7 @@
         <result column="uid" property="uid"/>
         <result column="reason" property="reason"/>
 
+
         <association property="blog" column="bid" javaType="Blog">
             <id column="bid" property="bid"/>
             <result column="title" property="title"/>
@@ -82,5 +83,6 @@
 		select  i.ID,i.BID,i.REASON,b.TITLE  from reportblog as i
 		inner join blog as b on   i.BID=b.BID ORDER BY i.ID desc limit 0,3;
 	</select>
+
 
 </mapper>

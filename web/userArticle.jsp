@@ -5,20 +5,19 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>无标题文档</title>
+	<title>博客详情</title>
 	<%
 		String path = request.getContextPath();
 		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 	%>
 	<base href="<%=basePath%>">
-
-	<link type="text/css" href="bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link type="text/css" href="../bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/bootstrap.css" rel="stylesheet">
-	<link rel="stylesheet" href="bootstrap-3.3.7/dist/css/bootstrap-theme.css" crossorigin="anonymous">
-	
-	<script src="js/jquery-3.3.1.js"></script>
-	<script src="bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
-	<script src="js/depend.js"></script>
+	<link rel="stylesheet" href="../bootstrap-3.3.7/dist/css/bootstrap-theme.css"  crossorigin="anonymous">
+
+	<script src="../js/jquery-3.3.1.js"></script>
+	<script src="../bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
+	<script src="../js/depend.js"></script>
 	<style>
 		.li-left{
 			display:block;
@@ -57,24 +56,16 @@
 			</div>
 		</div>
 		<div class="col-xs-6 col-md-3">
-			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#delete" style="visibility: hidden">删除</button>
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#comeback" style="">返回举报页</button>
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#delete" style="">删除</button>
 			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sendBack" style="">下架</button>
 			<button class="btn btn-primary" type="submit" value="1">
 				订阅 <span class="badge">+</span>
 			</button>
 		</div>
 	</div>
-	<!--用户名logo结束-->
-	   </div>
-	   <div class="col-xs-6 col-md-3">
-		   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#comeback" style="">返回举报页</button>
-		   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#delete" style="">删除</button>
-		   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sendBack" style="">下架</button>
-		   <button class="btn btn-primary" type="submit" value="1">
-			   订阅 <span class="badge">+</span>
-		   </button>
-	   </div>
-  </div>
+
+
 <!--用户名logo结束-->
 	<!--管理员权限-->
 	<div class="modal fade bs-example-modal-sm" id="delete" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" style="margin-top: 13%">
@@ -124,7 +115,7 @@
             });
             $("#sendBack-ok").click(function(){
                 $(this).prop("disabled","disabled");
-                $.get("/blog/mSendBackIllegalblog?blog_id=1",function(data,status){
+                $.get("/blog/mSendBackIllegalblog?blog_id=2",function(data,status){
                     $("#sendBack-ok-innerHtml").text("已退回");
                     $("#sendBack-ok").prop("disabled","disabled");
                     alert(data+status);
@@ -322,84 +313,84 @@
 
 					</div>
 
-			  <div class="col-xs-6 col-md-3">
-<!--			  	个人资料开始-->
-			  	<div class="span12" style="margin-top: 10px; background-color:#FFFFFF">
-			  	  <div style="margin-top: 20px">
-					<table class="table table-striped">
-					  <thead>
-						<tr>
-							<th colspan="4">|个人资料</th>
-						</tr>
-					  </thead>
-					  <tbody>
-						<tr>
-						  <td colspan="3"><h3><a href="tarenzhongxin.jsp">雄霸天下的男人</a><small></small></h3></td>
-						  <td>
-						  	<form action="">
-						  		<button type="submit" class="btn btn-default" value="1">关注</button>
-						  	</form>
-						  </td>
-						</tr>
-						<tr>
-						  <td>原创<p>123</p></td>
-						  <td>粉丝<p>123</p></td>
-						  <td>喜欢<p>123</p></td>
-						  <td>评论<p>123</p></td>
-						</tr>
-						<tr >
-						  <td colspan="2">等级:&nbsp;<span>35</span></td>
-						  <td colspan="2">访问:&nbsp;<span>3W+</span></td>
-						</tr>
-						<tr >
-						  <td colspan="2">积分:&nbsp;<span>3500</span></td>
-						  <td colspan="2">排名:&nbsp;<span>1W+</span></td>
-						</tr>
-						<tr >
-						  <td colspan="2">勋章:&nbsp;<span>35</span></td>
-						  <td colspan="2">&nbsp;<span></span></td>
-						</tr>
-					  </tbody>
-                </table>
+					<div class="col-xs-6 col-md-3">
+						<!--			  	个人资料开始-->
+						<div class="span12" style="margin-top: 10px; background-color:#FFFFFF">
+							<div style="margin-top: 20px">
+								<table class="table table-striped">
+									<thead>
+									<tr>
+										<th colspan="4">|个人资料</th>
+									</tr>
+									</thead>
+									<tbody>
+									<tr>
+										<td colspan="3"><h3><a href="tarenzhongxin.jsp">雄霸天下的男人</a><small></small></h3></td>
+										<td>
+											<form action="">
+												<button type="submit" class="btn btn-default" value="1">关注</button>
+											</form>
+										</td>
+									</tr>
+									<tr>
+										<td>原创<p>123</p></td>
+										<td>粉丝<p>123</p></td>
+										<td>喜欢<p>123</p></td>
+										<td>评论<p>123</p></td>
+									</tr>
+									<tr >
+										<td colspan="2">等级:&nbsp;<span>35</span></td>
+										<td colspan="2">访问:&nbsp;<span>3W+</span></td>
+									</tr>
+									<tr >
+										<td colspan="2">积分:&nbsp;<span>3500</span></td>
+										<td colspan="2">排名:&nbsp;<span>1W+</span></td>
+									</tr>
+									<tr >
+										<td colspan="2">勋章:&nbsp;<span>35</span></td>
+										<td colspan="2">&nbsp;<span></span></td>
+									</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<!-- 个人资料结束-->
+
+						<!--博主专栏开始-->
+						<div class="span12" style="margin-top: 30px; background-color:#FFFFFF">
+							<p><h4>------------</h4></p>
+							<p><h4>博主专栏</h4></p>
+							<div class="thumbnail">
+								<div style="float: left;width: 60px;height: 80px"><img style="width: 60px;height: 80px" src="../img/timg.jpg" alt="..." ></div>
+								<div style="background-color:#C2CBC8">
+									<a href="#">
+										<h3>Thumbnail label</h3>
+										<p>...</p>
+									</a>
+								</div>
+							</div>
+
+							<div class="thumbnail">
+								<div style="float: left;width: 60px;height: 80px"><img style="width: 60px;height: 80px" src="../img/timg.jpg" alt="..." ></div>
+								<div style="background-color:#C2CBC8">
+									<a href="#">
+										<h3>Thumbnail label</h3>
+										<p>...</p>
+									</a>
+								</div>
+							</div>
+
+						</div>
+						<!--博主专栏结束-->
+
+					</div><div class="col-xs-6 col-md-1" style="background-color:#F10609"></div>
+
+					<!-- 831列结束-->
 				</div>
-			  	</div>
-			  	<!-- 个人资料结束-->
-			  	
-				<!--博主专栏开始-->
-				  <div class="span12" style="margin-top: 30px; background-color:#FFFFFF">
-				  	<p><h4>------------</h4></p>
-				  	<p><h4>博主专栏</h4></p>
-				  	<div class="thumbnail">
-					  <div style="float: left;width: 60px;height: 80px"><img style="width: 60px;height: 80px" src="img/timg.jpg" alt="..." ></div>
-					  <div style="background-color:#C2CBC8">
-					  	<a href="#">
-							<h3>Thumbnail label</h3>
-							<p>...</p>
-						</a>
-					  </div>
-					</div>
-					
-					<div class="thumbnail">
-					  <div style="float: left;width: 60px;height: 80px"><img style="width: 60px;height: 80px" src="img/timg.jpg" alt="..." ></div>
-					  <div style="background-color:#C2CBC8">
-					  	<a href="#">
-							<h3>Thumbnail label</h3>
-							<p>...</p>
-						</a>
-					  </div>
-					</div>
-					
-				  </div>
-			<!--博主专栏结束-->
-		  
-			  </div><div class="col-xs-6 col-md-1" style="background-color:#F10609"></div>
-			
-			<!-- 831列结束-->  
-		  </div>
-		
+
+			</div>
+			<!--	10end	-->
 		</div>
-<!--	10end	-->
-	  </div>
 	</div>
 </div>
 
