@@ -154,18 +154,15 @@ public class UserControl {
      * @return
      */
     @RequestMapping("/sendMessage/{fromid}")
-    public String  sendMessage(@ModelAttribute("sendMessage")Message message,@PathVariable("fromid") int fromid,Model model){
-        //Calendar calendar=Calendar.getInstance();
-        message.setFromid(fromid);
-//        try {
-//            String content=new String(message.getContent().getBytes("ISO-8859-1"),"utf-8");
-//            message.setContent(content);
-//        } catch (UnsupportedEncodingException e) {
-//            e.printStackTrace();
-//        }
-        message.setTime(new Date().toLocaleString());
-        try{
-            System.out.println(message);
+    public String  sendMessage(HttpServletRequest request,@PathVariable("fromid") int fromid,Model model){
+
+        String[] everyToId=request.getParameter("toid").split(",");
+        for (int i=0;i<everyToId.length;i++){
+            Message message=new Message();
+            message.setFromid(fromid);
+            message.setToid(Integer.parseInt(everyToId[i]));
+            message.setContent(request.getParameter("content"));
+            message.setTime(new Date().toLocaleString());
             boolean result=userService.sendMessage(message);
             if(result){
                 model.addAttribute("sendResult","sendSuccess");
@@ -174,10 +171,8 @@ public class UserControl {
                 model.addAttribute("sendResult","sendError");
 
             }
-        }catch (Exception e){
-            model.addAttribute("sendResult","sendError");
-            e.printStackTrace();
         }
+
         return "wodexiaoxi";
     }
 

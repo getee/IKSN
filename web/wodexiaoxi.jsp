@@ -104,10 +104,15 @@
 			//点击新建私信，email获取焦点
 			$("#newMessage").click(function(){
 			    $("#exampleInputEmail1").focus();
+                var friendId="";
 			    $.each($("input:checkbox:checked"),function () {
-                    var friendId
-                    friendId=$(this).val();
-                    $("#exampleInputEmail1").val(friendId);
+			        if($(this).val()!="on"){
+
+                        friendId+=$(this).val()+",";
+                        $("#exampleInputEmail1").val(friendId);
+
+					}
+
                 })
 
 
