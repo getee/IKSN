@@ -9,6 +9,25 @@ public class Blog {
     private  int points;//博客点赞数
     private int classify;//博客分类
 
+    private BlogTag blogTag;
+    private  UserToBlog userToBlog;
+
+    public BlogTag getBlogTag() {
+        return blogTag;
+    }
+
+    public void setBlogTag(BlogTag blogTag) {
+        this.blogTag = blogTag;
+    }
+
+    public UserToBlog getUserToBlog() {
+        return userToBlog;
+    }
+
+    public void setUserToBlog(UserToBlog userToBlog) {
+        this.userToBlog = userToBlog;
+    }
+
     public int getBid() {
         return bid;
     }
@@ -65,6 +84,21 @@ public class Blog {
         this.classify = classify;
     }
 
+    public Blog() {
+    }
+
+    public Blog(int bid, String title, String content, String time, String link, int points, int classify, BlogTag blogTag, UserToBlog userToBlog) {
+        this.bid = bid;
+        this.title = title;
+        this.content = content;
+        this.time = time;
+        this.link = link;
+        this.points = points;
+        this.classify = classify;
+        this.blogTag = blogTag;
+        this.userToBlog = userToBlog;
+    }
+
     @Override
     public String toString() {
         return "Blog{" +
@@ -75,19 +109,8 @@ public class Blog {
                 ", link='" + link + '\'' +
                 ", points=" + points +
                 ", classify=" + classify +
+                ", blogTag=" + blogTag +
+                ", userToBlog=" + userToBlog +
                 '}';
-    }
-
-    public Blog() {
-    }
-
-    public Blog(int bid, String title, String content, String time, String link, int points, int classify) {
-        this.bid = bid;
-        this.title = title;
-        this.content = content;
-        this.time = time;
-        this.link = link;
-        this.points = points;
-        this.classify = classify;
     }
 }

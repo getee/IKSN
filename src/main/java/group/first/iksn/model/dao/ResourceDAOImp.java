@@ -28,6 +28,15 @@ public class ResourceDAOImp extends BaseDAOImp implements ResourceDAO {
         return getSqlSession().getMapper(ResourceDAO.class).collectResource(h);
     }
 
+    @Override
+    public int downnum(Integer rid) {
+        System.out.println(rid);
+       int num=getSqlSession().getMapper(ResourceDAO.class).downnum(rid);
+       return  num;
+    }
+
+
+
     /**
      * 举报的资源保存到表中
      * @param reportResource

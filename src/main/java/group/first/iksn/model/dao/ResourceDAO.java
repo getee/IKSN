@@ -10,6 +10,8 @@ public interface ResourceDAO {
 
     boolean collectResource(CollectResource h);
 
+    int downnum(Integer rid);
+
     //举报资源
     boolean reportResource(ReportResource reportResource);
 }

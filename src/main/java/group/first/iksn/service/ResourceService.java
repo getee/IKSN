@@ -9,6 +9,11 @@ public interface ResourceService {
     boolean assess(ResourceComments c);
     //收藏资源
     boolean houseResource(CollectResource h);
+
+    int downResource(Integer rid);
+
+
+    //查询下载次数
     //举报资源
     boolean reportResource(ReportResource reportResource);
 }

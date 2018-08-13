@@ -30,6 +30,11 @@ public class ResourceServiceImp  implements ResourceService{
         return resourceDAO.collectResource(h);
     }
 
+    @Override
+    public int downResource(Integer rid) {
+        return resourceDAO.downnum(rid);
+    }
+
     //举报资源
     @Override
     public boolean reportResource(ReportResource reportResource) {

@@ -11,6 +11,10 @@
     <insert id="collectResource" parameterType="CollectResource">
         insert into collectresource(uid,rid) values (#{uid},#{rid})
     </insert>
+    <!-- 统计下载次数 -->
+    <select id="downnum" resultType="Integer">
+        select count(*) from downresources where RID=(#{rid})
+    </select>
     <!--举报资源-->
     <insert id="reportResource" parameterType="ReportResource">
         insert into reportresource(rid,uid,reason) values (#{rid},#{uid},#{reason})

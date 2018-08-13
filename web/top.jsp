@@ -123,8 +123,20 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li><a class="glyphicon glyphicon-pencil" href="Writer.jsp"> 写博客</a></li>
                     <li><a class="glyphicon glyphicon-leaf" href="#">发Chat</a></li>
-                    <li><a class="glyphicon glyphicon-user" href="jifenzhongxin.jsp"></a></li>
+                    <li id="rw">
+                        <a class="glyphicon glyphicon-user"href="jifenzhongxin.jsp">
+                            <span class="caret"></span>
+                        </a>
+                        <div id="xl" style="position: absolute;top:100%;left:0%;z-index: 10;display:none">
+                            <ul class="list-group" style="width:80px;cursor: pointer;font-size: 10px;color:#ebebeb">
+                                <li class="list-group-item"><a href="writingCenter.jsp">我的博客</a></li>
+                                <li class="list-group-item"><a href="/user/listAllFriends/${sessionScope.loginresult.uid}/1">我的消息</a></li>
+                                <li class="list-group-item"><a>退出登录</a></li>
+                            </ul>
+                        </div>
+                    </li>
                 </ul>
+
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav>
@@ -132,6 +144,12 @@
 <script>
     $(document).ready(function () {
        $("#bSearch").click
+    });
+    $("#rw").mouseover(function(){
+        $("#xl").css("display","block");
+    });
+    $("#rw").mouseout(function(){
+        $("#xl").css("display","none");
     });
 </script>
 <!--	导航栏结束-->
