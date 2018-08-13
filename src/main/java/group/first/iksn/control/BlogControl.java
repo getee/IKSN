@@ -42,17 +42,24 @@ public class BlogControl {
         System.out.println(textcontent);
         return "sousuo";
     }
+
     /**
-     *管理员删除被用户举报且不合法的博客
+     * 管理员删除被用户举报且不合法的博客
      * wenbin
      * @param blog_id
+     * @param report_id
      * @return
      */
-    @RequestMapping("/mDeleteBlogForReported")
-    @ResponseBody//此注解不能省略 否则ajax无法接受返回值
-    public String mDeleteBlogForReported(int blog_id){
+    @RequestMapping("/mDeleteBlogForReported/{blog_id}/{report_id}")
+    @ResponseBody
+    public String mDeleteBlogForReported(@PathVariable  int blog_id,@PathVariable int report_id){
         System.out.println("调用managerDeleteBlogForReported"+blog_id);
-        return "success";
+        boolean deleteResult=blogService.deleteIllegalblog(blog_id,report_id);
+        if(deleteResult){
+            return "success";
+        }else{
+            return "error";
+        }
     }
 
 
@@ -103,15 +110,15 @@ public class BlogControl {
      * @param blog_id
      * @return
      */
-    @RequestMapping("/mSendBackIllegalblog")
+    @RequestMapping("/mSendBackIllegalblog/{blog_id}/{reportReason}/{report_id}")
     @ResponseBody
-    public String mSendBackIllegalblog(int blog_id){
+    public String mSendBackIllegalblog(@PathVariable int blog_id,@PathVariable String reportReason,@PathVariable int report_id){
         IllegalBlog blog=new IllegalBlog();
-        blog.setIllegalcause("文采不好，毫无趣味");
+        blog.setIllegalcause(reportReason);
         blog.setBid(blog_id);
 
 
-        boolean sendBackResult=blogService.sendBackIllegalblog(blog);
+        boolean sendBackResult=blogService.sendBackIllegalblog(blog,report_id);
         if(sendBackResult){
             return "success";
         }else{
@@ -133,7 +140,7 @@ public class BlogControl {
             System.out.println(i.getBlog());
         }
         model.addAttribute("ReportBlogList",reportBlogs);
-        return  "gerenzhongxin";
+        return  "jubaoguanl";
     }
 
     /**
@@ -144,15 +151,32 @@ public class BlogControl {
     @RequestMapping("/mReject_oneReportblog/{id}")
     @ResponseBody
     public String mReject_oneReportblog(@PathVariable int id){
-        ReportBlog blog=new ReportBlog();
-        blog.setId(id);
+//        ReportBlog blog=new ReportBlog();
+//        blog.setId(id);
 
-        boolean RejectResult=blogService.Reject_oneReportblog(blog);
+        boolean RejectResult=blogService.Reject_oneReportblog(id);
         if(RejectResult){
             return "success";
         }else{
             return "error";
         }
+    }
+
+    /**
+     * 管理员查看被举报的博客，进行审核
+     * wenbin
+     * @param blog_id 博客id
+     * @param reason 举报原因
+     * @param model
+     * @return
+     */
+    @RequestMapping("/mCheckReportblog/{blog_id}/{reason}/{id}")
+    public String mCheckReportblog(@PathVariable int blog_id,@PathVariable String reason,@PathVariable int id,Model model){
+        System.out.println(blog_id+reason);
+        model.addAttribute("blog_id",blog_id);
+        model.addAttribute("reportReason",reason);
+        model.addAttribute("report_id",id);
+        return "userArticle";
     }
 
 }

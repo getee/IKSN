@@ -56,9 +56,29 @@
     </select>
     <!--从reportBlog表中根据id删除一个选中行-->
     <delete id="deleteBlogFromReport" parameterType="ReportBlog">
-      delete from reportblog where id = #{id}
+      delete from reportblog where id = #{report_id}
+    </delete>
+    <!--从blog表中根据id删除一个博客信息-->
+    <delete id="deleteBlog" parameterType="Blog">
+      delete from blog where BID = #{bid}
+    </delete>
+    <!--删除与blog表相关的信息，illegalblog，blogtag，blogbrowsed，blogcomments，collectblog，usertoblog，reportblog-->
+    <delete id="deleteBlogOthers" parameterType="Blog">
+      DELETE r,b,bb,bc,cb,utb,ib FROM reportblog r
+      LEFT OUTER JOIN blogtag b  ON b.BID = r.BID
+      LEFT OUTER JOIN blogbrowsed bb  ON bb.BID = r.BID
+      LEFT OUTER JOIN blogcomments bc  ON bc.BID = r.BID
+      LEFT OUTER JOIN collectblog cb  ON cb.BID = r.BID
+      LEFT OUTER JOIN usertoblog utb  ON utb.BID = r.BID
+      LEFT OUTER JOIN illegalblog ib  ON ib.BID = r.BID
+      WHERE r.BID=#{bid}
     </delete>
 
+
+    <!--设置博客为不公开-->
+    <update id="blogIsPublic" parameterType="UserToBlog">
+        update usertoblog set ISPUBLIC=1 where BID=#{bid};
+    </update>
 
      <insert id="processAddBlogTag" parameterType="BlogTag" useGeneratedKeys="true" keyColumn="id">
         insert into blogtag(bid,btag) values (#{bid},#{btag})

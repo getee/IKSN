@@ -25,5 +25,12 @@ public interface BlogDAO {
 
     boolean addIllegalblog(IllegalBlog blog);
     List<ReportBlog> getAllReportBlog();
-    boolean deleteBlogFromReport(ReportBlog blog);
+    //
+    boolean deleteBlogFromReport(int report_id);
+    //删除博客
+    boolean deleteBlog(int bid);
+    //删除与博客相关的表信息
+    boolean deleteBlogOthers(int bid);
+    //设置博客为不公开
+    boolean blogIsPublic(int bid);
 }

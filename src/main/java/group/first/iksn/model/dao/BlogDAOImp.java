@@ -83,16 +83,59 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
     /**
      * 从reportBlog表中删除一个选中行
      * wenbin
-     * @param blog
+     * @param report_id
      * @return
      */
     @Override
-    public boolean deleteBlogFromReport(ReportBlog blog) {
+    public boolean deleteBlogFromReport(int report_id) {
         boolean isOK=false;
         try{
-            isOK=getSqlSession().getMapper(BlogDAO.class).deleteBlogFromReport(blog);
+            isOK=getSqlSession().getMapper(BlogDAO.class).deleteBlogFromReport(report_id);
         }catch (Exception e){
             System.out.println("这是添加违规博客出错了");
+            e.printStackTrace();
+        }
+        return isOK;
+    }
+
+    /**
+     * 删除博客
+     * wenbin
+     * @param bid
+     * @return
+     */
+    @Override
+    public boolean deleteBlog(int bid) {
+        boolean isOK=false;
+        System.out.println(bid);
+        try{
+            isOK=getSqlSession().getMapper(BlogDAO.class).deleteBlog(bid);
+        }catch (Exception e){
+            System.out.println("这是删除博客出错了");
+            e.printStackTrace();
+        }
+        return isOK;
+    }
+
+    @Override
+    public boolean deleteBlogOthers(int bid) {
+        boolean isOK=false;
+        try{
+            isOK=getSqlSession().getMapper(BlogDAO.class).deleteBlogOthers(bid);
+        }catch (Exception e){
+            System.out.println("这是删除博客其它出错了");
+            e.printStackTrace();
+        }
+        return isOK;
+    }
+
+    @Override
+    public boolean blogIsPublic(int bid) {
+        boolean isOK=false;
+        try{
+            isOK=getSqlSession().getMapper(BlogDAO.class).blogIsPublic(bid);
+        }catch (Exception e){
+            System.out.println("这是更改博客不公开出错了");
             e.printStackTrace();
         }
         return isOK;
