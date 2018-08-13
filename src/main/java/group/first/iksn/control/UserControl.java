@@ -56,7 +56,7 @@ public class UserControl {
     //登录方法
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     public String login(String emailorphone, String password, HttpSession session,Model model){
-        User user=(User)userService.login(emailorphone,password);
+        User user=userService.login(emailorphone,password);
 
         if (user!=null){
             session.setAttribute("loginresult",user);
