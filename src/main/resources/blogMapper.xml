@@ -84,5 +84,8 @@
 		inner join blog as b on   i.BID=b.BID ORDER BY i.ID desc limit 0,3;
 	</select>
 
-
+    <!-- 博客评论 -->
+    <insert id="commentBlog" parameterType="BlogComments">
+        insert into blogcomments(uid,bid,time,content,floor) value (#{uid},#{bid},#{time},#{content},#{floor})
+    </insert>
 </mapper>

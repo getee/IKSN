@@ -1,10 +1,6 @@
 package group.first.iksn.model.dao;
 
-import group.first.iksn.model.bean.Blog;
-import group.first.iksn.model.bean.IllegalBlog;
-import group.first.iksn.model.bean.BlogTag;
-import group.first.iksn.model.bean.UserToBlog;
-import group.first.iksn.model.bean.ReportBlog;
+import group.first.iksn.model.bean.*;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -96,5 +92,11 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
             e.printStackTrace();
         }
         return isOK;
+    }
+
+    @Override
+    public boolean commentBlog(BlogComments blogComments) {
+        System.out.println(blogComments);
+        return  getSqlSession().getMapper(BlogDAO.class).commentBlog(blogComments);
     }
 }
