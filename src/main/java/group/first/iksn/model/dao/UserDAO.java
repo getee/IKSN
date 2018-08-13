@@ -12,4 +12,10 @@ public interface UserDAO {
     public User getId(int uid);
     User checkPhone(String phone);
     User checkEmail(String email);
+
+    //修改用户
+    public boolean updateUser( User user);
+
+     //修改用户密码
+    boolean updatePassword(User user);
 }

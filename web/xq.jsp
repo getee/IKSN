@@ -39,7 +39,7 @@
             float:left;
             margin-left:25px;
             border:1px solid;
-        ;border-radius:10px;
+            border-radius:10px;
             border-color:#F75D47;
             color:#F75D47;
             text-align:center;
@@ -125,15 +125,13 @@
                         <span> 综合评分：<em>0</em></span>
 
                         <div style="float:right; width:250px;">
-
-                            <a href="#" onclick="shoucang()"><img src="img/sc.jpg">&nbsp;收藏</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a href="#"><img src="img/sc.jpg">&nbsp;收藏</a>&nbsp;&nbsp;&nbsp;&nbsp;
                             <a href="#"><img src="img/pl.jpg">&nbsp;评论</a>&nbsp;&nbsp;&nbsp;&nbsp;
                             <a href="#"><img src="img/jb.jpg">&nbsp;举报</a>
                         </div>
                     </div>
 
                 </div>
-
 
 
 
@@ -252,10 +250,4 @@
 </div>
 </div>
 </body>
-<script type="text/javascript">
-    function shoucang()
-    {
-        alert("已收藏！")
-    }
-</script>
 </html>

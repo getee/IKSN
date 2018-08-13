@@ -19,4 +19,14 @@
 <select id="receiveNotice" resultType="Notice">
     select  * from notice;
 </select>
+
+    <update id="updateUser" parameterType="User">
+        UPDATE  user set  nickname=#{nickname},sex=#{sex},introduce=#{introduce} WHERE uid=#{uid}
+    </update>
+    <update id="updatePassword" parameterType="User">
+        update user set password=#{password} where UID=#{uid}
+    </update>
+    <select id="getId" resultType="User">
+       select * from user where UID=#{uid}
+    </select>
 </mapper>

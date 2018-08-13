@@ -38,8 +38,8 @@ public class UserDAOImp extends BaseDAOImp implements UserDAO {
     }
 
     public User getId(int uid) {
-
-        return null;
+        User u=getSqlSession().getMapper(UserDAO.class).getId(uid);
+        return u;
     }
 
     @Override
@@ -53,4 +53,21 @@ public class UserDAOImp extends BaseDAOImp implements UserDAO {
         User u=getSqlSession().getMapper(UserDAO.class).checkEmail(email);
         return u;
     }
+
+    //修改用户资料
+    @Override
+    public boolean updateUser(User  user) {
+        boolean b=getSqlSession().getMapper(UserDAO.class).updateUser(user);
+        return b;
+    }
+
+
+    //修改用户密码
+    @Override
+    public boolean updatePassword(User user) {
+        boolean b=getSqlSession().getMapper(UserDAO.class).updatePassword(user);
+        return b;
+    }
+
+
 }

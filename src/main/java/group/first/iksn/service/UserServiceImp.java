@@ -21,6 +21,7 @@ public class UserServiceImp implements UserService {
     }
 
     public boolean register(User u) {
+        System.out.println(u);
 
         //加密
         String mdpassword=MD5.MD5(u.getPassword());
@@ -51,4 +52,43 @@ public class UserServiceImp implements UserService {
             return  true;
     }
 
+
+    //修改用户资料
+    @Override
+    public User updateUser(User user) {
+            System.out.println(user.getUid());
+           boolean b=userDAO.updateUser(user);
+            //在进行查询
+           return user;
+    }
+
+
+    //判断用户是否存在
+    @Override
+    public boolean isUserExist(int uid) {
+            if (userDAO.getId(uid) == null) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    //修改用户密码
+    @Override
+    public void updatePassword(int uid,String newpassword) {
+        User user=userDAO.getId(uid);
+        user.setUid(uid);
+        user.setPassword(MD5.MD5(newpassword));
+        userDAO.updatePassword(user);
+    }
+    //根据提供的id获取密码
+    @Override
+    public String getId(int uid) {
+       return userDAO.getId(uid).getPassword();
+    }
+
+
 }
+
+
+
+
