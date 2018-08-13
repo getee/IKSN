@@ -1,11 +1,7 @@
 package group.first.iksn.control;
 
 
-import group.first.iksn.model.bean.IllegalBlog;
-import group.first.iksn.model.bean.Blog;
-import group.first.iksn.model.bean.BlogTag;
-import group.first.iksn.model.bean.UserToBlog;
-import group.first.iksn.model.bean.ReportBlog;
+import group.first.iksn.model.bean.*;
 import group.first.iksn.service.BlogService;
 import group.first.iksn.util.EncodingTool;
 import org.springframework.stereotype.Controller;
@@ -15,6 +11,7 @@ import org.apache.ibatis.jdbc.Null;
 
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -155,4 +152,27 @@ public class BlogControl {
         }
     }
 
+
+/**
+ * 博客评论
+ */
+    @RequestMapping("/discuss")
+    public String discuss(@ModelAttribute("discuss")BlogComments blogComments){
+        System.out.println(blogComments);
+        boolean result=blogService.discuss(blogComments);
+        if(!result)
+        {
+            return "index";
+        }else
+        {
+            return "userArticle";
+        }
+    }
+    /**
+     * 博客楼层获取
+     */
+    @RequestMapping("/getFloor")
+    public String getFloor(@RequestParam("bid") Integer bid, HttpServletRequest request){
+        return  "";
+    }
 }
