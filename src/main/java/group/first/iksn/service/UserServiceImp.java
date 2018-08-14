@@ -149,6 +149,11 @@ public class UserServiceImp implements UserService {
 
     }
 
+    @Override
+    public List searchFriend(String nickname, int uid) {
+        return userDAO.searchFriend(nickname, uid);
+    }
+
     //修改用户资料
     @Override
     public User updateUser(User user) {

@@ -53,4 +53,6 @@ public interface UserService {
     int friendNum(int uid);
     //根据登录方法
     User login(String emailorphone,String password);
+    //根据昵称搜索好友
+    List searchFriend(String nickname, int uid);
 }

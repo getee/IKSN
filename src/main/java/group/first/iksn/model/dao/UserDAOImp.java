@@ -280,6 +280,18 @@ public class UserDAOImp extends BaseDAOImp implements UserDAO {
 
     }
 
+    @Override
+    public List searchFriend(String nickname, int uid) {
+        try{
+            List searchedFriend=getSqlSession().getMapper(UserDAO.class).searchFriend(nickname, uid);
+            return searchedFriend;
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     /**
      * 查询该用户好友的数量用来做分页限制
      * @author BruceLee

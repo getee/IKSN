@@ -30,6 +30,7 @@ public interface UserDAO {
     boolean sendMessage(Message message);
     List checkIsAttention(@Param("selfid") int selfid,@Param("attenid") int attenid);
     List listAllFriends(@Param("selfid") int uid,@Param("nowPage") int nowPage);
+    List searchFriend(@Param("nickname") String nickname,@Param("selfid") int uid);
     int friendNum(int selfid);
 
     //修改用户
