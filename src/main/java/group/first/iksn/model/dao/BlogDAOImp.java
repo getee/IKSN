@@ -73,11 +73,23 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
     }
 
     @Override
-    public List<Blog> processScanBlog(int bid) {
-        List<Blog> blog= getSqlSession().getMapper(BlogDAO.class).processScanBlog(bid);
+    public List<Blog> processScanBlog(int uid) {
+        List<Blog> blog= getSqlSession().getMapper(BlogDAO.class).processScanBlog(uid);
         return blog;
     }
 
+    @Override
+    public Blog processListBlog(int bid) {
+        Blog blog= getSqlSession().getMapper(BlogDAO.class).processListBlog(bid);
+        return blog;
+    }
+
+
+
+    @Override
+    public int selectBid(String time) {
+        return getSqlSession().getMapper(BlogDAO.class).selectBid(time);
+    }
 
 
     /**

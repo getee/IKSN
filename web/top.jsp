@@ -129,7 +129,7 @@
                         </a>
                         <div id="xl" style="position: absolute;top:100%;left:0%;z-index: 10;display:none">
                             <ul class="list-group" style="width:80px;cursor: pointer;font-size: 10px;color:#ebebeb">
-                                <li class="list-group-item"><a href="writingCenter.jsp">我的博客</a></li>
+                                <li class="list-group-item"><a href="/blog/listBlogByUid/${sessionScope.loginresult.uid}">我的博客</a></li>
                                 <li class="list-group-item"><a href="/user/listAllFriends/${sessionScope.loginresult.uid}/1">我的消息</a></li>
                                 <li class="list-group-item"><a>退出登录</a></li>
                             </ul>

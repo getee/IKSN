@@ -15,14 +15,22 @@ public interface BlogService {
     boolean deleteIllegalblog(IllegalBlog blog);
     boolean sendBackIllegalblog(IllegalBlog blog);
 
-    //添加Blog的服务层
+
     List<ReportBlog> getAllReportBlog();
     boolean Reject_oneReportblog(ReportBlog blog);
+
+    //添加Blog的服务层
     public boolean addBlogService(Blog blog);
     //添加BlogTag的服务层
     public boolean addBlogTagService(BlogTag blogTag);
     //添加UserToBlog的服务层
     public  boolean addUserToBlogService(UserToBlog userToBlog);
 
-    public List<Blog> scanBlogService(int bid);
+    public List<Blog> scanBlogService(int uid);
+
+    public Blog listBlogService(int bid);
+
+    public int selectBidService(String time);
+
+
 }

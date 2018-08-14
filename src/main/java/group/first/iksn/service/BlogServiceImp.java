@@ -86,10 +86,21 @@ public class BlogServiceImp implements BlogService {
     }
 
     @Override
-    public List<Blog> scanBlogService(int bid) {
-
-        return blogDAO.processScanBlog(bid);
+    public List<Blog> scanBlogService(int uid) {
+        return blogDAO.processScanBlog(uid);
     }
+
+    @Override
+    public Blog listBlogService(int bid) {
+        return blogDAO.processListBlog(bid);
+    }
+
+    @Override
+    public int selectBidService(String time) {
+        return blogDAO.selectBid(time);
+    }
+
+
 
 
 }

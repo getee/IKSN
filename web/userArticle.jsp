@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
 <html>
@@ -11,13 +12,13 @@
 		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 	%>
 	<base href="<%=basePath%>">
-	<link type="text/css" href="../bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link type="text/css" href="bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/bootstrap.css" rel="stylesheet">
-	<link rel="stylesheet" href="../bootstrap-3.3.7/dist/css/bootstrap-theme.css"  crossorigin="anonymous">
+	<link rel="stylesheet" href="bootstrap-3.3.7/dist/css/bootstrap-theme.css"  crossorigin="anonymous">
 
-	<script src="../js/jquery-3.3.1.js"></script>
-	<script src="../bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
-	<script src="../js/depend.js"></script>
+	<script src="js/jquery-3.3.1.js"></script>
+	<script src="bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
+	<script src="js/depend.js"></script>
 	<style>
 		.li-left{
 			display:block;
@@ -40,7 +41,9 @@
 </head>
 
 <body>
-
+<c:if test="${requestScope.blog} eq null">
+	<c:redirect url="http://localhost:8080/blog/listBlogByBid"></c:redirect>
+</c:if>
 <div id="fluid_Div" class="container-fluid" style="background-color:#574949">
 
 
@@ -155,11 +158,11 @@
 						<!--				推送正文-->
 						<div class="span12" style="background-color:#FFFFFF;padding-left: 25px;padding-right: 25px">
 							<p>&nbsp;</p>
-							<!--						文章标题-->
+							<!--文章标题-->
 							<div>
-								<h2>标题这是正文标题</h2>
-								<h5 style="color:#928F8F;">2018年8月2日16：05：25</h5>
-								<h5 style="color:#928F8F;margin-left:  600px">阅读数：3555</h5>
+								<h2>${listblog.title}</h2>
+								<h5 style="color:#928F8F;">${listblog.time}</h5>
+								<h5 style="color:#928F8F;margin-left:  580px">点赞数：${listblog.points}</h5>
 								<a href="alterBlog.jsp" style="float: right;margin-top: -28px">编辑</a>
 							</div>
 
@@ -176,49 +179,7 @@
 							<h2>
 								正文
 							</h2>
-							<p>
-								本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-							</p>
-							<p>
-								本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-							</p>
-							<p>
-								本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-							</p>
-							<p>
-								本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-							</p>
-							<p>
-								本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-							</p>
-							<p>
-								本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-							</p>
-							<p>
-								本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-							</p>
-							<p>
-								本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-							</p>
-							<p>
-								本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-							</p>
-							<p>
-								本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-							</p>
-							<p>
-								本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-							</p>
-							<p>
-								本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-							</p>
-							<p>
-								本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-							</p>
-							<p>
-								本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-							</p>
-
+							${listblog.content}
 							<p>
 								<a class="btn" href="#">查看更多 »</a>
 							</p>

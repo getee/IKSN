@@ -31,17 +31,37 @@
             <result property="blogtype" column="blogtype"></result>
         </association>
     </resultMap>
-
+    <!--根据用户ID来查出用户已经发表的博客信息-->
     <select id="processScanBlog" resultMap="searchBlog">
         select b.* ,u.*,t.* from blog as b
         inner join usertoblog as u on u.bid=b.bid
         inner join blogtag as t on t.bid=b.bid
-
+        where u.uid=#{uid}
+    </select>
+    <!--根据博客ID来准确查出博客信息-->
+    <select id="processListBlog" resultMap="searchBlog">
+        select b.* ,u.*,t.* from blog as b
+        inner join usertoblog as u on u.bid=b.bid
+        inner join blogtag as t on t.bid=b.bid
+        where b.bid=#{bid}
     </select>
 
+<!--博客添加相关操作-->
     <insert id="processAddBlog" parameterType="Blog" useGeneratedKeys="true" keyColumn="bid">
         insert into blog(title,content,time,classify) values (#{title},#{content},#{time},#{classify})
     </insert>
+    <select id="selectBid" resultType="int">
+        select bid from blog where time=#{time}
+    </select>
+    <insert id="processAddBlogTag" parameterType="BlogTag" useGeneratedKeys="true" keyColumn="id">
+        insert into blogtag(bid,btag) values (#{bid},#{btag})
+    </insert>
+    <insert id="processAddUserToBlog" parameterType="UserToBlog" useGeneratedKeys="true" keyColumn="id">
+        insert into usertoblog(uid,bid,ISDRAFT,ISPUBLIC,BLOGTYPE) values (#{uid},#{bid},#{isdraft},#{ispublic},#{blogtype})
+    </insert>
+    <!--博客修改相关操作-->
+
+
      <!--定义的一个reaultmap结果集合来存储关联查询到的详细的博客，类型是自定义类型-->
     <resultMap id="searchResultMap" type="Blog">
 
@@ -60,13 +80,7 @@
     </delete>
 
 
-     <insert id="processAddBlogTag" parameterType="BlogTag" useGeneratedKeys="true" keyColumn="id">
-        insert into blogtag(bid,btag) values (#{bid},#{btag})
-    </insert>
 
-    <insert id="processAddUserToBlog" parameterType="UserToBlog" useGeneratedKeys="true" keyColumn="id">
-        insert into usertoblog(uid,bid,ISDRAFT,ISPUBLIC,BLOGTYPE) values (#{uid},#{bid},#{isdraft},#{ispublic},#{blogtype})
-    </insert>
     <!--结果集合用来存储查询ReportBlog表级联查询blog表-->
     <resultMap id="getBlogBy_Reportbid" type="ReportBlog">
         <id column="id" property="id"/>

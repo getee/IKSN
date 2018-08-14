@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
 <html>
@@ -12,25 +13,28 @@
 	%>
 	<base href="<%=basePath%>">
 
- <link type="text/css" href="css/bootstrap.min.css" rel="stylesheet">
-  <link href="bootstrap-3.3.7/dist/css/bootstrap.css" rel="stylesheet">
+	<link type="text/css" href="bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="bootstrap-3.3.7/dist/css/bootstrap.css" rel="stylesheet">
 	<link rel="stylesheet" href="bootstrap-3.3.7/dist/css/bootstrap-theme.min.css" crossorigin="anonymous">
-	
+
 	<script src="js/jquery-3.3.1.js"></script>
 	<script src="bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
 	<script src="js/depend.js"></script>
-	
 	<script>
 		$(document).ready(function(){
 			$('#myTabs a').click(function (e) {
 			  e.preventDefault()
 			  $(this).tab('show')
 			})
+
 		});
 	</script>
 </head>
 
 <body  style="background-color:#EBEBEB">
+	<c:if test="${requestScope.blogs eq null}">
+		<c:redirect url='listBlogByUid/${sessionScope.loginresult.uid}'></c:redirect>
+	</c:if>
 	<div class="container-fluid">
 		
 		<!--	导航栏-->
@@ -130,13 +134,18 @@
 								<div class="row">
 								<div class="span12" style="padding-left: 25px;padding-right: 25px">
 									<ul>
+
+					<c:forEach var="b" items="${requestScope.blogs}">
 										<li>
 											<div style="padding-bottom: 3px;overflow: hidden">
-												<a><h3>第一个博客</h3></a>
-												<h5 style="color:#928F8F;float: left">原创&nbsp;&nbsp;</h5>
-												<h5 style="color:#928F8F;float: left">2018年8月2日16：05：25&nbsp;&nbsp;</h5>
+												<a><h3>${b.title}</h3></a>
+												<h5 id="type" style="color:#928F8F;float: left">
+														${b.userToBlog.blogtype==1 ?  "原创" : "转载"}
+												&nbsp;&nbsp;</h5>
+
+												<h5 style="color:#928F8F;float: left">${b.time}&nbsp;&nbsp;</h5>
 <!--												被阅读数-->
-												<span style="color:#928F8F;margin-left: 10px"><span class="glyphicon glyphicon-eye-open" style="margin-top: 7px"></span>&nbsp;0</span>
+												<span style="color:#928F8F;margin-left: 10px"><span class="glyphicon glyphicon-eye-open" style="margin-top: 7px"></span>&nbsp;${b.points}</span>
 <!--												被评论数-->
 												<span style="color:#928F8F;margin-left: 10px"><span class="glyphicon glyphicon-comment" style="margin-top: 7px"></span>&nbsp;0</span>
 <!--												博客设置-->
@@ -144,28 +153,10 @@
 													<a href="#">查看&nbsp;&nbsp;|</a><a href="#">禁止评论&nbsp;&nbsp;|</a><a href="#">置顶</a>
 												</div>
 											</div>
-											
+
 										</li>
 										<hr />
-										
-										<li>
-											<div style="padding-bottom: 3px;overflow: hidden">
-												<a><h3>第二个博客</h3></a>
-												<h5 style="color:#928F8F;float: left">原创&nbsp;&nbsp;</h5>
-												<h5 style="color:#928F8F;float: left">2018年8月2日16：05：25&nbsp;&nbsp;</h5>
-<!--												被阅读数-->
-												<span style="color:#928F8F;margin-left: 10px"><span class="glyphicon glyphicon-eye-open" style="margin-top: 7px"></span>&nbsp;0</span>
-<!--												被评论数-->
-												<span style="color:#928F8F;margin-left: 10px"><span class="glyphicon glyphicon-comment" style="margin-top: 7px"></span>&nbsp;0</span>
-<!--												博客设置-->
-												<div style="float: right">
-													<a href="#">查看&nbsp;&nbsp;|</a><a href="#">禁止评论&nbsp;&nbsp;|</a><a href="#">置顶</a>
-												</div>
-											</div>
-											
-										</li>
-										<hr />
-										
+						</c:forEach>
 									</ul>
 								</div>
 								</div>
@@ -234,6 +225,5 @@
   	</div>	
 	  
 	</div>
-<script src="js/bootstrap-select.min.js"></script>
 </body>
 </html>
