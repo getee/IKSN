@@ -196,8 +196,8 @@ public class BlogControl {
      * @param model
      * @return
      */
-    @RequestMapping("/mCheckReportblog/{blog_id}/{reason}/{id}")
-    public String mCheckReportblog(@PathVariable int blog_id,@PathVariable String reason,@PathVariable int id,Model model){
+    @RequestMapping("/mCheckReportblog/{blog_id}/{id}")
+    public String mCheckReportblog(@PathVariable int blog_id,String reason,@PathVariable int id,Model model){
         System.out.println(blog_id+reason);
         model.addAttribute("blog_id",blog_id);
         model.addAttribute("reportReason",reason);

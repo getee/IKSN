@@ -285,7 +285,7 @@
 								<hr>
 								<li>
 									<div style="">
-										<div style="float: left"><a class="icon-observer" href="#" style="background-image: url(image/3_qq.jpg)"></a></div>
+										<div style="float: left"><a class="icon-observer" href="#" style="background-image: url(img/3_qq.jpg)"></a></div>
 										<div style="margin-top: 5px">
 											<a href="#">用户名</a>
 											<h5 style="color:#928F8F;float: right">2018年8月2日16：05：25</h5>&nbsp;
