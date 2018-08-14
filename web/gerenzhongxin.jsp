@@ -100,7 +100,7 @@
 	  	<td style="cursor: pointer"><a class="text-muted" href="gerenzhongxin.jsp"><h4>个人中心</h4></a></td>
 	  	<td style="cursor: pointer"><a class="text-muted" href="/user/listAllFriends/${sessionScope.loginresult.uid}/1"><h4>我的消息</h4></a></td>
 	  	<td style="cursor: pointer"><a class="text-muted" href="jifenzhongxin.jsp"><h4>积分</h4></a></td>
-	  	<td style="cursor: pointer"><a class="text-muted" href="writingCenter.jsp"><h4>我的博客</h4></a></td>
+	  	<td style="cursor: pointer"><a class="text-muted" href="/blog/mGetAllReportBlog"><h4>我的博客</h4></a></td>
 	  	<td style="cursor: pointer"><a class="text-muted" href="#"><h4>我的下载</h4></a></td>
 	  </tr>
 	</table>
@@ -116,13 +116,12 @@
 		<div class="row">
 			<div class="col-md-6">
 			<h3>NickName</h3>
-				<h3><span class="label label-info ">等级 <span class="badge">3</span></span></h3>
-			
+				<h3 ><span class="label label-info ">等级<span class="badge">${user.grade}</span></span></h3>
 			</div>
 			<div class="col-md-6">
 										<!-- Button trigger modal -->
 				<button type="button" class="btn btn-info btn-sm glyphicon glyphicon-edit" data-toggle="modal" data-target="#myModal" style="margin-left: 60%">
-					修改个人资料
+					修改个人资料iksn
 				</button>
 				<button  type="button"  color="#FFFFFF" class="btn btn-info btn-sm glyphicon glyphicon-edit" data-toggle="modal" style="margin-left: 60%; margin-top:2%">
 					<a href="zhanghao.jsp" ><font color="#FFFFFF">个人账号设置</font></a>
@@ -138,18 +137,18 @@
 							  </div>
 							  <div class="modal-body">
 							<!--修改表单-->
-								  <form>
+								  <form action="/user/updateuser" method="post">
 									  <div class="form-group">
 										  <label for="exampleInputEmail1">昵称</label>
-										  <input type="text" class="form-control" id="" placeholder="NickName">
+										  <input type="text" class="form-control" name="nickname" id="" placeholder="NickName">
 									  </div>
 
 									  <div class="form-group">
 										  <label class="radio-inline">
-											  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> 男
+											  <input type="radio" name="sex" id="inlineRadio1" value="0"> 男
 										  </label>
 										  <label class="radio-inline">
-											  <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> 女
+											  <input type="radio" name="sex" id="inlineRadio2" value="1"> 女
 										  </label>
 									  </div>
 
@@ -164,7 +163,7 @@
 									  </div>
 
 									  <div class="form-group">
-										  <label for="exampleInputPassword1">手机号码</label>
+										  <illegalresourcelabel for="exampleInputPassword1">手机号码</illegalresourcelabel>
 										  <div class="input-group">
 											  <input type="number" class="form-control" id="exampleInputPassword1" placeholder="Phone"  disabled>
 											  <span class="input-group-btn">
@@ -175,15 +174,16 @@
 
 									  <div class="form-group">
 										  <label for="exampleInputEmail1">自我简介</label>
-										  <input type="text" class="form-control" id="" placeholder="自我简介">
+										  <textarea placeholder="自我简介" name="introduce" style=" width:100%;height: 100px;"></textarea>
+									  </div>
+									  <div class="modal-footer">
+										  <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+										  <input type="submit" class="btn btn-primary"></input>
 									  </div>
 
 								  </form>
 							  </div>
-							  <div class="modal-footer">
-								<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-								<button type="button" class="btn btn-primary">保存修改</button>
-							  </div>
+
 							</div>
 						  </div>
 						</div>
@@ -331,7 +331,7 @@
 
           <c:forEach var="item" items="${ReportBlogList}">
               <div id="${item.id}" class="row" style="margin:auto;border-bottom-style:solid;border-bottom-width:2px;border-bottom-color:#E9E9E9">
-                  <div class="col-xs-12 col-md-8"><h4><a class="text-muted" href="userArticle.jsp">${item.blog.title}</a></h4><small style="margin-left: 2% ">举报原因：${item.reason}</small></div>
+                  <div class="col-xs-12 col-md-8"><h4><a class="text-muted" href="/blog/mCheckReportblog/${item.blog.bid}/${item.reason}/${item.id}">${item.blog.title}</a></h4><small style="margin-left: 2% ">举报原因：${item.reason}</small></div>
                   <div class="col-xs-6 col-md-4"><small style="margin-right: 20% ">2017-8-2</small>
                       <a href="javascript:delete_oneReportBlog(${item.id})">
                           <small id="del_oneReportBlog" data-toggle="modal" style="margin-right:3%;cursor: pointer" class="glyphicon glyphicon-trash"></small>

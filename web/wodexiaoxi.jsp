@@ -70,7 +70,6 @@
 					$("#alertDanger").css("display","block");
 				}
 
-
 			});
             //特效,输入雷电试试
 			
@@ -101,23 +100,74 @@
 					r+=360;
 				}
 			});
+
 			//点击新建私信，email获取焦点
 			$("#newMessage").click(function(){
 			    $("#exampleInputEmail1").focus();
+                var friendId="";
 			    $.each($("input:checkbox:checked"),function () {
-                    var friendId
-                    friendId=$(this).val();
-                    $("#exampleInputEmail1").val(friendId);
+			        if($(this).val()!="on"){
+
+                        friendId+=$(this).val()+",";
+                        $("#exampleInputEmail1").val(friendId);
+
+					}
+
                 })
 
 
 
 			});
+			//搜索好友
+            $("#searchFriendIdButton").click(function(){
+                var nickName=$("#friendId").val();
+
+                $.ajax({
+					url:"/user/searchFriend/${sessionScope.loginresult.uid}/"+nickName,
+					type:"get",
+					datatype:"json",
+					success:function(data){
+					    if(data!=null){
 
 
-		
-			
+                            $(".friend").remove();
+                            for (var i=0;i<data.length;i++){
+                                $(".father").append("<div id='friend"+data[i].uid+"' class='row friend' style='margin: auto'><div class='col-md-1'><div class='checkbox' style='margin-top: 20px'><label><input id='check"+data[i].uid+"' value='"+data[i].uid+"' class='checkboxs' type='checkbox'></label></div></div><div class='col-md-4'><img src='img/adminIcon.jpg' class='img-responsive img-thumbnail' alt='Img'></div><div class='col-md-6'><h4>"+data[i].nickname+"</h4><small>"+data[i].introduce+"</small></div></div>")
+                            }
+                        }
+					},
+
+				})
+
+
+
+
+
+            });
+
+
+
+
 		});
+		//删除关注的好友
+		function deleteFriend(){
+            var friendId="";
+            $.each($("input:checkbox:checked"),function () {
+                if($(this).val()!="on"){
+                    friendId+=$(this).val()+",";//拼接所有选中的好友的id
+                }
+            })
+			$.get("/user/deleteFriend/${sessionScope.loginresult.uid}/"+friendId,function (data) {
+			    if(data=="success"){
+			        var everyWillDeleteFriend=new Array();
+                    everyWillDeleteFriend=friendId.split(",");
+                    for (var i=0;i<everyWillDeleteFriend.length;i++){
+                        $("#friend"+everyWillDeleteFriend[i]).remove();
+					}
+
+				}
+            })
+		}
         //分页按钮点击事件
         function previousPage(nowPage){
 
@@ -149,10 +199,10 @@
 <div class="row" style="background-color:#E9E9E9;margin-left: 15%;margin-right: 15%">
 	<table class="table well" style="margin: 0px">
 	  <tr>
-          <td style="cursor: pointer"><a href="/blog/mGetAllReportBlog"><h4>个人中心</h4></a></td>
+          <td style="cursor: pointer"><a href="#"><h4>个人中心</h4></a></td>
           <td style="cursor: pointer"><a href="/user/listAllFriends/1/1"><h4>我的消息</h4></a></td>
           <td style="cursor: pointer"><a href="jifenzhongxin.jsp"><h4>积分</h4></a></td>
-          <td style="cursor: pointer"><a href="writingCenter.jsp"><h4>我的博客</h4></a></td>
+          <td style="cursor: pointer"><a href="/blog/mGetAllReportBlog"><h4>我的博客</h4></a></td>
           <td style="cursor: pointer"><a href="#"><h4>我的下载</h4></a></td>
 
       </tr>
@@ -163,7 +213,7 @@
 	<div class="row" style="margin-left: 0.5%;margin-top: -5px">
 		<nav>
 			<ul class="nav nav-tabs">
-			  <li role="presentation"><a href="user/receiveNotice/${sessionScope.loginresult.uid}">通知</a></li>
+			  <li role="presentation"><a href="user/receiveNotice/${sessionScope.loginresult.uid}/1">通知</a></li>
 			  <li role="presentation"><a href="/user/listAllFriends/${sessionScope.loginresult.uid}/1">私信</a></li>
 			  <li role="presentation"><a href="/user/receiveMessage/${sessionScope.loginresult.uid}">@我</a></li>
 			</ul>
@@ -182,9 +232,9 @@
   
 		  <div class="col-lg-12">
 			<div class="input-group">
-			  <input type="text" class="form-control" placeholder="搜索联系人">
+			  <input type="text" id="friendId" name="friendId" class="form-control" placeholder="搜索联系人">
 			  <span class="input-group-btn">
-				<button class="btn btn-default" type="button">Go!</button>
+				<button id="searchFriendIdButton" class="btn btn-default" type="button">Go!</button>
 			  </span>
 			</div><!-- /input-group -->
 		  </div><!-- /.col-lg-6 -->
@@ -205,7 +255,7 @@
 				操作 <span class="caret"></span>
 			  </button>
 			  <ul class="dropdown-menu">
-				<li><a href="#">删除</a></li>
+				<li><a href="javascript:deleteFriend()">删除</a></li>
 				<li><a href="#">标记已读</a></li>
 				
 			  </ul>
@@ -214,12 +264,12 @@
 	</div>
 <!--好友列表-->
 		<div class="row well" style="margin: 0%;height: 600px;">
-		<div class="row" style="height: 80%;">
+		<div class="row father" style="height: 80%;">
             <c:forEach var="friend" items="${allFriends}">
 
 
             <!--		单个用户-->
-		<div class="row " style="margin: auto">
+		<div id="friend${friend.uid}" class="row friend" style="margin: auto">
 		<div class="col-md-1">
 			<div class="checkbox" style="margin-top: 20px">
 				<label>
@@ -240,7 +290,7 @@
             <!--		单个用户结束-->
             </c:forEach>
 
-		
+
 		
 		</div>
 

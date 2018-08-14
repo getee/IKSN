@@ -2,11 +2,16 @@ package group.first.iksn.control;
 
 import com.sun.org.glassfish.gmbal.ParameterNames;
 import group.first.iksn.model.bean.Message;
+import com.sun.deploy.net.HttpResponse;
 import group.first.iksn.model.bean.Notice;
 import group.first.iksn.model.bean.User;
 import group.first.iksn.service.UserService;
+import group.first.iksn.util.EncodingTool;
 import group.first.iksn.util.HttpUtil;
 import group.first.iksn.util.IndustrySMS;
+import org.apache.ibatis.jdbc.Null;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,18 +23,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import org.springframework.web.bind.annotation.*;
+import sun.nio.cs.ext.ISO_8859_11;
 
 
 import java.io.UnsupportedEncodingException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Controller
 @RequestMapping("/user")
@@ -55,20 +61,35 @@ public class UserControl {
     }
     //登录方法
     @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public String login(String emailorphone, String password, HttpSession session,Model model){
+    public String login(String iscollect, String emailorphone, String password, HttpSession session, HttpServletResponse response,Model model){
         User user=userService.login(emailorphone,password);
-
+        Cookie nameCookie=new Cookie("nameCookie",emailorphone);
+        Cookie passwordCookie=new Cookie("passwordCookie",password);
+        System.out.println(iscollect);
         if (user!=null){
             session.setAttribute("loginresult",user);
             model.addAttribute("logmes",true);
             System.out.println(model);
+            if(iscollect!=null){
+                nameCookie.setMaxAge(60*60*24*7);
+                passwordCookie.setMaxAge(60*60*24*7);
+                nameCookie.setPath("/");
+                passwordCookie.setPath("/");
+                response.addCookie(nameCookie);
+                response.addCookie(passwordCookie);
+            }
         }
         else {
             model.addAttribute("logmes",false);
             System.out.println(model);
         }
 
-
+        return "index";
+    }
+    //退出登录
+    @RequestMapping("/exit")
+    public String  exit(HttpSession session){
+        session.removeAttribute("loginresult");
         return "index";
     }
 
@@ -77,16 +98,14 @@ public class UserControl {
      * @author BruceLee
      * @return
      */
-    @RequestMapping("/receiveNotice/{uid}")
-    public String receiveNotice(@PathVariable("uid") int uid, Model model){
-        int index=0;//定义一个计数器来记录未读的通知数量
-        List<Notice> allNotices=userService.receiveNotice(uid);//遍历出所有的通知
-        for (Notice notice:allNotices) {
-            if(notice.getIsread()==0){
-                index+=1;
-            }
-        }
-        model.addAttribute("notReadNum",index);//返回未读的消息数量
+    @RequestMapping("/receiveNotice/{uid}/{nowPage}")
+    public String receiveNotice(@PathVariable("uid") int uid,@PathVariable("nowPage") int nowPage,Model model){
+        List<Notice> allNotices=userService.receiveNotice(uid,nowPage);//遍历出所有的通知
+        int notReadNoticeNum=userService.listNotReadNoticeNum(uid);
+        int AllNoticeNum=userService.listAllNoticeNum(uid);
+        model.addAttribute("nowNoticePage",nowPage);
+        model.addAttribute("AllNoticeNum",AllNoticeNum);
+        model.addAttribute("notReadNum",notReadNoticeNum);//返回未读的消息数量
         model.addAttribute("allNotices",allNotices);//返回所有的消息
         return "tongzhi";
     }
@@ -100,14 +119,8 @@ public class UserControl {
     public String changeIsRead(@PathVariable("isRead") int isRead,@PathVariable("uid") int uid){
         boolean result=userService.changeIsRead(isRead,uid);//isRead 为前台传入的参数0或者1，表示已读或者未读
         if(result){
-            int index=0;//定义一个计数器来记录未读的通知数量
-            List<Notice> allNotices=userService.receiveNotice(uid);//遍历出所有的通知
-            for (Notice notice:allNotices) {
-                if(notice.getIsread()==0){
-                    index+=1;
-                }
-            }
-            return String.valueOf(index);//ajax返回未读数量，进行实时更新
+            int notReadNoticeNum=userService.listNotReadNoticeNum(uid);
+            return String.valueOf(notReadNoticeNum);//ajax返回未读数量，进行实时更新
         }else{
             return null;
         }
@@ -162,18 +175,20 @@ public class UserControl {
      * @return
      */
     @RequestMapping("/sendMessage/{fromid}")
-    public String  sendMessage(@ModelAttribute("sendMessage")Message message,@PathVariable("fromid") int fromid,Model model){
-        //Calendar calendar=Calendar.getInstance();
-        message.setFromid(fromid);
-//        try {
-//            String content=new String(message.getContent().getBytes("ISO-8859-1"),"utf-8");
-//            message.setContent(content);
-//        } catch (UnsupportedEncodingException e) {
-//            e.printStackTrace();
-//        }
-        message.setTime(new Date().toLocaleString());
-        try{
-            System.out.println(message);
+    public String  sendMessage(HttpServletRequest request,@PathVariable("fromid") int fromid,Model model){
+
+        String[] everyToId=request.getParameter("toid").split(",");
+        for (int i=0;i<everyToId.length;i++){
+            Message message=new Message();
+            message.setFromid(fromid);
+            message.setToid(Integer.parseInt(everyToId[i]));
+            message.setContent(request.getParameter("content"));
+            Date d = new Date();
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            message.setTime(df.format(d));
+
+
+          // message.setTime(new Date().toLocaleString());
             boolean result=userService.sendMessage(message);
             if(result){
                 model.addAttribute("sendResult","sendSuccess");
@@ -182,10 +197,8 @@ public class UserControl {
                 model.addAttribute("sendResult","sendError");
 
             }
-        }catch (Exception e){
-            model.addAttribute("sendResult","sendError");
-            e.printStackTrace();
         }
+
         return "wodexiaoxi";
     }
 
@@ -206,6 +219,37 @@ public class UserControl {
         model.addAttribute("friendNums",friendNums);
         return "wodexiaoxi";
         }
+
+    /**
+     * 根据NickName查询该用户的好友
+     * @author BruceLee
+     * @return
+     */
+    @RequestMapping("/searchFriend/{uid}/{friendNickName}")
+    @ResponseBody
+        public void searchFriend(HttpServletResponse response,@PathVariable("uid") int uid, @PathVariable("friendNickName") String friendNickName){
+        System.out.println(EncodingTool.encodeStr(friendNickName));
+        List<User> searchedFriend=userService.searchFriend(EncodingTool.encodeStr(friendNickName),uid);
+            JSONArray jsonArray=new JSONArray();
+        for (User u:searchedFriend) {
+            JSONObject jsonObject=new JSONObject();
+            jsonObject.put("uid",u.getUid());
+            jsonObject.put("nickname",u.getNickname());
+            jsonObject.put("picturepath",u.getPicturepath());
+            jsonObject.put("introduce",u.getIntroduce());
+            jsonArray.put(jsonObject);
+        }
+            response.setContentType("text/json;charset=utf-8");
+        try {
+            PrintWriter out=response.getWriter();
+            out.write(jsonArray.toString());
+            out.flush();
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //return null;
+        }
     /**
      * 查询该用户收到的私信
      * @author BruceLee
@@ -225,6 +269,34 @@ public class UserControl {
         model.addAttribute("allMessages",allMessages);//返回所有的消息
         model.addAttribute("allSendMessageUsers",allSendMessageUsers);
         return "shouxiaoxi";
+    }
+
+    /**
+     * 定时刷新新的通知及时提示用户
+     * @author BruceLee
+     * @return
+     */
+    @RequestMapping("/timingReceivingNotice/{uid}")
+    @ResponseBody
+    public String timingReceivingNotice(@PathVariable("uid") int uid){
+        int nowNoticeNum=userService.listAllNoticeNum(uid);
+        return String.valueOf(nowNoticeNum);
+    }
+
+    /**
+     * 删除该用户选中的所有要删除关注的好友
+     * @author BruceLee
+     * @return
+     */
+    @RequestMapping("/deleteFriend/{uid}/{allFriendId}")
+    @ResponseBody
+    public String deleteFriend(@PathVariable("uid") int uid,@PathVariable("allFriendId") String  allFriendId){
+        String[] everyFriendId=allFriendId.split(",");
+        boolean deleteFriendResult=true;
+        for (int i=0;i<everyFriendId.length;i++){
+            deleteFriendResult=userService.deleteChooseFriend(uid,Integer.parseInt(everyFriendId[i]));
+        }
+        return deleteFriendResult==true?"success":"error";
     }
     /**
      * 本方法用于前台注册页面获取手机验证码
@@ -275,5 +347,52 @@ public class UserControl {
         }
 
 
+    }
+
+    //修改用户资料
+    @RequestMapping(value = "/updateuser")
+    public String updateUser(User user, Model model) {
+        System.out.println(user.getNickname() + "VVVVV" + user.getUid());
+        System.out.println(user);
+        User u = userService.updateUser(user);
+        model.addAttribute("user", u);//把对象u传到前台；
+        return "gerenzhongxin";
+    }
+
+
+
+    //修改用户密码
+    @RequestMapping(value = "/updatePassword")
+    public String updatePassword(@RequestParam("uid") int uid,
+                                 @RequestParam("password") String password,
+                                 @RequestParam("newpassword") String newpassword,
+                                 @RequestParam("equelspassword") String equelspassword, ModelMap model) {
+        System.out.println(uid);
+        System.out.println(password);
+        System.out.println(newpassword);
+        if (!userService.isUserExist(uid)) {
+            model.addAttribute("msg", "用户名不存在！");
+        } else {
+            if (password.equals(userService.getId(uid))) {
+                if (!newpassword.equals(equelspassword)) {
+                    model.addAttribute("msg", "密码不一致");
+                } else {
+                    userService.updatePassword(uid, newpassword);
+                    model.addAttribute("msg", "修改密码成功！");
+                    System.out.println("修改成功");
+                }
+            } else {
+                model.addAttribute("msg", "密码错误！");
+            }
+        }
+        return "zhanghao";
+    }
+
+
+    @RequestMapping(value = "userGrade")
+    public int  userGrade(@RequestParam("uid") int uid, Model model) {
+         int grade=userService.userGrade(uid);
+         model.addAttribute("等级",grade);
+         return grade;
     }
 }

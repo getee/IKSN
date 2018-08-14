@@ -1,11 +1,7 @@
 package group.first.iksn.control;
 
 
-import group.first.iksn.model.bean.IllegalBlog;
-import group.first.iksn.model.bean.Blog;
-import group.first.iksn.model.bean.BlogTag;
-import group.first.iksn.model.bean.UserToBlog;
-import group.first.iksn.model.bean.ReportBlog;
+import group.first.iksn.model.bean.*;
 import group.first.iksn.service.BlogService;
 import group.first.iksn.util.EncodingTool;
 import org.springframework.stereotype.Controller;
@@ -15,6 +11,7 @@ import org.apache.ibatis.jdbc.Null;
 
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -42,17 +39,24 @@ public class BlogControl {
         System.out.println(textcontent);
         return "sousuo";
     }
+
     /**
-     *管理员删除被用户举报且不合法的博客
+     * 管理员删除被用户举报且不合法的博客
      * wenbin
      * @param blog_id
+     * @param report_id
      * @return
      */
-    @RequestMapping("/mDeleteBlogForReported")
-    @ResponseBody//此注解不能省略 否则ajax无法接受返回值
-    public String mDeleteBlogForReported(int blog_id){
+    @RequestMapping("/mDeleteBlogForReported/{blog_id}/{report_id}")
+    @ResponseBody
+    public String mDeleteBlogForReported(@PathVariable  int blog_id,@PathVariable int report_id){
         System.out.println("调用managerDeleteBlogForReported"+blog_id);
-        return "success";
+        boolean deleteResult=blogService.deleteIllegalblog(blog_id,report_id);
+        if(deleteResult){
+            return "success";
+        }else{
+            return "error";
+        }
     }
 
 
@@ -103,15 +107,15 @@ public class BlogControl {
      * @param blog_id
      * @return
      */
-    @RequestMapping("/mSendBackIllegalblog")
+    @RequestMapping("/mSendBackIllegalblog/{blog_id}/{reportReason}/{report_id}")
     @ResponseBody
-    public String mSendBackIllegalblog(int blog_id){
+    public String mSendBackIllegalblog(@PathVariable int blog_id,@PathVariable String reportReason,@PathVariable int report_id){
         IllegalBlog blog=new IllegalBlog();
-        blog.setIllegalcause("文采不好，毫无趣味");
+        blog.setIllegalcause(reportReason);
         blog.setBid(blog_id);
 
 
-        boolean sendBackResult=blogService.sendBackIllegalblog(blog);
+        boolean sendBackResult=blogService.sendBackIllegalblog(blog,report_id);
         if(sendBackResult){
             return "success";
         }else{
@@ -128,12 +132,18 @@ public class BlogControl {
     @RequestMapping(value = "/mGetAllReportBlog")
     public String mGetAllReportBlog(Model model){
         List<ReportBlog> reportBlogs=blogService.getAllReportBlog();
+        List<ReportResource> reportResources=blogService.getAllReportResource();
         System.out.println(reportBlogs);
         for (ReportBlog i:reportBlogs){
             System.out.println(i.getBlog());
         }
+        System.out.println(reportResources);
+        for (ReportResource r:reportResources){
+            System.out.println(r.getResource());
+        }
         model.addAttribute("ReportBlogList",reportBlogs);
-        return  "gerenzhongxin";
+        model.addAttribute("ReportResourceList",reportResources);
+        return  "jubaoguanl";
     }
 
     /**
@@ -144,15 +154,64 @@ public class BlogControl {
     @RequestMapping("/mReject_oneReportblog/{id}")
     @ResponseBody
     public String mReject_oneReportblog(@PathVariable int id){
-        ReportBlog blog=new ReportBlog();
-        blog.setId(id);
+//        ReportBlog blog=new ReportBlog();
+//        blog.setId(id);
 
-        boolean RejectResult=blogService.Reject_oneReportblog(blog);
+        boolean RejectResult=blogService.Reject_oneReportblog(id);
         if(RejectResult){
             return "success";
         }else{
             return "error";
         }
+    }
+
+
+/**
+ * 博客评论
+ */
+    @RequestMapping("/discuss")
+    public String discuss(@ModelAttribute("discuss")BlogComments blogComments){
+        System.out.println(blogComments);
+        boolean result=blogService.discuss(blogComments);
+        if(!result)
+        {
+            return "index";
+        }else
+        {
+            return "userArticle";
+        }
+    }
+    /**
+     * 博客评论回复
+     */
+
+    @RequestMapping("/answerComment")
+    public String answerComment(@ModelAttribute("answerComment")BlogComments blogComments){
+        System.out.println(blogComments);
+        boolean result=blogService.answerComment(blogComments);
+        if(!result)
+        {
+            return "index";
+        }else
+        {
+            return "userArticle";
+        }
+    }
+    /**
+     * 管理员查看被举报的博客，进行审核
+     * wenbin
+     * @param blog_id 博客id
+     * @param reason 举报原因
+     * @param model
+     * @return
+     */
+    @RequestMapping("/mCheckReportblog/{blog_id}/{id}")
+    public String mCheckReportblog(@PathVariable int blog_id,String reason,@PathVariable int id,Model model){
+        System.out.println(blog_id+reason);
+        model.addAttribute("blog_id",blog_id);
+        model.addAttribute("reportReason",reason);
+        model.addAttribute("report_id",id);
+        return "userArticle";
     }
 
 }

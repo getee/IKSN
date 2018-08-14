@@ -33,6 +33,8 @@
     <script src="bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
     <script>
 		$(document).ready(function(){
+
+
 			//所有li元素的点击事件
 			$("li").click(function(){
 				if($(this).click){
@@ -118,6 +120,22 @@
 			});
 
         }
+        //分页
+        function shangyiye(nowPage){
+            if(nowPage-1>0){
+
+                window.location="/user/receiveNotice/${sessionScope.loginresult.uid}/"+(nowPage-1);
+            }
+
+		}
+
+        function xiayiye(nowPage,AllNoticeNum){
+            var maxPage;
+            AllNoticeNum%7==0?AllNoticeNum=(friendNums/7):maxPage=(AllNoticeNum/7+1);
+            if((nowPage*1+1)<=maxPage){
+                window.location="/user/receiveNotice/${sessionScope.loginresult.uid}/"+(nowPage*1+1);
+            }
+		}
 	</script>
     <!--	特效-->
 
@@ -143,7 +161,7 @@
 	<div class="row" style="margin-left: 0.5%;margin-top: -5px">
 		<nav>
 			<ul class="nav nav-tabs">
-  <li role="presentation"><a href="/user/receiveNotice/${sessionScope.loginresult.uid}">通知</a></li>
+  <li role="presentation"><a href="/user/receiveNotice/${sessionScope.loginresult.uid}/1">通知</a></li>
   <li role="presentation"><a href="/user/listAllFriends/${sessionScope.loginresult.uid}/1">私信</a></li>
   <li role="presentation"><a href="/user/receiveMessage/${sessionScope.loginresult.uid}">@我</a></li>
 </ul>
@@ -190,7 +208,17 @@
 			</c:forEach>
 		</div>
 	</div>
-<!--	新建私信模块-->
+<!--	分页-->
+	<div class="row ">
+
+		<nav aria-label="...">
+			<ul class="pager">
+				<li><a href="javascript:shangyiye(${nowNoticePage})">上一页</a></li>
+				<li><a href="javascript:xiayiye('${nowNoticePage}','${AllNoticeNum}')">下一页</a></li>
+			</ul>
+		</nav>
+
+	</div>
 
 
 </div>

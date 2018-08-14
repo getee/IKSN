@@ -33,21 +33,16 @@
 <body>
 
 <div id="fluid_Div" class="container-fluid" style="background-color:#F4EEEE;">
- 
+
   <!-- Stack the columns on mobile by making one full-width and the other half-width -->	
 <!--  标题-->
-   <div class="row" style="background-image: url(img/2de797545de56274f03a5920eb3a1.jpg);background-size:cover;background-repeat: no-repeat;">
-    <div  >
-		<h1 style="margin-left: 42%;font-size: 70px">I&nbsp;K&nbsp;S&nbsp;N</h1>
-		<p>&nbsp;</p>
-	</div>
-  </div>
+
 <!--  导航-->
 <%@ include file="top.jsp"%>
 
 </div>
 		  <!--		  导航结束-->
-  <div class="row" style="background-color:#EBEBEB">
+  <div class="row" style="background-color:#EBEBEB;width: 101%;">
 <!--	  左边导航栏-->
 	  <div class="col-xs-12 col-md-2">
 	  	
@@ -216,7 +211,7 @@
 					<form action="/user/login" method="post">
 					  <div class="form-group">
 						<label for="exampleInputEmail1"></label>
-						<input type="text" name="emailorphone" class="form-control" id="exampleInputEmail1" placeholder="username" required>
+						<input type="text" name="emailorphone" class="form-control" id="exampleInputEmail1"  placeholder="username" required>
 					  </div>
 					  <div class="form-group">
 						<label for="exampleInputPassword1"></label>
@@ -224,11 +219,11 @@
 					  </div>
 					  <div class="checkbox">
 						<label>
-						  <input type="checkbox"> 记住密码
+						  <input type="checkbox"  name="iscollect" > 记住密码
 						</label>
 					  </div>
 
-					  <button type="submit" class="btn btn-default">登陆</button>
+					  <button type="submit" class="btn btn-default" id="denglu">登陆</button>
 					  <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">
 						  注册
 						</button>
@@ -248,8 +243,8 @@
 					<c:when test="${logmes==true}">
 							<script>
 								$("#dl").attr("disabled",true);
-								$("#dlks").html("<img src='img/gg.jpg' width='279px' height='202px'/>")
-							</script>
+								$("#dlks").html("<img src='img/gg.jpg' width='280px' height='202px'/>")
+                            </script>
 					</c:when>
 					<c:otherwise>
 						<div class='alert alert-warning alert-dismissible' role='alert'>
@@ -261,7 +256,14 @@
 					</c:otherwise>
 				</c:choose>
 				  </c:if>
+                  <!--使用cookie-->
+                    <script>
 
+                        $(document).ready(function () {
+                                $("#exampleInputEmail1").val("${cookie.nameCookie.value}");
+                                $("#exampleInputPassword1").val("${cookie.passwordCookie.value}");
+                        })
+                    </script>
 
 
 			  	<!-- Modal -->
