@@ -2,6 +2,7 @@ package group.first.iksn.service;
 
 import group.first.iksn.model.bean.Message;
 import group.first.iksn.model.bean.Notice;
+import group.first.iksn.model.bean.Scoring;
 import group.first.iksn.model.bean.User;
 
 import java.util.List;
@@ -53,4 +54,10 @@ public interface UserService {
     int friendNum(int uid);
     //根据登录方法
     User login(String emailorphone,String password);
+    //获取登录用户积分详情
+    List<Scoring> getScoring (int uid);
+    //用户积分消费记录
+    List<Scoring> costScoring(int uid);
+    //用户积分充值记录
+    List<Scoring> rechargeScoring(int uid);
 }

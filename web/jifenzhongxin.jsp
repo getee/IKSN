@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -143,18 +144,22 @@
   			<td>日期</td>
   		</tr>
 <!--  		数据-->
-  		<tr>
-  			<td>0</td>
-  			<td>0</td>
-  			<td>0</td>
-  			<td>0</td>
-  		</tr>
-  		<tr>
-  			<td>0</td>
-  			<td>0</td>
-  			<td>0</td>
-  			<td>0</td>
-  		</tr>
+		<c:forEach items="${requestScope.cost}" var="c">
+			<tr>
+				<td>-${c.number}</td>
+				<td>0</td>
+				<td>${c.operation}</td>
+				<td>${c.time}</td>
+			</tr>
+		</c:forEach>
+		<c:forEach items="${requestScope.recharge}" var="c">
+			<tr>
+				<td>+${c.number}</td>
+				<td>0</td>
+				<td>${c.operation}</td>
+				<td>${c.time}</td>
+			</tr>
+		</c:forEach>
 	</table>
 </div>
 	
@@ -162,9 +167,9 @@
 <!--第二列-->
 <div class="row" style="margin-left: 15%;margin-right: 15%">
 	<div class="col-md-3 well">
-		<div class="row" style="margin-left: 25%"><h4><a class="text-muted" href="#">积分消费记录</a></h4></div>
+		<div class="row" style="margin-left: 25%"><h4><a class="text-muted" href="/user/costScoring?uid=${sessionScope.loginresult.uid}">积分消费记录</a></h4></div>
 		<hr>
-		<div class="row" style="margin-left: 25%"><h4><a class="text-muted" href="#">积分充值记录</a></h4></div>
+		<div class="row" style="margin-left: 25%"><h4><a class="text-muted" href="/user/rechargeScoring?uid=${sessionScope.loginresult.uid}">积分充值记录</a></h4></div>
 	</div>
 	<div class="col-md-9"></div>
 </div>

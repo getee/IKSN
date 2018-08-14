@@ -1,9 +1,6 @@
 package group.first.iksn.model.dao;
 
-import group.first.iksn.model.bean.Attention;
-import group.first.iksn.model.bean.Message;
-import group.first.iksn.model.bean.Notice;
-import group.first.iksn.model.bean.User;
+import group.first.iksn.model.bean.*;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -37,4 +34,10 @@ public interface UserDAO {
 
      //修改用户密码
     boolean updatePassword(User user);
+    //获取用户的积分明细
+    List<Scoring> getScoring(int uid);
+    //积分消费
+    List<Scoring> costScoring(int uid);
+    //积分充值记录
+    List<Scoring> rechargeScoring(int uid);
 }

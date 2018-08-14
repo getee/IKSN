@@ -4,6 +4,7 @@ import com.sun.org.glassfish.gmbal.ParameterNames;
 import group.first.iksn.model.bean.Message;
 import com.sun.deploy.net.HttpResponse;
 import group.first.iksn.model.bean.Notice;
+import group.first.iksn.model.bean.Scoring;
 import group.first.iksn.model.bean.User;
 import group.first.iksn.service.UserService;
 import group.first.iksn.util.HttpUtil;
@@ -26,6 +27,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 
 import java.io.UnsupportedEncodingException;
@@ -346,5 +348,29 @@ public class UserControl {
             }
         }
         return "zhanghao";
+    }
+    //用户积分明细
+    @RequestMapping("/getScoring")
+    public ModelAndView getScoring(@RequestParam("uid") int uid){
+        List<Scoring> scorings=userService.getScoring(uid);
+        ModelAndView mav=new ModelAndView("myscore");
+        mav.addObject("scorings",scorings);
+        return mav;
+    }
+    //积分消费记录
+    @RequestMapping("/costScoring")
+    public ModelAndView costScoring(@RequestParam("uid") int uid){
+        ModelAndView mad=new ModelAndView("jifenzhongxin");
+        List<Scoring> scorings=userService.costScoring(uid);
+        mad.addObject("cost",scorings);
+        return mad;
+    }
+    //积分充值记录
+    @RequestMapping("/rechargeScoring")
+    public ModelAndView rechargeScoring(@RequestParam("uid") int uid){
+        ModelAndView mad=new ModelAndView("jifenzhongxin");
+        List<Scoring> scorings=userService.rechargeScoring(uid);
+        mad.addObject("recharge",scorings);
+        return mad;
     }
 }
