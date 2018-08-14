@@ -60,45 +60,55 @@ public class BlogControl {
     }
 
 
-@RequestMapping(value = "/addBlog",method = RequestMethod.POST)
-    public  String  addBlog(@ModelAttribute ("blog")  Blog blog,@ModelAttribute ("blogTag") BlogTag blogTag,@ModelAttribute ("userToBlog") UserToBlog userToBlog) {
+@RequestMapping(value = "/addBlog")
+    public  ModelAndView  addBlog(@ModelAttribute ("blog")  Blog blog,@ModelAttribute ("blogTag") BlogTag blogTag,@ModelAttribute ("userToBlog") UserToBlog userToBlog) {
     Date d = new Date();
     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    blog.setTime(df.format(d));
-    blog.setTitle(EncodingTool.encodeStr(blog.getTitle()));//解决汉字乱码问题
-    blog.setContent(EncodingTool.encodeStr(blog.getContent()));
+    String time=df.format(d);
+    blog.setTime(time);
+    blog.setPoints(0);
     System.out.println(blog);
+    System.out.println(userToBlog.getUid());
     boolean result = blogService.addBlogService(blog);
+
     //因为的多张表关联，要首先把主表的数据插入完成在进行其他副表的数据插入
     if (result == true) {
+        System.out.println(time);
+        int bid=blogService.selectBidService(time);
+        System.out.println(bid);
         //对blogTag表进行数据插入
-        blogTag.setBid(7);
-        blogTag.setBtag(EncodingTool.encodeStr(blogTag.getBtag()));
-        System.out.println(blogTag);
+        blogTag.setBid(bid);
         boolean result1 = blogService.addBlogTagService(blogTag);
-        //对blogTag表进行数据插入
-        userToBlog.setUid(6);
-        userToBlog.setBid(7);
-        userToBlog.setIsdraft(0);
+        //对userToBlog表进行数据插入
+        userToBlog.setBid(bid);
+        System.out.println(userToBlog.getIsdraft());
         System.out.println(userToBlog);
         boolean result2=blogService.addUserToBlogService(userToBlog);
         if (result1 == true&& result2==true) {
-            return "userArticle";
+            return new ModelAndView("writingCenter","blog",blog);
         } else {
-            return "Writer";
+            return new ModelAndView("Writer");
         }
     }
     else
-        return "Writer";
+        return new ModelAndView("Writer");
     }
-    //根据bid来查询博客的相应数据
+    //根据uid用户ID来查询博客的相应数据
+    @RequestMapping("/listBlogByUid/{uid}")
+    public String selectBlogByID(@PathVariable("uid") int uid,Model model){
+        System.out.println("222222");
+        List<Blog> blogs=blogService.scanBlogService(uid);
+        model.addAttribute("blogs",blogs);
+        System.out.println(blogs);
+             return "writingCenter";
+    }
+
+    //根据bid博客ID来查询博客的相应数据
     @RequestMapping("/listBlogByBid")
-    public  String selectBlogByID(){
-
-        List<Blog> bl=blogService.scanBlogService(4);
-
-            System.out.println(bl);
-        return "index";
+    public ModelAndView listBlogByID(@RequestParam(value = "bid",defaultValue = "8") int bid){
+        Blog listblog=blogService.listBlogService(bid);
+        System.out.println(listblog);
+        return new ModelAndView("userArticle","listblog",listblog);
     }
 
     /**

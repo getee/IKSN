@@ -16,8 +16,14 @@ public interface BlogDAO {
     //处理添加UserToBlog的dao
     public boolean processAddUserToBlog(UserToBlog userToBlog);
 
-    public List<Blog> processScanBlog(int bid);
     //添加下架博客
+    //根据uid来查询Blog
+    public List<Blog> processScanBlog(int uid);
+    //根据bid来查询Blog
+    public Blog processListBlog(int bid);
+    //查询bid
+    public int  selectBid(String time);
+
     boolean addIllegalblog(IllegalBlog blog);
     //获取所有被举报博客
     List<ReportBlog> getAllReportBlog();

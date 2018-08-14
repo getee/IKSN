@@ -25,11 +25,16 @@ public interface BlogService {
     //添加UserToBlog的服务层
     public  boolean addUserToBlogService(UserToBlog userToBlog);
 
-    public List<Blog> scanBlogService(int bid);
-
     boolean discuss(BlogComments blogComments);
 
     boolean answerComment(BlogComments blogComments);
+    public List<Blog> scanBlogService(int uid);
+
+    public Blog listBlogService(int bid);
+
+    public int selectBidService(String time);
+
+
 
     //举报博客
     public boolean reportBlog(ReportBlog reportBlog);
