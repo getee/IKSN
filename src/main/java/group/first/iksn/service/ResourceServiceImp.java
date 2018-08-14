@@ -16,6 +16,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import java.util.ArrayList;
+
 @Component("resourceService")
 public class ResourceServiceImp  implements ResourceService{
     private ResourceDAO resourceDAO;
@@ -38,6 +40,12 @@ public class ResourceServiceImp  implements ResourceService{
     public boolean houseResource(CollectResource h) {
         System.out.println(h);
         return resourceDAO.collectResource(h);
+    }
+
+    @Override
+    public ArrayList<Resource> searchResource(String s) {
+        System.out.println("servince层"+s);
+        return resourceDAO.searchResource(s);
     }
 
     @Override

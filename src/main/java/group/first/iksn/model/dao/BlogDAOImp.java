@@ -8,8 +8,21 @@ import java.util.Map;
 
 @Component("blogDAO")
 public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
-    public String detailedBlogSearchResultMap() {
-        return null;
+
+    public List<Blog> detailedBlogSearchResultMap(String s) {
+        List<Blog> b=getSqlSession().getMapper(BlogDAO.class).detailedBlogSearchResultMap(s);
+        return b;
+    }
+
+
+    /**
+     * 首页推送
+     * @return
+     */
+    @Override
+    public List<Blog> detailedBlogPush() {
+        List<Blog> b=getSqlSession().getMapper(BlogDAO.class).detailedBlogPush();
+        return b;
     }
 
 

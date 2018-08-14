@@ -1,30 +1,22 @@
 package group.first.iksn.control;
 
-import group.first.iksn.model.bean.CollectResource;
-import group.first.iksn.model.bean.Resource;
-import group.first.iksn.model.bean.ReportResource;
-import group.first.iksn.model.bean.ResourceComments;
+import group.first.iksn.model.bean.*;
 import group.first.iksn.service.ResourceService;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 import  group.first.iksn.util.EncodingTool;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import java.util.ArrayList;
 import java.io.IOException;
 
 
-import  group.first.iksn.util.EncodingTool;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
-
 import java.io.UnsupportedEncodingException;
 
 @Controller
@@ -180,6 +172,22 @@ public class ResourceControl {
     public String mDeleteResourceForReport(@PathVariable int resourceid){
         resourceService.deleteIllegalResource(resourceid);
         return "jubaoguanl";
+    }
+
+
+    /**
+     * 搜索资源的方法
+     * @param content
+     * @return
+     */
+    @RequestMapping("/resourceSearch")
+    public ModelAndView resourceSearch(@RequestParam("content") String content){
+       ModelAndView mv=new ModelAndView();
+       ArrayList<Resource> re=getResourceService().searchResource(content);
+       System.out.println(re);
+       mv.addObject("resource",re);
+       mv.setViewName("xiazai");
+       return  mv;
     }
 
     //资源举报

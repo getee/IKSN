@@ -8,6 +8,7 @@ import group.first.iksn.model.bean.ResourceComments;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.ArrayList;
 
 @Component("resourceDAO")
 public class ResourceDAOImp extends BaseDAOImp implements ResourceDAO {
@@ -88,6 +89,12 @@ public class ResourceDAOImp extends BaseDAOImp implements ResourceDAO {
         return isOK;
     }
 
+    @Override
+    public ArrayList<Resource> searchResource(String s) {
+        ArrayList<Resource> re=getSqlSession().getMapper(ResourceDAO.class).searchResource(s);
+        System.out.println("resourceDAOImp:"+re);
+        return re;
+    }
 
 
     /**

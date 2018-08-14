@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
+
 
 @Component("blogService")
 public class BlogServiceImp implements BlogService {
@@ -80,6 +82,26 @@ public class BlogServiceImp implements BlogService {
     public boolean Reject_oneReportblog(int report_id) {
         return blogDAO.deleteBlogFromReport(report_id);
     }
+
+    /**
+     * 搜索资源的方法
+     * @param s
+     * @return
+     */
+    public List<Blog> detailedBlogSearchResultMap(String s){
+
+        return  blogDAO.detailedBlogSearchResultMap(s);
+    }
+
+    /**
+     * 首页推送的方法
+     * @return
+     */
+    @Override
+    public List<Blog> detailedBlogPush() {
+        return blogDAO.detailedBlogPush();
+    }
+
 
 
     @Override

@@ -6,11 +6,15 @@ import group.first.iksn.model.bean.ReportResource;
 import group.first.iksn.model.bean.ResourceComments;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import java.util.ArrayList;
+
 public interface ResourceService {
     //评论评分
     boolean assess(ResourceComments c);
     //收藏资源
     boolean houseResource(CollectResource h);
+
+    ArrayList<Resource> searchResource(String s);
 
     int downResource(Integer rid);
 

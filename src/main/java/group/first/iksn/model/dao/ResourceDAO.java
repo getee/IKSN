@@ -7,6 +7,7 @@ import group.first.iksn.model.bean.ResourceComments;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.ArrayList;
 
 public interface ResourceDAO {
     //对资源进行评价评论
@@ -34,4 +35,7 @@ public interface ResourceDAO {
 
     //举报资源
     boolean reportResource(ReportResource reportResource);
+
+    //搜索资源
+    ArrayList<Resource> searchResource(String s);
 }

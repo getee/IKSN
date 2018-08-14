@@ -22,6 +22,38 @@
         INSERT INTO resource(uid,name,md5,sha,path,scoring,classify,introduce,time) VALUES (#{uid},#{name},#{md5},#{sha},#{path},#{scoring},#{classify},#{introduce},#{time})
     </insert>
 
+    <!--搜索资源-->
+    <resultMap id="ResourceS" type="Resource">
+        <id property="rid" column="rid"></id>
+        <result property="name" column="name"></result>
+        <result property="path" column="path"></result>
+        <result property="sha" column="sha"></result>
+        <result property="scoring" column="scoring"></result>
+        <result property="classify" column="classify"></result>
+        <result property="time" column="time"></result>
+        <result property="introduce" column="introduce"></result>
+
+        <!--user表-->
+       <association property="user" javaType="User">
+           <id property="uid" column="uid"></id>
+           <result property="nickname" column="nickname"></result>
+       </association>
+
+        <!--resourceTag表-->
+        <collection property="resourceTags" ofType="ResourceTag">
+            <id column="id" property="id"></id>
+            <result property="rid" column="rid"></result>
+            <result property="rtag" column="rtag"></result>
+        </collection>
+
+    </resultMap>
+
+    <select id="searchResource" resultMap="ResourceS">
+          select r.*,u.*,t.* from resource as r
+          inner join  user as u on r.uid=u.uid
+          inner join  resourcetag as t on t.rid=r.rid
+
+    </select>
     <insert id="addResourceTag">
         <foreach collection="rtag" item="val" >
             INSERT INTO resourcetag(RID,RTAG) VALUES (#{rid},#{val});

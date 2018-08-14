@@ -1,5 +1,7 @@
 package group.first.iksn.model.bean;
 
+import java.util.Set;
+
 public class Resource {
     private  int rid;//资源id
     private  int uid;//用户id
@@ -11,6 +13,43 @@ public class Resource {
     private  int classify;//资源分类
     private  String introduce;//资源介绍
     private  String time;//时间
+    private  User user;//用户
+    private Set<ResourceTag> resourceTags;
+
+
+    @Override
+    public String toString() {
+        return "Resource{" +
+                "rid=" + rid +
+                ", uid=" + uid +
+                ", name='" + name + '\'' +
+                ", md5='" + md5 + '\'' +
+                ", sha='" + sha + '\'' +
+                ", path='" + path + '\'' +
+                ", scoring=" + scoring +
+                ", classify=" + classify +
+                ", introduce='" + introduce + '\'' +
+                ", time='" + time + '\'' +
+                ", user=" + user +
+                ", resourceTags=" + resourceTags +
+                '}';
+    }
+
+    public Set<ResourceTag> getResourceTags() {
+        return resourceTags;
+    }
+
+    public void setResourceTags(Set<ResourceTag> resourceTags) {
+        this.resourceTags = resourceTags;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public int getRid() {
         return rid;
@@ -109,19 +148,4 @@ public class Resource {
         this.time = time;
     }
 
-    @Override
-    public String toString() {
-        return "Resource{" +
-                "rid=" + rid +
-                ", uid=" + uid +
-                ", name='" + name + '\'' +
-                ", md5='" + md5 + '\'' +
-                ", sha='" + sha + '\'' +
-                ", path='" + path + '\'' +
-                ", Scoring=" + scoring +
-                ", classify=" + classify +
-                ", introduce='" + introduce + '\'' +
-                ", time='" + time + '\'' +
-                '}';
-    }
 }

@@ -3,6 +3,9 @@ package group.first.iksn.service;
 import group.first.iksn.model.bean.*;
 
 import java.util.List;
+import group.first.iksn.model.bean.SearchBlog;
+
+import java.util.ArrayList;
 
 import java.util.Map;
 
@@ -20,6 +23,9 @@ public interface BlogService {
     boolean Reject_oneReportblog(int report_id);
     //添加Blog的服务层
     public boolean addBlogService(Blog blog);
+
+    List<Blog> detailedBlogSearchResultMap(String s);
+    List<Blog> detailedBlogPush();
     //添加BlogTag的服务层
     public boolean addBlogTagService(BlogTag blogTag);
     //添加UserToBlog的服务层

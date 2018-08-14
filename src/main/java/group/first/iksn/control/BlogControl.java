@@ -32,13 +32,38 @@ public class BlogControl {
         this.blogService = blogService;
     }
 
-    @RequestMapping(value = "/blogSearch")
-    public String bSearch(@RequestParam("content") String textcontent ){
-        textcontent=EncodingTool.encodeStr(textcontent);//先将中文乱码转成UTF-8
-
-        System.out.println(textcontent);
-        return "sousuo";
+    /**
+     * 这是首页推送博客的方法
+     * @return
+     */
+    @RequestMapping("/blogPush")
+    public String blogPush(Model m){
+        System.out.println("asfasd");
+        List<Blog> al=blogService.detailedBlogPush();
+        System.out.println(al);
+        m.addAttribute("BlogsPush",al);
+        return "index";
     }
+
+
+    /**
+     * 这是搜索博客的方法
+     * @param textcontent
+     * @return
+     */
+    @RequestMapping(value = "/blogSearch")
+    public ModelAndView blogSearch(@RequestParam("content") String textcontent ){
+       // textcontent=EncodingTool.encodeStr(textcontent);//先将中文码ISO-8859-1转成UTF-8
+        System.out.println("controller层:"+textcontent);
+        ModelAndView mv=new ModelAndView();
+        List<Blog> b= blogService.detailedBlogSearchResultMap(textcontent);
+        System.out.println(b);
+        mv.addObject("blogSearch",b);
+        mv.addObject("keyWord",textcontent);
+        mv.setViewName("sousuo");
+        return  mv;
+    }
+
 
     /**
      * 管理员删除被用户举报且不合法的博客

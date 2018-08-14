@@ -1,6 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>无标题文档</title>
@@ -282,7 +284,8 @@
                         <div style="float:left; margin-top:18px; margin-left:20px">
                             <span>关键词：</span>
                         </div>
-                        <form class="form-search"><input style="height:30px; width:400px; margin-top:15px; float:left" class="input-medium search-query" type="text"/>
+                        <form class="form-search" action="/resource/resourceSearch" method="post">
+                            <input style="height:30px; width:400px; margin-top:15px; float:left" class="input-medium search-query" type="text" name="content"/>
                             <button style="height:30px; margin-top:15px; margin-left:10px" class="btn" contenteditable="true" type="submit">查找</button></form>
                     </div>
                 </div>
@@ -307,24 +310,25 @@
                                 <div class="tab-pane active" id="00">
                                     <p>
                                         <!--资源详情部分-->
-
+                                   <c:forEach items="${resource}" var="r">
                                     <div style="height:85px; width:90%; margin-left:20px;">
                                         <div style="height:48px; width:5%; float:left; margin-top:15px ">
                                             <a href="xq.jsp"> <img src="img/2.svg"></a>
                                         </div>
                                         <div style="height:20px; width:66%; float:left; margin-top:15px; margin-left:40px;  font-size:20px ; color:#000000;">
-                                            <a href="/resource/downResource?rid=1"> 仿安居客地图找房源码</a>
+                                            <a href="xq.jsp"> ${r.name}</a>
                                         </div>
                                         <div style="height:30px; width:82%; float:left;margin-top:12px; margin-left:40px;font-size:14px;">
                                             <div style="width:250px; height:30px;  float:left">
-                                                <span> 2018-06-08  上传</span>
-                                                <span>&nbsp;&nbsp;&nbsp;&nbsp;大小：<em>308KB</em></span>
+                                                <span> ${r.user.nickname}  上传</span>
+                                                <%--<span>&nbsp;&nbsp;&nbsp;&nbsp;大小：<em>308KB</em></span>--%>
                                             </div>
                                             <div style="height:23px;width:60px;float:left;margin-left:30px;border:1px solid;;border-radius:                                           10px; border-color:#F75D47; color:#F75D47;text-align:center;">
-                                                <a href="#"> IP地址</a>
+                                                <a href=" ${r.path}"> ${r.path}</a>
                                             </div>
                                         </div>
                                     </div>
+                                    </c:forEach>
                                     <!--资源详情部分-->
 
 

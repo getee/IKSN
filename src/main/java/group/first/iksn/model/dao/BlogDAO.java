@@ -1,13 +1,21 @@
 package group.first.iksn.model.dao;
 
 
+
 import group.first.iksn.model.bean.*;
 
 import java.util.List;
 
 
+import java.util.ArrayList;
+
+
 public interface BlogDAO {
-    public String detailedBlogSearchResultMap();
+    public List<Blog> detailedBlogSearchResultMap(String s);
+
+    List<Blog> detailedBlogPush();
+
+
 
     //处理添加博客dao
     public  boolean processAddBlog(Blog blog);
