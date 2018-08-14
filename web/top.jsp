@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: wenbin
@@ -78,6 +79,18 @@
     <div id="texiao" style="position: fixed;z-index: 10;width: 100%;height: 100%;margin: 0px; display: none">
         <iframe style="width: 100%;height: 100%" src="caidan/html/shandian.html"></iframe>
     </div>
+<!--提示框-->
+<div id="tishikuang" style="display:none;">
+    <div class="alert alert-warning" role="alert" style="text-align: center">
+        <strong>请登录后再进行此操作！</strong>
+    </div>
+</div>
+    <div class="row" style="background-image: url(img/2de797545de56274f03a5920eb3a1.jpg);background-size:cover;background-repeat: no-repeat;">
+        <div  >
+            <h1 style="margin-left: 42%;font-size: 70px">I&nbsp;K&nbsp;S&nbsp;N</h1>
+            <p>&nbsp;</p>
+        </div>
+    </div>
 <!--	导航栏-->
 <div class="row">
     <nav class="navbar navbar-default">
@@ -121,17 +134,17 @@
 
                 </form>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a class="glyphicon glyphicon-pencil" href="Writer.jsp"> 写博客</a></li>
-                    <li><a class="glyphicon glyphicon-leaf" href="#">发Chat</a></li>
-                    <li id="rw">
-                        <a class="glyphicon glyphicon-user"href="jifenzhongxin.jsp">
+                    <li name="tx"><a id="bk" class="glyphicon glyphicon-pencil" href="#"> 写博客</a></li>
+                    <li name="tx"><a id="ca" class="glyphicon glyphicon-leaf" href="#">发Chat</a></li>
+                    <li id="rw" name="tx">
+                        <a id="me" class="glyphicon glyphicon-user"href="#">
                             <span class="caret"></span>
                         </a>
-                        <div id="xl" style="position: absolute;top:100%;left:0%;z-index: 10;display:none">
+                        <div id="xl" style="position: absolute;top:100%;left:0%;z-index: 10;display:none;">
                             <ul class="list-group" style="width:80px;cursor: pointer;font-size: 10px;color:#ebebeb">
                                 <li class="list-group-item"><a href="writingCenter.jsp">我的博客</a></li>
                                 <li class="list-group-item"><a href="wodexiaoxi.jsp">我的消息</a></li>
-                                <li class="list-group-item"><a>退出登录</a></li>
+                                <li  class="list-group-item"><a id="tc">退出登录</a></li>
                             </ul>
                         </div>
                     </li>
@@ -142,15 +155,52 @@
     </nav>
 </div>
 <script>
+    $("li[name='tx']").click(function () {
+       var u="${sessionScope.loginresult}";
+
+        if(u==''){
+            $("#tishikuang").css("display","block");
+            $("#xl").css("display","none");
+            $("#tishikuang").slideDown("slow");
+           setInterval(function () {
+               $("#tishikuang").slideUp("slow");
+           },5000);
+        }
+        else {
+            $("#bk").attr("href","Writer.jsp");
+            $("#me").attr("href","jifenzhongxin.jsp");
+
+        }
+    });
+    //退出登录
+    $("#tc").click(function () {
+            $.post("/user/exit");
+            location.href="index.jsp";
+    });
+
+    $(document).ready(function () {
+        var u="${sessionScope.loginresult}";
+
+        if(u==''){
+        }
+        else {
+            $("#dlks").html("<img src='img/gg.jpg' width='280px' height='202px'/>");
+            $("#me").attr("class","");
+            $("#me").html(" <img src='${sessionScope.loginresult.picturepath}' width='25px' height='25px' style='border-radius: 50%;'/><span class='caret'></span>");
+            $("#rw").mouseover(function(){
+                $("#xl").css("display","block");
+            });
+            $("#rw").mouseout(function(){
+                $("#xl").css("display","none");
+            });
+        }
+    });
+</script>
+<script>
     $(document).ready(function () {
        $("#bSearch").click
     });
-    $("#rw").mouseover(function(){
-        $("#xl").css("display","block");
-    });
-    $("#rw").mouseout(function(){
-        $("#xl").css("display","none");
-    });
+
 </script>
 <!--	导航栏结束-->
 <%--<script type="text/javascript">
