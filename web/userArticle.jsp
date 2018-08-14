@@ -56,12 +56,13 @@
 			</div>
 		</div>
 		<div class="col-xs-6 col-md-3">
-			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#comeback" style="">返回举报页</button>
+			<button id="comeback-button" type="button" class="btn btn-primary" style="">返回举报页</button>
 			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#delete" style="">删除</button>
-			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sendBack" style="">下架</button>
+			<button id="sendBack-button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#sendBack" style="">下架</button>
 			<button class="btn btn-primary" type="submit" value="1">
 				订阅 <span class="badge">+</span>
 			</button>
+            <h5 style="color: white">举报原因：${reportReason}</h5>
 		</div>
 	</div>
 
@@ -96,7 +97,7 @@
 					<span class="label label-danger">下架文章</span>
 				</div>
 				<div id="sendBack-ok-innerHtml" class="modal-body">
-					确定退回至用户草稿吗？
+					确定下架至用户草稿吗？
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -107,25 +108,35 @@
 	</div>
 	<script>
         $(document).ready(function(){
-            $("#comeback").click(function(){
-                $.get("/blog/mGetAllReportBlog",function(data,status){
-
-                    alert(data+status);
-                });
+            $("#comeback-button").click(function(){
+                alert("sss")
+                location.href="/blog/mGetAllReportBlog";
             });
             $("#sendBack-ok").click(function(){
-                $(this).prop("disabled","disabled");
-                $.get("/blog/mSendBackIllegalblog?blog_id=2",function(data,status){
-                    $("#sendBack-ok-innerHtml").text("已退回");
-                    $("#sendBack-ok").prop("disabled","disabled");
-                    alert(data+status);
+                $.get("/blog/mSendBackIllegalblog/${blog_id}/${reportReason}/${report_id}",function(data,status){
+                    if(data=="success"){
+                        $("#sendBack-ok-innerHtml").text("已下架");
+                        $(this).prop("disabled","disabled");
+                        $("#sendBack-button").prop("disabled","disabled");
+					}else {
+                        $("#sendBack-ok-innerHtml").text("按钮睡着了，请再点一次吧");
+                        $("#sendBack-ok-innerHtml").text("确定下架至用户草稿吗？");
+					}
+
                 });
             });
             $("#delete-ok").click(function(){
-                $(this).prop("disabled","disabled");
-                $("#delete-ok-innerHtml").text("已删除");
-                $.get("/blog/mGetAllReportBlog",function(data,status){
-                    alert("已删除");
+                $.get("/blog/mDeleteBlogForReported/${blog_id}/${report_id}",function(data,status){
+                    if(data=="success"){
+                        $("#delete-ok-innerHtml").text("已删除");
+                        $(this).prop("disabled","disabled");
+                        location.href="/blog/mGetAllReportBlog";
+                    }else {
+                        $("#delete-ok-innerHtml").text("按钮睡着了，请再点一次吧");
+                        $("#delete-ok-innerHtml").text("确定删除吗？");
+                    }
+
+
                 });
             });
         });
@@ -274,7 +285,7 @@
 								<hr>
 								<li>
 									<div style="">
-										<div style="float: left"><a class="icon-observer" href="#" style="background-image: url(image/3_qq.jpg)"></a></div>
+										<div style="float: left"><a class="icon-observer" href="#" style="background-image: url(img/3_qq.jpg)"></a></div>
 										<div style="margin-top: 5px">
 											<a href="#">用户名</a>
 											<h5 style="color:#928F8F;float: right">2018年8月2日16：05：25</h5>&nbsp;

@@ -18,6 +18,8 @@
         <typeAlias type="group.first.iksn.model.bean.ReportBlog" alias="ReportBlog"></typeAlias>
         <typeAlias type="group.first.iksn.model.bean.BlogComments" alias="BlogComments"></typeAlias>
 
+        <typeAlias type="group.first.iksn.model.bean.ReportResource" alias="ReportResource"></typeAlias>
+        <typeAlias type="group.first.iksn.model.bean.Resource" alias="Resource" ></typeAlias>
         <typeAlias type="group.first.iksn.model.bean.ReportBlog" alias="ReportBlog"></typeAlias>
         <typeAlias type="group.first.iksn.model.bean.Scoring" alias="Scoring"></typeAlias>
         <typeAlias type="group.first.iksn.model.bean.ReportResource" alias="ReportResource"></typeAlias>

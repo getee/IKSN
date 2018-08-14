@@ -2,6 +2,7 @@ package group.first.iksn.control;
 
 import com.sun.org.glassfish.gmbal.ParameterNames;
 import group.first.iksn.model.bean.Message;
+import com.sun.deploy.net.HttpResponse;
 import group.first.iksn.model.bean.Notice;
 import group.first.iksn.model.bean.User;
 import group.first.iksn.service.UserService;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -55,20 +57,35 @@ public class UserControl {
     }
     //登录方法
     @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public String login(String emailorphone, String password, HttpSession session,Model model){
+    public String login(String iscollect, String emailorphone, String password, HttpSession session, HttpServletResponse response,Model model){
         User user=userService.login(emailorphone,password);
-
+        Cookie nameCookie=new Cookie("nameCookie",emailorphone);
+        Cookie passwordCookie=new Cookie("passwordCookie",password);
+        System.out.println(iscollect);
         if (user!=null){
             session.setAttribute("loginresult",user);
             model.addAttribute("logmes",true);
             System.out.println(model);
+            if(iscollect!=null){
+                nameCookie.setMaxAge(60*60*24*7);
+                passwordCookie.setMaxAge(60*60*24*7);
+                nameCookie.setPath("/");
+                passwordCookie.setPath("/");
+                response.addCookie(nameCookie);
+                response.addCookie(passwordCookie);
+            }
         }
         else {
             model.addAttribute("logmes",false);
             System.out.println(model);
         }
 
-
+        return "index";
+    }
+    //退出登录
+    @RequestMapping("/exit")
+    public String  exit(HttpSession session){
+        session.removeAttribute("loginresult");
         return "index";
     }
 
