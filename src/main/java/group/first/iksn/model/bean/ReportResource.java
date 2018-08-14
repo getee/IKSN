@@ -6,6 +6,16 @@ public class ReportResource {
     private  int uid;//举报者id（userid）
     private  String reason;//举报原因
 
+    private Resource resource;
+
+    public Resource getResource() {
+        return resource;
+    }
+
+    public void setResource(Resource resource) {
+        this.resource = resource;
+    }
+
     public ReportResource(int id, int rid, int uid, String reason) {
         this.id = id;
         this.rid = rid;
