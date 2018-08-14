@@ -1,9 +1,9 @@
 package group.first.iksn.control;
 
 import group.first.iksn.model.bean.CollectResource;
+import group.first.iksn.model.bean.Resource;
 import group.first.iksn.model.bean.ResourceComments;
 import group.first.iksn.service.ResourceService;
-import group.first.iksn.util.Inspect;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,8 +17,9 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
+
 import java.io.IOException;
+
 
 @Controller
 @RequestMapping("/resource")
@@ -69,43 +70,45 @@ public class ResourceControl {
         }
     }
 
+    @RequestMapping(value="/upLoadMag",method = RequestMethod.POST)
+    public String upLoadMag(Resource resource ,@RequestParam("mytext") String[] mytext, HttpServletRequest request, HttpServletResponse response) {
+
+        System.out.println("Length"+mytext.length);
+
+        try{
+            resourceService.upLoadResourc(resource,mytext);
+        }catch (Exception e){
+            e.printStackTrace();
+            return "upload";
+        }
+        return "myresource";
+    }
+
     @RequestMapping(value="/upLoadFile",method = RequestMethod.POST)
-    public void upLoadFile(@RequestParam("file") CommonsMultipartFile file, HttpServletRequest request, HttpServletResponse response) {
+    public void upLoadFile(@RequestParam("file") CommonsMultipartFile file,@RequestParam("uid") Integer uid ,HttpServletRequest request, HttpServletResponse response) {
 
         String resMsg = "0";
         try {
 
-            System.out.println("fileName：" + file.getOriginalFilename());
+            System.out.println("fileName：" + file.getOriginalFilename()+"XX"+uid);
             //String path="/resource/files/"+new Date().getTime()+file.getOriginalFilename();
 
             //获取项目输出路径
             String rootPath = request.getSession().getServletContext().getRealPath("/");
             rootPath = rootPath.substring(0, rootPath.lastIndexOf('\\'));
-            String filepath = rootPath.substring(0, rootPath.lastIndexOf('\\')) + "/resourcefile/" + file.getOriginalFilename();
-            System.out.println("rootPath:" + rootPath);//D:\AppSCM\IKSN\out\artifacts\IKSN_war_exploded
-            System.out.println("path:" + filepath);//D:\AppSCM\IKSN\out\artifacts/resource/
+            String filepath = rootPath.substring(0, rootPath.lastIndexOf('\\')) + "/resourcefile/" +uid+"/"+ file.getOriginalFilename();
+            //System.out.println("rootPath:" + rootPath);//D:\AppSCM\IKSN\out\artifacts\IKSN_war_exploded
+            System.out.println("path:" + filepath);//D:\AppSCM\IKSN\out\artifacts/resourcefile/
+            //String quotePath="resourcefile/" +uid+"/"+ file.getOriginalFilename();//资源引用路径
 
-            File newFile = new File(filepath);
-
-
-            // 判断父级目录是否存在，不存在则创建
-            if (!newFile.getParentFile().exists()) {
-                newFile.getParentFile().mkdir();
+            boolean isRepeat=resourceService.checkResource(file,filepath);
+            if(!isRepeat){
+                resMsg = "0";//已存在相同资源
+                response.getWriter().write(resMsg);
+            }else {
+                resMsg = filepath;
+                response.getWriter().write(resMsg);
             }
-            // 判断文件是否存在，否则创建文件（夹）
-            if (!newFile.exists()) {
-                newFile.mkdir();
-            }
-            //通过CommonsMultipartFile的方法直接写文件
-            file.transferTo(newFile);
-
-            String SHA = Inspect.getSHA(newFile);
-            String MD5 = Inspect.getMD5(newFile);
-            System.out.println(SHA);
-            System.out.println(MD5);
-
-            resMsg = "1";
-            response.getWriter().write(resMsg);
         } catch (IllegalStateException e) {
             e.printStackTrace();
         } catch (IOException e) {

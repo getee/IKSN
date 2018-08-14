@@ -1,9 +1,12 @@
 package group.first.iksn.model.dao;
 
 import group.first.iksn.model.bean.CollectResource;
+import group.first.iksn.model.bean.Resource;
 import org.apache.ibatis.session.SqlSession;
 import group.first.iksn.model.bean.ResourceComments;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component("resourceDAO")
 public class ResourceDAOImp extends BaseDAOImp implements ResourceDAO {
@@ -34,5 +37,19 @@ public class ResourceDAOImp extends BaseDAOImp implements ResourceDAO {
        return  num;
     }
 
+    public Resource checkFile(String MD5,String SHA){
+        Resource r=getSqlSession().getMapper(ResourceDAO.class).checkFile(MD5,SHA);
+        return r;
+    }
+    public int addResource(Resource resource){
+        int addID=getSqlSession().getMapper(ResourceDAO.class).addResource(resource);
+        return addID;
+    }
+
+    @Override
+    public boolean addResourceTag(int rid,List rtag){
+        boolean isAdd=getSqlSession().getMapper(ResourceDAO.class).addResourceTag(rid,rtag);
+        return isAdd;
+    }
 
 }

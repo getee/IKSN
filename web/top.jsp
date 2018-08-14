@@ -134,9 +134,7 @@
                     <li><a href="../xiazai.jsp">下载</a></li>
                     <li><a href="#">GitChat</a></li>
                     <li><a href="#">TinyMind</a></li>
-                    <li><a href="#">论坛</a></li>
                     <li><a href="#">问答</a></li>
-                    <li><a href="#">商城</a></li>
                     <li><a href="#">VIP</a></li>
                     <li><a data-toggle="popover" title="私信" data-container="body" data-placement="bottom" data-content="收到一条私信"></a></li>
                 </ul>

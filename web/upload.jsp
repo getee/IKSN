@@ -46,18 +46,27 @@
                 contentType: false,
                 processData: false,
                 success: function (data) {
-                    alert(fileName);
-
+                    alert("check");
+                    $("#filepath").attr("value",data);
                 },
                 error: function(data) {
-                    alert("error:");
+                    alert("error:"+data);
+                    $("#filepath").attr("value",'0');
 
                 }
             });
             return false;
         }
-        function sess(fileName) {
-            $("#upimg").css("background-image", "url(resourcefile/"+fileName+")");
+
+        function sess() {
+            alert("XXDD"+$("#filepath").attr("value"));
+            if($("#filepath").attr("value")=='0'){
+                alert("文件上传失败，请重新选择！");
+            }else {
+                alert("文件可以上传");
+                $("#upMagForm").submit();
+            }
+
         }
 
     </script>
@@ -92,29 +101,37 @@
                 <form id="upFileForm" action="resource/upLoadFile" method="post">
                     <legend contenteditable="true">上传资源</legend>
                     <label>
+                        <%--${sessionScope.loginresult.uid}--%>
+                        <input type="hidden" name="uid" value="2" />
                         <div id="upimg" style="background:url('img/upload.png'); width:141px; height:116px;">
                             <input style="position:absolute;opacity:0;" type="file" name="file" id="choosefile" onchange="upload()" />
                         </div>
                     </label>
                 </form>
-                <form action="resource/upLoadMag">
+
+                <form action="resource/upLoadMag" id="upMagForm" method="post">
+
+                    <%--用js注入文件路径--%>
+                    <input type="hidden" id="filepath" name="path" value="0" />
+                    <input type="hidden" name="uid" value="2" />
+
                     <span class="help-block" contenteditable="true">您可以上传小于220MB的文件</span> <br />
                     <label contenteditable="true">资源名称: </label>
-                    <input style=" border-radius:4px; width:300px; height:30px;" type="text" placeholder="请输入资源名称">
+                    <input style=" border-radius:4px; width:300px; height:30px;" name="name" type="text" placeholder="请输入资源名称">
                     <span class="help-block" contenteditable="true">名称最多不超过80字，不少于10字</span>
 
                     <label contenteditable="true">所属分类: </label>
-                    <select style="border-radius:4px;width:200px;height:30px;"
+                    <select style="border-radius:4px;width:200px;height:30px;" name="classify"
                             onchange="document.getElementById('input').value=this.value">
-                        <option value="请选择">请选择</option>
-                        <option value="移动开发">移动开发</option>
-                        <option value="开发技术">开发技术</option>
-                        <option value="课程资源">课程资源</option>
-                        <option value="网络技术">网络技术</option>
-                        <option value="操作系统">操作系统</option>
-                        <option value="其他">其他</option>
-                    </select>  <br /><br />
-
+                        <option value="0">请选择</option>
+                        <option value="1">移动开发</option>
+                        <option value="2">开发技术</option>
+                        <option value="3">课程资源</option>
+                        <option value="4">网络技术</option>
+                        <option value="5">操作系统</option>
+                        <option value="6">其他</option>
+                    </select>
+                    <br /><br />
                     <label contenteditable="true">资源标签: </label>
                     <a href="#" rel="external nofollow" rel="external nofollow" rel="external nofollow" id="AddMoreFileBox" class="btn btn-info" style=" height:30px;background-color:#FFF; border-color:#A9A9A9; color:#34AAE8">添加标签</a></span></p>
                     <span class="help-block" contenteditable="true">最多添加6个标签</span>
@@ -122,7 +139,7 @@
                     </div>
                     <br />
                     <label contenteditable="true">资源分数: </label>
-                    <select style="border-radius:4px;width:80px;height:30px;"
+                    <select style="border-radius:4px;width:80px;height:30px;" name="scoring"
                             onchange="document.getElementById('input').value=this.value">
                         <option value="1">1</option>
                         <option value="2">2</option>
@@ -133,12 +150,12 @@
 
 
                     <label contenteditable="true">资源描述: </label>
-                    <textarea style=" border-radius:4px; width:510px; height:60px; resize:none; vertical-align: top;" type="text" placeholder="描述不支持HTML标签；详细的资源描述有机会获得我们的推荐，更有利于他人下载，赚取积分。如资源描述不清，有可能审核不通过。"></textarea>
+                    <input style=" border-radius:4px; width:510px; height:60px; resize:none; vertical-align: top;" name="introduce" type="text" placeholder="描述不支持HTML标签；详细的资源描述有机会获得我们的推荐，更有利于他人下载，赚取积分。如资源描述不清，有可能审核不通过。" />
 
                     <div class="checkbox">
                         <label><input type="checkbox"> 勾选同意</label>
                     </div>
-                    <button type="submit" class="btn" contenteditable="true" style="margin-left:20px;">提交</button>
+                    <button type="button" onclick="sess()" class="btn" id="btn" contenteditable="true" style="margin-left:20px;">提交</button>
                 </form>
             </div >
         </div>
@@ -214,7 +231,7 @@
             {
                 FieldCount++; //text box added increment
                 //add input box
-                $(InputsWrapper).append('<span><input style="width:70px;" type="text" name="mytext[]" id="field_'+ FieldCount +'" value="标签 '+ FieldCount +'"/><a href="#" rel="external nofollow" rel="external nofollow" rel="external nofollow" class="removeclass"><input style="width:40px;" type="button" value="删除"></a></span>');
+                $(InputsWrapper).append('<span><input style="width:70px;" type="text" name="mytext" id="field_'+ FieldCount +'" value="标签 '+ FieldCount +'"/><a href="#" rel="external nofollow" rel="external nofollow" rel="external nofollow" class="removeclass"><input style="width:40px;" type="button" value="删除"></a></span>');
                 x++; //text box increment
             }
             return false;

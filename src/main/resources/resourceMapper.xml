@@ -15,4 +15,17 @@
     <select id="downnum" resultType="Integer">
         select count(*) from downresources where RID=(#{rid})
     </select>
+    <select id="checkFile" resultType="Resource">
+        SELECT * FROM resource where MD5=#{0} and SHA=#{1}
+    </select>
+    <insert id="addResource" parameterType="Resource" keyProperty="rid" useGeneratedKeys="true">
+        INSERT INTO resource(uid,name,md5,sha,path,scoring,classify,introduce,time) VALUES (#{uid},#{name},#{md5},#{sha},#{path},#{scoring},#{classify},#{introduce},#{time})
+    </insert>
+
+    <insert id="addResourceTag">
+        <foreach collection="rtag" item="val" >
+            INSERT INTO resourcetag(RID,RTAG) VALUES (#{rid},#{val});
+        </foreach>
+    </insert>
+
 </mapper>
