@@ -1,14 +1,9 @@
 package group.first.iksn.model.dao;
 
 
-import group.first.iksn.model.bean.Blog;
-import group.first.iksn.model.bean.IllegalBlog;
-import group.first.iksn.model.bean.ReportBlog;
+import group.first.iksn.model.bean.*;
 
 import java.util.List;
-import group.first.iksn.model.bean.BlogTag;
-import group.first.iksn.model.bean.UserToBlog;
-
 
 
 public interface BlogDAO {
@@ -20,6 +15,8 @@ public interface BlogDAO {
     public boolean processAddBlogTag(BlogTag blogTag);
     //处理添加UserToBlog的dao
     public boolean processAddUserToBlog(UserToBlog userToBlog);
+
+    //添加下架博客
     //根据uid来查询Blog
     public List<Blog> processScanBlog(int uid);
     //根据bid来查询Blog
@@ -28,6 +25,20 @@ public interface BlogDAO {
     public int  selectBid(String time);
 
     boolean addIllegalblog(IllegalBlog blog);
+    //获取所有被举报博客
     List<ReportBlog> getAllReportBlog();
-    boolean deleteBlogFromReport(ReportBlog blog);
+
+    boolean commentBlog(BlogComments blogComments);
+    //获取所有被举报资源
+    List<ReportResource> getAllReportResource();
+    //删除Reportblog表数据
+    boolean deleteBlogFromReport(int report_id);
+    //删除博客
+    boolean deleteBlog(int bid);
+    //删除与博客相关的表信息
+    boolean deleteBlogOthers(int bid);
+    //设置博客为不公开
+    boolean blogIsPublic(int bid);
+
+    boolean answerDiscuss(BlogComments blogComments);
 }

@@ -1,11 +1,7 @@
 package group.first.iksn.service;
 
 
-import group.first.iksn.model.bean.Blog;
-import group.first.iksn.model.bean.IllegalBlog;
-import group.first.iksn.model.bean.BlogTag;
-import group.first.iksn.model.bean.UserToBlog;
-import group.first.iksn.model.bean.ReportBlog;
+import group.first.iksn.model.bean.*;
 import group.first.iksn.model.dao.BlogDAO;
 import org.springframework.stereotype.Component;
 
@@ -25,13 +21,22 @@ public class BlogServiceImp implements BlogService {
     }
 
     /**
-     * 删除违规博客，
+     * 删除违规博客
      * wenbin
+     * @param blog_id
+     * @param report_id
      * @return
      */
     @Override
-    public boolean deleteIllegalblog(IllegalBlog blog) {
-        return true;
+    public boolean deleteIllegalblog(int blog_id,int  report_id) {
+        boolean result=false;
+        //boolean deleteResult=blogDAO.deleteBlog(blog_id);
+        boolean deleteResult=blogDAO.deleteBlogOthers(blog_id);
+        if(deleteResult){
+            result=blogDAO.deleteBlog(blog_id);
+        }
+        System.out.println("删除blog其他"+deleteResult);
+        return result;
     }
 
     /**
@@ -40,11 +45,13 @@ public class BlogServiceImp implements BlogService {
      * @return
      */
     @Override
-    public boolean sendBackIllegalblog(IllegalBlog blog) {
+    public boolean sendBackIllegalblog(IllegalBlog blog,int report_id) {
         boolean sendBack=blogDAO.addIllegalblog(blog);
         if (sendBack){
             //插入illegalblog成功，将reportblog表对应数据删除
-
+            blogDAO.deleteBlogFromReport(report_id);
+            //设置博客为不可见
+            boolean b=blogDAO.blogIsPublic(blog.getBid());
         }
         return sendBack;
     }
@@ -59,14 +66,19 @@ public class BlogServiceImp implements BlogService {
         return blogDAO.getAllReportBlog();
     }
 
+    @Override
+    public List<ReportResource> getAllReportResource() {
+        return blogDAO.getAllReportResource();
+    }
+
     /**
      * 驳回被举报的博客，（将博客去除被举报标记）
-     * @param blog
+     * @param report_id
      * @return
      */
     @Override
-    public boolean Reject_oneReportblog(ReportBlog blog) {
-        return blogDAO.deleteBlogFromReport(blog);
+    public boolean Reject_oneReportblog(int report_id) {
+        return blogDAO.deleteBlogFromReport(report_id);
     }
 
 
@@ -100,7 +112,17 @@ public class BlogServiceImp implements BlogService {
         return blogDAO.selectBid(time);
     }
 
+    @Override
+    public boolean discuss(BlogComments blogComments) {
+        System.out.println(blogComments);
+        return blogDAO.commentBlog(blogComments);
+    }
 
+    @Override
+    public boolean answerComment(BlogComments blogComments) {
+        System.out.println(blogComments);
+        return blogDAO.answerDiscuss(blogComments);
+    }
 
 
 }

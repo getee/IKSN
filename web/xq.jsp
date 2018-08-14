@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -39,7 +40,7 @@
             float:left;
             margin-left:25px;
             border:1px solid;
-        ;border-radius:10px;
+            border-radius:10px;
             border-color:#F75D47;
             color:#F75D47;
             text-align:center;
@@ -66,10 +67,25 @@
             <li ><a href="#">上传资源赚积分</a></li>
             <li ><a href="#">已下载</a></li>
             <li ><a href="#">我的收藏</a></li>
+            <c:if test="${sessionScope.loginresult.isadmin eq '1'}">
+                <li style="margin-left: 5%"><a href="/blog/mGetAllReportBlog">返回举报页</a></li>
+                <li><a href="javascript:deleteResource(${resourceid})">删除</a></li>
+                <li><a style="cursor: default">举报原因：${reportRReason}</a></li>
+            </c:if>
         </ul>
 
     </div>
     <!--二级导航结束-->
+<script>
+    function deleteResource(url) {
+        var userChoice=window.confirm("您确认要去除这个资源吗？");
+        var a="/resource/mDeleteResourceForReport/"+url;
+        if(userChoice){
+            // location.href=a;
+        }
+    }
+</script>
+
 
 
     <div class="row well" style="margin-left: 10%;margin-right: 10%; min-width:1024px;">
@@ -120,15 +136,13 @@
                   </span>
                         <span> 综合评分：<em>7.9</em></span>
                         <div style="float:right; width:250px;">
-
-                            <a href="#" onclick="shoucang()"><img src="img/sc.jpg">&nbsp;收藏</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a href="#"><img src="img/sc.jpg">&nbsp;收藏</a>&nbsp;&nbsp;&nbsp;&nbsp;
                             <a href="#"><img src="img/pl.jpg">&nbsp;评论</a>&nbsp;&nbsp;&nbsp;&nbsp;
                             <a href="#"><img src="img/jb.jpg">&nbsp;举报</a>
                         </div>
                     </div>
 
                 </div>
-
 
 
 
@@ -247,10 +261,4 @@
 </div>
 </div>
 </body>
-<script type="text/javascript">
-    function shoucang()
-    {
-        alert("已收藏！")
-    }
-</script>
 </html>

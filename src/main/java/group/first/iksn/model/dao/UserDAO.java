@@ -10,7 +10,9 @@ import java.util.List;
 
 public interface UserDAO {
     public boolean addUser(User u);
-    List<Notice> receiveNotice(int uid);
+    List<Notice> receiveNotice(@Param("uid") int uid,@Param("nowPage") int nowPage);
+    int listNotReadNoticeNum(@Param("uid") int uid);
+    int listAllNoticeNum(@Param("uid") int uid);
     List<Message> receiveMessage(int uid);
     List<User> listSendMessageUser(int uid);
     boolean changeIsRead(@Param("isRead") int isRead,@Param("uid") int uid);
@@ -24,8 +26,18 @@ public interface UserDAO {
     boolean addNotice(Notice notice);
     boolean deleteNotice(int uid);
     boolean deleteMessage(int uid);
+    boolean deleteChooseFriend(@Param("selfid") int selfid,@Param("attenid") int attenid);
     boolean sendMessage(Message message);
     List checkIsAttention(@Param("selfid") int selfid,@Param("attenid") int attenid);
     List listAllFriends(@Param("selfid") int uid,@Param("nowPage") int nowPage);
+    List searchFriend(@Param("nickname") String nickname,@Param("selfid") int uid);
     int friendNum(int selfid);
+
+    //修改用户
+    public boolean updateUser( User user);
+
+     //修改用户密码
+    boolean updatePassword(User user);
+    //用户等级
+    int userGrade(int uid);
 }

@@ -141,7 +141,7 @@
         <div class="row" style="margin-left: 0.5%;margin-top: -5px">
             <nav>
                 <ul class="nav nav-tabs">
-                    <li role="presentation"><a href="/user/receiveNotice/${sessionScope.loginresult.uid}">通知</a></li>
+                    <li role="presentation"><a href="/user/receiveNotice/${sessionScope.loginresult.uid}/1">通知</a></li>
                     <li role="presentation"><a href="/user/listAllFriends/${sessionScope.loginresult.uid}/1">私信</a></li>
                     <li role="presentation"><a href="/user/receiveMessage/${sessionScope.loginresult.uid}">@我</a></li>
                 </ul>
