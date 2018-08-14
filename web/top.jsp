@@ -224,18 +224,25 @@
 
         var searchOrange = $('#search-orange').searchMeme({ onSearch: function (searchText) {
 
-                setTimeout(function () {
+<!--	导航栏结束-->
 
-                    searchOrange.searchMeme({ searchComplete: true });
+<script>
 
-                }, 3000);
+    var keywordArray = new Array("","","")
+    keywordArray[0] = new Array("0", "移动开发", "YIDONGKAIFA");
+    keywordArray[1] = new Array("1", "开发技术", "KAIFAJISHU");
+    keywordArray[2] = new Array("2", "课程资源", "KECHENGZIYUAN");
+    keywordArray[3] = new Array("3", "网络技术", "WANGLUOJISHU");
+    keywordArray[4] = new Array("4", "操作系统", "CAOZUOXOTONG");
+    keywordArray[5] = new Array("5", "安全技术", "ANQUANJISHU");
+    keywordArray[6] = new Array("6", "数据库", "SHUJUKU");
+    keywordArray[7] = new Array("7", "服务器应用", "FUWUQIYINGYONG");
+    keywordArray[8] = new Array("8", "存储", "CUNCHU");
+    keywordArray[9] = new Array("9", "信息化", "XINXIHUA");
 
-            }
+    window.onload = function(){
+        $quickQuery(keywordArray);
+    }
+</script>
 
-            , buttonPlacement: 'left', button: 'orange'
-
-        });
-    });
-
-</script>--%>
 
