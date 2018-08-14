@@ -109,6 +109,12 @@ public class BlogServiceImp implements BlogService {
         return blogDAO.commentBlog(blogComments);
     }
 
+    @Override
+    public boolean answerComment(BlogComments blogComments) {
+        System.out.println(blogComments);
+        return blogDAO.answerDiscuss(blogComments);
+    }
+
     //举报博客
     @Override
     public boolean reportBlog(ReportBlog reportBlog) {

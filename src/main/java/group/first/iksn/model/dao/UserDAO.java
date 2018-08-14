@@ -27,6 +27,7 @@ public interface UserDAO {
     boolean sendMessage(Message message);
     List checkIsAttention(@Param("selfid") int selfid,@Param("attenid") int attenid);
     List listAllFriends(@Param("selfid") int uid,@Param("nowPage") int nowPage);
+    List searchFriend(@Param("nickname") String nickname,@Param("selfid") int uid);
     int friendNum(int selfid);
 
     //修改用户
@@ -34,6 +35,8 @@ public interface UserDAO {
 
      //修改用户密码
     boolean updatePassword(User user);
+    //用户等级
+    int userGrade(int uid);
     //获取用户的积分明细
     List<Scoring> getScoring(int uid);
     //积分消费

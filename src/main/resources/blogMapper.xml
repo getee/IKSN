@@ -101,12 +101,16 @@
     </resultMap>
     <select id="getAllReportBlog" resultMap="getBlogBy_Reportbid">
 		select  i.ID,i.BID,i.REASON,b.TITLE  from reportblog as i
-		inner join blog as b on   i.BID=b.BID ORDER BY i.ID desc limit 0,3;
+		inner join blog as b on   i.BID=b.BID ORDER BY i.ID asc limit 0,6;
 	</select>
 
     <!-- 博客评论 -->
     <insert id="commentBlog" parameterType="BlogComments">
         insert into blogcomments(uid,bid,time,content,floor) value (#{uid},#{bid},#{time},#{content},#{floor})
+    </insert>
+    <!--博客评论回复-->
+    <insert id="answerDiscuss" parameterType="BlogComments">
+        insert into blogcomments(uid,bid,time,content,COMMENTID,floor) value (#{uid},#{bid},#{time},#{content},#{commentid},#{floor})
     </insert>
 
     <!--结果集合用来存储查询ReportResource表级联查询Resource表-->
@@ -123,7 +127,7 @@
     </resultMap>
     <select id="getAllReportResource" resultMap="getResourceBy_Reportrid">
 		select  rr.ID,rr.RID,rr.REASON,r.NAME  from reportresource as rr
-		inner join resource as r on   rr.RID=r.RID ORDER BY rr.ID desc limit 0,3;
+		inner join resource as r on   rr.RID=r.RID ORDER BY rr.ID asc limit 0,6;
 	</select>
 
     <insert id="reportBlog" parameterType="ReportBlog">

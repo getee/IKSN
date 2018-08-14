@@ -118,6 +118,32 @@
 
 
 			});
+			//搜索好友
+            $("#searchFriendIdButton").click(function(){
+                var nickName=$("#friendId").val();
+
+                $.ajax({
+					url:"/user/searchFriend/${sessionScope.loginresult.uid}/"+nickName,
+					type:"get",
+					datatype:"json",
+					success:function(data){
+					    if(data!=null){
+
+
+                            $(".friend").remove();
+                            for (var i=0;i<data.length;i++){
+                                $(".father").append("<div id='friend"+data[i].uid+"' class='row friend' style='margin: auto'><div class='col-md-1'><div class='checkbox' style='margin-top: 20px'><label><input id='check"+data[i].uid+"' value='"+data[i].uid+"' class='checkboxs' type='checkbox'></label></div></div><div class='col-md-4'><img src='img/adminIcon.jpg' class='img-responsive img-thumbnail' alt='Img'></div><div class='col-md-6'><h4>"+data[i].nickname+"</h4><small>"+data[i].introduce+"</small></div></div>")
+                            }
+                        }
+					},
+
+				})
+
+
+
+
+
+            });
 
 
 
@@ -176,9 +202,11 @@
           <td style="cursor: pointer"><a href="#"><h4>个人中心</h4></a></td>
           <td style="cursor: pointer"><a href="/user/listAllFriends/1/1"><h4>我的消息</h4></a></td>
           <td style="cursor: pointer"><a href="jifenzhongxin.jsp"><h4>积分</h4></a></td>
-          <td style="cursor: pointer"><a href="/blog/mGetAllReportBlog"><h4>我的博客</h4></a></td>
+          <td style="cursor: pointer"><a href="writingCenter.jsp"><h4>我的博客</h4></a></td>
           <td style="cursor: pointer"><a href="#"><h4>我的下载</h4></a></td>
-
+		  <c:if test="${sessionScope.loginresult.isadmin eq '1'}">
+			  <td style="cursor: pointer"><a href="/blog/mGetAllReportBlog"><h4>举报管理</h4></a></td>
+		  </c:if>
       </tr>
 	</table>
 	
@@ -206,9 +234,9 @@
   
 		  <div class="col-lg-12">
 			<div class="input-group">
-			  <input type="text" class="form-control" placeholder="搜索联系人">
+			  <input type="text" id="friendId" name="friendId" class="form-control" placeholder="搜索联系人">
 			  <span class="input-group-btn">
-				<button class="btn btn-default" type="button">Go!</button>
+				<button id="searchFriendIdButton" class="btn btn-default" type="button">Go!</button>
 			  </span>
 			</div><!-- /input-group -->
 		  </div><!-- /.col-lg-6 -->
@@ -238,12 +266,12 @@
 	</div>
 <!--好友列表-->
 		<div class="row well" style="margin: 0%;height: 600px;">
-		<div class="row" style="height: 80%;">
+		<div class="row father" style="height: 80%;">
             <c:forEach var="friend" items="${allFriends}">
 
 
             <!--		单个用户-->
-		<div id="friend${friend.uid}" class="row " style="margin: auto">
+		<div id="friend${friend.uid}" class="row friend" style="margin: auto">
 		<div class="col-md-1">
 			<div class="checkbox" style="margin-top: 20px">
 				<label>

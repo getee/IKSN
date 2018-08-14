@@ -182,11 +182,20 @@ public class BlogControl {
         }
     }
     /**
-     * 博客楼层获取
+     * 博客评论回复
      */
-    @RequestMapping("/getFloor")
-    public String getFloor(@RequestParam("bid") Integer bid, HttpServletRequest request){
-        return  "";
+
+    @RequestMapping("/answerComment")
+    public String answerComment(@ModelAttribute("answerComment")BlogComments blogComments){
+        System.out.println(blogComments);
+        boolean result=blogService.answerComment(blogComments);
+        if(!result)
+        {
+            return "index";
+        }else
+        {
+            return "userArticle";
+        }
     }
     /**
      * 举报博客

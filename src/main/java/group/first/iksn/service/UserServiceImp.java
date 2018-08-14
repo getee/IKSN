@@ -8,6 +8,7 @@ import group.first.iksn.model.dao.UserDAO;
 import group.first.iksn.util.MD5;
 import org.springframework.stereotype.Component;
 
+import java.rmi.server.UID;
 import java.util.List;
 
 @Component("userService")
@@ -150,6 +151,11 @@ public class UserServiceImp implements UserService {
 
     }
 
+    @Override
+    public List searchFriend(String nickname, int uid) {
+        return userDAO.searchFriend(nickname, uid);
+    }
+
     /**
      * 查询积分
      * @param uid
@@ -222,7 +228,15 @@ public class UserServiceImp implements UserService {
     //根据提供的id获取密码
     @Override
     public String getId(int uid) {
-       return userDAO.getId(uid).getPassword();
+        return userDAO.getId(uid).getPassword();
+    }
+
+    //判断用户等级
+    @Override
+    public int userGrade(int uid) {
+        int score=userDAO.userGrade(uid);
+        int grade=score/100;
+        return grade;
     }
 
 

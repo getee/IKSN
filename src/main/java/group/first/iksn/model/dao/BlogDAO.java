@@ -34,6 +34,8 @@ public interface BlogDAO {
     //设置博客为不公开
     boolean blogIsPublic(int bid);
 
+    boolean answerDiscuss(BlogComments blogComments);
+
     //举报博客
     public boolean reportBlog(ReportBlog reportBlog);
 }

@@ -1,10 +1,13 @@
 package group.first.iksn.model.dao;
 
 import group.first.iksn.model.bean.CollectResource;
+import group.first.iksn.model.bean.Resource;
 import group.first.iksn.model.bean.ReportResource;
 import org.apache.ibatis.session.SqlSession;
 import group.first.iksn.model.bean.ResourceComments;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component("resourceDAO")
 public class ResourceDAOImp extends BaseDAOImp implements ResourceDAO {
@@ -33,6 +36,56 @@ public class ResourceDAOImp extends BaseDAOImp implements ResourceDAO {
         System.out.println(rid);
        int num=getSqlSession().getMapper(ResourceDAO.class).downnum(rid);
        return  num;
+    }
+
+    public Resource checkFile(String MD5,String SHA){
+        Resource r=getSqlSession().getMapper(ResourceDAO.class).checkFile(MD5,SHA);
+        return r;
+    }
+    public int addResource(Resource resource){
+        int addID=getSqlSession().getMapper(ResourceDAO.class).addResource(resource);
+        return addID;
+    }
+
+    @Override
+    public boolean addResourceTag(int rid,List rtag){
+        boolean isAdd=getSqlSession().getMapper(ResourceDAO.class).addResourceTag(rid,rtag);
+        return isAdd;
+    }
+    @Override
+    public boolean deleteResourceFromReport(int id) {
+        boolean isOK=false;
+        try{
+            isOK=getSqlSession().getMapper(ResourceDAO.class).deleteResourceFromReport(id);
+        }catch (Exception e){
+            System.out.println("这是添加违规博客出错了");
+            e.printStackTrace();
+        }
+        return isOK;
+    }
+
+    @Override
+    public boolean deleteResourceOthers(int rid) {
+        boolean isOK=false;
+        try{
+            isOK=getSqlSession().getMapper(ResourceDAO.class).deleteResourceOthers(rid);
+        }catch (Exception e){
+            System.out.println("这是添加违规博客出错了");
+            e.printStackTrace();
+        }
+        return isOK;
+    }
+
+    @Override
+    public boolean deleteResource(int rid) {
+        boolean isOK=false;
+        try{
+            isOK=getSqlSession().getMapper(ResourceDAO.class).deleteResource(rid);
+        }catch (Exception e){
+            System.out.println("这是添加违规博客出错了");
+            e.printStackTrace();
+        }
+        return isOK;
     }
 
 

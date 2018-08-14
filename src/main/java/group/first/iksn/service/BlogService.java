@@ -29,6 +29,8 @@ public interface BlogService {
 
     boolean discuss(BlogComments blogComments);
 
+    boolean answerComment(BlogComments blogComments);
+
     //举报博客
     public boolean reportBlog(ReportBlog reportBlog);
 }

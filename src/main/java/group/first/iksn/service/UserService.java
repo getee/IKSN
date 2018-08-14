@@ -32,9 +32,10 @@ public interface UserService {
     public boolean isUserExist(int uid);
     //修改用户密码
     public void updatePassword(int uid,String newpassword);
-
+    //获取用户id
     public String getId(int uid);
-
+     //用户等级
+    int userGrade(int uid);
 
     //更改通知是否已读的状态
     boolean changeIsRead(int isRead,int uid);
@@ -54,6 +55,8 @@ public interface UserService {
     int friendNum(int uid);
     //根据登录方法
     User login(String emailorphone,String password);
+    //根据昵称搜索好友
+    List searchFriend(String nickname, int uid);
     //获取登录用户积分详情
     List<Scoring> getScoring (int uid);
     //用户积分消费记录

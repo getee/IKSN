@@ -111,13 +111,18 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
         }
         return isOK;
     }
-
+//博客评论
     @Override
     public boolean commentBlog(BlogComments blogComments) {
         System.out.println(blogComments);
         return  getSqlSession().getMapper(BlogDAO.class).commentBlog(blogComments);
     }
-
+//博客评论回复
+    @Override
+    public boolean answerDiscuss(BlogComments blogComments) {
+        System.out.println(blogComments);
+        return getSqlSession().getMapper(BlogDAO.class).answerDiscuss(blogComments);
+    }
     /**
      * 删除博客
      * wenbin

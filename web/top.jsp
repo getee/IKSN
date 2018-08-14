@@ -134,9 +134,7 @@
                     <li><a href="../xiazai.jsp">下载</a></li>
                     <li><a href="#">GitChat</a></li>
                     <li><a href="#">TinyMind</a></li>
-                    <li><a href="#">论坛</a></li>
                     <li><a href="#">问答</a></li>
-                    <li><a href="#">商城</a></li>
                     <li><a href="#">VIP</a></li>
                     <li><a data-toggle="popover" title="私信" data-container="body" data-placement="bottom" data-content="收到一条私信"></a></li>
                 </ul>
@@ -164,7 +162,7 @@
                         <div id="xl" style="position: absolute;top:100%;left:0%;z-index: 10;display:none;">
                             <ul class="list-group" style="width:80px;cursor: pointer;font-size: 10px;color:#ebebeb">
                                 <li class="list-group-item"><a href="writingCenter.jsp">我的博客</a></li>
-                                <li class="list-group-item"><a href="wodexiaoxi.jsp">我的消息</a></li>
+                                <li class="list-group-item"><a href="/user/listAllFriends/${sessionScope.loginresult.uid}/1">我的消息</a></li>
                                 <li  class="list-group-item"><a id="tc">退出登录</a></li>
                             </ul>
                         </div>

@@ -102,6 +102,9 @@
 	  	<td style="cursor: pointer"><a class="text-muted" href="jifenzhongxin.jsp"><h4>积分</h4></a></td>
 	  	<td style="cursor: pointer"><a class="text-muted" href="/blog/mGetAllReportBlog"><h4>我的博客</h4></a></td>
 	  	<td style="cursor: pointer"><a class="text-muted" href="#"><h4>我的下载</h4></a></td>
+		  <c:if test="${sessionScope.loginresult.isadmin eq '1'}">
+			  <td style="cursor: pointer"><a href="/blog/mGetAllReportBlog"><h4>举报管理</h4></a></td>
+		  </c:if>
 	  </tr>
 	</table>
 	
@@ -121,7 +124,7 @@
 			<div class="col-md-6">
 										<!-- Button trigger modal -->
 				<button type="button" class="btn btn-info btn-sm glyphicon glyphicon-edit" data-toggle="modal" data-target="#myModal" style="margin-left: 60%">
-					修改个人资料
+					修改个人资料iksn
 				</button>
 				<button  type="button"  color="#FFFFFF" class="btn btn-info btn-sm glyphicon glyphicon-edit" data-toggle="modal" style="margin-left: 60%; margin-top:2%">
 					<a href="zhanghao.jsp" ><font color="#FFFFFF">个人账号设置</font></a>
