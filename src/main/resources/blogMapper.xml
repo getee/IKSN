@@ -62,18 +62,11 @@
     <!--博客修改相关操作-->
 
 
-     <!--定义的一个reaultmap结果集合来存储关联查询到的详细的博客，类型是自定义类型-->
-    <resultMap id="searchResultMap" type="Blog">
-
-    </resultMap>
     <!--向illegalblog表中插入违规博客信息-->
     <insert id="addIllegalblog" parameterType="IllegalBlog">
         insert into illegalblog(bid,illegalcause) values (#{bid},#{illegalcause})
     </insert>
-    <!--此语句无用，整合时刻删除！！！从illegalblog表中获取所有博客信息-->
-    <select id="getAllReportBlog111" resultType="IllegalBlog">
-        select * from illegalblog
-    </select>
+
     <!--从reportBlog表中根据id删除一个选中行-->
     <delete id="deleteBlogFromReport" parameterType="ReportBlog">
       delete from reportblog where id = #{report_id}

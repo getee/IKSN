@@ -218,13 +218,6 @@
 
 </script>
 <!--	导航栏结束-->
-<%--<script type="text/javascript">
-
-    $(document).ready(function () {
-
-        var searchOrange = $('#search-orange').searchMeme({ onSearch: function (searchText) {
-
-<!--	导航栏结束-->
 
 <script>
 
@@ -241,7 +234,7 @@
     keywordArray[9] = new Array("9", "信息化", "XINXIHUA");
 
     window.onload = function(){
-        $quickQuery(keywordArray);
+       // $quickQuery(keywordArray);
     }
 </script>
 

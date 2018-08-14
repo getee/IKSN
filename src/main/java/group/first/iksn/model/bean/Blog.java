@@ -16,23 +16,6 @@ public class Blog {
 
 
 
-    @Override
-    public String toString() {
-        return "Blog{" +
-                "bid=" + bid +
-                ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                ", time='" + time + '\'' +
-                ", link='" + link + '\'' +
-                ", points=" + points +
-                ", classify=" + classify +
-                ", blogTags=" + blogTags +
-                ", userToBlog=" + userToBlog +
-                '}';
-    }
-
-
-
     public Set<BlogTag> getBlogTags() {
         return blogTags;
     }
@@ -50,13 +33,6 @@ public class Blog {
         this.blogTag = blogTag;
     }
 
-    public UserToBlog getUserToBlog() {
-        return userToBlog;
-    }
-
-    public void setUserToBlog(UserToBlog userToBlog) {
-        this.userToBlog = userToBlog;
-    }
 
     public int getBid() {
         return bid;

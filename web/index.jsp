@@ -13,14 +13,7 @@
 		String path = request.getContextPath();
 		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 	%>
-	<base href="<%=basePath%>">
- 	<link type="text/css" href="bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="bootstrap-3.3.7/dist/css/bootstrap.css" rel="stylesheet">
-	<link rel="stylesheet" href="bootstrap-3.3.7/dist/css/bootstrap-theme.min.css" crossorigin="anonymous">
-	
-	<script src="js/jquery-3.3.1.js"></script>
-	<script src="bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
-	<script src="js/depend.js"></script>
+
 	
 <style>
 	#toTop {display: none;text-decoration: none;position: fixed;bottom: 10px;right: 10px;overflow: hidden;width: 40px;height: 40px;border: none;text-indent: 100%; background-image: url(img/goTop.jpg);background-size: 100% 100%;text-align: center;}
@@ -33,8 +26,18 @@
 </head>
 
 <body>
+<base href="<%=basePath%>">
+<link type="text/css" href="bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="bootstrap-3.3.7/dist/css/bootstrap.css" rel="stylesheet">
+<link rel="stylesheet" href="bootstrap-3.3.7/dist/css/bootstrap-theme.min.css" crossorigin="anonymous">
+
+<script src="js/jquery-3.3.1.js"></script>
+<script src="bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
+<script src="js/depend.js"></script>
+
+<c:set var="webRoot" value="<%=basePath%>" />
 <C:if test="${requestScope.BlogsPush eq null}">
-	<c:redirect url="blog/blogPush"></c:redirect>
+	<c:redirect url="/blog/blogPush"></c:redirect>
 </C:if>
 
 <div id="fluid_Div" class="container-fluid" style="background-color:#F4EEEE;">
@@ -43,7 +46,7 @@
 <!--  标题-->
 
 <!--  导航-->
-<%@ include file="top.jsp"%>
+<%@include file="top.jsp"%>
 
 </div>
 		  <!--		  导航结束-->

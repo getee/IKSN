@@ -170,7 +170,7 @@ public class ResourceControl {
         resourceService.deleteIllegalResource(resourceid);
         return "jubaoguanl";
     }
-    }
+
 
     /**
      * 搜索资源的方法
