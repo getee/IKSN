@@ -70,7 +70,6 @@
 					$("#alertDanger").css("display","block");
 				}
 
-
 			});
             //特效,输入雷电试试
 			
@@ -121,8 +120,8 @@
 			});
 
 
-		
-			
+
+
 		});
 		//删除关注的好友
 		function deleteFriend(){
@@ -265,7 +264,7 @@
             <!--		单个用户结束-->
             </c:forEach>
 
-		
+
 		
 		</div>
 
