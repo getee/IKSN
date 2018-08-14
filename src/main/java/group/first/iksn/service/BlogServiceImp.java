@@ -1,11 +1,7 @@
 package group.first.iksn.service;
 
 
-import group.first.iksn.model.bean.Blog;
-import group.first.iksn.model.bean.IllegalBlog;
-import group.first.iksn.model.bean.BlogTag;
-import group.first.iksn.model.bean.UserToBlog;
-import group.first.iksn.model.bean.ReportBlog;
+import group.first.iksn.model.bean.*;
 import group.first.iksn.model.dao.BlogDAO;
 import org.springframework.stereotype.Component;
 
@@ -68,6 +64,11 @@ public class BlogServiceImp implements BlogService {
     @Override
     public List<ReportBlog> getAllReportBlog() {
         return blogDAO.getAllReportBlog();
+    }
+
+    @Override
+    public List<ReportResource> getAllReportResource() {
+        return blogDAO.getAllReportResource();
     }
 
     /**

@@ -1,12 +1,8 @@
 package group.first.iksn.service;
 
-import group.first.iksn.model.bean.Blog;
-import group.first.iksn.model.bean.IllegalBlog;
-import group.first.iksn.model.bean.ReportBlog;
+import group.first.iksn.model.bean.*;
 
 import java.util.List;
-import group.first.iksn.model.bean.BlogTag;
-import group.first.iksn.model.bean.UserToBlog;
 
 import java.util.Map;
 
@@ -16,10 +12,13 @@ public interface BlogService {
     //下架违规博客
     boolean sendBackIllegalblog(IllegalBlog blog,int report_id);
 
-    //添加Blog的服务层
+    //添加mGetAllReportBlog的服务层
     List<ReportBlog> getAllReportBlog();
+    //添加mGetAllReportResource的服务层
+    List<ReportResource> getAllReportResource();
     //回违规博客，处理违规博客的安置
     boolean Reject_oneReportblog(int report_id);
+    //添加Blog的服务层
     public boolean addBlogService(Blog blog);
     //添加BlogTag的服务层
     public boolean addBlogTagService(BlogTag blogTag);

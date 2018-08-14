@@ -1,10 +1,6 @@
 package group.first.iksn.model.dao;
 
-import group.first.iksn.model.bean.Blog;
-import group.first.iksn.model.bean.IllegalBlog;
-import group.first.iksn.model.bean.BlogTag;
-import group.first.iksn.model.bean.UserToBlog;
-import group.first.iksn.model.bean.ReportBlog;
+import group.first.iksn.model.bean.*;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -58,6 +54,24 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
             e.printStackTrace();
         }
         return allReportBlog;
+    }
+
+    /**
+     * 获取所有被举报资源
+     * wenbin
+     * @return
+     */
+    @Override
+    public List<ReportResource> getAllReportResource() {
+        List<ReportResource> allReportResource=null;
+        try {
+            allReportResource=getSqlSession().getMapper(BlogDAO.class).getAllReportResource();
+            System.out.println("获取举报资源成功");
+        }catch (Exception e){
+            System.out.println("这是获取违规资源出错了");
+            e.printStackTrace();
+        }
+        return allReportResource;
     }
 
     @Override

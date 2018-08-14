@@ -1,11 +1,7 @@
 package group.first.iksn.control;
 
 
-import group.first.iksn.model.bean.IllegalBlog;
-import group.first.iksn.model.bean.Blog;
-import group.first.iksn.model.bean.BlogTag;
-import group.first.iksn.model.bean.UserToBlog;
-import group.first.iksn.model.bean.ReportBlog;
+import group.first.iksn.model.bean.*;
 import group.first.iksn.service.BlogService;
 import group.first.iksn.util.EncodingTool;
 import org.springframework.stereotype.Controller;
@@ -135,13 +131,20 @@ public class BlogControl {
     @RequestMapping(value = "/mGetAllReportBlog")
     public String mGetAllReportBlog(Model model){
         List<ReportBlog> reportBlogs=blogService.getAllReportBlog();
+        List<ReportResource> reportResources=blogService.getAllReportResource();
         System.out.println(reportBlogs);
         for (ReportBlog i:reportBlogs){
             System.out.println(i.getBlog());
         }
+        System.out.println(reportResources);
+        for (ReportResource r:reportResources){
+            System.out.println(r.getResource());
+        }
         model.addAttribute("ReportBlogList",reportBlogs);
+        model.addAttribute("ReportResourceList",reportResources);
         return  "jubaoguanl";
     }
+
 
     /**
      * 管理员驳回举报信息，认为该博客并无违规之处
