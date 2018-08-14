@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
+
 import  group.first.iksn.util.EncodingTool;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.io.UnsupportedEncodingException;
 
@@ -76,12 +78,14 @@ public class ResourceControl {
 
     //资源举报
     @RequestMapping("/reportResource")
-    public String reportResource(@ModelAttribute("reportResource")ReportResource reportResource) throws UnsupportedEncodingException {
+    public ModelAndView reportResource(@ModelAttribute("reportResource")ReportResource reportResource) throws UnsupportedEncodingException {
+        ModelAndView mav=new ModelAndView("xq");
         String reason=new String(reportResource.getReason().getBytes("ISO-8859-1"),"UTF-8");
         reportResource.setReason(reason);
         System.out.println(reportResource);
-         boolean isReportOk=resourceService.reportResource(reportResource);
-        System.out.println(isReportOk);
-         return "xq";
+       boolean result=resourceService.reportResource(reportResource);
+        mav.getModel().put("result",result);
+        System.out.println(result);
+         return mav;
     }
 }

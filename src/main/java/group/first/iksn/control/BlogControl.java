@@ -11,14 +11,14 @@ import group.first.iksn.util.EncodingTool;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.apache.ibatis.jdbc.Null;
 
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 
 @Controller
@@ -155,4 +155,19 @@ public class BlogControl {
         }
     }
 
+    /**
+     * 举报博客
+     * @param reportBlog
+     * @return
+     */
+    @RequestMapping("/reportBlog")
+    public ModelAndView reportBlog(@ModelAttribute("reportBlog")ReportBlog reportBlog) throws UnsupportedEncodingException {
+        ModelAndView mav=new ModelAndView("userArticle");
+        System.out.println(reportBlog);
+        boolean result=blogService.reportBlog(reportBlog);
+        mav.getModel().put("result",result);
+        System.out.println(result);
+
+        return mav;
+    }
 }

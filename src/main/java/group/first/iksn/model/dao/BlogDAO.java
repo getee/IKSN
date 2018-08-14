@@ -26,4 +26,7 @@ public interface BlogDAO {
     boolean addIllegalblog(IllegalBlog blog);
     List<ReportBlog> getAllReportBlog();
     boolean deleteBlogFromReport(ReportBlog blog);
+
+    //举报博客
+    public boolean reportBlog(ReportBlog reportBlog);
 }

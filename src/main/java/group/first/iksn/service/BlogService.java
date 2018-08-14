@@ -25,4 +25,7 @@ public interface BlogService {
     public  boolean addUserToBlogService(UserToBlog userToBlog);
 
     public List<Blog> scanBlogService(int bid);
+
+    //举报博客
+    public boolean reportBlog(ReportBlog reportBlog);
 }

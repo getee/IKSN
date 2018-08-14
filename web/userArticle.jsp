@@ -428,15 +428,47 @@
 			<p style="font-size: 2px">微博</p>
 		</li>
 		<li class="li-left">
-			<a href="#" class="glyphicon glyphicon-warning-sign" style="color: black;width: 25px;height: 25px"></a>
-			<p style="font-size: 2px">举报</p>
+			<a data-toggle="modal" data-target="#modal-container-830220" class="glyphicon glyphicon-warning-sign" style="color: black;width: 25px;height: 25px"></a>
+			<p style="font-size: 2px">举报</p><input value="${result} " type="hidden" >
 		</li>
 	</ul>
 </div>
 <!--点赞结束-->
+<!-- Modal -->
+<div class="modal fade" id="modal-container-830220" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="margin-top: 20%">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">举报原因</h4>
+			</div>
+			<div class="modal-body">
+				<!--								文本域-->
+				<form action="/blog/reportBlog" method="post">
+					博客ID：<input name="bid" type="text" value="2" readonly="readonly"/>
+					举报人ID：<input name="uid" type="text" value="2" readonly="readonly"/>
+					<textarea name="reason" class="form-control" rows="3"></textarea><br/>
+					<input  type="submit" value="提交" onclick="report(${result})" />
+				</form>
+				<!--								-->
 
+			</div>
+			<div class="modal-footer">
+				<!--<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary">提交</button>-->
+			</div>
+		</div>
+	</div>
+</div>
+<!--end-->
 
 <!--返回顶部按钮，向下翻150px显示-->
 <a href="javascript:void(0)" id="toTop" style="border-radius: 20px"> </a>
 </body>
+<script>
+function report(result) {
+	alert("举报成功")
+}
+
+</script>
 </html>

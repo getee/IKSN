@@ -10,7 +10,6 @@
     %>
     <base href="<%=basePath%>">
 
-
     <link href="bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 
@@ -123,7 +122,7 @@
 
                             <a href="#" onclick="shoucang()"><img src="img/sc.jpg">&nbsp;收藏</a>&nbsp;&nbsp;&nbsp;&nbsp;
                             <a href="#"><img src="img/pl.jpg">&nbsp;评论</a>&nbsp;&nbsp;&nbsp;&nbsp;
-                            <a data-toggle="modal" data-target="#modal-container-830220"><img src="img/jb.jpg">&nbsp;举报</a>
+                            <a data-toggle="modal" data-target="#modal-container-830220" ><img src="img/jb.jpg" >&nbsp;举报</a><input type="hidden" value="${isReportOk}"/>
                             <!-- 模态框（Modal） -->
                             <!-- Modal -->
                             <div class="modal fade" id="modal-container-830220" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="margin-top: 20%">
@@ -135,20 +134,19 @@
                                         </div>
                                         <div class="modal-body">
                                             <!--								文本域-->
-                                            <form action="/resource/reportResource" method="">
-                                                资源ID：<input name="rid" type="text" value="1"/>
-                                                举报人ID：<input name="uid" type="text" value="1"/>
-                                                <textarea name="reason" class="form-control" rows="3"></textarea>
-                                                <div class="modal-footer">
-                                                    <!--<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                                                    <button type="button" class="btn btn-primary">提交</button>-->
-                                                </div>
-                                                <input type="submit" value="提交"/>
+                                            <form id="addForm" action="/resource/reportResource" method="post">
+                                                资源ID：<input name="rid" type="text" value="1" readonly="readonly"/>
+                                                举报人ID：<input name="uid" type="text" value="1" readonly="readonly"/>
+                                                <textarea name="reason" class="form-control" rows="3"></textarea><br/>
+                                                <input  type="submit" value="提交" onclick="report()"/>
                                             </form>
                                             <!--								-->
 
                                         </div>
-
+                                       <%-- <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                            <button id="submitAdd" type="button" class="btn btn-primary">提交</button>
+                                        </div>--%>
                                     </div>
                                 </div>
                             </div>
@@ -281,5 +279,9 @@
     {
         alert("已收藏！")
     }
+   function report() {
+       alert("举报成功！")
+   }
+
 </script>
 </html>

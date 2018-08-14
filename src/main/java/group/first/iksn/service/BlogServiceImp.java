@@ -91,5 +91,12 @@ public class BlogServiceImp implements BlogService {
         return blogDAO.processScanBlog(bid);
     }
 
+    //举报博客
+    @Override
+    public boolean reportBlog(ReportBlog reportBlog) {
+        boolean serviceResult=blogDAO.reportBlog(reportBlog);
+        return serviceResult;
+    }
+
 
 }
