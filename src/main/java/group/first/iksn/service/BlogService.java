@@ -28,4 +28,6 @@ public interface BlogService {
     public List<Blog> scanBlogService(int bid);
 
     boolean discuss(BlogComments blogComments);
+
+    boolean answerComment(BlogComments blogComments);
 }

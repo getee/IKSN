@@ -18,6 +18,29 @@
 	<script src="../js/jquery-3.3.1.js"></script>
 	<script src="../bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
 	<script src="../js/depend.js"></script>
+	<script>
+        function setbid() {
+            var bokeid={'bid':'1'};
+            var ajaxUrl="blog/getFloor";
+            $.ajax({
+                type:"post",
+                url:ajaxUrl,
+                data:bokeid,
+                async: false,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (date) {
+                    alert(data);
+
+                },
+                error: function(data) {
+                    alert("error:");
+
+                }
+            })
+        }
+	</script>
 	<style>
 		.li-left{
 			display:block;
@@ -56,18 +79,17 @@
 			</div>
 		</div>
 		<div class="col-xs-6 col-md-3">
-			<button id="comeback-button" type="button" class="btn btn-primary" style="">返回举报页</button>
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#comeback" style="">返回举报页</button>
 			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#delete" style="">删除</button>
-			<button id="sendBack-button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#sendBack" style="">下架</button>
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sendBack" style="">下架</button>
 			<button class="btn btn-primary" type="submit" value="1">
 				订阅 <span class="badge">+</span>
 			</button>
-            <h5 style="color: white">举报原因：${reportReason}</h5>
 		</div>
 	</div>
 
 
-<!--用户名logo结束-->
+	<!--用户名logo结束-->
 	<!--管理员权限-->
 	<div class="modal fade bs-example-modal-sm" id="delete" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" style="margin-top: 13%">
 		<div class="modal-dialog modal-sm" role="document">
@@ -97,7 +119,7 @@
 					<span class="label label-danger">下架文章</span>
 				</div>
 				<div id="sendBack-ok-innerHtml" class="modal-body">
-					确定下架至用户草稿吗？
+					确定退回至用户草稿吗？
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -108,35 +130,25 @@
 	</div>
 	<script>
         $(document).ready(function(){
-            $("#comeback-button").click(function(){
-                alert("sss")
-                location.href="/blog/mGetAllReportBlog";
+            $("#comeback").click(function(){
+                $.get("/blog/mGetAllReportBlog",function(data,status){
+
+                    alert(data+status);
+                });
             });
             $("#sendBack-ok").click(function(){
-                $.get("/blog/mSendBackIllegalblog/${blog_id}/${reportReason}/${report_id}",function(data,status){
-                    if(data=="success"){
-                        $("#sendBack-ok-innerHtml").text("已下架");
-                        $(this).prop("disabled","disabled");
-                        $("#sendBack-button").prop("disabled","disabled");
-					}else {
-                        $("#sendBack-ok-innerHtml").text("按钮睡着了，请再点一次吧");
-                        $("#sendBack-ok-innerHtml").text("确定下架至用户草稿吗？");
-					}
-
+                $(this).prop("disabled","disabled");
+                $.get("/blog/mSendBackIllegalblog?blog_id=2",function(data,status){
+                    $("#sendBack-ok-innerHtml").text("已退回");
+                    $("#sendBack-ok").prop("disabled","disabled");
+                    alert(data+status);
                 });
             });
             $("#delete-ok").click(function(){
-                $.get("/blog/mDeleteBlogForReported/${blog_id}/${report_id}",function(data,status){
-                    if(data=="success"){
-                        $("#delete-ok-innerHtml").text("已删除");
-                        $(this).prop("disabled","disabled");
-                        location.href="/blog/mGetAllReportBlog";
-                    }else {
-                        $("#delete-ok-innerHtml").text("按钮睡着了，请再点一次吧");
-                        $("#delete-ok-innerHtml").text("确定删除吗？");
-                    }
-
-
+                $(this).prop("disabled","disabled");
+                $("#delete-ok-innerHtml").text("已删除");
+                $.get("/blog/mGetAllReportBlog",function(data,status){
+                    alert("已删除");
                 });
             });
         });
@@ -261,31 +273,31 @@
 											<div class="form-group">
 												time:<input type="text" name="time"><br>
 											</div>
-										<div class="modal-body">
-											<!--文本域-->
+											<div class="modal-body">
+												<!--文本域-->
 												<textarea class="form-control" rows="3" name="content"></textarea>
-											<!---->
-										</div>
-											<div class="form-group">
-												floor:<input type="text" name="floor"><br>
+												<!---->
 											</div>
-										<div class="modal-footer">
-											<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-											<button type="submit" class="btn btn-primary"value="discuss">评论</button>
-										</div>
+											<div class="form-group">
+												floor:<input type="text" name="floor">${requestScope.floor}<br>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+												<button type="submit" class="btn btn-primary"value="discuss">评论</button>
+											</div>
 										</form>
 									</div>
 								</div>
 							</div>
 						</div>
 
-						<!--				别人的品论-->
+						<!--别人的品论-->
 						<div class="span12" style="background-color:#FFFFFF;padding-left: 25px;padding-right: 25px">
 							<ul>
 								<hr>
 								<li>
 									<div style="">
-										<div style="float: left"><a class="icon-observer" href="#" style="background-image: url(img/3_qq.jpg)"></a></div>
+										<div style="float: left"><a class="icon-observer" href="#" style="background-image: url(image/3_qq.jpg)"></a></div>
 										<div style="margin-top: 5px">
 											<a href="#">用户名</a>
 											<h5 style="color:#928F8F;float: right">2018年8月2日16：05：25</h5>&nbsp;
@@ -293,10 +305,53 @@
 										</div>
 									</div>
 									<h5 style="margin: 25px 10px 10px 50px">作者写的666</h5>
-									<h5 style="color: #aa1111;float: right" href="...">回复</h5>
 								</li>
 								<hr>
+								<div class="span12" style="background-color:#A29E9E;padding: 2px" align="right">
+									<!-- Button trigger modal -->
+									有疑问？就说一说
+									<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModa">
+										回复
+									</button>
 
+									<!-- Modal -->
+									<div class="modal fade" id="myModa" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="margin-top: 20%">
+										<div class="modal-dialog" role="document">
+											<div class="modal-content" style="text-align: right">
+												<div class="modal-header">
+													<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+													<h4 class="modal-title" id="myModalLabe">我的回复</h4>
+												</div>
+												<form action="/blog/answerComment" method="post">
+													<div class="form-group">
+														uid:<input type="text" name="uid"><br>
+													</div>
+													<div class="form-group">
+														bid:<input type="text" name="bid"><br>
+													</div>
+													<div class="form-group">
+														time:<input type="text" name="time"><br>
+													</div>
+													<div class="modal-body">
+														<!--文本域-->
+														<textarea class="form-control" rows="3" name="content"></textarea>
+														<!---->
+													</div>
+													<div class="form-group">
+														commentid:<input type="text" name="commentid"><br>
+													</div>
+													<div class="form-group">
+														floor:<input type="text" name="floor">${requestScope.floor}<br>
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+														<button type="submit" class="btn btn-primary"value="discuss">回复</button>
+													</div>
+												</form>
+											</div>
+										</div>
+									</div>
+								</div>
 								<li>
 									<div style="">
 										<div style="float: left"><a class="icon-observer" href="#" style="background-image: url(image/3_qq.jpg)"></a></div>
