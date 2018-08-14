@@ -17,7 +17,7 @@
         <typeAlias type="group.first.iksn.model.bean.Attention" alias="Attention"></typeAlias>
         <typeAlias type="group.first.iksn.model.bean.ReportBlog" alias="ReportBlog"></typeAlias>
 
-        <typeAlias type="group.first.iksn.model.bean.ReportBlog" alias="ReportBlog"></typeAlias>
+        <typeAlias type="group.first.iksn.model.bean.Resource" alias="Resource"></typeAlias>
     </typeAliases>
 
 
