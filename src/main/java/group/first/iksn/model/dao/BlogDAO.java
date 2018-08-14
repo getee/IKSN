@@ -33,4 +33,6 @@ public interface BlogDAO {
     boolean deleteBlogOthers(int bid);
     //设置博客为不公开
     boolean blogIsPublic(int bid);
+
+    boolean answerDiscuss(BlogComments blogComments);
 }

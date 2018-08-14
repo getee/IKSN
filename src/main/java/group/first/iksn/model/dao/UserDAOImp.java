@@ -280,6 +280,18 @@ public class UserDAOImp extends BaseDAOImp implements UserDAO {
 
     }
 
+    @Override
+    public List searchFriend(String nickname, int uid) {
+        try{
+            List searchedFriend=getSqlSession().getMapper(UserDAO.class).searchFriend(nickname, uid);
+            return searchedFriend;
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     /**
      * 查询该用户好友的数量用来做分页限制
      * @author BruceLee
@@ -300,6 +312,7 @@ public class UserDAOImp extends BaseDAOImp implements UserDAO {
 
     @Override
     public User loginByEmail(String email, String password) {
+        System.out.println("XXXX"+email+password);
         return  getSqlSession().getMapper(UserDAO.class).loginByEmail(email,password);
     }
 
@@ -315,12 +328,17 @@ public class UserDAOImp extends BaseDAOImp implements UserDAO {
         return b;
     }
 
-
     //修改用户密码
     @Override
     public boolean updatePassword(User user) {
         boolean b=getSqlSession().getMapper(UserDAO.class).updatePassword(user);
         return b;
+    }
+    //用户等级
+    @Override
+    public int  userGrade(int uid) {
+        int score=getSqlSession().getMapper(UserDAO.class).userGrade(uid);
+        return score;
     }
 
 

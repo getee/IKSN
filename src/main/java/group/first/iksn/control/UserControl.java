@@ -6,8 +6,12 @@ import com.sun.deploy.net.HttpResponse;
 import group.first.iksn.model.bean.Notice;
 import group.first.iksn.model.bean.User;
 import group.first.iksn.service.UserService;
+import group.first.iksn.util.EncodingTool;
 import group.first.iksn.util.HttpUtil;
 import group.first.iksn.util.IndustrySMS;
+import org.apache.ibatis.jdbc.Null;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,12 +30,12 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import org.springframework.web.bind.annotation.*;
+import sun.nio.cs.ext.ISO_8859_11;
 
 
 import java.io.UnsupportedEncodingException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Controller
 @RequestMapping("/user")
@@ -179,7 +183,12 @@ public class UserControl {
             message.setFromid(fromid);
             message.setToid(Integer.parseInt(everyToId[i]));
             message.setContent(request.getParameter("content"));
-            message.setTime(new Date().toLocaleString());
+            Date d = new Date();
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            message.setTime(df.format(d));
+
+
+          // message.setTime(new Date().toLocaleString());
             boolean result=userService.sendMessage(message);
             if(result){
                 model.addAttribute("sendResult","sendSuccess");
@@ -209,6 +218,37 @@ public class UserControl {
         model.addAttribute("nowPage",nowPage);
         model.addAttribute("friendNums",friendNums);
         return "wodexiaoxi";
+        }
+
+    /**
+     * 根据NickName查询该用户的好友
+     * @author BruceLee
+     * @return
+     */
+    @RequestMapping("/searchFriend/{uid}/{friendNickName}")
+    @ResponseBody
+        public void searchFriend(HttpServletResponse response,@PathVariable("uid") int uid, @PathVariable("friendNickName") String friendNickName){
+        System.out.println(EncodingTool.encodeStr(friendNickName));
+        List<User> searchedFriend=userService.searchFriend(EncodingTool.encodeStr(friendNickName),uid);
+            JSONArray jsonArray=new JSONArray();
+        for (User u:searchedFriend) {
+            JSONObject jsonObject=new JSONObject();
+            jsonObject.put("uid",u.getUid());
+            jsonObject.put("nickname",u.getNickname());
+            jsonObject.put("picturepath",u.getPicturepath());
+            jsonObject.put("introduce",u.getIntroduce());
+            jsonArray.put(jsonObject);
+        }
+            response.setContentType("text/json;charset=utf-8");
+        try {
+            PrintWriter out=response.getWriter();
+            out.write(jsonArray.toString());
+            out.flush();
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //return null;
         }
     /**
      * 查询该用户收到的私信
@@ -322,11 +362,11 @@ public class UserControl {
 
 
     //修改用户密码
-    @RequestMapping(value = "/updatePassword" )
+    @RequestMapping(value = "/updatePassword")
     public String updatePassword(@RequestParam("uid") int uid,
                                  @RequestParam("password") String password,
                                  @RequestParam("newpassword") String newpassword,
-                                 @RequestParam("equelspassword") String equelspassword,  ModelMap model) {
+                                 @RequestParam("equelspassword") String equelspassword, ModelMap model) {
         System.out.println(uid);
         System.out.println(password);
         System.out.println(newpassword);
@@ -334,17 +374,25 @@ public class UserControl {
             model.addAttribute("msg", "用户名不存在！");
         } else {
             if (password.equals(userService.getId(uid))) {
-                   if (!newpassword.equals(equelspassword)){
-                       model.addAttribute("msg", "密码不一致");
-                   }else {
-                       userService.updatePassword(uid, newpassword);
-                       model.addAttribute("msg", "修改密码成功！");
-                       System.out.println("修改成功");
-                   }
+                if (!newpassword.equals(equelspassword)) {
+                    model.addAttribute("msg", "密码不一致");
+                } else {
+                    userService.updatePassword(uid, newpassword);
+                    model.addAttribute("msg", "修改密码成功！");
+                    System.out.println("修改成功");
+                }
             } else {
                 model.addAttribute("msg", "密码错误！");
             }
         }
         return "zhanghao";
+    }
+
+
+    @RequestMapping(value = "userGrade")
+    public int  userGrade(@RequestParam("uid") int uid, Model model) {
+         int grade=userService.userGrade(uid);
+         model.addAttribute("等级",grade);
+         return grade;
     }
 }

@@ -108,6 +108,10 @@
     <insert id="commentBlog" parameterType="BlogComments">
         insert into blogcomments(uid,bid,time,content,floor) value (#{uid},#{bid},#{time},#{content},#{floor})
     </insert>
+    <!--博客评论回复-->
+    <insert id="answerDiscuss" parameterType="BlogComments">
+        insert into blogcomments(uid,bid,time,content,COMMENTID,floor) value (#{uid},#{bid},#{time},#{content},#{commentid},#{floor})
+    </insert>
 
     <!--结果集合用来存储查询ReportResource表级联查询Resource表-->
     <resultMap id="getResourceBy_Reportrid" type="ReportResource">

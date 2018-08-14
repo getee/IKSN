@@ -1,4 +1,3 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
 <html>
@@ -19,6 +18,29 @@
 	<script src="../js/jquery-3.3.1.js"></script>
 	<script src="../bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
 	<script src="../js/depend.js"></script>
+	<script>
+        function setbid() {
+            var bokeid={'bid':'1'};
+            var ajaxUrl="blog/getFloor";
+            $.ajax({
+                type:"post",
+                url:ajaxUrl,
+                data:bokeid,
+                async: false,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (date) {
+                    alert(data);
+
+                },
+                error: function(data) {
+                    alert("error:");
+
+                }
+            })
+        }
+	</script>
 	<style>
 		.li-left{
 			display:block;
@@ -70,7 +92,7 @@
 	</div>
 
 
-<!--用户名logo结束-->
+	<!--用户名logo结束-->
 	<!--管理员权限-->
 	<div class="modal fade bs-example-modal-sm" id="delete" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" style="margin-top: 13%">
 		<div class="modal-dialog modal-sm" role="document">
@@ -264,31 +286,31 @@
 											<div class="form-group">
 												time:<input type="text" name="time"><br>
 											</div>
-										<div class="modal-body">
-											<!--文本域-->
+											<div class="modal-body">
+												<!--文本域-->
 												<textarea class="form-control" rows="3" name="content"></textarea>
-											<!---->
-										</div>
-											<div class="form-group">
-												floor:<input type="text" name="floor"><br>
+												<!---->
 											</div>
-										<div class="modal-footer">
-											<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-											<button type="submit" class="btn btn-primary"value="discuss">评论</button>
-										</div>
+											<div class="form-group">
+												floor:<input type="text" name="floor">${requestScope.floor}<br>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+												<button type="submit" class="btn btn-primary"value="discuss">评论</button>
+											</div>
 										</form>
 									</div>
 								</div>
 							</div>
 						</div>
 
-						<!--				别人的品论-->
+						<!--别人的品论-->
 						<div class="span12" style="background-color:#FFFFFF;padding-left: 25px;padding-right: 25px">
 							<ul>
 								<hr>
 								<li>
 									<div style="">
-										<div style="float: left"><a class="icon-observer" href="#" style="background-image: url(img/3_qq.jpg)"></a></div>
+										<div style="float: left"><a class="icon-observer" href="#" style="background-image: url(image/3_qq.jpg)"></a></div>
 										<div style="margin-top: 5px">
 											<a href="#">用户名</a>
 											<h5 style="color:#928F8F;float: right">2018年8月2日16：05：25</h5>&nbsp;
@@ -296,10 +318,53 @@
 										</div>
 									</div>
 									<h5 style="margin: 25px 10px 10px 50px">作者写的666</h5>
-									<h5 style="color: #aa1111;float: right" href="...">回复</h5>
 								</li>
 								<hr>
+								<div class="span12" style="background-color:#A29E9E;padding: 2px" align="right">
+									<!-- Button trigger modal -->
+									有疑问？就说一说
+									<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModa">
+										回复
+									</button>
 
+									<!-- Modal -->
+									<div class="modal fade" id="myModa" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="margin-top: 20%">
+										<div class="modal-dialog" role="document">
+											<div class="modal-content" style="text-align: right">
+												<div class="modal-header">
+													<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+													<h4 class="modal-title" id="myModalLabe">我的回复</h4>
+												</div>
+												<form action="/blog/answerComment" method="post">
+													<div class="form-group">
+														uid:<input type="text" name="uid"><br>
+													</div>
+													<div class="form-group">
+														bid:<input type="text" name="bid"><br>
+													</div>
+													<div class="form-group">
+														time:<input type="text" name="time"><br>
+													</div>
+													<div class="modal-body">
+														<!--文本域-->
+														<textarea class="form-control" rows="3" name="content"></textarea>
+														<!---->
+													</div>
+													<div class="form-group">
+														commentid:<input type="text" name="commentid"><br>
+													</div>
+													<div class="form-group">
+														floor:<input type="text" name="floor">${requestScope.floor}<br>
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+														<button type="submit" class="btn btn-primary"value="discuss">回复</button>
+													</div>
+												</form>
+											</div>
+										</div>
+									</div>
+								</div>
 								<li>
 									<div style="">
 										<div style="float: left"><a class="icon-observer" href="#" style="background-image: url(image/3_qq.jpg)"></a></div>
