@@ -1,5 +1,7 @@
 package group.first.iksn.control;
 
+import com.sun.org.glassfish.gmbal.ParameterNames;
+import group.first.iksn.model.bean.Message;
 import com.sun.deploy.net.HttpResponse;
 import group.first.iksn.model.bean.Notice;
 import group.first.iksn.model.bean.User;
@@ -23,8 +25,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import org.springframework.web.bind.annotation.*;
 
 
+import java.io.UnsupportedEncodingException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -84,15 +90,173 @@ public class UserControl {
     }
 
     /**
-     * 收到的通知消息
+     * 查询收到的通知消息
+     * @author BruceLee
      * @return
      */
-    @RequestMapping("/receiveNotice")
-    public String receiveNotice(Model model){
-        System.out.println("receiveNotice");
-        List<Notice> allNotices=userService.receiveNotice();
-        model.addAttribute("allNotices",allNotices);
+    @RequestMapping("/receiveNotice/{uid}/{nowPage}")
+    public String receiveNotice(@PathVariable("uid") int uid,@PathVariable("nowPage") int nowPage,Model model){
+        List<Notice> allNotices=userService.receiveNotice(uid,nowPage);//遍历出所有的通知
+        int notReadNoticeNum=userService.listNotReadNoticeNum(uid);
+        int AllNoticeNum=userService.listAllNoticeNum(uid);
+        model.addAttribute("nowNoticePage",nowPage);
+        model.addAttribute("AllNoticeNum",AllNoticeNum);
+        model.addAttribute("notReadNum",notReadNoticeNum);//返回未读的消息数量
+        model.addAttribute("allNotices",allNotices);//返回所有的消息
         return "tongzhi";
+    }
+    /**
+     * 更改通知消息是已读或者是未读
+     * @author BruceLee
+     * @return
+     */
+    @RequestMapping("/changeIsRead/{isRead}/{uid}")
+    @ResponseBody
+    public String changeIsRead(@PathVariable("isRead") int isRead,@PathVariable("uid") int uid){
+        boolean result=userService.changeIsRead(isRead,uid);//isRead 为前台传入的参数0或者1，表示已读或者未读
+        if(result){
+            int notReadNoticeNum=userService.listNotReadNoticeNum(uid);
+            return String.valueOf(notReadNoticeNum);//ajax返回未读数量，进行实时更新
+        }else{
+            return null;
+        }
+    }
+    /**
+     * 更改私信是已读或者是未读
+     * @author BruceLee
+     * @return
+     */
+    @RequestMapping("/changeMessageIsRead/{isRead}/{uid}")
+    @ResponseBody
+    public String changeMessageIsRead(@PathVariable("isRead") int isRead,@PathVariable("uid") int uid){
+        boolean result=userService.changeMessageIsRead(isRead,uid);//isRead 为前台传入的参数0或者1，表示已读或者未读
+        if(result){
+            int index=0;//定义一个计数器来记录未读的通知数量
+            List<Message> allMessage=userService.receiveMessage(uid);//遍历出所有的通知
+            for (Message message:allMessage) {
+                if(message.getIsread()==0){
+                    index+=1;
+                }
+            }
+            return String.valueOf(index);//ajax返回未读数量，进行实时更新
+        }else{
+            return null;
+        }
+    }
+
+    /**
+     * 清空该用户下所有的通知消息
+     * @author BruceLee
+     */
+    @RequestMapping("/deleteNotice/{uid}")
+    @ResponseBody
+    public void deleteNotice(@PathVariable("uid") int uid){
+        boolean result=userService.deleteNotice(uid);
+
+    }
+    /**
+     * 清空该用户所有的私信
+     * @author BruceLee
+     */
+    @RequestMapping("/deleteMessage/{uid}")
+    @ResponseBody
+    public void deleteMessage(@PathVariable("uid") int uid){
+        boolean result=userService.deleteMessage(uid);
+
+    }
+
+    /**
+     * 该方法用来发送私信,从前台取到登录用户的id，表单取到发送的id和内容
+     * @author BruceLee
+     * @return
+     */
+    @RequestMapping("/sendMessage/{fromid}")
+    public String  sendMessage(HttpServletRequest request,@PathVariable("fromid") int fromid,Model model){
+
+        String[] everyToId=request.getParameter("toid").split(",");
+        for (int i=0;i<everyToId.length;i++){
+            Message message=new Message();
+            message.setFromid(fromid);
+            message.setToid(Integer.parseInt(everyToId[i]));
+            message.setContent(request.getParameter("content"));
+            message.setTime(new Date().toLocaleString());
+            boolean result=userService.sendMessage(message);
+            if(result){
+                model.addAttribute("sendResult","sendSuccess");
+
+            }else{
+                model.addAttribute("sendResult","sendError");
+
+            }
+        }
+
+        return "wodexiaoxi";
+    }
+
+    /**
+     * 列出该用户所有关注的好友
+     * @author BruceLee
+     * @param uid
+     * @return
+     */
+    @RequestMapping("/listAllFriends/{uid}/{nowPage}")
+        public String listAllFriends(@PathVariable("uid") int uid,@PathVariable("nowPage") int nowPage,Model model){
+        List<User> allFriends=userService.listAllFriends(uid, nowPage);
+        System.out.println("1111");
+        int friendNums=userService.friendNum(uid);
+        System.out.println("2222");
+        model.addAttribute("allFriends",allFriends);
+        model.addAttribute("nowPage",nowPage);
+        model.addAttribute("friendNums",friendNums);
+        return "wodexiaoxi";
+        }
+    /**
+     * 查询该用户收到的私信
+     * @author BruceLee
+     * @return
+     */
+    @RequestMapping("/receiveMessage/{uid}")
+    public String receiveMessage(@PathVariable("uid") int uid,Model model){
+        int index=0;//定义一个计数器来记录未读的通知数量
+        List<User> allSendMessageUsers=userService.listSendMessageUser(uid);
+        List<Message> allMessages=userService.receiveMessage(uid);//遍历该用户所有的私信
+        for (Message message:allMessages) {
+            if(message.getIsread()==0){
+                index+=1;
+            }
+        }
+        model.addAttribute("notReadMessageNum",index);//返回未读的消息数量
+        model.addAttribute("allMessages",allMessages);//返回所有的消息
+        model.addAttribute("allSendMessageUsers",allSendMessageUsers);
+        return "shouxiaoxi";
+    }
+
+    /**
+     * 定时刷新新的通知及时提示用户
+     * @author BruceLee
+     * @return
+     */
+    @RequestMapping("/timingReceivingNotice/{uid}")
+    @ResponseBody
+    public String timingReceivingNotice(@PathVariable("uid") int uid){
+        int nowNoticeNum=userService.listAllNoticeNum(uid);
+        return String.valueOf(nowNoticeNum);
+    }
+
+    /**
+     * 删除该用户选中的所有要删除关注的好友
+     * @author BruceLee
+     * @return
+     */
+    @RequestMapping("/deleteFriend/{uid}/{allFriendId}")
+    @ResponseBody
+    public String deleteFriend(@PathVariable("uid") int uid,@PathVariable("allFriendId") String  allFriendId){
+        String[] everyFriendId=allFriendId.split(",");
+        boolean deleteFriendResult=true;
+        for (int i=0;i<everyFriendId.length;i++){
+            deleteFriendResult=userService.deleteChooseFriend(uid,Integer.parseInt(everyFriendId[i]));
+        }
+        return deleteFriendResult==true?"success":"error";
     }
     /**
      * 本方法用于前台注册页面获取手机验证码
@@ -143,5 +307,44 @@ public class UserControl {
         }
 
 
+    }
+
+    //修改用户资料
+    @RequestMapping(value = "/updateuser")
+    public String updateUser(User user, Model model) {
+        System.out.println(user.getNickname() + "VVVVV" + user.getUid());
+        System.out.println(user);
+        User u = userService.updateUser(user);
+        model.addAttribute("user", u);//把对象u传到前台；
+        return "gerenzhongxin";
+    }
+
+
+
+    //修改用户密码
+    @RequestMapping(value = "/updatePassword" )
+    public String updatePassword(@RequestParam("uid") int uid,
+                                 @RequestParam("password") String password,
+                                 @RequestParam("newpassword") String newpassword,
+                                 @RequestParam("equelspassword") String equelspassword,  ModelMap model) {
+        System.out.println(uid);
+        System.out.println(password);
+        System.out.println(newpassword);
+        if (!userService.isUserExist(uid)) {
+            model.addAttribute("msg", "用户名不存在！");
+        } else {
+            if (password.equals(userService.getId(uid))) {
+                   if (!newpassword.equals(equelspassword)){
+                       model.addAttribute("msg", "密码不一致");
+                   }else {
+                       userService.updatePassword(uid, newpassword);
+                       model.addAttribute("msg", "修改密码成功！");
+                       System.out.println("修改成功");
+                   }
+            } else {
+                model.addAttribute("msg", "密码错误！");
+            }
+        }
+        return "zhanghao";
     }
 }

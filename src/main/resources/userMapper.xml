@@ -22,7 +22,67 @@
     <insert id="addUser" parameterType="User">
         insert into user(NICKNAME,PASSWORD,SEX,EMAIL,PHONE) values (#{nickname},#{password},#{sex},#{email},#{phone})
     </insert>
-<select id="receiveNotice" resultType="Notice">
-    select  * from notice;
-</select>
+
+    <select id="receiveNotice" resultType="Notice">
+    select  * from notice where UID=#{uid} order by ID desc limit #{nowPage},7;
+    </select>
+    <select id="listAllNoticeNum" resultType="Integer">
+        select count(*)  from notice where UID=#{uid};
+    </select>
+    <select id="listNotReadNoticeNum" resultType="Integer">
+        select count(*)  from notice where UID=#{uid} and ISREAD=0;
+    </select>
+    <select id="receiveMessage" resultType="Message">
+    select  * from message where TOID=#{toid};
+    </select>
+    <!--查询到发送消息人的信息-->
+    <select id="listSendMessageUser" resultType="User">
+        select  * from user where UID in (select FROMID from message where TOID=#{toid});
+    </select>
+    <update id="changeIsRead" parameterType="Notice">
+        update notice set ISREAD=#{isRead} where UID=#{uid};
+    </update>
+    <update id="changeMessageIsRead" parameterType="Message">
+        update message set ISREAD=#{isRead} where TOID=#{uid};
+    </update>
+    <insert id="addNotice" parameterType="Notice">
+        insert into notice(UID,CONTENT,TIME,ISREAD,TYPE) values (#{uid},#{content},#{time},#{inread},#{type});
+    </insert>
+    <delete id="deleteNotice" parameterType="Notice">
+        delete from notice where UID=#{uid};
+    </delete>
+    <delete id="deleteMessage" parameterType="Message">
+        delete from message where TOID=#{uid};
+    </delete>
+    <insert id="sendMessage" parameterType="Message">
+        insert into message(FROMID,TOID,CONTENT,TIME) values (#{fromid},#{toid},#{content},#{time});
+    </insert>
+    <select id="getAllMessages" resultType="Message">
+        select * from message where TOID=#{toid}
+    </select>
+    <delete id="deleteAllMessages" parameterType="Message">
+        delete from message where TOID=#{toid}
+    </delete>
+    <select id="checkIsAttention" resultType="Attention">
+        select * from attention where SELFID=#{selfid} and ATTENID=#{attenid}
+    </select>
+    <select id="listAllFriends" resultType="User">
+        select * from user  where UID in (select ATTENID from attention where SELFID=#{selfid}) order by UID asc limit #{nowPage},5;
+    </select>
+    <select id="friendNum" resultType="Integer">
+        select count(*) from user where UID in (select ATTENID from attention where SELFID=#{selfid});
+    </select>
+    <delete id="deleteChooseFriend" parameterType="Attention">
+         delete from attention where SELFID=#{selfid} and ATTENID=#{attenid};
+    </delete>
+
+    <update id="updateUser" parameterType="User">
+        UPDATE  user set  nickname=#{nickname},sex=#{sex},introduce=#{introduce} WHERE uid=#{uid}
+    </update>
+    <update id="updatePassword" parameterType="User">
+        update user set password=#{password} where UID=#{uid}
+    </update>
+    <select id="getId" resultType="User">
+       select * from user where UID=#{uid}
+    </select>
 </mapper>

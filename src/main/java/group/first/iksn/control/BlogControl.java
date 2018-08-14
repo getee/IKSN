@@ -1,8 +1,7 @@
 package group.first.iksn.control;
 
 
-import group.first.iksn.model.bean.IllegalBlog;
-import group.first.iksn.model.bean.Blog;
+import group.first.iksn.model.bean.*;
 import group.first.iksn.service.BlogService;
 import group.first.iksn.util.EncodingTool;
 import org.springframework.stereotype.Controller;
@@ -12,9 +11,11 @@ import org.apache.ibatis.jdbc.Null;
 
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -53,19 +54,45 @@ public class BlogControl {
 
 
 @RequestMapping(value = "/addBlog",method = RequestMethod.POST)
-    public  String  addBlog(@ModelAttribute ("blog")  Blog blog) {
+    public  String  addBlog(@ModelAttribute ("blog")  Blog blog,@ModelAttribute ("blogTag") BlogTag blogTag,@ModelAttribute ("userToBlog") UserToBlog userToBlog) {
     Date d = new Date();
     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    String nowtime = df.format(d);
-    blog.setTime(nowtime);
+    blog.setTime(df.format(d));
+    blog.setTitle(EncodingTool.encodeStr(blog.getTitle()));//解决汉字乱码问题
+    blog.setContent(EncodingTool.encodeStr(blog.getContent()));
     System.out.println(blog);
     boolean result = blogService.addBlogService(blog);
-    if (result == false) {
+    //因为的多张表关联，要首先把主表的数据插入完成在进行其他副表的数据插入
+    if (result == true) {
+        //对blogTag表进行数据插入
+        blogTag.setBid(7);
+        blogTag.setBtag(EncodingTool.encodeStr(blogTag.getBtag()));
+        System.out.println(blogTag);
+        boolean result1 = blogService.addBlogTagService(blogTag);
+        //对blogTag表进行数据插入
+        userToBlog.setUid(6);
+        userToBlog.setBid(7);
+        userToBlog.setIsdraft(0);
+        System.out.println(userToBlog);
+        boolean result2=blogService.addUserToBlogService(userToBlog);
+        if (result1 == true&& result2==true) {
+            return "userArticle";
+        } else {
+            return "Writer";
+        }
+    }
+    else
         return "Writer";
-    } else {
+    }
+    //根据bid来查询博客的相应数据
+    @RequestMapping("/listBlogByBid")
+    public  String selectBlogByID(){
+
+        List<Blog> bl=blogService.scanBlogService(4);
+
+            System.out.println(bl);
         return "index";
     }
-}
 
     /**
      * 管理员将违规的博客添加到违规表
@@ -97,12 +124,55 @@ public class BlogControl {
      */
     @RequestMapping(value = "/mGetAllReportBlog")
     public String mGetAllReportBlog(Model model){
-        List<IllegalBlog> reportBlogs=blogService.getAllReportBlog();
+        List<ReportBlog> reportBlogs=blogService.getAllReportBlog();
         System.out.println(reportBlogs);
-        for (IllegalBlog i:reportBlogs){
+        for (ReportBlog i:reportBlogs){
             System.out.println(i.getBlog());
         }
         model.addAttribute("ReportBlogList",reportBlogs);
         return  "gerenzhongxin";
+    }
+
+    /**
+     * 管理员驳回举报信息，认为该博客并无违规之处
+     * wenbin
+     * @return
+     */
+    @RequestMapping("/mReject_oneReportblog/{id}")
+    @ResponseBody
+    public String mReject_oneReportblog(@PathVariable int id){
+        ReportBlog blog=new ReportBlog();
+        blog.setId(id);
+
+        boolean RejectResult=blogService.Reject_oneReportblog(blog);
+        if(RejectResult){
+            return "success";
+        }else{
+            return "error";
+        }
+    }
+
+
+/**
+ * 博客评论
+ */
+    @RequestMapping("/discuss")
+    public String discuss(@ModelAttribute("discuss")BlogComments blogComments){
+        System.out.println(blogComments);
+        boolean result=blogService.discuss(blogComments);
+        if(!result)
+        {
+            return "index";
+        }else
+        {
+            return "userArticle";
+        }
+    }
+    /**
+     * 博客楼层获取
+     */
+    @RequestMapping("/getFloor")
+    public String getFloor(@RequestParam("bid") Integer bid, HttpServletRequest request){
+        return  "";
     }
 }

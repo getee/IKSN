@@ -11,6 +11,14 @@
         <typeAlias type="group.first.iksn.model.bean.CollectResource" alias="CollectResource"></typeAlias>
         <typeAlias type="group.first.iksn.model.bean.IllegalBlog" alias="IllegalBlog"></typeAlias>
         <typeAlias type="group.first.iksn.model.bean.DownResources" alias="DownResources"></typeAlias>
+        <typeAlias type="group.first.iksn.model.bean.BlogTag" alias="BlogTag"></typeAlias>
+        <typeAlias type="group.first.iksn.model.bean.UserToBlog" alias="UserToBlog"></typeAlias>
+        <typeAlias type="group.first.iksn.model.bean.Message" alias="Message"></typeAlias>
+        <typeAlias type="group.first.iksn.model.bean.Attention" alias="Attention"></typeAlias>
+        <typeAlias type="group.first.iksn.model.bean.ReportBlog" alias="ReportBlog"></typeAlias>
+        <typeAlias type="group.first.iksn.model.bean.BlogComments" alias="BlogComments"></typeAlias>
+
+        <typeAlias type="group.first.iksn.model.bean.ReportBlog" alias="ReportBlog"></typeAlias>
     </typeAliases>
 
 
