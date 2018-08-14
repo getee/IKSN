@@ -1,6 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"  isELIgnored="false" %>
 <!doctype html>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="C" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
 	<meta charset="utf-8">
@@ -31,7 +33,20 @@
 </head>
 
 <body>
+<C:if test="${requestScope.BlogsPush eq null}">
+	<c:redirect url="blog/blogPush"></c:redirect>
+</C:if>
 
+<%--<script>
+    $(document).ready(function(){
+
+		$.post('blog/blogPush');
+      /* $.ajax({
+           url:'blog/blogPush',
+           type:'post',
+	   })*/
+    })
+</script>--%>
 
 <div id="fluid_Div" class="container-fluid" style="background-color:#F4EEEE;">
  
@@ -128,21 +143,26 @@
 						  
 					</div>
 <!--					轮播结束-->
-					
 <!--					博主发表的文章-->
-					<div class="span12" style="background-color:#FFFFFF;margin-top: 30px">
-						<h2>
-							<a href="userArticle.jsp">技术杂谈</a>
-						</h2>
-						<p>
-							本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-						</p>
-						<h5 style="color:#928F8F;float: right">阅读数：3555</h5>
-						<p>
-							<a class="btn" href="#">查看更多 »</a>
-						</p>
-					</div>
-					<div class="span12" style="border-radius: 10px;background-color:#D2D4D5;margin-top: 10px">
+
+
+					<c:forEach var="t" items="${BlogsPush}" >
+						<div class="span12" style="border-radius: 10px;background-color:#FFFFFF;margin-top: 30px">
+							<h2>
+								<a href="userArticle.jsp">${t.title}</a>
+							</h2>
+							<p>
+								${fn:substring(t.content,0,150)}.........
+							</p>
+							<h5 style="color:#928F8F;float: right">阅读数：${t.points}</h5>
+							<p>
+								<a class="btn" href="userArticle.jsp">查看更多 »</a>
+							</p>
+						</div>
+					</c:forEach>
+
+
+					<%--<div class="span12" style="border-radius: 10px;background-color:#D2D4D5;margin-top: 10px">
 						<h2>
 							<a href="#">标题</a>
 						</h2>
@@ -153,57 +173,8 @@
 						<p>
 							<a class="btn" href="#">查看更多 »</a>
 						</p>
-					</div>
-					
-					<div class="span12" style="background-color:#FFFFFF">
-						<h2>
-							<a href="userArticle.jsp">技术杂谈</a>
-						</h2>
-						<p>
-							本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-						</p>
-						<h5 style="color:#928F8F;float: right">阅读数：3555</h5>
-						<p>
-							<a class="btn" href="#">查看更多 »</a>
-						</p>
-					</div>
-					<div class="span12" style="border-radius: 10px;background-color:#D2D4D5">
-						<h2>
-							<a href="userArticle.jsp">技术杂谈</a>
-						</h2>
-						<p>
-							本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-						</p>
-						<h5 style="color:#928F8F;float: right">阅读数：3555</h5>
-						<p>
-							<a class="btn" href="#">查看更多 »</a>
-						</p>
-					</div>
-					
-					<div class="span12" style="background-color:#FFFFFF">
-						<h2>
-							<a href="userArticle.jsp">技术杂谈</a>
-						</h2>
-						<p>
-							本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-						</p>
-						<h5 style="color:#928F8F;float: right">阅读数：3555</h5>
-						<p>
-							<a class="btn" href="#">查看更多 »</a>
-						</p>
-					</div>
-					<div class="span12" style="border-radius: 10px;background-color:#D2D4D5">
-						<h2>
-							<a href="userArticle.jsp">技术杂谈</a>
-						</h2>
-						<p>
-							本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-						</p>
-						<h5 style="color:#928F8F;float: right">阅读数：3555</h5>
-						<p>
-							<a class="btn" href="#">查看更多 »</a>
-						</p>
-					</div>
+					</div>--%>
+
 					
 				</div>
 <!--			  <div class="col-xs-6 col-md-1" style="background-color:#F10609"></div>-->

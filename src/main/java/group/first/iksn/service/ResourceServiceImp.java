@@ -1,9 +1,12 @@
 package group.first.iksn.service;
 
 import group.first.iksn.model.bean.CollectResource;
+import group.first.iksn.model.bean.Resource;
 import group.first.iksn.model.bean.ResourceComments;
 import group.first.iksn.model.dao.ResourceDAO;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
 
 @Component("resourceService")
 public class ResourceServiceImp  implements ResourceService{
@@ -27,6 +30,12 @@ public class ResourceServiceImp  implements ResourceService{
     public boolean houseResource(CollectResource h) {
         System.out.println(h);
         return resourceDAO.collectResource(h);
+    }
+
+    @Override
+    public ArrayList<Resource> searchResource(String s) {
+        System.out.println("servince层"+s);
+        return resourceDAO.searchResource(s);
     }
 
 

@@ -9,7 +9,15 @@
         <typeAlias type="group.first.iksn.model.bean.Blog" alias="Blog"></typeAlias>
         <typeAlias type="group.first.iksn.model.bean.ResourceComments" alias="ResourceComments"></typeAlias>
         <typeAlias type="group.first.iksn.model.bean.CollectResource" alias="CollectResource"></typeAlias>
+
         <typeAlias type="group.first.iksn.model.bean.IllegalBlog" alias="IllegalBlog"></typeAlias>
+        <typeAlias type="group.first.iksn.model.bean.SearchBlog" alias="SearchBlog"></typeAlias>
+        <typeAlias type="group.first.iksn.model.bean.BlogTag" alias="BlogTag"></typeAlias>
+        <typeAlias type="group.first.iksn.model.bean.UserToBlog" alias="UserToBlog"></typeAlias>
+        <typeAlias type="group.first.iksn.model.bean.Resource" alias="Resource"></typeAlias>
+        <typeAlias type="group.first.iksn.model.bean.ResourceTag" alias="ResourceTag"></typeAlias>
+        <typeAlias type="group.first.iksn.model.bean.BlogBrowsed" alias="BlogBrowsed"></typeAlias>
+
     </typeAliases>
 
 

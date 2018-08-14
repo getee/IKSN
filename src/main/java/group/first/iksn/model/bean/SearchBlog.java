@@ -2,7 +2,7 @@ package group.first.iksn.model.bean;
 
 import java.util.Set;
 
-public class Blog {
+public class SearchBlog {
     private int bid;//博客id
     private String title;//博客标题
     private String content;//博客内容,根据富文本制定
@@ -10,14 +10,14 @@ public class Blog {
     private  String link;//博客链接
     private  int points;//博客点赞数
     private int classify;//博客分类
-    private Set<BlogTag> blogTags;
     private  UserToBlog userToBlog;
+    private  User user;
 
 
 
-    @Override
+
     public String toString() {
-        return "Blog{" +
+        return "SearchBlog{" +
                 "bid=" + bid +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
@@ -25,20 +25,20 @@ public class Blog {
                 ", link='" + link + '\'' +
                 ", points=" + points +
                 ", classify=" + classify +
-                ", blogTags=" + blogTags +
-                ", userToBlog=" + userToBlog +
                 '}';
     }
 
-
-
-    public Set<BlogTag> getBlogTags() {
-        return blogTags;
+    public SearchBlog(int bid, String title, String content, String time, String link, int points, int classify) {
+        this.bid = bid;
+        this.title = title;
+        this.content = content;
+        this.time = time;
+        this.link = link;
+        this.points = points;
+        this.classify = classify;
     }
 
-    public void setBlogTags(Set<BlogTag> blogTags) {
-        this.blogTags = blogTags;
-    }
+
 
     public UserToBlog getUserToBlog() {
         return userToBlog;
@@ -46,6 +46,10 @@ public class Blog {
 
     public void setUserToBlog(UserToBlog userToBlog) {
         this.userToBlog = userToBlog;
+    }
+
+    public SearchBlog() {
+        super();
     }
 
     public int getBid() {
@@ -104,17 +108,13 @@ public class Blog {
         this.classify = classify;
     }
 
-    public Blog() {
-
+    public User getUser() {
+        return user;
     }
 
-    public Blog(int bid, String title, String content, String time, String link, int points, int classify) {
-        this.bid = bid;
-        this.title = title;
-        this.content = content;
-        this.time = time;
-        this.link = link;
-        this.points = points;
-        this.classify = classify;
+    public void setUser(User user) {
+        this.user = user;
     }
+
+
 }

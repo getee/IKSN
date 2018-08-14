@@ -1,12 +1,17 @@
 package group.first.iksn.control;
 
 import group.first.iksn.model.bean.CollectResource;
+import group.first.iksn.model.bean.Resource;
 import group.first.iksn.model.bean.ResourceComments;
 import group.first.iksn.service.ResourceService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import  group.first.iksn.util.EncodingTool;
+
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.ArrayList;
 
 @Controller
 @RequestMapping("/resource")
@@ -55,5 +60,20 @@ public class ResourceControl {
         {
             return "xq";
         }
-        }
+    }
+
+    /**
+     * 搜索资源的方法
+     * @param content
+     * @return
+     */
+    @RequestMapping("/resourceSearch")
+    public ModelAndView resourceSearch(@RequestParam("content") String content){
+       ModelAndView mv=new ModelAndView();
+       ArrayList<Resource> re=getResourceService().searchResource(content);
+       System.out.println(re);
+       mv.addObject("resource",re);
+       mv.setViewName("xiazai");
+       return  mv;
+    }
 }

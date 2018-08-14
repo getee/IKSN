@@ -1,15 +1,31 @@
 package group.first.iksn.model.dao;
 
+
 import group.first.iksn.model.bean.Blog;
+import group.first.iksn.model.bean.BlogBrowsed;
 import group.first.iksn.model.bean.IllegalBlog;
+import group.first.iksn.model.bean.SearchBlog;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component("blogDAO")
 public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
-    public String detailedBlogSearchResultMap() {
-        return null;
+
+    public List<Blog> detailedBlogSearchResultMap(String s) {
+        List<Blog> b=getSqlSession().getMapper(BlogDAO.class).detailedBlogSearchResultMap(s);
+        return b;
+    }
+
+
+    /**
+     * 首页推送
+     * @return
+     */
+    @Override
+    public List<Blog> detailedBlogPush() {
+        List<Blog> b=getSqlSession().getMapper(BlogDAO.class).detailedBlogPush();
+        return b;
     }
 
 
@@ -45,6 +61,7 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
      */
     @Override
     public List<IllegalBlog> getAllReportBlog() {
+
         List<IllegalBlog> allReportBlog=null;
         try {
             allReportBlog=getSqlSession().getMapper(BlogDAO.class).getAllReportBlog();

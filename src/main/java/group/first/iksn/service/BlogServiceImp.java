@@ -2,11 +2,19 @@ package group.first.iksn.service;
 
 
 import group.first.iksn.model.bean.Blog;
+
+import group.first.iksn.model.bean.BlogBrowsed;
 import group.first.iksn.model.bean.IllegalBlog;
 import group.first.iksn.model.dao.BlogDAO;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+
+import group.first.iksn.model.bean.SearchBlog;
+
+
+import java.util.ArrayList;
+
 
 @Component("blogService")
 public class BlogServiceImp implements BlogService {
@@ -48,9 +56,30 @@ public class BlogServiceImp implements BlogService {
     }
 
 
+    /**
+     * 搜索资源的方法
+     * @param s
+     * @return
+     */
+    public List<Blog> detailedBlogSearchResultMap(String s){
+
+        return  blogDAO.detailedBlogSearchResultMap(s);
+    }
+
+    /**
+     * 首页推送的方法
+     * @return
+     */
+    @Override
+    public List<Blog> detailedBlogPush() {
+        return blogDAO.detailedBlogPush();
+    }
+
+
+
 
     @Override
     public boolean addBlogService(Blog blog) {
         return blogDAO.processAddBlog(blog);
     }
-}
+    }
