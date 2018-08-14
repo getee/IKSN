@@ -355,7 +355,7 @@ public class UserDAOImp extends BaseDAOImp implements UserDAO {
         List<Scoring> scorings=getSqlSession().getMapper(UserDAO.class).costScoring(uid);
         return scorings;
     }
-
+    //积分充值
     @Override
     public List<Scoring> rechargeScoring(int uid) {
         List<Scoring> scorings=getSqlSession().getMapper(UserDAO.class).rechargeScoring(uid);
