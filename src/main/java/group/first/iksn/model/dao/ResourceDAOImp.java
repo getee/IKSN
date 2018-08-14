@@ -34,5 +34,41 @@ public class ResourceDAOImp extends BaseDAOImp implements ResourceDAO {
        return  num;
     }
 
+    @Override
+    public boolean deleteResourceFromReport(int id) {
+        boolean isOK=false;
+        try{
+            isOK=getSqlSession().getMapper(ResourceDAO.class).deleteResourceFromReport(id);
+        }catch (Exception e){
+            System.out.println("这是添加违规博客出错了");
+            e.printStackTrace();
+        }
+        return isOK;
+    }
+
+    @Override
+    public boolean deleteResourceOthers(int rid) {
+        boolean isOK=false;
+        try{
+            isOK=getSqlSession().getMapper(ResourceDAO.class).deleteResourceOthers(rid);
+        }catch (Exception e){
+            System.out.println("这是添加违规博客出错了");
+            e.printStackTrace();
+        }
+        return isOK;
+    }
+
+    @Override
+    public boolean deleteResource(int rid) {
+        boolean isOK=false;
+        try{
+            isOK=getSqlSession().getMapper(ResourceDAO.class).deleteResource(rid);
+        }catch (Exception e){
+            System.out.println("这是添加违规博客出错了");
+            e.printStackTrace();
+        }
+        return isOK;
+    }
+
 
 }

@@ -5,12 +5,11 @@ import group.first.iksn.model.bean.ResourceComments;
 import group.first.iksn.service.ResourceService;
 import group.first.iksn.util.Inspect;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpServletRequest;
 import  group.first.iksn.util.EncodingTool;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
@@ -123,4 +122,53 @@ public class ResourceControl {
             request.setAttribute("num",c);
             return  "xq";
         }
+
+    /**
+     * 资源举报被取消
+     * wenbin
+     * @param id
+     * @return
+     */
+    @RequestMapping("/mReject_oneReportResource/{id}")
+    @ResponseBody
+    public String mReject_oneReportResource(@PathVariable int id){
+        boolean RejectResult=resourceService.Reject_oneReportResource(id);
+        if(RejectResult){
+            return "success";
+        }else{
+            return "error";
+        }
+    }
+
+    /**
+     * 管理员查看被举报的资源详情
+     * wenbin
+     * @param resourceid
+     * @param id
+     * @param reason
+     * @param model
+     * @return
+     */
+    @RequestMapping("/mCheckReportResource/{resourceid}/{id}")
+    public String mCheckReportResource(@PathVariable int resourceid, @PathVariable int id,String reason, Model model){
+        System.out.println(reason);
+
+        model.addAttribute("resourceid",resourceid);
+        model.addAttribute("reportRid",id);
+        model.addAttribute("reportRReason",reason);
+
+        return "xq";
+    }
+
+    /**
+     * 管理员删除被举报且违规的资源
+     * wenbin
+     * @param resourceid
+     * @return
+     */
+    @RequestMapping("/mDeleteResourceForReport/{resourceid}")
+    public String mDeleteResourceForReport(@PathVariable int resourceid){
+        resourceService.deleteIllegalResource(resourceid);
+        return "jubaoguanl";
+    }
 }

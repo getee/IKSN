@@ -34,5 +34,27 @@ public class ResourceServiceImp  implements ResourceService{
         return resourceDAO.downnum(rid);
     }
 
+    /**
+     * 删除ReportResource一行
+     * wenbin
+     * @param report_id
+     * @return
+     */
+    @Override
+    public boolean Reject_oneReportResource(int report_id) {
+        return resourceDAO.deleteResourceFromReport(report_id);
+    }
+
+    @Override
+    public boolean deleteIllegalResource(int resourceid) {
+        boolean result=false;
+        //boolean deleteResult=blogDAO.deleteBlog(blog_id);
+        boolean deleteResult=resourceDAO.deleteResourceOthers(resourceid);
+        if(deleteResult){
+            result=resourceDAO.deleteResource(resourceid);
+        }
+        System.out.println("删除resource其他"+deleteResult);
+        return result;
+    }
 
 }

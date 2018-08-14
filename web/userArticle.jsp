@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
 <html>
@@ -50,19 +51,21 @@
 
 	<!--  用户名logo-->
 	<div class="row">
-		<div class="col-xs-12 col-md-9">
+		<div class="col-xs-12 col-md-8">
 			<div>
 				<h1 style="margin-left: 10%;color: azure">用户名</h1><small>Subtext for header</small>
 			</div>
 		</div>
-		<div class="col-xs-6 col-md-3">
-			<button id="comeback-button" type="button" class="btn btn-primary" style="">返回举报页</button>
-			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#delete" style="">删除</button>
-			<button id="sendBack-button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#sendBack" style="">下架</button>
+		<div class="col-xs-6 col-md-4">
 			<button class="btn btn-primary" type="submit" value="1">
 				订阅 <span class="badge">+</span>
 			</button>
-            <h5 style="color: white">举报原因：${reportReason}</h5>
+			<c:if test="${sessionScope.loginresult.isadmin eq '1'}">
+				<button id="comeback-button" type="button" class="btn btn-primary" style="">返回举报页</button>
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#delete" style="">删除</button>
+				<button id="sendBack-button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#sendBack" style="">下架</button>
+				<h5 style="color: white">举报原因：${reportReason}</h5>
+			</c:if>
 		</div>
 	</div>
 

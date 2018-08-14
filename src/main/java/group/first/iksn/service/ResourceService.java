@@ -13,4 +13,8 @@ public interface ResourceService {
 
 
     //查询下载次数
+
+    //从reportResource表删除一行，处理违规资源的安置
+    boolean Reject_oneReportResource(int report_id);
+    boolean deleteIllegalResource(int resourceid);
 }

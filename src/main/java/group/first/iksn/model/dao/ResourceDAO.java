@@ -10,4 +10,11 @@ public interface ResourceDAO {
     boolean collectResource(CollectResource h);
 
     int downnum(Integer rid);
+
+    //删除ReportResource表数据
+    boolean deleteResourceFromReport(int id);
+    //删除跟resource表相关的表数据
+    boolean deleteResourceOthers(int rid);
+    //删除resource表数据
+    boolean deleteResource(int rid);
 }
