@@ -11,14 +11,14 @@
 		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 	%>
 	<base href="<%=basePath%>">
-	<link type="text/css" href="../bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link type="text/css" href="bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/bootstrap.css" rel="stylesheet">
-	<link rel="stylesheet" href="../bootstrap-3.3.7/dist/css/bootstrap-theme.css"  crossorigin="anonymous">
+	<link rel="stylesheet" href="bootstrap-3.3.7/dist/css/bootstrap-theme.css"  crossorigin="anonymous">
 
-	<script src="../js/jquery-3.3.1.js"></script>
-	<script src="../bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
-	<script src="../js/depend.js"></script>
-	<script>
+    <script src="js/jquery-3.3.1.js"></script>
+    <script src="bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
+    <script src="js/depend.js"></script>
+    <script>
         function setbid() {
             var bokeid={'bid':'1'};
             var ajaxUrl="blog/getFloor";
@@ -63,7 +63,9 @@
 </head>
 
 <body>
-
+<c:if test="${requestScope.blog} eq null">
+	<c:redirect url="http://localhost:8080/blog/listBlogByBid"></c:redirect>
+</c:if>
 <div id="fluid_Div" class="container-fluid" style="background-color:#574949">
 
 
@@ -73,18 +75,21 @@
 
 	<!--  用户名logo-->
 	<div class="row">
-		<div class="col-xs-12 col-md-9">
+		<div class="col-xs-12 col-md-8">
 			<div>
 				<h1 style="margin-left: 10%;color: azure">用户名</h1><small>Subtext for header</small>
 			</div>
 		</div>
-		<div class="col-xs-6 col-md-3">
-			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#comeback" style="">返回举报页</button>
-			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#delete" style="">删除</button>
-			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sendBack" style="">下架</button>
+		<div class="col-xs-6 col-md-4">
 			<button class="btn btn-primary" type="submit" value="1">
 				订阅 <span class="badge">+</span>
 			</button>
+			<c:if test="${sessionScope.loginresult.isadmin eq '1'}">
+				<button id="comeback-button" type="button" class="btn btn-primary" style="">返回举报页</button>
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#delete" style="">删除</button>
+				<button id="sendBack-button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#sendBack" style="">下架</button>
+				<h5 style="color: white">举报原因：${reportReason}</h5>
+			</c:if>
 		</div>
 	</div>
 
@@ -119,7 +124,7 @@
 					<span class="label label-danger">下架文章</span>
 				</div>
 				<div id="sendBack-ok-innerHtml" class="modal-body">
-					确定退回至用户草稿吗？
+					确定下架至用户草稿吗？
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -130,25 +135,35 @@
 	</div>
 	<script>
         $(document).ready(function(){
-            $("#comeback").click(function(){
-                $.get("/blog/mGetAllReportBlog",function(data,status){
-
-                    alert(data+status);
-                });
+            $("#comeback-button").click(function(){
+                alert("sss")
+                location.href="/blog/mGetAllReportBlog";
             });
             $("#sendBack-ok").click(function(){
-                $(this).prop("disabled","disabled");
-                $.get("/blog/mSendBackIllegalblog?blog_id=2",function(data,status){
-                    $("#sendBack-ok-innerHtml").text("已退回");
-                    $("#sendBack-ok").prop("disabled","disabled");
-                    alert(data+status);
+                $.get("/blog/mSendBackIllegalblog/${blog_id}/${reportReason}/${report_id}",function(data,status){
+                    if(data=="success"){
+                        $("#sendBack-ok-innerHtml").text("已下架");
+                        $(this).prop("disabled","disabled");
+                        $("#sendBack-button").prop("disabled","disabled");
+					}else {
+                        $("#sendBack-ok-innerHtml").text("按钮睡着了，请再点一次吧");
+                        $("#sendBack-ok-innerHtml").text("确定下架至用户草稿吗？");
+					}
+
                 });
             });
             $("#delete-ok").click(function(){
-                $(this).prop("disabled","disabled");
-                $("#delete-ok-innerHtml").text("已删除");
-                $.get("/blog/mGetAllReportBlog",function(data,status){
-                    alert("已删除");
+                $.get("/blog/mDeleteBlogForReported/${blog_id}/${report_id}",function(data,status){
+                    if(data=="success"){
+                        $("#delete-ok-innerHtml").text("已删除");
+                        $(this).prop("disabled","disabled");
+                        location.href="/blog/mGetAllReportBlog";
+                    }else {
+                        $("#delete-ok-innerHtml").text("按钮睡着了，请再点一次吧");
+                        $("#delete-ok-innerHtml").text("确定删除吗？");
+                    }
+
+
                 });
             });
         });
@@ -178,11 +193,11 @@
 						<!--				推送正文-->
 						<div class="span12" style="background-color:#FFFFFF;padding-left: 25px;padding-right: 25px">
 							<p>&nbsp;</p>
-							<!--						文章标题-->
+							<!--文章标题-->
 							<div>
-								<h2>标题这是正文标题</h2>
-								<h5 style="color:#928F8F;">2018年8月2日16：05：25</h5>
-								<h5 style="color:#928F8F;margin-left:  600px">阅读数：3555</h5>
+								<h2>${listblog.title}</h2>
+								<h5 style="color:#928F8F;">${listblog.time}</h5>
+								<h5 style="color:#928F8F;margin-left:  580px">点赞数：${listblog.points}</h5>
 								<a href="alterBlog.jsp" style="float: right;margin-top: -28px">编辑</a>
 							</div>
 
@@ -199,49 +214,7 @@
 							<h2>
 								正文
 							</h2>
-							<p>
-								本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-							</p>
-							<p>
-								本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-							</p>
-							<p>
-								本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-							</p>
-							<p>
-								本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-							</p>
-							<p>
-								本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-							</p>
-							<p>
-								本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-							</p>
-							<p>
-								本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-							</p>
-							<p>
-								本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-							</p>
-							<p>
-								本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-							</p>
-							<p>
-								本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-							</p>
-							<p>
-								本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-							</p>
-							<p>
-								本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-							</p>
-							<p>
-								本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-							</p>
-							<p>
-								本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-							</p>
-
+							${listblog.content}
 							<p>
 								<a class="btn" href="#">查看更多 »</a>
 							</p>
@@ -504,15 +477,47 @@
 			<p style="font-size: 2px">微博</p>
 		</li>
 		<li class="li-left">
-			<a href="#" class="glyphicon glyphicon-warning-sign" style="color: black;width: 25px;height: 25px"></a>
-			<p style="font-size: 2px">举报</p>
+			<a data-toggle="modal" data-target="#modal-container-830220" class="glyphicon glyphicon-warning-sign" style="color: black;width: 25px;height: 25px"></a>
+			<p style="font-size: 2px">举报</p><input value="${result} " type="hidden" >
 		</li>
 	</ul>
 </div>
 <!--点赞结束-->
+<!-- Modal -->
+<div class="modal fade" id="modal-container-830220" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="margin-top: 20%">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">举报原因</h4>
+			</div>
+			<div class="modal-body">
+				<!--								文本域-->
+				<form action="/blog/reportBlog" method="post">
+					博客ID：<input name="bid" type="text" value="2" readonly="readonly"/>
+					举报人ID：<input name="uid" type="text" value="2" readonly="readonly"/>
+					<textarea name="reason" class="form-control" rows="3"></textarea><br/>
+					<input  type="submit" value="提交" onclick="report(${result})" />
+				</form>
+				<!--								-->
 
+			</div>
+			<div class="modal-footer">
+				<!--<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary">提交</button>-->
+			</div>
+		</div>
+	</div>
+</div>
+<!--end-->
 
 <!--返回顶部按钮，向下翻150px显示-->
 <a href="javascript:void(0)" id="toTop" style="border-radius: 20px"> </a>
 </body>
+<script>
+function report(result) {
+	alert("举报成功")
+}
+
+</script>
 </html>

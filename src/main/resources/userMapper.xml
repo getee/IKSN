@@ -96,4 +96,16 @@ select * from user where NICKNAME=#{nickname} and  UID in (select ATTENID from a
     <select id="userGrade" parameterType="User">
         SELECT score FROM USER WHERE UID=#{uid}
     </select>
+    <!--获取积分明细-->
+    <select id="getScoring" resultType="Scoring">
+        select * from scoring where uid=#{uid}
+    </select>
+    <!--积分的消费记录-->
+    <select id="costScoring" resultType="Scoring">
+        select * from scoring where uid=#{uid} and state=0
+    </select>
+    <!--积分的充值记录-->
+    <select id="rechargeScoring" resultType="Scoring">
+        select * from scoring where uid=#{uid} and operation='充值'
+    </select>
 </mapper>

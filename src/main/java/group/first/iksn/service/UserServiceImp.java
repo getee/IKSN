@@ -2,6 +2,7 @@ package group.first.iksn.service;
 
 import group.first.iksn.model.bean.Message;
 import group.first.iksn.model.bean.Notice;
+import group.first.iksn.model.bean.Scoring;
 import group.first.iksn.model.bean.User;
 import group.first.iksn.model.dao.UserDAO;
 import group.first.iksn.util.MD5;
@@ -158,6 +159,48 @@ public class UserServiceImp implements UserService {
     @Override
     public List searchFriend(String nickname, int uid) {
         return userDAO.searchFriend(nickname, uid);
+    }
+
+    /**
+     * 查询积分
+     * @param uid
+     * @return
+     */
+    @Override
+    public List<Scoring> getScoring(int uid) {
+        List<Scoring> scorings=userDAO.getScoring(uid);
+        for(Scoring s:scorings){
+            System.out.println(s);
+        }
+        return scorings;
+    }
+
+    /**
+     * 积分消费账单
+     * @param uid
+     * @return
+     */
+    @Override
+    public List<Scoring> costScoring(int uid) {
+        List<Scoring> scorings=userDAO.costScoring(uid);
+        for(Scoring s:scorings){
+            System.out.println(s);
+        }
+        return scorings;
+    }
+
+    /**
+     * 用户充值记录
+     * @param uid
+     * @return
+     */
+    @Override
+    public List<Scoring> rechargeScoring(int uid) {
+        List<Scoring> scorings=userDAO.rechargeScoring(uid);
+        for(Scoring s:scorings){
+            System.out.println(s);
+        }
+        return scorings;
     }
 
     //修改用户资料

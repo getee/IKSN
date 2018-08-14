@@ -81,11 +81,11 @@
 <div class="row"  style="margin-top: -1.2%; font-size:16px;background-color:#EAEBEC; min-width:1024px;" >
 
     <ul class="nav nav-tabs"  style="margin-left:15%;" >
-        <li ><a href="#">下载首页</a></li>
-        <li ><a href="myresource.jsp?#panel-717300">我的资源</a></li>
+        <li ><a href="xiazai.jsp">下载首页</a></li>
+        <li ><a href="myresource.jsp">我的资源</a></li>
         <li ><a href="upload.jsp">上传资源赚积分</a></li>
-        <li ><a href="myresource.jsp?#panel-622342">已下载</a></li>
-        <li ><a href="myresource.jsp?#panel-622343">我的收藏</a></li>
+        <li ><a href="myresource.jsp">已下载</a></li>
+        <li ><a href="myresource.jsp">我的收藏</a></li>
     </ul>
 
 </div>
@@ -245,5 +245,9 @@
         })
     });
 </script>
-
+<style>
+    a{
+        cursor:pointer;
+    }
+</style>
 </html>

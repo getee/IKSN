@@ -499,21 +499,18 @@
                     <li><a href="../xiazai.jsp">下载</a></li>
                     <li><a href="#">GitChat</a></li>
                     <li><a href="#">TinyMind</a></li>
+                    <li><a href="#">论坛</a></li>
                     <li><a href="#">问答</a></li>
+                    <li><a href="#">商城</a></li>
                     <li><a href="#">VIP</a></li>
-                    <li><a data-toggle="popover" title="私信" data-container="body" data-placement="bottom" data-content="收到一条私信"></a></li>
                 </ul>
                 <form class="navbar-form navbar-left" method="post" action="/blog/blogSearch">
                     <div class="form-group">
-                        <input id="topSearch" type="text" class="form-control" placeholder="Search" name="content">
-                    </div>
-                    <button id="bSearch" type="submit"  class="btn btn-default" >搜索</button>
 
-                        <%--<div class="demo" style="height: 40px">
-                            <input type="text" id="search-orange" />
-                            <div class="clear">
-                            </div>
-                        </div>--%>
+                        <input id="q1" type="text" class="quickQuery$focus" placeholder="Fuck you" name="content"/>
+                       <%-- <input class="quickQuery$focus" id="" style="border: 3px solid #ccc;" />--%>
+                        <div class="quickQuery$focus"></div>
+                    </div> <button id="bSearch" type="submit"  class="btn btn-default" >搜索</button>
 
                 </form>
                 <ul class="nav navbar-nav navbar-right">
@@ -526,14 +523,13 @@
                         </a>
                         <div id="xl" style="position: absolute;top:100%;left:0%;z-index: 10;display:none;">
                             <ul class="list-group" style="width:80px;cursor: pointer;font-size: 10px;color:#ebebeb">
-                                <li class="list-group-item"><a href="writingCenter.jsp">我的博客</a></li>
+                                <li class="list-group-item"><a href="/blog/listBlogByUid/${sessionScope.loginresult.uid}">我的博客</a></li>
                                 <li class="list-group-item"><a href="/user/listAllFriends/${sessionScope.loginresult.uid}/1">我的消息</a></li>
                                 <li  class="list-group-item"><a id="tc">退出登录</a></li>
                             </ul>
                         </div>
                     </li>
                 </ul>
-
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav>
@@ -587,24 +583,24 @@
 
 </script>
 <!--	导航栏结束-->
-<%--<script type="text/javascript">
 
-    $(document).ready(function () {
+<script>
 
-        var searchOrange = $('#search-orange').searchMeme({ onSearch: function (searchText) {
+    var keywordArray = new Array("","","")
+    keywordArray[0] = new Array("0", "移动开发", "YIDONGKAIFA");
+    keywordArray[1] = new Array("1", "开发技术", "KAIFAJISHU");
+    keywordArray[2] = new Array("2", "课程资源", "KECHENGZIYUAN");
+    keywordArray[3] = new Array("3", "网络技术", "WANGLUOJISHU");
+    keywordArray[4] = new Array("4", "操作系统", "CAOZUOXOTONG");
+    keywordArray[5] = new Array("5", "安全技术", "ANQUANJISHU");
+    keywordArray[6] = new Array("6", "数据库", "SHUJUKU");
+    keywordArray[7] = new Array("7", "服务器应用", "FUWUQIYINGYONG");
+    keywordArray[8] = new Array("8", "存储", "CUNCHU");
+    keywordArray[9] = new Array("9", "信息化", "XINXIHUA");
 
-                setTimeout(function () {
+    window.onload = function(){
+       // $quickQuery(keywordArray);
+    }
+</script>
 
-                    searchOrange.searchMeme({ searchComplete: true });
-
-                }, 3000);
-
-            }
-
-            , buttonPlacement: 'left', button: 'orange'
-
-        });
-    });
-
-</script>--%>
 

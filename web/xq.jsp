@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -9,7 +10,6 @@
         String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
     %>
     <base href="<%=basePath%>">
-
 
     <link href="bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -66,10 +66,25 @@
             <li ><a href="#">上传资源赚积分</a></li>
             <li ><a href="#">已下载</a></li>
             <li ><a href="#">我的收藏</a></li>
+            <c:if test="${sessionScope.loginresult.isadmin eq '1'}">
+                <li style="margin-left: 5%"><a href="/blog/mGetAllReportBlog">返回举报页</a></li>
+                <li><a href="javascript:deleteResource(${resourceid})">删除</a></li>
+                <li><a style="cursor: default">举报原因：${reportRReason}</a></li>
+            </c:if>
         </ul>
 
     </div>
     <!--二级导航结束-->
+<script>
+    function deleteResource(url) {
+        var userChoice=window.confirm("您确认要去除这个资源吗？");
+        var a="/resource/mDeleteResourceForReport/"+url;
+        if(userChoice){
+            // location.href=a;
+        }
+    }
+</script>
+
 
 
     <div class="row well" style="margin-left: 10%;margin-right: 10%; min-width:1024px;">
@@ -122,7 +137,35 @@
                         <div style="float:right; width:250px;">
                             <a href="#"><img src="img/sc.jpg">&nbsp;收藏</a>&nbsp;&nbsp;&nbsp;&nbsp;
                             <a href="#"><img src="img/pl.jpg">&nbsp;评论</a>&nbsp;&nbsp;&nbsp;&nbsp;
-                            <a href="#"><img src="img/jb.jpg">&nbsp;举报</a>
+                            <a data-toggle="modal" data-target="#modal-container-830220" ><img src="img/jb.jpg" >&nbsp;举报</a><input type="hidden" value="${isReportOk}"/>
+                            <!-- 模态框（Modal） -->
+                            <!-- Modal -->
+                            <div class="modal fade" id="modal-container-830220" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="margin-top: 20%">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title" id="myModalLabel">举报原因</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <!--								文本域-->
+                                            <form id="addForm" action="/resource/reportResource" method="post">
+                                                资源ID：<input name="rid" type="text" value="1" readonly="readonly"/>
+                                                举报人ID：<input name="uid" type="text" value="1" readonly="readonly"/>
+                                                <textarea name="reason" class="form-control" rows="3"></textarea><br/>
+                                                <input  type="submit" value="提交" onclick="report()"/>
+                                            </form>
+                                            <!--								-->
+
+                                        </div>
+                                       <%-- <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                            <button id="submitAdd" type="button" class="btn btn-primary">提交</button>
+                                        </div>--%>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.modal-content -->
                         </div>
                     </div>
 
@@ -245,4 +288,14 @@
 </div>
 </div>
 </body>
+<script type="text/javascript">
+    function shoucang()
+    {
+        alert("已收藏！")
+    }
+   function report() {
+       alert("举报成功！")
+   }
+
+</script>
 </html>

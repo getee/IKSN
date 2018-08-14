@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>无标题文档</title>
@@ -53,8 +54,10 @@
                             <div style="float:left; margin-top:18px; margin-left:20px">
                                 <span>关键词:</span>
                             </div>
-                            <form class="form-search"><input style="height:30px; width:400px; margin-top:15px; float:left" class="input-medium search-query" type="text"/>
-                                <button style="height:30px; margin-top:15px; margin-left:10px" class="btn" contenteditable="true" type="submit">查找</button></form>
+                            <form class="form-search" action="/blog/blogSearch" method="post">
+                                <input name="content" style="height:30px; width:400px; margin-top:15px; float:left" class="input-medium search-query" type="text"/>
+                                <button style="height:30px; margin-top:15px; margin-left:10px" class="btn" contenteditable="true" type="submit">查找</button>
+                            </form>
                         </div>
 
 
@@ -68,19 +71,27 @@
 
             <!--左边第二大块div开始-->
             <div  style="background-color:#FFFFFF; margin-top:30px; width:940px" >
+                <c:forEach var="t" items="${blogSearch}">
+                   <div class="span12" style="border-radius: 10px; background-color:#f8f1ff">
+                       <h2>
+                           <a href="userArticle.jsp?searchB=${t.bid}"> ${t.title}</a>
+                       </h2>
+                       <p>
 
-                <div class="span12" style="border-radius: 10px; background-color:#f8f1ff">
-                    <h2>
-                        <a href="userArticle.jsp">技术杂谈</a>
-                    </h2>
-                    <p>
-                        本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-                    </p>
-                    <h5 style="color:#928F8F;float: right">阅读数：3555</h5>
-                    <p>
-                        <a class="btn" href="#">查看更多 »</a>
-                    </p>
-                </div>
+                               ${fn:substring(t.content, 0, 150)}.........
+
+                       </p>
+
+                        <h5 style="color:#928F8F;float: right">
+                            博客类型:<%--${t.blogTags.btag}--%><c:forEach var="tag" items="${t.blogTags}">${tag.btag}</c:forEach>
+                            &nbsp&nbsp&nbsp&nbsp阅读数：${t.points}</h5>
+                       <p>
+                           <a class="btn" href="userArticle.jsp?searchB=${t.bid}">查看更多 »</a>
+                       </p>
+                   </div>
+              </c:forEach>
+
+               <%--
                 <div class="span12" style="border-radius: 10px;background-color:#D2D4D5">
                     <h2>
                         <a href="userArticle.jsp">技术杂谈</a>
@@ -92,41 +103,14 @@
                     <p>
                         <a class="btn" href="#">查看更多 »</a>
                     </p>
-                </div>
-                <div class="span12" style="border-radius: 10px; background-color:#f8f1ff">
-                    <h2>
-                        <a href="userArticle.jsp">技术杂谈</a>
-                    </h2>
-                    <p>
-                        本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-                    </p>
-                    <h5 style="color:#928F8F;float: right">阅读数：3555</h5>
-                    <p>
-                        <a class="btn" href="#">查看更多 »</a>
-                    </p>
-                </div>
-                <div class="span12" style="border-radius: 10px;background-color:#D2D4D5">
-                    <h2>
-                        <a href="userArticle.jsp">技术杂谈</a>
-                    </h2>
-                    <p>
-                        本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-                    </p>
-                    <h5 style="color:#928F8F;float: right">阅读数：3555</h5>
-                    <p>
-                        <a class="btn" href="#">查看更多 »</a>
-                    </p>
-                </div>
-
-
-
+                </div>--%>
             </div>
         </div>
 
 
         <!--右边第一块-->
         <div class="col-xs-4 well">
-            <div class="media" style="height:200px; width:100%;"><a class="pull-left" href="#"><img class="media-object"              src="img/0.jpg" /> </a>
+            <div class="media" style="height:200px; width:100%;"><a class="pull-left" href="#"><img class="media-object"       src="img/0.jpg" /> </a>
                 <div class="media-body" contenteditable="true"></div>
             </div>
         </div>

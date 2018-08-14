@@ -1,6 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"  isELIgnored="false" %>
 <!doctype html>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="C" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
 	<meta charset="utf-8">
@@ -11,14 +13,7 @@
 		String path = request.getContextPath();
 		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 	%>
-	<base href="<%=basePath%>">
- <link type="text/css" href="bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="bootstrap-3.3.7/dist/css/bootstrap.css" rel="stylesheet">
-	<link rel="stylesheet" href="bootstrap-3.3.7/dist/css/bootstrap-theme.min.css" crossorigin="anonymous">
-	
-	<script src="js/jquery-3.3.1.js"></script>
-	<script src="bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
-	<script src="js/depend.js"></script>
+
 	
 <style>
 	#toTop {display: none;text-decoration: none;position: fixed;bottom: 10px;right: 10px;overflow: hidden;width: 40px;height: 40px;border: none;text-indent: 100%; background-image: url(img/goTop.jpg);background-size: 100% 100%;text-align: center;}
@@ -31,6 +26,19 @@
 </head>
 
 <body>
+<base href="<%=basePath%>">
+<link type="text/css" href="bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="bootstrap-3.3.7/dist/css/bootstrap.css" rel="stylesheet">
+<link rel="stylesheet" href="bootstrap-3.3.7/dist/css/bootstrap-theme.min.css" crossorigin="anonymous">
+
+<script src="js/jquery-3.3.1.js"></script>
+<script src="bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
+<script src="js/depend.js"></script>
+
+<c:set var="webRoot" value="<%=basePath%>" />
+<C:if test="${requestScope.BlogsPush eq null}">
+	<c:redirect url="/blog/blogPush"></c:redirect>
+</C:if>
 
 <div id="fluid_Div" class="container-fluid" style="background-color:#F4EEEE;">
 
@@ -38,11 +46,11 @@
 <!--  标题-->
 
 <!--  导航-->
-<%@ include file="top.jsp"%>
+<%@include file="top.jsp"%>
 
 </div>
 		  <!--		  导航结束-->
-  <div class="row" style="background-color:#EBEBEB;width: 101%;">
+  <div class="row" style="background-color:#EBEBEB">
 <!--	  左边导航栏-->
 	  <div class="col-xs-12 col-md-2">
 	  	
@@ -124,21 +132,26 @@
 						  
 					</div>
 <!--					轮播结束-->
-					
 <!--					博主发表的文章-->
-					<div class="span12" style="background-color:#FFFFFF;margin-top: 30px">
-						<h2>
-							<a href="userArticle.jsp">技术杂谈</a>
-						</h2>
-						<p>
-							本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-						</p>
-						<h5 style="color:#928F8F;float: right">阅读数：3555</h5>
-						<p>
-							<a class="btn" href="#">查看更多 »</a>
-						</p>
-					</div>
-					<div class="span12" style="border-radius: 10px;background-color:#D2D4D5;margin-top: 10px">
+
+
+					<c:forEach var="t" items="${BlogsPush}" >
+						<div class="span12" style="border-radius: 10px;background-color:#FFFFFF;margin-top: 30px">
+							<h2>
+								<a href="userArticle.jsp">${t.title}</a>
+							</h2>
+							<p>
+								${fn:substring(t.content,0,150)}.........
+							</p>
+							<h5 style="color:#928F8F;float: right">阅读数：${t.points}</h5>
+							<p>
+								<a class="btn" href="userArticle.jsp">查看更多 »</a>
+							</p>
+						</div>
+					</c:forEach>
+
+
+					<%--<div class="span12" style="border-radius: 10px;background-color:#D2D4D5;margin-top: 10px">
 						<h2>
 							<a href="#">标题</a>
 						</h2>
@@ -149,57 +162,8 @@
 						<p>
 							<a class="btn" href="#">查看更多 »</a>
 						</p>
-					</div>
-					
-					<div class="span12" style="background-color:#FFFFFF">
-						<h2>
-							<a href="userArticle.jsp">技术杂谈</a>
-						</h2>
-						<p>
-							本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-						</p>
-						<h5 style="color:#928F8F;float: right">阅读数：3555</h5>
-						<p>
-							<a class="btn" href="#">查看更多 »</a>
-						</p>
-					</div>
-					<div class="span12" style="border-radius: 10px;background-color:#D2D4D5">
-						<h2>
-							<a href="userArticle.jsp">技术杂谈</a>
-						</h2>
-						<p>
-							本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-						</p>
-						<h5 style="color:#928F8F;float: right">阅读数：3555</h5>
-						<p>
-							<a class="btn" href="#">查看更多 »</a>
-						</p>
-					</div>
-					
-					<div class="span12" style="background-color:#FFFFFF">
-						<h2>
-							<a href="userArticle.jsp">技术杂谈</a>
-						</h2>
-						<p>
-							本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-						</p>
-						<h5 style="color:#928F8F;float: right">阅读数：3555</h5>
-						<p>
-							<a class="btn" href="#">查看更多 »</a>
-						</p>
-					</div>
-					<div class="span12" style="border-radius: 10px;background-color:#D2D4D5">
-						<h2>
-							<a href="userArticle.jsp">技术杂谈</a>
-						</h2>
-						<p>
-							本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-						</p>
-						<h5 style="color:#928F8F;float: right">阅读数：3555</h5>
-						<p>
-							<a class="btn" href="#">查看更多 »</a>
-						</p>
-					</div>
+					</div>--%>
+
 					
 				</div>
 <!--			  <div class="col-xs-6 col-md-1" style="background-color:#F10609"></div>-->

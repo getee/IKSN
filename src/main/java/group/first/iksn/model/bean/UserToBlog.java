@@ -7,6 +7,25 @@ public class UserToBlog {
     private  int isdraft;//是否存入草稿箱
     private  int ispublic;//是否公开博客
     private  int blogtype;//是否原创,翻译，转载..
+    private  User user;
+
+    public UserToBlog(int id, int uid, int bid, int isdraft, int ispublic, int blogtype, User user) {
+        this.id = id;
+        this.uid = uid;
+        this.bid = bid;
+        this.isdraft = isdraft;
+        this.ispublic = ispublic;
+        this.blogtype = blogtype;
+        this.user = user;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public int getId() {
         return id;

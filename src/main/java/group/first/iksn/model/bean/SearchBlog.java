@@ -2,7 +2,7 @@ package group.first.iksn.model.bean;
 
 import java.util.Set;
 
-public class Blog {
+public class SearchBlog {
     private int bid;//博客id
     private String title;//博客标题
     private String content;//博客内容,根据富文本制定
@@ -10,29 +10,47 @@ public class Blog {
     private  String link;//博客链接
     private  int points;//博客点赞数
     private int classify;//博客分类
-    private Set<BlogTag> blogTags;
-    private BlogTag blogTag;
     private  UserToBlog userToBlog;
+    private  User user;
 
 
 
-    public Set<BlogTag> getBlogTags() {
-        return blogTags;
+
+    public String toString() {
+        return "SearchBlog{" +
+                "bid=" + bid +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", time='" + time + '\'' +
+                ", link='" + link + '\'' +
+                ", points=" + points +
+                ", classify=" + classify +
+                '}';
+    }
+
+    public SearchBlog(int bid, String title, String content, String time, String link, int points, int classify) {
+        this.bid = bid;
+        this.title = title;
+        this.content = content;
+        this.time = time;
+        this.link = link;
+        this.points = points;
+        this.classify = classify;
+    }
+
+
+
+    public UserToBlog getUserToBlog() {
+        return userToBlog;
     }
 
     public void setUserToBlog(UserToBlog userToBlog) {
         this.userToBlog = userToBlog;
     }
 
-
-    public BlogTag getBlogTag() {
-        return blogTag;
+    public SearchBlog() {
+        super();
     }
-
-    public void setBlogTag(BlogTag blogTag) {
-        this.blogTag = blogTag;
-    }
-
 
     public int getBid() {
         return bid;
@@ -90,32 +108,12 @@ public class Blog {
         this.classify = classify;
     }
 
-    public Blog() {
+    public User getUser() {
+        return user;
     }
 
-    public Blog(int bid, String title, String content, String time, String link, int points, int classify, BlogTag blogTag, UserToBlog userToBlog) {
-        this.bid = bid;
-        this.title = title;
-        this.content = content;
-        this.time = time;
-        this.link = link;
-        this.points = points;
-        this.classify = classify;
-        this.blogTag = blogTag;
-        this.userToBlog = userToBlog;
-    }
-
-    @Override
-    public String toString() {
-        return "Blog{" +
-                "bid=" + bid +
-                ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                ", time='" + time + '\'' +
-                ", link='" + link + '\'' +
-                ", points=" + points +
-                ", classify=" + classify +
-                '}';
+    public void setUser(User user) {
+        this.user = user;
     }
 
 

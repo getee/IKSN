@@ -2,6 +2,7 @@ package group.first.iksn.service;
 
 import group.first.iksn.model.bean.CollectResource;
 import group.first.iksn.model.bean.Resource;
+import group.first.iksn.model.bean.ReportResource;
 import group.first.iksn.model.bean.ResourceComments;
 import group.first.iksn.model.dao.ResourceDAO;
 import group.first.iksn.util.Inspect;
@@ -14,6 +15,8 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+
+import java.util.ArrayList;
 
 @Component("resourceService")
 public class ResourceServiceImp  implements ResourceService{
@@ -37,6 +40,12 @@ public class ResourceServiceImp  implements ResourceService{
     public boolean houseResource(CollectResource h) {
         System.out.println(h);
         return resourceDAO.collectResource(h);
+    }
+
+    @Override
+    public ArrayList<Resource> searchResource(String s) {
+        System.out.println("servince层"+s);
+        return resourceDAO.searchResource(s);
     }
 
     @Override
@@ -112,6 +121,36 @@ public class ResourceServiceImp  implements ResourceService{
 
         }
         return false;
+    }
+
+    /**
+     * 删除ReportResource一行
+     * wenbin
+     * @param report_id
+     * @return
+     */
+    @Override
+    public boolean Reject_oneReportResource(int report_id) {
+        return resourceDAO.deleteResourceFromReport(report_id);
+    }
+
+    @Override
+    public boolean deleteIllegalResource(int resourceid) {
+        boolean result=false;
+        //boolean deleteResult=blogDAO.deleteBlog(blog_id);
+        boolean deleteResult=resourceDAO.deleteResourceOthers(resourceid);
+        if(deleteResult){
+            result=resourceDAO.deleteResource(resourceid);
+        }
+        System.out.println("删除resource其他"+deleteResult);
+        return result;
+    }
+    //举报资源
+    @Override
+    public boolean reportResource(ReportResource reportResource) {
+        System.out.println(reportResource);
+        boolean result=resourceDAO.reportResource(reportResource);
+        return result;
     }
 
 

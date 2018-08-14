@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
+
 
 @Component("blogService")
 public class BlogServiceImp implements BlogService {
@@ -81,6 +83,26 @@ public class BlogServiceImp implements BlogService {
         return blogDAO.deleteBlogFromReport(report_id);
     }
 
+    /**
+     * 搜索资源的方法
+     * @param s
+     * @return
+     */
+    public List<Blog> detailedBlogSearchResultMap(String s){
+
+        return  blogDAO.detailedBlogSearchResultMap(s);
+    }
+
+    /**
+     * 首页推送的方法
+     * @return
+     */
+    @Override
+    public List<Blog> detailedBlogPush() {
+        return blogDAO.detailedBlogPush();
+    }
+
+
 
     @Override
     public boolean addBlogService(Blog blog) {
@@ -98,9 +120,18 @@ public class BlogServiceImp implements BlogService {
     }
 
     @Override
-    public List<Blog> scanBlogService(int bid) {
+    public List<Blog> scanBlogService(int uid) {
+        return blogDAO.processScanBlog(uid);
+    }
 
-        return blogDAO.processScanBlog(bid);
+    @Override
+    public Blog listBlogService(int bid) {
+        return blogDAO.processListBlog(bid);
+    }
+
+    @Override
+    public int selectBidService(String time) {
+        return blogDAO.selectBid(time);
     }
 
     @Override
@@ -113,6 +144,13 @@ public class BlogServiceImp implements BlogService {
     public boolean answerComment(BlogComments blogComments) {
         System.out.println(blogComments);
         return blogDAO.answerDiscuss(blogComments);
+    }
+
+    //举报博客
+    @Override
+    public boolean reportBlog(ReportBlog reportBlog) {
+        boolean serviceResult=blogDAO.reportBlog(reportBlog);
+        return serviceResult;
     }
 
 

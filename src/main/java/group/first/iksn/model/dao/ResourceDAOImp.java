@@ -2,11 +2,13 @@ package group.first.iksn.model.dao;
 
 import group.first.iksn.model.bean.CollectResource;
 import group.first.iksn.model.bean.Resource;
+import group.first.iksn.model.bean.ReportResource;
 import org.apache.ibatis.session.SqlSession;
 import group.first.iksn.model.bean.ResourceComments;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.ArrayList;
 
 @Component("resourceDAO")
 public class ResourceDAOImp extends BaseDAOImp implements ResourceDAO {
@@ -51,5 +53,59 @@ public class ResourceDAOImp extends BaseDAOImp implements ResourceDAO {
         boolean isAdd=getSqlSession().getMapper(ResourceDAO.class).addResourceTag(rid,rtag);
         return isAdd;
     }
+    @Override
+    public boolean deleteResourceFromReport(int id) {
+        boolean isOK=false;
+        try{
+            isOK=getSqlSession().getMapper(ResourceDAO.class).deleteResourceFromReport(id);
+        }catch (Exception e){
+            System.out.println("这是添加违规博客出错了");
+            e.printStackTrace();
+        }
+        return isOK;
+    }
 
+    @Override
+    public boolean deleteResourceOthers(int rid) {
+        boolean isOK=false;
+        try{
+            isOK=getSqlSession().getMapper(ResourceDAO.class).deleteResourceOthers(rid);
+        }catch (Exception e){
+            System.out.println("这是添加违规博客出错了");
+            e.printStackTrace();
+        }
+        return isOK;
+    }
+
+    @Override
+    public boolean deleteResource(int rid) {
+        boolean isOK=false;
+        try{
+            isOK=getSqlSession().getMapper(ResourceDAO.class).deleteResource(rid);
+        }catch (Exception e){
+            System.out.println("这是添加违规博客出错了");
+            e.printStackTrace();
+        }
+        return isOK;
+    }
+
+    @Override
+    public ArrayList<Resource> searchResource(String s) {
+        ArrayList<Resource> re=getSqlSession().getMapper(ResourceDAO.class).searchResource(s);
+        System.out.println("resourceDAOImp:"+re);
+        return re;
+    }
+
+
+    /**
+     * 举报的资源保存到表中
+     * @param reportResource
+     * @return
+     */
+    @Override
+    public boolean reportResource(ReportResource reportResource) {
+        System.out.println(reportResource);
+        boolean result= getSqlSession().getMapper(ResourceDAO.class).reportResource(reportResource);
+        return result;
+    }
 }

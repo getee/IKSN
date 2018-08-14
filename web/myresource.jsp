@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -29,18 +30,17 @@
           	<div class="row"  style="margin-top: -1.2%; font-size:16px;background-color:#EAEBEC; min-width:1024px;" >
  
                     <ul class="nav nav-tabs"  style="margin-left:15%;" >
-                      <li ><a href="#">下载首页</a></li>
-                      <li ><a href="#panel-717300" data-toggle="tab" contenteditable="true">我的资源</a></li>
+                      <li ><a href="xiazai.jsp">下载首页</a></li>
+                      <li id="a1"><a  href="#panel-717300">我的资源</a></li>
                       <li ><a href="upload.jsp">上传资源赚积分</a></li>
-                      <li ><a href="#panel-622342" data-toggle="tab" contenteditable="true">已下载</a></li>
-                      <li ><a href="#panel-622343" data-toggle="tab" contenteditable="true">我的收藏</a></li>
+                      <li id="a3"><a  href="#panel-622342">已下载</a></li>
+                      <li id="a4"><a  href="#panel-622343">我的收藏</a></li>
                     </ul>
 
              </div>
         	<!--二级导航结束-->
-            
-			
-            	
+
+
                 <!--中间第一部分内容开始-->
      			<div class="row well" style="background-color:#FFF;margin-left: 10%;margin-right: 10%;margin-top: 2%;min-width: 1024px; ">
                       <div>	
@@ -54,7 +54,18 @@
                       </div>
                       <div style=" margin-left:5%; margin-top:8%;">
                       	
-                        <span style="float:left;">积分<div style="color:#36F;font-weight:bolder">0</div></span>
+                        <span style="float:left;">积分<div style="color:#36F;font-weight:bolder">
+                            <c:set var="total" value="0"></c:set>
+                            <c:forEach items="${requestScope.scorings}" var="s">
+                                <c:if  test="${s.state=='0'}">
+                                    <c:set var="number" value="-${s.number}" />
+                                </c:if>
+                                <c:if  test="${s.state=='1'}">
+                                    <c:set var="number" value="${s.number}" />
+                                </c:if>
+                                <c:set var="total" value="${total +(number) }" />
+                            </c:forEach>${total} </div>
+                        </span>
                         <span style="margin-left:8%;float:left">总排名<div style="color:#36F;font-weight:bolder">200000+</div></span>
                         <span style="margin-left:8%;float:left">上传资源<div style="color:#36F;font-weight:bolder">0</div> </span>   
                         <span style="margin-left:8%;float:left">下载资源<div style="color:#36F;font-weight:bolder">0</div></span>     
@@ -71,17 +82,17 @@
                 	<div style="min-height:230px;">
         			<div class="tabbable" id="tabs-853379"> <!-- Only required for left/right tabs -->
                       <ul class="nav nav-tabs">
-                        <li class="active"><a href="#panel-717300" data-toggle="tab" contenteditable="true">上传资源</a></li>
-                        <li class=""><a href="/#panel-622341" data-toggle="tab" contenteditable="true">积分明细</a></li>
-                        <li class=""><a href="/#panel-622342" data-toggle="tab" contenteditable="true">下载明细</a></li>
-                        <li class=""><a href="/#panel-622343" data-toggle="tab" contenteditable="true">我的收藏</a></li>
-                        <li class=""><a href="/#panel-622344" data-toggle="tab" contenteditable="true">VIP服务</a></li>
+                        <li id="b1" ><a href="#panel-717300" >上传资源</a></li>
+                        <li id="b2"><a id="jifen" href="#panel-622341">积分明细</a></li>
+                        <li id="b3" ><a href="#panel-622342" >下载明细</a></li>
+                        <li id="b4"><a href="#panel-622343" >我的收藏</a></li>
+                        <li id="b5"><a href="#panel-622344" >VIP服务</a></li>
                       </ul>
                       <div class="tab-content">
                             <div class="tab-pane active" id="panel-717300" contenteditable="true">
                               <p>上传资源.</p>
                             </div>
-                            <div class="tab-pane" id="panel-622341" contenteditable="true">
+                            <div class="tab-pane " id="panel-622341" contenteditable="true">
                               <p><table class="table" contenteditable="true">
                                     <thead>
                                         <tr>
@@ -91,27 +102,27 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <th>+1</th>
-                                            <th>2018/8/4</th>
-                                            <th>充值</th>
-                                        </tr>
-                                        <tr>
-                                            <th>+5</th>
-                                            <th>2018/8/4</th>
-                                            <th>被下载资源</th>
-                                        </tr>
+                                        <c:forEach items="${requestScope.scorings}" var="s">
+                                            <tr>
+                                                <th><c:if  test="${s.state=='1'}">+</c:if>
+                                                    <c:if  test="${s.state=='0'}">-</c:if>
+                                                        ${s.number}
+                                                </th>
+                                                <th>${s.time}</th>
+                                                <th>${s.operation}</th>
+                                            </tr>
+                                        </c:forEach>
                                     </tbody>
                                 </table>
                                 </p>
                             </div>
-                            <div class="tab-pane" id="panel-622342" contenteditable="true">
+                            <div class="tab-pane " id="panel-622342" contenteditable="true">
                               <p>下载明细.</p>
                             </div>
-                            <div class="tab-pane" id="panel-622343" contenteditable="true">
+                            <div class="tab-pane " id="panel-622343" contenteditable="true">
                               <p>我的收藏.</p>
                             </div>
-                            <div class="tab-pane" id="panel-622344" contenteditable="true">
+                            <div class="tab-pane " id="panel-622344" contenteditable="true">
                               <p>VIP服务.</p>
                             </div>
                       </div>
@@ -138,7 +149,7 @@
                                 <div class="row">
                                     <div class="col-xs-6 col-md-1" >
                                     </div>
-                                    <div class="col-xs-6 col-md-7" style=" width:140px;height:140px;background-size:100%;background-image: url(images/3_weixin.jpg)">
+                                    <div class="col-xs-6 col-md-7" style=" width:140px;height:140px;background-size:100%;background-image: url(img/3_weixin.jpg)">
 
                                     </div>
                                     <div class="col-xs-6 col-md-4"></div>
@@ -178,4 +189,53 @@
                	
 </div> 
 </body>
+<style>
+    a{
+        cursor:pointer;
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        //标签页选项卡
+        $('#b1 a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        });
+        $('#b2 a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        });
+        $('#b3 a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        });
+        $('#b4 a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        });
+        $('#b5 a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        });
+        $('#a1 a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        });
+        $('#a3 a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        });
+        $('#a4 a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        });
+    });
+
+
+    $(document).ready(function (){
+        $("#jifen").click(function (){
+            window.location.href = '/user/getScoring?uid=${sessionScope.loginresult.uid}';
+        });
+    });
+</script>
 </html>

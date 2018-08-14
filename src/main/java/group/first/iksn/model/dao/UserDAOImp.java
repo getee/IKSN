@@ -1,9 +1,6 @@
 package group.first.iksn.model.dao;
 
-import group.first.iksn.model.bean.Attention;
-import group.first.iksn.model.bean.Message;
-import group.first.iksn.model.bean.Notice;
-import group.first.iksn.model.bean.User;
+import group.first.iksn.model.bean.*;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -351,6 +348,30 @@ public class UserDAOImp extends BaseDAOImp implements UserDAO {
     public int  userGrade(int uid) {
         int score=getSqlSession().getMapper(UserDAO.class).userGrade(uid);
         return score;
+    }
+
+    /**
+     * 通过登录的用户ID获取其积分记录
+     * @param uid
+     * @return
+     */
+    @Override
+    public List<Scoring> getScoring(int uid) {
+        List<Scoring> scorings=getSqlSession().getMapper(UserDAO.class).getScoring(uid);
+        return scorings;
+    }
+
+    //积分消费账单
+    @Override
+    public List<Scoring> costScoring(int uid) {
+        List<Scoring> scorings=getSqlSession().getMapper(UserDAO.class).costScoring(uid);
+        return scorings;
+    }
+    //积分充值
+    @Override
+    public List<Scoring> rechargeScoring(int uid) {
+        List<Scoring> scorings=getSqlSession().getMapper(UserDAO.class).rechargeScoring(uid);
+        return scorings;
     }
 
 

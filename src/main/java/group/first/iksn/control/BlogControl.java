@@ -7,15 +7,15 @@ import group.first.iksn.util.EncodingTool;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.apache.ibatis.jdbc.Null;
 
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 
 @Controller
@@ -32,13 +32,38 @@ public class BlogControl {
         this.blogService = blogService;
     }
 
-    @RequestMapping(value = "/blogSearch")
-    public String bSearch(@RequestParam("content") String textcontent ){
-        textcontent=EncodingTool.encodeStr(textcontent);//先将中文乱码转成UTF-8
-
-        System.out.println(textcontent);
-        return "sousuo";
+    /**
+     * 这是首页推送博客的方法
+     * @return
+     */
+    @RequestMapping("/blogPush")
+    public String blogPush(Model m){
+        System.out.println("asfasd");
+        List<Blog> al=blogService.detailedBlogPush();
+        System.out.println(al);
+        m.addAttribute("BlogsPush",al);
+        return "index";
     }
+
+
+    /**
+     * 这是搜索博客的方法
+     * @param textcontent
+     * @return
+     */
+    @RequestMapping(value = "/blogSearch")
+    public ModelAndView blogSearch(@RequestParam("content") String textcontent ){
+       // textcontent=EncodingTool.encodeStr(textcontent);//先将中文码ISO-8859-1转成UTF-8
+        System.out.println("controller层:"+textcontent);
+        ModelAndView mv=new ModelAndView();
+        List<Blog> b= blogService.detailedBlogSearchResultMap(textcontent);
+        System.out.println(b);
+        mv.addObject("blogSearch",b);
+        mv.addObject("keyWord",textcontent);
+        mv.setViewName("sousuo");
+        return  mv;
+    }
+
 
     /**
      * 管理员删除被用户举报且不合法的博客
@@ -60,45 +85,55 @@ public class BlogControl {
     }
 
 
-@RequestMapping(value = "/addBlog",method = RequestMethod.POST)
-    public  String  addBlog(@ModelAttribute ("blog")  Blog blog,@ModelAttribute ("blogTag") BlogTag blogTag,@ModelAttribute ("userToBlog") UserToBlog userToBlog) {
+@RequestMapping(value = "/addBlog")
+    public  ModelAndView  addBlog(@ModelAttribute ("blog")  Blog blog,@ModelAttribute ("blogTag") BlogTag blogTag,@ModelAttribute ("userToBlog") UserToBlog userToBlog) {
     Date d = new Date();
     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    blog.setTime(df.format(d));
-    blog.setTitle(EncodingTool.encodeStr(blog.getTitle()));//解决汉字乱码问题
-    blog.setContent(EncodingTool.encodeStr(blog.getContent()));
+    String time=df.format(d);
+    blog.setTime(time);
+    blog.setPoints(0);
     System.out.println(blog);
+    System.out.println(userToBlog.getUid());
     boolean result = blogService.addBlogService(blog);
+
     //因为的多张表关联，要首先把主表的数据插入完成在进行其他副表的数据插入
     if (result == true) {
+        System.out.println(time);
+        int bid=blogService.selectBidService(time);
+        System.out.println(bid);
         //对blogTag表进行数据插入
-        blogTag.setBid(7);
-        blogTag.setBtag(EncodingTool.encodeStr(blogTag.getBtag()));
-        System.out.println(blogTag);
+        blogTag.setBid(bid);
         boolean result1 = blogService.addBlogTagService(blogTag);
-        //对blogTag表进行数据插入
-        userToBlog.setUid(6);
-        userToBlog.setBid(7);
-        userToBlog.setIsdraft(0);
+        //对userToBlog表进行数据插入
+        userToBlog.setBid(bid);
+        System.out.println(userToBlog.getIsdraft());
         System.out.println(userToBlog);
         boolean result2=blogService.addUserToBlogService(userToBlog);
         if (result1 == true&& result2==true) {
-            return "userArticle";
+            return new ModelAndView("writingCenter","blog",blog);
         } else {
-            return "Writer";
+            return new ModelAndView("Writer");
         }
     }
     else
-        return "Writer";
+        return new ModelAndView("Writer");
     }
-    //根据bid来查询博客的相应数据
+    //根据uid用户ID来查询博客的相应数据
+    @RequestMapping("/listBlogByUid/{uid}")
+    public String selectBlogByID(@PathVariable("uid") int uid,Model model){
+        System.out.println("222222");
+        List<Blog> blogs=blogService.scanBlogService(uid);
+        model.addAttribute("blogs",blogs);
+        System.out.println(blogs);
+             return "writingCenter";
+    }
+
+    //根据bid博客ID来查询博客的相应数据
     @RequestMapping("/listBlogByBid")
-    public  String selectBlogByID(){
-
-        List<Blog> bl=blogService.scanBlogService(4);
-
-            System.out.println(bl);
-        return "index";
+    public ModelAndView listBlogByID(@RequestParam(value = "bid",defaultValue = "8") int bid){
+        Blog listblog=blogService.listBlogService(bid);
+        System.out.println(listblog);
+        return new ModelAndView("userArticle","listblog",listblog);
     }
 
     /**
@@ -196,6 +231,21 @@ public class BlogControl {
         {
             return "userArticle";
         }
+    }
+    /**
+     * 举报博客
+     * @param reportBlog
+     * @return
+     */
+    @RequestMapping("/reportBlog")
+    public ModelAndView reportBlog(@ModelAttribute("reportBlog")ReportBlog reportBlog) throws UnsupportedEncodingException {
+        ModelAndView mav=new ModelAndView("userArticle");
+        System.out.println(reportBlog);
+        boolean result=blogService.reportBlog(reportBlog);
+        mav.getModel().put("result",result);
+        System.out.println(result);
+
+        return mav;
     }
     /**
      * 管理员查看被举报的博客，进行审核

@@ -8,8 +8,21 @@ import java.util.Map;
 
 @Component("blogDAO")
 public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
-    public String detailedBlogSearchResultMap() {
-        return null;
+
+    public List<Blog> detailedBlogSearchResultMap(String s) {
+        List<Blog> b=getSqlSession().getMapper(BlogDAO.class).detailedBlogSearchResultMap(s);
+        return b;
+    }
+
+
+    /**
+     * 首页推送
+     * @return
+     */
+    @Override
+    public List<Blog> detailedBlogPush() {
+        List<Blog> b=getSqlSession().getMapper(BlogDAO.class).detailedBlogPush();
+        return b;
     }
 
 
@@ -87,11 +100,23 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
     }
 
     @Override
-    public List<Blog> processScanBlog(int bid) {
-        List<Blog> blog= getSqlSession().getMapper(BlogDAO.class).processScanBlog(bid);
+    public List<Blog> processScanBlog(int uid) {
+        List<Blog> blog= getSqlSession().getMapper(BlogDAO.class).processScanBlog(uid);
         return blog;
     }
 
+    @Override
+    public Blog processListBlog(int bid) {
+        Blog blog= getSqlSession().getMapper(BlogDAO.class).processListBlog(bid);
+        return blog;
+    }
+
+
+
+    @Override
+    public int selectBid(String time) {
+        return getSqlSession().getMapper(BlogDAO.class).selectBid(time);
+    }
 
 
     /**
@@ -164,5 +189,16 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
             e.printStackTrace();
         }
         return isOK;
+    }
+
+    /**
+     * 把前台举报的博客保存到数据库中
+     * @param reportBlog
+     * @return
+     */
+    @Override
+    public boolean reportBlog(ReportBlog reportBlog) {
+        boolean result=getSqlSession().getMapper(BlogDAO.class).reportBlog(reportBlog);
+        return result;
     }
 }

@@ -122,6 +122,9 @@
           <td style="cursor: pointer"><a href="jifenzhongxin.jsp"><h4>积分</h4></a></td>
           <td style="cursor: pointer"><a href="writingCenter.jsp"><h4>我的博客</h4></a></td>
           <td style="cursor: pointer"><a href="#"><h4>我的下载</h4></a></td>
+          <c:if test="${sessionScope.loginresult.isadmin eq '1'}">
+              <td style="cursor: pointer;background-color: #8c8c8c"><a href="/blog/mGetAllReportBlog"><h4>举报管理</h4></a></td>
+          </c:if>
 	  </tr>
 	</table>
 	
@@ -146,7 +149,7 @@
 
         <c:forEach var="item" items="${ReportBlogList}">
             <div id="${item.id}" class="row" style="margin:auto;border-bottom-style:solid;border-bottom-width:2px;border-bottom-color:#E9E9E9">
-                <div class="col-xs-12 col-md-8"><h4><a class="text-muted" href="/blog/mCheckReportblog/${item.blog.bid}/${item.id}?reason=${item.reason}">${item.blog.title}</a></h4><small style="margin-left: 2% ">举报原因：${item.reason}</small></div>
+                <div class="col-xs-12 col-md-8"><h4><a class="text-muted" target="_blank" href="javascript:clickTitle('${item.blog.bid}','${item.id}','${item.reason}')">${item.blog.title}</a></h4><small style="margin-left: 2% ">举报原因：${item.reason}</small></div>
                 <div class="col-xs-6 col-md-4"><small style="margin-right: 20% ">2017-8-2</small>
                     <a href="javascript:delete_oneReportBlog(${item.id})">
                         <small id="del_oneReportBlog" data-toggle="modal" style="margin-right:3%;cursor: pointer" class="glyphicon glyphicon-trash"></small>
@@ -168,7 +171,7 @@
                 <div class="col-xs-6 col-md-1">
                     <div><a href="xq.jsp"><img src="img/2.svg"></a></div>
                 </div>
-                <div class="col-xs-12 col-md-8"><h4><a class="text-muted" href="#">${item.resource.name}</a></h4><small style="margin-left: 2% ">举报原因：${item.reason}</small></div>
+                <div class="col-xs-12 col-md-8"><h4><a class="text-muted" target="_blank" href="javascript:clickName('${item.resource.rid}','${item.id}','${item.reason}')">${item.resource.name}</a></h4><small style="margin-left: 2% ">举报原因：${item.reason}</small></div>
                 <div class="col-xs-6 col-md-3"><small style="margin-right: 20% ">2017-8-2</small>
                     <a href="javascript:delete_oneReportResource(${item.id})">
                         <small id="del_oneReportResource" data-toggle="modal" style="margin-right:3%;cursor: pointer" class="glyphicon glyphicon-trash"></small>
@@ -191,6 +194,17 @@
 <!--管理员权限-->
 
 <script>
+    function clickTitle(blogid,reportid,reason) {
+        //var reportReason=encodeURI(reason);
+
+        var a="/blog/mCheckReportblog/"+blogid+"/"+reportid+"?reason="+reason;
+        location.href=a;
+    }
+    function clickName(resourceid,reportid,reason) {
+
+        var a="/resource/mCheckReportResource/"+resourceid+"/"+reportid+"?reason="+reason;
+        location.href=a;
+    }
     function delete_oneReportBlog(url){
         var  userChoice=window.confirm("您确认要去除这个博客吗?");
         var a="blog/mReject_oneReportblog/"+url;
@@ -205,11 +219,13 @@
     }
     function delete_oneReportResource(url) {
         var userChoice=window.confirm("您确认要去除这个资源吗？");
-        // if(userChoice){
-        //     $.get(a,function (data) {
-        //         $("#"+url).hide;
-        //     })
-        // }
+        var a="/resource/mReject_oneReportResource/"+url;
+        if(userChoice){
+            $.get(a,function (data) {
+                alert(data)
+                $("#"+url).hide();
+            })
+        }
     }
 </script>
 
