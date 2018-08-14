@@ -9,7 +9,9 @@
 	  <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+
+
+      <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
     <title>Bootstrap 101 Template</title>
 	  <%
 		  String path = request.getContextPath();
@@ -18,18 +20,17 @@
 	  <base href="<%=basePath%>">
     <!-- Bootstrap -->
     <link href="bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-
+      <link rel="stylesheet" type="text/css" href="bootstrap-3.3.7/dist/css/iconfont.css">
+      <link rel="stylesheet" type="text/css" href="bootstrap-3.3.7/dist/css/chat.css">
     <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
     <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
     <!--[if lt IE 9]>
       <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+
   </head>
   <body style="background-color: #E9E9E9">
-
-
-
 
     <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
     <script src="js/jquery-3.3.1.js"></script>
@@ -132,7 +133,7 @@
 
                             $(".friend").remove();
                             for (var i=0;i<data.length;i++){
-                                $(".father").append("<div id='friend"+data[i].uid+"' class='row friend' style='margin: auto'><div class='col-md-1'><div class='checkbox' style='margin-top: 20px'><label><input id='check"+data[i].uid+"' value='"+data[i].uid+"' class='checkboxs' type='checkbox'></label></div></div><div class='col-md-4'><img src='img/adminIcon.jpg' class='img-responsive img-thumbnail' alt='Img'></div><div class='col-md-6'><h4>"+data[i].nickname+"</h4><small>"+data[i].introduce+"</small></div></div>")
+                                $(".father").append("<div id='friend"+data[i].uid+"' class='row friend' style='margin: auto'><div class='col-md-1'><div class='checkbox' style='margin-top: 20px'><label><input id='check"+data[i].uid+"' value='"+data[i].uid+"' class='checkboxs' type='checkbox'></label></div></div><div class='col-md-4'><img src='"+data[i].picturepath+"' class='img-responsive img-thumbnail' alt='Img'></div><div class='col-md-6'><h4>"+data[i].nickname+"</h4><small>"+data[i].introduce+"</small></div></div>")
                             }
                         }
 					},
@@ -144,7 +145,6 @@
 
 
             });
-
 
 
 
@@ -188,10 +188,11 @@
 
             }
         }
+
 	</script>
     
 	<div id="fluid_Div" class="container-fluid">
-        <input id="sendResult" type="hidden" value="${sendResult}">
+		<input id="sendResult" type="hidden" value="${sendResult}">
 	
 <!--	导航栏-->
         <%@ include file="top.jsp"%>
@@ -279,7 +280,7 @@
 		</div>
 		<div class="col-md-4">
 		
-			<img src="img/adminIcon.jpg" class="img-responsive img-thumbnail" alt="Img">
+			<img id="img${friend.uid}" src="${friend.picturepath}" class="img-responsive img-thumbnail" alt="Img">
 		</div>
 		<div class="col-md-6">
 		<h4>${friend.nickname}</h4>

@@ -281,6 +281,18 @@ public class UserDAOImp extends BaseDAOImp implements UserDAO {
     }
 
     @Override
+    public List FindAllFriendsOfThisUser(int selfid) {
+        try{
+            List allFriendsOfThisUser=getSqlSession().getMapper(UserDAO.class).FindAllFriendsOfThisUser(selfid);
+            return allFriendsOfThisUser;
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
     public List searchFriend(String nickname, int uid) {
         try{
             List searchedFriend=getSqlSession().getMapper(UserDAO.class).searchFriend(nickname, uid);

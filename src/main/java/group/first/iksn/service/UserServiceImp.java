@@ -97,6 +97,11 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
+    public List FindAllFriendsOfThisUser(int selfid) {
+        return userDAO.FindAllFriendsOfThisUser(selfid);
+    }
+
+    @Override
     public List<User> listAllFriends(int uid,int nowPage) {
         return userDAO.listAllFriends(uid,nowPage);
     }

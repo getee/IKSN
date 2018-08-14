@@ -49,7 +49,9 @@ public interface UserService {
     boolean deleteChooseFriend(int selfid,int attenid);
     //给某个用户发私信
     boolean sendMessage(Message message);
-    //列出该用户的所有关注的人
+    //列出该用户的所有关注的人(分页)
+    List FindAllFriendsOfThisUser(int selfid);
+    //列出该用户的所有关注的人(不分页)
     List<User> listAllFriends(int uid,int nowPage);
     int friendNum(int uid);
     //根据登录方法

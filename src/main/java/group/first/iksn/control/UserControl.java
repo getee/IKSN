@@ -67,7 +67,9 @@ public class UserControl {
         Cookie passwordCookie=new Cookie("passwordCookie",password);
         System.out.println(iscollect);
         if (user!=null){
+            List<User> allFriendOfThisUser=userService.FindAllFriendsOfThisUser(user.getUid());
             session.setAttribute("loginresult",user);
+            session.setAttribute("allFriendOfThisUser",allFriendOfThisUser);
             model.addAttribute("logmes",true);
             System.out.println(model);
             if(iscollect!=null){
@@ -203,7 +205,7 @@ public class UserControl {
     }
 
     /**
-     * 列出该用户所有关注的好友
+     * 列出该用户所有关注的好友(分页查询，并不是所有的用户)
      * @author BruceLee
      * @param uid
      * @return
@@ -211,12 +213,12 @@ public class UserControl {
     @RequestMapping("/listAllFriends/{uid}/{nowPage}")
         public String listAllFriends(@PathVariable("uid") int uid,@PathVariable("nowPage") int nowPage,Model model){
         List<User> allFriends=userService.listAllFriends(uid, nowPage);
-        System.out.println("1111");
+
         int friendNums=userService.friendNum(uid);
-        System.out.println("2222");
         model.addAttribute("allFriends",allFriends);
         model.addAttribute("nowPage",nowPage);
         model.addAttribute("friendNums",friendNums);
+
         return "wodexiaoxi";
         }
 

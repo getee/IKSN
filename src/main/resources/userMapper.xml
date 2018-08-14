@@ -69,6 +69,10 @@
     <select id="listAllFriends" resultType="User">
         select * from user  where UID in (select ATTENID from attention where SELFID=#{selfid}) order by UID asc limit #{nowPage},5;
     </select>
+    <select id="FindAllFriendsOfThisUser" resultType="User">
+        select * from user  where UID in (select ATTENID from attention where SELFID=#{selfid});
+    </select>
+
     <select id="searchFriend" resultType="User">
 select * from user where NICKNAME=#{nickname} and  UID in (select ATTENID from attention where SELFID=#{selfid});
     </select>
