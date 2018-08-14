@@ -1,18 +1,12 @@
 package group.first.iksn.service;
 
 
-import group.first.iksn.model.bean.Blog;
-
-import group.first.iksn.model.bean.BlogBrowsed;
-import group.first.iksn.model.bean.IllegalBlog;
+import group.first.iksn.model.bean.*;
 import group.first.iksn.model.dao.BlogDAO;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-
-import group.first.iksn.model.bean.SearchBlog;
-
-
+import java.util.Map;
 import java.util.ArrayList;
 
 
@@ -29,13 +23,22 @@ public class BlogServiceImp implements BlogService {
     }
 
     /**
-     * 删除违规博客，
+     * 删除违规博客
      * wenbin
+     * @param blog_id
+     * @param report_id
      * @return
      */
     @Override
-    public boolean deleteIllegalblog(IllegalBlog blog) {
-        return true;
+    public boolean deleteIllegalblog(int blog_id,int  report_id) {
+        boolean result=false;
+        //boolean deleteResult=blogDAO.deleteBlog(blog_id);
+        boolean deleteResult=blogDAO.deleteBlogOthers(blog_id);
+        if(deleteResult){
+            result=blogDAO.deleteBlog(blog_id);
+        }
+        System.out.println("删除blog其他"+deleteResult);
+        return result;
     }
 
     /**
@@ -44,17 +47,41 @@ public class BlogServiceImp implements BlogService {
      * @return
      */
     @Override
-    public boolean sendBackIllegalblog(IllegalBlog blog) {
-
-        return blogDAO.addIllegalblog(blog);
+    public boolean sendBackIllegalblog(IllegalBlog blog,int report_id) {
+        boolean sendBack=blogDAO.addIllegalblog(blog);
+        if (sendBack){
+            //插入illegalblog成功，将reportblog表对应数据删除
+            blogDAO.deleteBlogFromReport(report_id);
+            //设置博客为不可见
+            boolean b=blogDAO.blogIsPublic(blog.getBid());
+        }
+        return sendBack;
     }
 
-
+    /**
+     * 获取被举报的博客
+     * wenbin
+     * @return
+     */
     @Override
-    public List<IllegalBlog> getAllReportBlog() {
+    public List<ReportBlog> getAllReportBlog() {
         return blogDAO.getAllReportBlog();
     }
 
+    @Override
+    public List<ReportResource> getAllReportResource() {
+        return blogDAO.getAllReportResource();
+    }
+
+    /**
+     * 驳回被举报的博客，（将博客去除被举报标记）
+     * @param report_id
+     * @return
+     */
+    @Override
+    public boolean Reject_oneReportblog(int report_id) {
+        return blogDAO.deleteBlogFromReport(report_id);
+    }
 
     /**
      * 搜索资源的方法
@@ -77,9 +104,47 @@ public class BlogServiceImp implements BlogService {
 
 
 
-
     @Override
     public boolean addBlogService(Blog blog) {
         return blogDAO.processAddBlog(blog);
     }
+
+    @Override
+    public boolean addBlogTagService(BlogTag blogTag) {
+        return blogDAO.processAddBlogTag(blogTag);
     }
+
+    @Override
+    public boolean addUserToBlogService(UserToBlog userToBlog) {
+        return blogDAO.processAddUserToBlog(userToBlog);
+    }
+
+    @Override
+    public List<Blog> scanBlogService(int uid) {
+        return blogDAO.processScanBlog(uid);
+    }
+
+    @Override
+    public Blog listBlogService(int bid) {
+        return blogDAO.processListBlog(bid);
+    }
+
+    @Override
+    public int selectBidService(String time) {
+        return blogDAO.selectBid(time);
+    }
+
+    @Override
+    public boolean discuss(BlogComments blogComments) {
+        System.out.println(blogComments);
+        return blogDAO.commentBlog(blogComments);
+    }
+
+    @Override
+    public boolean answerComment(BlogComments blogComments) {
+        System.out.println(blogComments);
+        return blogDAO.answerDiscuss(blogComments);
+    }
+
+
+}

@@ -1,5 +1,4 @@
-﻿<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+﻿<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <!doctype html>
 <html>
@@ -21,51 +20,69 @@
     <link rel="stylesheet" href="bootstrap-3.3.7/dist/css/bootstrap-theme.min.css" crossorigin="anonymous">
 
     <script src="js/depend.js"></script>
+
+    <style type="text/css">
+        div{
+            width:100%;
+        }
+    </style>
+
 </head>
-<body  style="background-color:#EBEBEB">
+<div style="background: #f8f8f8;">
     <div class="container-fluid">
         <!--   导航栏-->
-        <%@ include file="top.jsp"%>
+        <div class="row">
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            <li class="active"><a href="index.jsp">首页 <span class="sr-only">(current)</span></a></li>
+                            <li><a href="#">博客</a></li>
+                            <li><a href="#">学院</a></li>
+                            <li><a href="xiazai.jsp">下载</a></li>
+                            <li><a href="#">GitChat</a></li>
+                            <li><a href="#">TinyMind</a></li>
+                            <li><a href="#">论坛</a></li>
+                            <li><a href="#">问答</a></li>
+                            <li><a href="#">商城</a></li>
+                            <li><a href="#">VIP</a></li>
+                        </ul>
 
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a class="glyphicon glyphicon-pencil" href="#"> 写博客</a></li>
+                            <li><a class="glyphicon glyphicon-leaf" href="#">发Chat</a></li>
+                            <li><a class="glyphicon glyphicon-user" href="gerenzhongxin.jsp"></a></li>
+                        </ul>
+                    </div><!-- /.navbar-collapse -->
+                </div><!-- /.container-fluid -->
+            </nav>
+        </div>
+    </div>
     <div>
         <form id="form" action="/blog/addBlog" method="post">
-            <input type="hidden" name="uid" value="${sessionScope.loginresult.uid}"/>
-            <input type="hidden" name="isdraft" value="0" id="panduan">
             <div class="input-group input-group-lg" style="width: 1024px;height:15px; margin: auto;">
-                <input type="text" class="form-control" id="biaoti"name="title" placeholder="请输入文章标题" >
+                <input type="text" class="form-control" id="biaoti"name="title" placeholder="请输入文章标题">
             </div>
-            <div style="width:1024px;height:430px;margin:auto;margin-top: 10px;">
+            <div style="width:1024px;height:450px;margin:auto;margin-top: 10px;">
                 <textarea id="editor" type="text/plain" name="content"></textarea>
             </div>
 
             <div class="col-md-12" style="left: 460px;top: 20px">
                 <div class="row">
                     <div class="col-md-10">
-        <script>
-            function check() {
-                var val=$('#biaoti').val();
-                var val1=UE.getEditor('editor').getContent();
-                if (val.length==0 || val1.length==0){
+                        <button type="button" class="btn btn-info">返回</button>
 
-                    alert("标题or博客内容不能为空！");
-                    $('#fbblog').attr("disable",true);
-                }else {
-                    $('#fbblog').attr("disable",false);
-                }
-
-
-            }
-        </script>
-
-                        <button type="button" class="btn btn-info" >返回</button>
                         <!-- 表示一个成功的或积极的动作 -->
-                        <button type="button" id="fbblog" class="btn btn-primary"  data-toggle="modal" data-target="#myModal" onmousemove="check()" >发布博客</button>
-
+                        <button type="button" class="btn btn-info">保存</button>
+                        <button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#myModal">发布博客</button>
                     </div>
                 </div>
             </div>
 
 
+    <div>
+        <button onclick="getContent()">获得内容</button>
+    </div>
     <!-- Modal -->
     <div class="modal fade" id="myModal"  role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
@@ -95,51 +112,33 @@
                         <div class="txt-box" >
                             <label style="width: 15px;width: 70px;">文章类型：</label>
                             <select id="Type1" name="blogtype">
+                                <option value="0">请选择</option>
                                 <option value="1">原创</option>
                                 <option value="2">转载</option>
-
+                                <option value="3">翻译</option>
                             </select>
                             <span class="required">*</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <label style="width: 15px;width: 70px;" >博客分类：</label>
                             <select id="Type2"  name="classify">
+                                <option value="0">选择分类</option>
+                                <option value="2">人工智能</option>
                                 <option value="1">移动开发</option>
-                                <option value="2">开发技术</option>
-                                <option value="3">课程资源</option>
-                                <option value="4">网络技术</option>
-                                <option value="5">操作系统</option>
-                                <option value="6">安全技术</option>
-                                <option value="7">数据库</option>
-                                <option value="8">行业</option>
-                                <option value="9">服务器应用</option>
-                                <option value="10">存储</option>
-                                <option value="11">信息化</option>
-                                <option value="12">云计算</option>
-                                <option value="13">大数据</option>
-                                <option value="14">人工智能</option>
-                                <option value="15">区块链</option>
-                                <option value="16">音视频</option>
-                                <option value="17">游戏开发</option>
-                                <option value="18">跨平台</option>
                             </select>
                             <span class="required">*</span>
                         </div>
                         <br>
                         <br>
                         <!---->
+                    </div>
+                    <div class="row" style="padding: 40px;position: absolute;top: 160px">
                         <label class="control-label" for="notification1">是否设为私密</label>
                         <input id="notification1" type="checkbox"  value="1" name="ispublic" />
-
                     </div>
                 </div>
-                <script>
-                    function report() {
-                     $("#panduan").val("1");
-                    }
-                </script>
-                <div class="modal-footer">
+                <div class="modal-footer" >
                     <button type="button" class="btn btn-default" style="margin-top: 10px">返回</button>
-                    <button type="submit" class="btn btn-primary"style="margin-top: 10px" >保存</button>
-                    <button type="submit" class="btn btn-success"style="margin-top: 10px" onclick="report()">发表博客</button>
+                    <button type="button" class="btn btn-primary"style="margin-top: 10px">保存</button>
+                    <button type="submit" class="btn btn-success"style="margin-top: 10px">发表博客</button>
                 </div>
             </div>
         </div>
@@ -149,6 +148,34 @@
     </div>
 </div>
 <script type="text/javascript">
+    //实例化编辑器
+    //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
+    var ue = UE.getEditor('editor',{
+        toolbars: [[
+            'fullscreen', 'source', '|', 'undo', 'redo', '|',
+            'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc', '|',
+            'rowspacingtop', 'rowspacingbottom', 'lineheight', '|',
+            'customstyle', 'paragraph', 'fontfamily', 'fontsize', '|',
+            'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|', 'touppercase', 'tolowercase', '|',
+            'link', 'unlink', 'simpleupload', 'insertimage', 'emotion', 'scrawl', 'attachment', 'map', 'gmap', 'insertframe', 'insertcode', 'webapp', 'pagebreak', 'template', 'background', '|',
+            'horizontal', 'date', 'time', 'spechars', 'snapscreen', 'wordimage', '|',
+            'inserttable', 'deletetable', 'preview',  'help'
+        ]],
+        //关闭字数统计
+        wordCount:true,
+        //关闭elementPath
+        elementPathEnabled:false,
+        initialFrameHeight:380,
+        initialFrameWidth :1024,//设置编辑器宽度
+    });
+    function getContent() {
+        var arr = [];
+        arr.push("内容为：");
+        arr.push(UE.getEditor('editor').getContent());
+        alert(arr.join("\n"));
+    }
+</script>
+<script>
     $(document).ready(function() {
         var MaxInputs    = 3; //maximum input boxes allowed
         var InputsWrapper  = $("#InputsWrapper"); //Input boxes wrapper ID
@@ -161,7 +188,7 @@
             {
                 FieldCount++; //text box added increment
                 //add input box
-                $(InputsWrapper).append('<div><input type="text" name="btag" id="field_'+ FieldCount +'" placeholder="标签 '+ FieldCount +'"/>&nbsp;<a href="#" rel="external nofollow" class="removeclass"><input type="button" value="删除"></a></div>');
+                $(InputsWrapper).append('<div><input type="text" name="btag" id="field_'+ FieldCount +'" value="标签 '+ FieldCount +'"/><a href="#" rel="external nofollow" class="removeclass"><input type="button" value="删除"></a></div>');
                 x++; //text box increment
             }
             return false;
@@ -173,29 +200,6 @@
             }
             return false;
         })
-
-        //实例化编辑器
-        //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
-        var ue = UE.getEditor('editor',{
-            toolbars: [[
-                'fullscreen', 'source', '|', 'undo', 'redo', '|',
-                'bold', 'italic', 'underline', 'rowspacingtop', 'rowspacingbottom', 'lineheight', '|',
-                'customstyle', 'paragraph', 'fontfamily', 'fontsize', '|',
-                'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|', 'touppercase', 'tolowercase', '|',
-                'link', 'unlink', 'simpleupload', 'insertimage', 'emotion', 'scrawl', 'attachment', 'map', 'gmap', 'insertframe', 'insertcode', 'webapp', 'pagebreak', 'template', 'background', '|',
-                'horizontal', 'date', 'time', 'spechars', 'snapscreen', 'wordimage', '|',
-                'inserttable', 'deletetable', 'preview',  'help'
-            ]],
-            //关闭字数统计
-            wordCount:true,
-            autoHeightEnabled: false,
-            //关闭elementPath
-            elementPathEnabled:false,
-            initialFrameHeight:360,
-            initialFrameWidth :1024,//设置编辑器宽度
-        });
-
-
     });
 </script>
 </body>

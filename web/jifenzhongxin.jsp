@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -119,10 +120,13 @@
 	<table class="table well" style="margin: 0px">
 	  <tr>
 	  	<td style="cursor: pointer"><a class="text-muted" href="/blog/mGetAllReportBlog"><h4>个人中心</h4></a></td>
-	  	<td style="cursor: pointer"><a class="text-muted" href="wodexiaoxi.jsp"><h4>我的消息</h4></a></td>
+	  	<td style="cursor: pointer"><a class="text-muted" href="/user/listAllFriends/${sessionScope.loginresult.uid}/1"><h4>我的消息</h4></a></td>
 	  	<td style="cursor: pointer"><a class="text-muted" href="jifenzhongxin.jsp"><h4>积分</h4></a></td>
 	  	<td style="cursor: pointer"><a class="text-muted" href="writingCenter.jsp"><h4>我的博客</h4></a></td>
 	  	<td style="cursor: pointer"><a class="text-muted" href="#"><h4>我的下载</h4></a></td>
+          <c:if test="${sessionScope.loginresult.isadmin eq '1'}">
+              <td style="cursor: pointer"><a href="/blog/mGetAllReportBlog"><h4>举报管理</h4></a></td>
+          </c:if>
 	  </tr>
 	</table>
 	
