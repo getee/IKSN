@@ -8,7 +8,7 @@ import group.first.iksn.model.bean.User;
 import group.first.iksn.service.UserService;
 import group.first.iksn.util.HttpUtil;
 import group.first.iksn.util.IndustrySMS;
-import org.springframework.http.HttpRequest;
+import org.apache.ibatis.jdbc.Null;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
@@ -320,13 +320,12 @@ public class UserControl {
     }
 
 
-
     //修改用户密码
-    @RequestMapping(value = "/updatePassword" )
+    @RequestMapping(value = "/updatePassword")
     public String updatePassword(@RequestParam("uid") int uid,
                                  @RequestParam("password") String password,
                                  @RequestParam("newpassword") String newpassword,
-                                 @RequestParam("equelspassword") String equelspassword,  ModelMap model) {
+                                 @RequestParam("equelspassword") String equelspassword, ModelMap model) {
         System.out.println(uid);
         System.out.println(password);
         System.out.println(newpassword);
@@ -334,17 +333,25 @@ public class UserControl {
             model.addAttribute("msg", "用户名不存在！");
         } else {
             if (password.equals(userService.getId(uid))) {
-                   if (!newpassword.equals(equelspassword)){
-                       model.addAttribute("msg", "密码不一致");
-                   }else {
-                       userService.updatePassword(uid, newpassword);
-                       model.addAttribute("msg", "修改密码成功！");
-                       System.out.println("修改成功");
-                   }
+                if (!newpassword.equals(equelspassword)) {
+                    model.addAttribute("msg", "密码不一致");
+                } else {
+                    userService.updatePassword(uid, newpassword);
+                    model.addAttribute("msg", "修改密码成功！");
+                    System.out.println("修改成功");
+                }
             } else {
                 model.addAttribute("msg", "密码错误！");
             }
         }
         return "zhanghao";
+    }
+
+
+    @RequestMapping(value = "userGrade")
+    public int  userGrade(@RequestParam("uid") int uid, Model model) {
+         int grade=userService.userGrade(uid);
+         model.addAttribute("等级",grade);
+         return grade;
     }
 }

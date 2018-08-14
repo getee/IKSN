@@ -37,4 +37,6 @@ public interface UserDAO {
 
      //修改用户密码
     boolean updatePassword(User user);
+    //用户等级
+    int userGrade(int uid);
 }

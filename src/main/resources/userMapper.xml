@@ -76,6 +76,7 @@
          delete from attention where SELFID=#{selfid} and ATTENID=#{attenid};
     </delete>
 
+
     <update id="updateUser" parameterType="User">
         UPDATE  user set  nickname=#{nickname},sex=#{sex},introduce=#{introduce} WHERE uid=#{uid}
     </update>
@@ -84,5 +85,8 @@
     </update>
     <select id="getId" resultType="User">
        select * from user where UID=#{uid}
+    </select>
+    <select id="userGrade" parameterType="User">
+        SELECT score FROM USER WHERE UID=#{uid}
     </select>
 </mapper>
