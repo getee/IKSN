@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-    <title>Bootstrap 101 Template</title>
+    <title>他人中心</title>
 	  <%
 		  String path = request.getContextPath();
 		  String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -102,7 +102,10 @@
 	</div>
   <div style="margin-top: 30px;" class="col-xs-6 col-md-4">
   <div class="col-xs-6"></div>
-  <div class="col-xs-6"><button  type="button" class="btn btn-success">+关注</button></div>
+  <div class="col-xs-6">
+	  <button  type="button" class="btn btn-success">+关注</button>
+	  <button  type="button" class="btn btn-success" style="outline: none">发私信</button>
+  </div>
   
   </div>
 </div>
@@ -111,9 +114,9 @@
 <div class="row well-lg" style="margin: 30px;padding: 10px; background-color:#F8F8F8 ">
   <div  class="col-xs-6 col-md-4">
 		<!-- Indicates caution should be taken with this action -->
-		<button style="margin-left: 20%;" type="button" class="btn btn-danger">发表的博客</button>
-		<button type="button" class="btn btn-default">发布的帖子</button>
-		<button type="button" class="btn btn-default">贡献的资源</button>
+		<button style="margin-left: 20%;outline: none" type="button" class="btn btn-danger">发表的博客</button>
+		<button type="button" class="btn btn-default" style="outline: none;">发布的帖子</button>
+		<button type="button" class="btn btn-default" style="outline: none;">贡献的资源</button>
 		<h3 style="margin-left: 100px;">h3. Bootstrap heading</h3>
 		<h3 style="margin-left: 100px;">h3. Bootstrap heading</h3>
 		<h3 style="margin-left: 100px;">h3. Bootstrap heading</h3>

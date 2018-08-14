@@ -38,7 +38,7 @@
             float:left;
             margin-left:25px;
             border:1px solid;
-        ;border-radius:10px;
+            border-radius:10px;
             border-color:#F75D47;
             color:#F75D47;
             text-align:center;
@@ -119,8 +119,7 @@
                   </span>
                         <span> 综合评分：<em>7.9</em></span>
                         <div style="float:right; width:250px;">
-
-                            <a href="#" onclick="shoucang()"><img src="img/sc.jpg">&nbsp;收藏</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a href="#"><img src="img/sc.jpg">&nbsp;收藏</a>&nbsp;&nbsp;&nbsp;&nbsp;
                             <a href="#"><img src="img/pl.jpg">&nbsp;评论</a>&nbsp;&nbsp;&nbsp;&nbsp;
                             <a data-toggle="modal" data-target="#modal-container-830220" ><img src="img/jb.jpg" >&nbsp;举报</a><input type="hidden" value="${isReportOk}"/>
                             <!-- 模态框（Modal） -->
@@ -155,7 +154,6 @@
                     </div>
 
                 </div>
-
 
 
 

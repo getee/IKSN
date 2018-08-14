@@ -1,12 +1,8 @@
 package group.first.iksn.service;
 
-import group.first.iksn.model.bean.Blog;
-import group.first.iksn.model.bean.IllegalBlog;
-import group.first.iksn.model.bean.ReportBlog;
+import group.first.iksn.model.bean.*;
 
 import java.util.List;
-import group.first.iksn.model.bean.BlogTag;
-import group.first.iksn.model.bean.UserToBlog;
 
 import java.util.Map;
 
@@ -25,6 +21,8 @@ public interface BlogService {
     public  boolean addUserToBlogService(UserToBlog userToBlog);
 
     public List<Blog> scanBlogService(int bid);
+
+    boolean discuss(BlogComments blogComments);
 
     //举报博客
     public boolean reportBlog(ReportBlog reportBlog);

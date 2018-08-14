@@ -240,19 +240,29 @@
 											<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 											<h4 class="modal-title" id="myModalLabel">我的评论</h4>
 										</div>
+										<form action="/blog/discuss" method="post">
+											<div class="form-group">
+												uid:<input type="text" name="uid"><br>
+											</div>
+											<div class="form-group">
+												bid:<input type="text" name="bid"><br>
+											</div>
+											<div class="form-group">
+												time:<input type="text" name="time"><br>
+											</div>
 										<div class="modal-body">
-											<!--								文本域-->
-											<form action="" method="">
-												<textarea class="form-control" rows="3"></textarea>
-
-											</form>
-											<!--								-->
-
+											<!--文本域-->
+												<textarea class="form-control" rows="3" name="content"></textarea>
+											<!---->
 										</div>
+											<div class="form-group">
+												floor:<input type="text" name="floor"><br>
+											</div>
 										<div class="modal-footer">
 											<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-											<button type="button" class="btn btn-primary">评论</button>
+											<button type="submit" class="btn btn-primary"value="discuss">评论</button>
 										</div>
+										</form>
 									</div>
 								</div>
 							</div>
@@ -272,7 +282,7 @@
 										</div>
 									</div>
 									<h5 style="margin: 25px 10px 10px 50px">作者写的666</h5>
-
+									<h5 style="color: #aa1111;float: right" href="...">回复</h5>
 								</li>
 								<hr>
 

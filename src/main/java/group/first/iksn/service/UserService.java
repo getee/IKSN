@@ -12,13 +12,29 @@ public interface UserService {
     //检查用户注册时手机号是否被注册过
     boolean checkPhone(String p);
     //查询该用户所有的通知
-    List receiveNotice(int uid);
+    List receiveNotice(int uid,int nowPage);
+    //查询未读通知数量
+    int listNotReadNoticeNum(int uid);
+    //查询所有通知数量
+    int listAllNoticeNum(int uid);
     //查询该用户所有的私信
     List receiveMessage(int uid);
     //查询发送私信方的用户信息
     List listSendMessageUser(int uid);
 ;    //检查邮箱是否重复
     boolean checkEmail(String eamil);
+
+    //修改用户资料
+    User updateUser(User user);
+
+    //判断用户是否存在
+    public boolean isUserExist(int uid);
+    //修改用户密码
+    public void updatePassword(int uid,String newpassword);
+
+    public String getId(int uid);
+
+
     //更改通知是否已读的状态
     boolean changeIsRead(int isRead,int uid);
     //更改私信是否已读的状态
@@ -29,6 +45,7 @@ public interface UserService {
     boolean deleteNotice(int uid);
     //删除该id的用户的所有私信
     boolean deleteMessage(int uid);
+    boolean deleteChooseFriend(int selfid,int attenid);
     //给某个用户发私信
     boolean sendMessage(Message message);
     //列出该用户的所有关注的人

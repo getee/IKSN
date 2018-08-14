@@ -18,6 +18,43 @@
     <script type="text/javascript" src="bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
 
 </head>
+
+<script>
+    $(document).ready(function(){
+        //标签页选项卡
+        $('#b1 a').click(function (e) {
+            e.preventDefault()
+
+            $(this).tab('show')
+        });
+        $('#b2 a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        });
+        $('#b3 a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        });
+        $('#b4 a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        });
+        $('#b5 a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        });
+        $('#b6 a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        });
+        $('#b7 a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        });
+    });
+
+</script>
+
 <body  style="background-color:#F7F8F9">
 <div class="container-fluid">
     <!--	导航栏-->
@@ -53,29 +90,30 @@
                             <li role="presentation"><a >技术领域：</a></li>
                             <div class="tabbable" id="tabs-457756">
                                 <ul class="nav nav-tabs">
-                                    <li ><a href="#1" data-toggle="tab">全部</a></li>
-                                    <li><a href="#2" data-toggle="tab">移动开发</a></li>
-                                    <li><a href="#3" data-toggle="tab">开发技术</a></li>
-                                    <li><a href="#4" data-toggle="tab">课程资源</a></li>
-                                    <li><a href="#5" data-toggle="tab">网络技术</a></li>
-                                    <li><a href="#6" data-toggle="tab">操作系统</a></li>
-                                    <li><a href="#7" data-toggle="tab">安全技术</a></li>
-                                    <li><a href="#8" data-toggle="tab">数据库</a></li>
-                                    <li><a href="#9" data-toggle="tab">行业</a></li>
-                                    <li><a href="#10" data-toggle="tab">服务器应用</a></li>
-                                    <li><a href="#11" data-toggle="tab">存储</a></li>
-                                    <li><a href="#12" data-toggle="tab">信息化</a></li>
-                                    <li><a href="#14" data-toggle="tab">云计算</a></li>
-                                    <li><a href="#15" data-toggle="tab">大数据</a></li>
-                                    <li><a href="#16" data-toggle="tab">人工智能</a></li>
-                                    <li><a href="#17" data-toggle="tab">区块链</a></li>
-                                    <li><a href="#18" data-toggle="tab">音视频</a></li>
-                                    <li><a href="#19" data-toggle="tab">游戏开发</a></li>
-                                    <li><a href="#20" data-toggle="tab">跨平台</a></li>
+                                    <li  id="b1"><a href="#a1" data-toggle="tab">全部</a></li>
+                                    <li id="b2"><a href="#a2" data-toggle="tab">移动开发</a></li>
+                                    <li id="b3"><a href="#a3" data-toggle="tab">开发技术</a></li>
+                                    <li id="b4"><a href="#a4" data-toggle="tab">课程资源</a></li>
+                                    <li id="b5"><a href="#a5" data-toggle="tab">网络技术</a></li>
+                                    <li id="b6"><a href="#a6" data-toggle="tab">操作系统</a></li>
+                                    <li id="b7"><a href="#a7" data-toggle="tab">安全技术</a></li>
+                                    <li id="b8"><a href="#a8" data-toggle="tab">数据库</a></li>
+                                    <li id="b9"><a href="#a9" data-toggle="tab">行业</a></li>
+                                    <li id="b10"><a href="#a10" data-toggle="tab">服务器应用</a></li>
+                                    <li id="b11"><a href="#a11" data-toggle="tab">存储</a></li>
+                                    <li id="b12"><a href="#a12" data-toggle="tab">信息化</a></li>
+                                    <li id="b14"><a href="#a14" data-toggle="tab">云计算</a></li>
+                                    <li id="b15"><a href="#a15" data-toggle="tab">大数据</a></li>
+                                    <li id="b16"><a href="#a16" data-toggle="tab">人工智能</a></li>
+                                    <li id="b17"><a href="#a17" data-toggle="tab">区块链</a></li>
+                                    <li id="b18"><a href="#a18" data-toggle="tab">音视频</a></li>
+                                    <li id="b19"><a href="#a19" data-toggle="tab">游戏开发</a></li>
+                                    <li id="b20"><a href="#a20" data-toggle="tab">跨平台</a></li>
                                 </ul>
                                 <div class="tab-content">
-                                    <div class="tab-pane active" id="1"></div>
-                                    <div class="tab-pane" id="2">
+                                    <div class="tab-pane active" id="a1"></div>
+
+                                    <div class="tab-pane" id="a2">
                                         <p>
                                         <ul class="nav nav-tabs">
                                             <li ><a href="#">Android</a></li>
@@ -84,7 +122,7 @@
                                         </ul>
                                         </p>
                                     </div>
-                                    <div class="tab-pane" id="3">
+                                    <div class="tab-pane" id="a3">
                                         <p>
                                         <ul class="nav nav-tabs">
                                             <li ><a href="#">web开发</a></li>
@@ -93,7 +131,7 @@
                                         </ul>
                                         </p>
                                     </div>
-                                    <div class="tab-pane" id="4">
+                                    <div class="tab-pane" id="a4">
                                         <p>
                                         <ul class="nav nav-tabs">
                                             <li ><a href="#">Java</a></li>
@@ -102,7 +140,7 @@
                                         </ul>
                                         </p>
                                     </div>
-                                    <div class="tab-pane" id="5">
+                                    <div class="tab-pane" id="a5">
                                         <p>
                                         <ul class="nav nav-tabs">
                                             <li ><a href="#">网络基础</a></li>
@@ -111,7 +149,7 @@
                                         </ul>
                                         </p>
                                     </div>
-                                    <div class="tab-pane" id="6">
+                                    <div class="tab-pane" id="a6">
                                         <p>
                                         <ul class="nav nav-tabs">
                                             <li ><a href="#">DOS</a></li>
@@ -120,7 +158,7 @@
                                         </ul>
                                         </p>
                                     </div>
-                                    <div class="tab-pane" id="7">
+                                    <div class="tab-pane" id="a7">
                                         <p>
                                         <ul class="nav nav-tabs">
                                             <li ><a href="#">网络安全</a></li>
@@ -129,7 +167,7 @@
                                         </ul>
                                         </p>
                                     </div>
-                                    <div class="tab-pane" id="8">
+                                    <div class="tab-pane" id="a8">
                                         <p>
                                         <ul class="nav nav-tabs">
                                             <li ><a href="#">DB2</a></li>
@@ -138,7 +176,7 @@
                                         </ul>
                                         </p>
                                     </div>
-                                    <div class="tab-pane" id="9">
+                                    <div class="tab-pane" id="a9">
                                         <p>
                                         <ul class="nav nav-tabs">
                                             <li ><a href="#">电信</a></li>
@@ -147,7 +185,7 @@
                                         </ul>
                                         </p>
                                     </div>
-                                    <div class="tab-pane" id="10">
+                                    <div class="tab-pane" id="a10">
                                         <p>
                                         <ul class="nav nav-tabs">
                                             <li ><a href="#">DNS</a></li>
@@ -156,7 +194,7 @@
                                         </ul>
                                         </p>
                                     </div>
-                                    <div class="tab-pane" id="11">
+                                    <div class="tab-pane" id="a11">
                                         <p>
                                         <ul class="nav nav-tabs">
                                             <li ><a href="#">搜索引擎</a></li>
@@ -165,7 +203,7 @@
                                         </ul>
                                         </p>
                                     </div>
-                                    <div class="tab-pane" id="12">
+                                    <div class="tab-pane" id="a12">
                                         <p>
                                         <ul class="nav nav-tabs">
                                             <li ><a href="#">EMC</a></li>
@@ -174,7 +212,7 @@
                                         </ul>
                                         </p>
                                     </div>
-                                    <div class="tab-pane" id="14">
+                                    <div class="tab-pane" id="a14">
                                         <p>
                                         <ul class="nav nav-tabs">
                                             <li ><a href="#">电子商务</a></li>
@@ -183,7 +221,7 @@
                                         </ul>
                                         </p>
                                     </div>
-                                    <div class="tab-pane" id="15">
+                                    <div class="tab-pane" id="a15">
                                         <p>
                                         <ul class="nav nav-tabs">
                                             <li ><a href="#">mesos</a></li>
@@ -192,7 +230,7 @@
                                         </ul>
                                         </p>
                                     </div>
-                                    <div class="tab-pane" id="16">
+                                    <div class="tab-pane" id="a16">
                                         <p>
                                         <ul class="nav nav-tabs">
                                             <li ><a href="#">Hadoop</a></li>
@@ -201,7 +239,7 @@
                                         </ul>
                                         </p>
                                     </div>
-                                    <div class="tab-pane" id="17">
+                                    <div class="tab-pane" id="a17">
                                         <p>
                                         <ul class="nav nav-tabs">
                                             <li ><a href="#">比特币</a></li>
@@ -209,7 +247,7 @@
                                         </ul>
                                         </p>
                                     </div>
-                                    <div class="tab-pane" id="18">
+                                    <div class="tab-pane" id="a18">
                                         <p>
                                         <ul class="nav nav-tabs">
                                             <li ><a href="#">图像处理</a></li>
@@ -217,7 +255,7 @@
                                         </ul>
                                         </p>
                                     </div>
-                                    <div class="tab-pane" id="19">
+                                    <div class="tab-pane" id="a19">
                                         <p>
                                         <ul class="nav nav-tabs">
                                             <li ><a href="#">cocos2D</a></li>
@@ -225,7 +263,7 @@
                                         </ul>
                                         </p>
                                     </div>
-                                    <div class="tab-pane" id="20">
+                                    <div class="tab-pane" id="a20">
                                         <p>
                                         <ul class="nav nav-tabs">
                                             <li ><a href="#">PhoneGap</a></li>
@@ -323,7 +361,7 @@
 
         <!--右边第一块-->
         <div class="col-xs-4 well">
-            <div class="media" style="height:200px; width:100%;"><a class="pull-left" href="#"><img class="media-object"              src="img/0.jpg" /> </a>
+            <div class="media" style="height:200px; width:100%;"><a class="pull-left" href="#"><img class="media-object"   src="img/0.jpg" /> </a>
                 <div class="media-body" contenteditable="true"></div>
             </div>
         </div>

@@ -1,11 +1,7 @@
 package group.first.iksn.service;
 
 
-import group.first.iksn.model.bean.Blog;
-import group.first.iksn.model.bean.IllegalBlog;
-import group.first.iksn.model.bean.BlogTag;
-import group.first.iksn.model.bean.UserToBlog;
-import group.first.iksn.model.bean.ReportBlog;
+import group.first.iksn.model.bean.*;
 import group.first.iksn.model.dao.BlogDAO;
 import org.springframework.stereotype.Component;
 
@@ -89,6 +85,12 @@ public class BlogServiceImp implements BlogService {
     public List<Blog> scanBlogService(int bid) {
 
         return blogDAO.processScanBlog(bid);
+    }
+
+    @Override
+    public boolean discuss(BlogComments blogComments) {
+        System.out.println(blogComments);
+        return blogDAO.commentBlog(blogComments);
     }
 
     //举报博客

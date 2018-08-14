@@ -13,42 +13,53 @@
     <link href="bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 
-    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <%--<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>--%>
     <script type="text/javascript" src="js/jquery-3.3.1.js"></script>
     <script type="text/javascript" src="bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
 
     <script>
-        function upload(input) {
-            //支持chrome IE10
-            if (window.FileReader) {
-                var file = input.files[0];
-                filename = file.name.split(".")[0];
-                var reader = new FileReader();
-                reader.onload = function() {
-                    console.log(this.result)
-                    alert(this.result);
+        function upload() {
+
+            $("#upimg").css("background-image", "url(img/upfile.png)");
+            //jquery获取input file文件名
+            var file = $("#choosefile").val();
+            var fileName = getFileName(file);
+            function getFileName(o){
+                var pos=o.lastIndexOf("\\");
+                return o.substring(pos+1);
+
+            }
+           alert(fileName);
+//=======================================================================================================================
+
+            var formData = new FormData($( "#upFileForm" )[0]);
+            var ajaxUrl = "resource/upLoadFile";
+            //$('#uploadPic').serialize() 无法序列化二进制文件，这里采用formData上传
+            //需要浏览器支持：Chrome 7+、Firefox 4+、IE 10+、Opera 12+、Safari 5+。
+            $.ajax({
+                type: "POST",
+                //dataType: "text",
+                url: ajaxUrl,
+                data: formData,
+                async: false,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    alert(fileName);
+
+                },
+                error: function(data) {
+                    alert("error:");
+
                 }
-                reader.readAsText(file);
-            }
-            //支持IE 7 8 9 10
-            else if (typeof window.ActiveXObject != 'undefined'){
-                var xmlDoc;
-                xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
-                xmlDoc.async = false;
-                xmlDoc.load(input.value);
-                alert(xmlDoc.xml);
-            }
-            //支持FF
-            else if (document.implementation && document.implementation.createDocument) {
-                var xmlDoc;
-                xmlDoc = document.implementation.createDocument("", "", null);
-                xmlDoc.async = false;
-                xmlDoc.load(input.value);
-                alert(xmlDoc.xml);
-            } else {
-                alert('error');
-            }
+            });
+            return false;
         }
+        function sess(fileName) {
+            $("#upimg").css("background-image", "url(resourcefile/"+fileName+")");
+        }
+
     </script>
 </head>
 <body style="background-color:#F7F8F9">
@@ -77,55 +88,57 @@
     <div class="col-xs-8">
         <div style="min-height:230px;">
             <div>
-                <form>
-                    <fieldset>
-                        <legend contenteditable="true">上传资源</legend>
-                        <label>
-                            <input style="position:absolute;opacity:0;" type="file" name="file" id="" onchange="upload(this)" />
-                            <img  src="img/upload.png">
-                        </label><br />
-                        <span class="help-block" contenteditable="true">您可以上传小于220MB的文件</span> <br />
-                        <label contenteditable="true">资源名称: </label>
-                        <input style=" border-radius:4px; width:300px; height:30px;" type="text" placeholder="请输入资源名称">
-                        <span class="help-block" contenteditable="true">名称最多不超过80字，不少于10字</span>
 
-                        <label contenteditable="true">所属分类: </label>
-                        <select style="border-radius:4px;width:200px;height:30px;"
-                                onchange="document.getElementById('input').value=this.value">
-                            <option value="请选择">请选择</option>
-                            <option value="移动开发">移动开发</option>
-                            <option value="开发技术">开发技术</option>
-                            <option value="课程资源">课程资源</option>
-                            <option value="网络技术">网络技术</option>
-                            <option value="操作系统">操作系统</option>
-                            <option value="其他">其他</option>
-                        </select>  <br /><br />
-
-                        <label contenteditable="true">资源标签: </label>
-                        <a href="#" rel="external nofollow" rel="external nofollow" rel="external nofollow" id="AddMoreFileBox" class="btn btn-info" style=" height:30px;background-color:#FFF; border-color:#A9A9A9; color:#34AAE8">添加标签</a></span></p>
-                        <span class="help-block" contenteditable="true">最多添加6个标签</span>
-                        <div id="InputsWrapper">
+                <form id="upFileForm" action="resource/upLoadFile" method="post">
+                    <legend contenteditable="true">上传资源</legend>
+                    <label>
+                        <div id="upimg" style="background:url('img/upload.png'); width:141px; height:116px;">
+                            <input style="position:absolute;opacity:0;" type="file" name="file" id="choosefile" onchange="upload()" />
                         </div>
-                        <br />
-                        <label contenteditable="true">资源分数: </label>
-                        <select style="border-radius:4px;width:80px;height:30px;"
-                                onchange="document.getElementById('input').value=this.value">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                        </select><br /><br />
+                    </label>
+                </form>
+                <form action="resource/upLoadMag">
+                    <span class="help-block" contenteditable="true">您可以上传小于220MB的文件</span> <br />
+                    <label contenteditable="true">资源名称: </label>
+                    <input style=" border-radius:4px; width:300px; height:30px;" type="text" placeholder="请输入资源名称">
+                    <span class="help-block" contenteditable="true">名称最多不超过80字，不少于10字</span>
+
+                    <label contenteditable="true">所属分类: </label>
+                    <select style="border-radius:4px;width:200px;height:30px;"
+                            onchange="document.getElementById('input').value=this.value">
+                        <option value="请选择">请选择</option>
+                        <option value="移动开发">移动开发</option>
+                        <option value="开发技术">开发技术</option>
+                        <option value="课程资源">课程资源</option>
+                        <option value="网络技术">网络技术</option>
+                        <option value="操作系统">操作系统</option>
+                        <option value="其他">其他</option>
+                    </select>  <br /><br />
+
+                    <label contenteditable="true">资源标签: </label>
+                    <a href="#" rel="external nofollow" rel="external nofollow" rel="external nofollow" id="AddMoreFileBox" class="btn btn-info" style=" height:30px;background-color:#FFF; border-color:#A9A9A9; color:#34AAE8">添加标签</a></span></p>
+                    <span class="help-block" contenteditable="true">最多添加6个标签</span>
+                    <div id="InputsWrapper">
+                    </div>
+                    <br />
+                    <label contenteditable="true">资源分数: </label>
+                    <select style="border-radius:4px;width:80px;height:30px;"
+                            onchange="document.getElementById('input').value=this.value">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select><br /><br />
 
 
-                        <label contenteditable="true">资源描述: </label>
-                        <textarea style=" border-radius:4px; width:510px; height:60px; resize:none; vertical-align: top;" type="text" placeholder="描述不支持HTML标签；详细的资源描述有机会获得我们的推荐，更有利于他人下载，赚取积分。如资源描述不清，有可能审核不通过。"></textarea>
+                    <label contenteditable="true">资源描述: </label>
+                    <textarea style=" border-radius:4px; width:510px; height:60px; resize:none; vertical-align: top;" type="text" placeholder="描述不支持HTML标签；详细的资源描述有机会获得我们的推荐，更有利于他人下载，赚取积分。如资源描述不清，有可能审核不通过。"></textarea>
 
-                        <div class="checkbox">
-                            <label><input type="checkbox"> 勾选同意</label>
-                        </div>
-                        <button type="submit" class="btn" contenteditable="true" style="margin-left:20px;">提交</button>
-                    </fieldset>
+                    <div class="checkbox">
+                        <label><input type="checkbox"> 勾选同意</label>
+                    </div>
+                    <button type="submit" class="btn" contenteditable="true" style="margin-left:20px;">提交</button>
                 </form>
             </div >
         </div>
