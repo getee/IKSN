@@ -26,4 +26,6 @@ public interface BlogService {
     public  boolean addUserToBlogService(UserToBlog userToBlog);
 
     public List<Blog> scanBlogService(int bid);
+
+    boolean discuss(BlogComments blogComments);
 }

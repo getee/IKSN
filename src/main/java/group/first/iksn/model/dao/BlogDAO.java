@@ -21,6 +21,9 @@ public interface BlogDAO {
     boolean addIllegalblog(IllegalBlog blog);
     //获取所有被举报博客
     List<ReportBlog> getAllReportBlog();
+    boolean deleteBlogFromReport(ReportBlog blog);
+
+    boolean commentBlog(BlogComments blogComments);
     //获取所有被举报资源
     List<ReportResource> getAllReportResource();
     //删除Reportblog表数据

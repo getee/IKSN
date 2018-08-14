@@ -24,7 +24,13 @@
     </insert>
 
     <select id="receiveNotice" resultType="Notice">
-    select  * from notice where UID=#{uid};
+    select  * from notice where UID=#{uid} order by ID desc limit #{nowPage},7;
+    </select>
+    <select id="listAllNoticeNum" resultType="Integer">
+        select count(*)  from notice where UID=#{uid};
+    </select>
+    <select id="listNotReadNoticeNum" resultType="Integer">
+        select count(*)  from notice where UID=#{uid} and ISREAD=0;
     </select>
     <select id="receiveMessage" resultType="Message">
     select  * from message where TOID=#{toid};
@@ -65,5 +71,18 @@
     </select>
     <select id="friendNum" resultType="Integer">
         select count(*) from user where UID in (select ATTENID from attention where SELFID=#{selfid});
+    </select>
+    <delete id="deleteChooseFriend" parameterType="Attention">
+         delete from attention where SELFID=#{selfid} and ATTENID=#{attenid};
+    </delete>
+
+    <update id="updateUser" parameterType="User">
+        UPDATE  user set  nickname=#{nickname},sex=#{sex},introduce=#{introduce} WHERE uid=#{uid}
+    </update>
+    <update id="updatePassword" parameterType="User">
+        update user set password=#{password} where UID=#{uid}
+    </update>
+    <select id="getId" resultType="User">
+       select * from user where UID=#{uid}
     </select>
 </mapper>

@@ -101,13 +101,19 @@
 					r+=360;
 				}
 			});
+
 			//点击新建私信，email获取焦点
 			$("#newMessage").click(function(){
 			    $("#exampleInputEmail1").focus();
+                var friendId="";
 			    $.each($("input:checkbox:checked"),function () {
-                    var friendId
-                    friendId=$(this).val();
-                    $("#exampleInputEmail1").val(friendId);
+			        if($(this).val()!="on"){
+
+                        friendId+=$(this).val()+",";
+                        $("#exampleInputEmail1").val(friendId);
+
+					}
+
                 })
 
 
@@ -118,6 +124,25 @@
 		
 			
 		});
+		//删除关注的好友
+		function deleteFriend(){
+            var friendId="";
+            $.each($("input:checkbox:checked"),function () {
+                if($(this).val()!="on"){
+                    friendId+=$(this).val()+",";//拼接所有选中的好友的id
+                }
+            })
+			$.get("/user/deleteFriend/${sessionScope.loginresult.uid}/"+friendId,function (data) {
+			    if(data=="success"){
+			        var everyWillDeleteFriend=new Array();
+                    everyWillDeleteFriend=friendId.split(",");
+                    for (var i=0;i<everyWillDeleteFriend.length;i++){
+                        $("#friend"+everyWillDeleteFriend[i]).remove();
+					}
+
+				}
+            })
+		}
         //分页按钮点击事件
         function previousPage(nowPage){
 
@@ -163,7 +188,7 @@
 	<div class="row" style="margin-left: 0.5%;margin-top: -5px">
 		<nav>
 			<ul class="nav nav-tabs">
-			  <li role="presentation"><a href="user/receiveNotice/${sessionScope.loginresult.uid}">通知</a></li>
+			  <li role="presentation"><a href="user/receiveNotice/${sessionScope.loginresult.uid}/1">通知</a></li>
 			  <li role="presentation"><a href="/user/listAllFriends/${sessionScope.loginresult.uid}/1">私信</a></li>
 			  <li role="presentation"><a href="/user/receiveMessage/${sessionScope.loginresult.uid}">@我</a></li>
 			</ul>
@@ -205,7 +230,7 @@
 				操作 <span class="caret"></span>
 			  </button>
 			  <ul class="dropdown-menu">
-				<li><a href="#">删除</a></li>
+				<li><a href="javascript:deleteFriend()">删除</a></li>
 				<li><a href="#">标记已读</a></li>
 				
 			  </ul>
@@ -219,7 +244,7 @@
 
 
             <!--		单个用户-->
-		<div class="row " style="margin: auto">
+		<div id="friend${friend.uid}" class="row " style="margin: auto">
 		<div class="col-md-1">
 			<div class="checkbox" style="margin-top: 20px">
 				<label>

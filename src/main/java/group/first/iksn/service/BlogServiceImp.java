@@ -103,5 +103,11 @@ public class BlogServiceImp implements BlogService {
         return blogDAO.processScanBlog(bid);
     }
 
+    @Override
+    public boolean discuss(BlogComments blogComments) {
+        System.out.println(blogComments);
+        return blogDAO.commentBlog(blogComments);
+    }
+
 
 }

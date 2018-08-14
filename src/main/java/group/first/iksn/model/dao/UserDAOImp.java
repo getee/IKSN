@@ -27,15 +27,47 @@ public class UserDAOImp extends BaseDAOImp implements UserDAO {
      * @auther BruceLee
      * @return
      */
-    public List<Notice> receiveNotice(int uid) {
+    public List<Notice> receiveNotice(int uid,int nowPage) {
         try {
-            List<Notice> allNotice=getSqlSession().getMapper(UserDAO.class).receiveNotice(uid);
+            List<Notice> allNotice=getSqlSession().getMapper(UserDAO.class).receiveNotice(uid,(nowPage-1)*7);
             System.out.println("查询到的通知消息："+allNotice);
             return allNotice;
 
         }catch (Exception e){
             e.printStackTrace();
             return null;
+        }
+    }
+    /**
+     * 收到未读通知的数量
+     * @auther BruceLee
+     * @return
+     */
+    @Override
+    public int listNotReadNoticeNum(int uid) {
+        try {
+            int notReadNoticeNum=getSqlSession().getMapper(UserDAO.class).listNotReadNoticeNum(uid);
+            return notReadNoticeNum;
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+    /**
+     * 收到所有通知的数量
+     * @auther BruceLee
+     * @return
+     */
+    @Override
+    public int listAllNoticeNum(int uid) {
+        try {
+            int AllNoticeNum=getSqlSession().getMapper(UserDAO.class).listAllNoticeNum(uid);
+            return AllNoticeNum;
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return 0;
         }
     }
 
@@ -104,8 +136,8 @@ public class UserDAOImp extends BaseDAOImp implements UserDAO {
     }
 
     public User getId(int uid) {
-
-        return null;
+        User u=getSqlSession().getMapper(UserDAO.class).getId(uid);
+        return u;
     }
 
     @Override
@@ -164,6 +196,21 @@ public class UserDAOImp extends BaseDAOImp implements UserDAO {
     public boolean deleteMessage(int uid) {
         try{
             getSqlSession().getMapper(UserDAO.class).deleteMessage(uid);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+    /**
+     * 删除用户选中的关注好友
+     * @author BruceLee
+     * @return
+     */
+    @Override
+    public boolean deleteChooseFriend(int selfid, int attenid) {
+        try{
+            getSqlSession().getMapper(UserDAO.class).deleteChooseFriend(selfid, attenid);
             return true;
         }catch (Exception e){
             e.printStackTrace();
@@ -260,4 +307,21 @@ public class UserDAOImp extends BaseDAOImp implements UserDAO {
     public User loginByPhone(String phone, String password) {
         return getSqlSession().getMapper(UserDAO.class).loginByPhone(phone,password);
     }
+
+    //修改用户资料
+    @Override
+    public boolean updateUser(User  user) {
+        boolean b=getSqlSession().getMapper(UserDAO.class).updateUser(user);
+        return b;
+    }
+
+
+    //修改用户密码
+    @Override
+    public boolean updatePassword(User user) {
+        boolean b=getSqlSession().getMapper(UserDAO.class).updatePassword(user);
+        return b;
+    }
+
+
 }

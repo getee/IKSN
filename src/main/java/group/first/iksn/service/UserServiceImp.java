@@ -29,9 +29,18 @@ public class UserServiceImp implements UserService {
         u.setPassword(mdpassword);
         return userDAO.addUser(u);
     }
-    public List<Notice> receiveNotice(int uid) {
-        return userDAO.receiveNotice(uid);
+    public List<Notice> receiveNotice(int uid,int nowPage) {
+        return userDAO.receiveNotice(uid,nowPage);
 
+    }
+
+    @Override
+    public int listNotReadNoticeNum(int uid) {
+        return userDAO.listNotReadNoticeNum(uid);
+    }
+    @Override
+    public int listAllNoticeNum(int uid) {
+        return userDAO.listAllNoticeNum(uid);
     }
 
     @Override
@@ -69,16 +78,21 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
+    public boolean deleteChooseFriend(int selfid, int attenid) {
+        return userDAO.deleteChooseFriend(selfid, attenid);
+    }
+
+    @Override
     public boolean sendMessage(Message message) {
-        //判断收件人是不是该用户的好友或者用户不存在
+    /*    //判断收件人是不是该用户的好友或者用户不存在
         List isAttenedResult=userDAO.checkIsAttention(message.getFromid(),message.getToid());
         if(isAttenedResult!=null){
             return userDAO.sendMessage(message);
         }else{
             return false;
 
-        }
-
+        }*/
+        return userDAO.sendMessage(message);
     }
 
     @Override
@@ -135,4 +149,42 @@ public class UserServiceImp implements UserService {
 
     }
 
+    //修改用户资料
+    @Override
+    public User updateUser(User user) {
+            System.out.println(user.getUid());
+           boolean b=userDAO.updateUser(user);
+            //在进行查询
+           return user;
+    }
+
+
+    //判断用户是否存在
+    @Override
+    public boolean isUserExist(int uid) {
+            if (userDAO.getId(uid) == null) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    //修改用户密码
+    @Override
+    public void updatePassword(int uid,String newpassword) {
+        User user=userDAO.getId(uid);
+        user.setUid(uid);
+        user.setPassword(MD5.MD5(newpassword));
+        userDAO.updatePassword(user);
+    }
+    //根据提供的id获取密码
+    @Override
+    public String getId(int uid) {
+       return userDAO.getId(uid).getPassword();
+    }
+
+
 }
+
+
+
+

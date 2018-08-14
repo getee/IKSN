@@ -116,8 +116,7 @@
 		<div class="row">
 			<div class="col-md-6">
 			<h3>NickName</h3>
-				<h3><span class="label label-info ">等级 <span class="badge">3</span></span></h3>
-			
+				<h3 ><span class="label label-info ">等级<span class="badge">${user.grade}</span></span></h3>
 			</div>
 			<div class="col-md-6">
 										<!-- Button trigger modal -->
@@ -138,18 +137,18 @@
 							  </div>
 							  <div class="modal-body">
 							<!--修改表单-->
-								  <form>
+								  <form action="/user/updateuser" method="post">
 									  <div class="form-group">
 										  <label for="exampleInputEmail1">昵称</label>
-										  <input type="text" class="form-control" id="" placeholder="NickName">
+										  <input type="text" class="form-control" name="nickname" id="" placeholder="NickName">
 									  </div>
 
 									  <div class="form-group">
 										  <label class="radio-inline">
-											  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> 男
+											  <input type="radio" name="sex" id="inlineRadio1" value="0"> 男
 										  </label>
 										  <label class="radio-inline">
-											  <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> 女
+											  <input type="radio" name="sex" id="inlineRadio2" value="1"> 女
 										  </label>
 									  </div>
 
@@ -164,7 +163,7 @@
 									  </div>
 
 									  <div class="form-group">
-										  <label for="exampleInputPassword1">手机号码</label>
+										  <illegalresourcelabel for="exampleInputPassword1">手机号码</illegalresourcelabel>
 										  <div class="input-group">
 											  <input type="number" class="form-control" id="exampleInputPassword1" placeholder="Phone"  disabled>
 											  <span class="input-group-btn">
@@ -175,15 +174,16 @@
 
 									  <div class="form-group">
 										  <label for="exampleInputEmail1">自我简介</label>
-										  <input type="text" class="form-control" id="" placeholder="自我简介">
+										  <textarea placeholder="自我简介" name="introduce" style=" width:100%;height: 100px;"></textarea>
+									  </div>
+									  <div class="modal-footer">
+										  <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+										  <input type="submit" class="btn btn-primary"></input>
 									  </div>
 
 								  </form>
 							  </div>
-							  <div class="modal-footer">
-								<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-								<button type="button" class="btn btn-primary">保存修改</button>
-							  </div>
+
 							</div>
 						  </div>
 						</div>

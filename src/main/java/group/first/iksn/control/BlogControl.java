@@ -11,6 +11,7 @@ import org.apache.ibatis.jdbc.Null;
 
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -145,7 +146,6 @@ public class BlogControl {
         return  "jubaoguanl";
     }
 
-
     /**
      * 管理员驳回举报信息，认为该博客并无违规之处
      * wenbin
@@ -165,6 +165,29 @@ public class BlogControl {
         }
     }
 
+
+/**
+ * 博客评论
+ */
+    @RequestMapping("/discuss")
+    public String discuss(@ModelAttribute("discuss")BlogComments blogComments){
+        System.out.println(blogComments);
+        boolean result=blogService.discuss(blogComments);
+        if(!result)
+        {
+            return "index";
+        }else
+        {
+            return "userArticle";
+        }
+    }
+    /**
+     * 博客楼层获取
+     */
+    @RequestMapping("/getFloor")
+    public String getFloor(@RequestParam("bid") Integer bid, HttpServletRequest request){
+        return  "";
+    }
     /**
      * 管理员查看被举报的博客，进行审核
      * wenbin
