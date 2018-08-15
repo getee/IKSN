@@ -38,7 +38,6 @@
     <script src="bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
     <script>
 		$(document).ready(function(){
-
             //根据下面的hidden传入的value来提示用户发送成功还是失败
             if($("#sendResult").val()=="sendSuccess"){
                 $("#sendSuccess").css("display","block");
@@ -60,15 +59,29 @@
 				if(c){
 				$(".checkboxs").prop("checked",true);
 
+
 				}else{
 				$(".checkboxs").prop("checked",false);
 
 				}
 			});
-			//写私信时提交不合法时弹出的警告
+			//写私信时提交不合法时弹出的警告,ajax发送私信
 			$("#submitMessage").click(function(){
 				if($("#exampleInputEmail1").val()==""){
 					$("#alertDanger").css("display","block");
+				}else if($("#exampleInputText1").val()==""){
+                    $("#alertDanger").css("display","block");
+				}else{
+				    var toid=$("#exampleInputEmail1").val();
+				    var content=$("#exampleInputText1").val();
+				    $.post("/user/sendMessage/${sessionScope.loginresult.uid}?toid="+toid+"&content="+content,function (data) {
+				        if(data=="success"){
+                            $("#sendSuccess").css("display","block");
+						}else if(data=="error"){
+                            $("#sendError").css("display","block");
+						}
+
+                    })
 				}
 
 			});
@@ -102,9 +115,12 @@
 				}
 			});
 
-			//点击新建私信，email获取焦点
-			$("#newMessage").click(function(){
-			    $("#exampleInputEmail1").focus();
+
+
+
+			//点击checkbox，把发送的id传到表单
+			$(".checkbox").click(function(){
+
                 var friendId="";
 			    $.each($("input:checkbox:checked"),function () {
 			        if($(this).val()!="on"){
@@ -115,9 +131,7 @@
 					}
 
                 })
-
-
-
+                $("#exampleInputText1").focus();
 			});
 			//搜索好友
             $("#searchFriendIdButton").click(function(){
@@ -145,10 +159,21 @@
 
 
             });
+            //这里是当用户从收到的消息点击过来的
+            <c:if test="${ not empty param.sendback}">
+				$("#exampleInputEmail1").val(${param.sendback});
+				$("#exampleInputText1").focus();
+			</c:if>
 
 
 
 		});
+
+		//双击好友发送消息
+		function shuangji(uid){
+		    $("#exampleInputEmail1").val(uid);
+		}
+
 		//删除关注的好友
 		function deleteFriend(){
             var friendId="";
@@ -201,7 +226,7 @@
 	<table class="table well" style="margin: 0px">
 	  <tr>
           <td style="cursor: pointer"><a href="#"><h4>个人中心</h4></a></td>
-          <td style="cursor: pointer"><a href="/user/listAllFriends/1/1"><h4>我的消息</h4></a></td>
+          <td style="cursor: pointer"><a href="/user/listAllFriends/${sessionScope.loginresult.uid}/1"><h4>我的消息</h4></a></td>
           <td style="cursor: pointer"><a href="jifenzhongxin.jsp"><h4>积分</h4></a></td>
           <td style="cursor: pointer"><a href="writingCenter.jsp"><h4>我的博客</h4></a></td>
           <td style="cursor: pointer"><a href="#"><h4>我的下载</h4></a></td>
@@ -276,13 +301,13 @@
 		<div class="col-md-1">
 			<div class="checkbox" style="margin-top: 20px">
 				<label>
-				  <input id="check${friend.uid}" value="${friend.uid}" class="checkboxs" type="checkbox">
+				  <input id="check${friend.uid}"  value="${friend.uid}" class="checkboxs" type="checkbox">
 				</label>
 			  </div>
 		</div>
 		<div class="col-md-4">
 		
-			<img id="img${friend.uid}" src="${friend.picturepath}" class="img-responsive img-thumbnail" alt="Img">
+			<img id="img${friend.uid}" ondblclick="shuangji(${friend.uid})" src="${friend.picturepath}" class="img-responsive img-thumbnail" alt="Img">
 		</div>
 		<div class="col-md-6">
 		<h4>${friend.nickname}</h4>
@@ -330,17 +355,17 @@
 	<div class="col-xs-12 col-md-8 well" >
 <!--	警告-->
 		<div id="alertDanger" class="alert alert-danger alert-dismissible" role="alert" style="display: none">
-		  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		  <strong>!</strong> 联系人不能为空.
+		  <button type="button" class="close" onclick="$('#alertDanger').hide()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		  <strong>!</strong> 输入不能为空.
 		</div>
 <!--	警告-->
 		<div id="sendSuccess" class="alert alert-success alert-dismissible" role="alert" style="display: none">
-		  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		  <button type="button" class="close" onclick="$('#sendSuccess').hide()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 		  <strong>!</strong> 发送成功.
 		</div>
 <!--	警告-->
 		<div id="sendError" class="alert alert-danger alert-dismissible" role="alert" style="display: none">
-		  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		  <button type="button" class="close" onclick="$('#sendError').hide()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 		  <strong>!</strong> 发送失败(收件人不是您的好友或者改收件人不存在).
 		</div>
 
@@ -351,17 +376,17 @@
 		</div>
 <!--		表单-->
 	<div class="row well" style="margin: auto">
-		<form action="/user/sendMessage/${sessionScope.loginresult.uid}" method="post">
+		<%--<form action="/user/sendMessage/${sessionScope.loginresult.uid}" method="post">--%>
 		  <div class="form-group">
 			<label for="exampleInputEmail1">发送给</label>
 			<input type="text" name="toid" class="form-control" id="exampleInputEmail1" placeholder="发送给有效的收件人" required readonly>
 		  </div>
 		  <div class="form-group">
-			<label for="exampleInputPassword1">内容</label>
-			<textarea name="content" class="form-control" rows="6" required maxlength="300"></textarea>
+			<label for="exampleInputText1">内容</label>
+			<textarea name="content" class="form-control" id="exampleInputText1" rows="6" required maxlength="300"></textarea>
 		  </div>
 		  <button id="submitMessage" type="submit" class="btn btn-default">私信</button>
-		</form>
+		<%--</form>--%>
 	</div>
 	
 	

@@ -9,6 +9,7 @@ public interface UserDAO {
     public boolean addUser(User u);
     List<Notice> receiveNotice(@Param("uid") int uid,@Param("nowPage") int nowPage);
     int listNotReadNoticeNum(@Param("uid") int uid);
+    int listNotReadMessageNum(@Param("uid") int uid);
     int listAllNoticeNum(@Param("uid") int uid);
     List<Message> receiveMessage(int uid);
     List<User> listSendMessageUser(int uid);
