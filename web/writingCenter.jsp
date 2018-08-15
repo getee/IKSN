@@ -36,14 +36,14 @@
 		<c:redirect url='listBlogByUid/${sessionScope.loginresult.uid}'></c:redirect>
 	</c:if>
 	<div class="container-fluid">
-		
+
 		<!--	导航栏-->
         <%@ include file="top.jsp"%>
 	<!--	导航栏结束-->
-	
+
 	<div class="row" style="margin-top: 10px">
     	<div class="col-xs-6 col-md-1"></div>
-		
+
 		<div class="col-xs-6 col-md-10" style="background-color:#F9F9F9">
 			<div class="container-fluid">
 				<div class="row">
@@ -66,7 +66,7 @@
 				  </div>
 				  <div class="col-xs-12 col-md-10">
 				  		<h4 style="margin-top: 10px">||文章管理</h4>
-				  		
+
 				  		<div>
 
 						  <!-- Nav tabs -->
@@ -87,7 +87,7 @@
 								  		<h5>发布时间</h5>
 								  </div>
 								  <div class="col-xs-6 col-md-2" style="">
-								  		
+
 								  		<div class="form-group" style="margin-top: 7px">
 										<select style="width: 90%;height: 30px;border: none;border-radius: 4px">
 											<option>不限</option>
@@ -95,10 +95,10 @@
 											<option>C</option>
 										</select>
 										</div>
-										
+
 								  </div>
 								  <div class="col-xs-6 col-md-2">
-							  			
+
 								  		<div class="form-group" style="margin-top: 7px">
 										<select style="width: 90%;height: 30px;border: none;border-radius: 4px">
 											<option>不限</option>
@@ -106,10 +106,10 @@
 											<option>C</option>
 										</select>
 										</div>
-										
+
 								  </div>
 								  <div class="col-xs-6 col-md-2">
-							  			
+
 								  		<div class="form-group" style="margin-top: 7px">
 										<select style="width: 90%;height: 30px;border: none;border-radius: 4px">
 											<option>不限类型</option>
@@ -118,7 +118,7 @@
 											<option>翻译</option>
 										</select>
 										</div>
-										
+
 								  </div>
 								  <div class="col-xs-6 col-md-5">
 								  		<form class="navbar-form navbar-left" style="padding-left: 0">
@@ -129,7 +129,7 @@
 										</form>
 								  </div>
 								</div>
-								
+
 <!--								发表的博客-->
 								<div class="row">
 								<div class="span12" style="padding-left: 25px;padding-right: 25px">
@@ -140,13 +140,7 @@
 											<div style="padding-bottom: 3px;overflow: hidden">
 												<a><h3>${b.title}</h3></a>
 												<h5 id="type" style="color:#928F8F;float: left">
-													<c:if test="${b.userToBlog.blogtype eq 1}">
-														<c:out value="原创"></c:out>
-													</c:if>
-													<c:if test="${b.userToBlog.blogtype != 1}">
-														<c:out value="转载"></c:out>
-													</c:if>
-														<%--${b.userToBlog.blogtype==1 ?  "原创" : "转载"}--%>
+														${b.userToBlog.blogtype==1 ?  "原创" : "转载"}
 												&nbsp;&nbsp;</h5>
 
 												<h5 style="color:#928F8F;float: left">${b.time}&nbsp;&nbsp;</h5>
@@ -170,7 +164,7 @@
 							</div>
 <!--							已发表标签页-->
 							<div role="tabpanel" class="tab-pane" id="profile">
-																
+
 <!--								已发表的博客-->
 								<div class="row">
 								<div class="span12" style="padding-left: 25px;padding-right: 25px">
@@ -189,10 +183,10 @@
 													<a href="#">查看&nbsp;&nbsp;|</a><a href="#">&nbsp;&nbsp;禁止评论&nbsp;&nbsp;|</a><a href="#">&nbsp;&nbsp;置顶&nbsp;&nbsp;|</a><a href="#" style="color:#901919">&nbsp;&nbsp;删除</a>
 												</div>
 											</div>
-											
+
 										</li>
 										<hr />
-										
+
 										<li>
 											<div style="padding-bottom: 3px;overflow: hidden">
 												<a><h3>第二个博客</h3></a>
@@ -207,14 +201,14 @@
 													<a href="#">查看&nbsp;&nbsp;|</a><a href="#">&nbsp;&nbsp;禁止评论&nbsp;&nbsp;|</a><a href="#">&nbsp;&nbsp;置顶&nbsp;&nbsp;|</a><a href="#" style="color:#901919">&nbsp;&nbsp;删除</a>
 												</div>
 											</div>
-											
+
 										</li>
 										<hr />
-										
+
 									</ul>
 								</div>
 								</div>
-								
+
 							</div>
 							<div role="tabpanel" class="tab-pane" id="messages">...</div>
 							<div role="tabpanel" class="tab-pane" id="settings">...</div>
@@ -222,14 +216,14 @@
 						  </div>
 
 						</div>
-				  		
+
 				  </div>
 				</div>
 			</div>
 		</div>
 		<div class="col-xs-6 col-md-1"></div>
-  	</div>	
-	  
+  	</div>
+
 	</div>
 </body>
 </html>

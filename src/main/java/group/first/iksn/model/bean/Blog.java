@@ -15,6 +15,13 @@ public class Blog {
     private  UserToBlog userToBlog;
 
 
+    public void setBlogTags(Set<BlogTag> blogTags) {
+        this.blogTags = blogTags;
+    }
+
+    public UserToBlog getUserToBlog() {
+        return userToBlog;
+    }
 
     public Set<BlogTag> getBlogTags() {
         return blogTags;
