@@ -38,4 +38,8 @@ public interface ResourceDAO {
 
     //搜索资源
     ArrayList<Resource> searchResource(String s);
+    //被举报资源的数量
+    int reportResourceNum();
+    //获取所有被举报资源
+    List<ReportResource> getAllReportResource(int page);
 }

@@ -64,8 +64,8 @@ public class BlogServiceImp implements BlogService {
      * @return
      */
     @Override
-    public List<ReportBlog> getAllReportBlog() {
-        return blogDAO.getAllReportBlog();
+    public List<ReportBlog> getAllReportBlog(int page) {
+        return blogDAO.getAllReportBlog(page);
     }
 
     @Override
@@ -156,6 +156,11 @@ public class BlogServiceImp implements BlogService {
     @Override
     public String getFloor(Integer bid) {
         return blogDAO.selectFloor(bid);
+    }
+
+    @Override
+    public int getReportBlogNum() {
+        return blogDAO.reportBlogNum();
     }
 
 

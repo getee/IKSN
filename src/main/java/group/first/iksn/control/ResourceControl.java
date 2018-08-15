@@ -2,6 +2,9 @@ package group.first.iksn.control;
 
 import group.first.iksn.model.bean.*;
 import group.first.iksn.service.ResourceService;
+import group.first.iksn.util.Responser;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.ui.Model;
@@ -14,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.io.IOException;
+import java.util.List;
 
 
 import org.springframework.web.bind.annotation.RequestParam;
@@ -153,6 +157,7 @@ public class ResourceControl {
      */
     @RequestMapping("/mCheckReportResource/{resourceid}/{id}")
     public String mCheckReportResource(@PathVariable int resourceid, @PathVariable int id,String reason, Model model){
+        EncodingTool.encodeStr(reason);
         System.out.println(reason);
 
         model.addAttribute("resourceid",resourceid);
@@ -201,5 +206,41 @@ public class ResourceControl {
         mav.getModel().put("result",result);
         System.out.println(result);
          return mav;
+    }
+
+    /**
+     * 分页
+     * @param page
+     * @param response
+     * @param request
+     */
+    @RequestMapping("mGetReportResource/{page}")
+    @ResponseBody
+    public void mGetReportResource(@PathVariable int page,HttpServletResponse response, HttpServletRequest request){
+        //int count=1;
+        System.out.println("进入分页");
+        List<ReportResource> reportResourceList= resourceService.getAllReportResource(page);
+        System.out.println(reportResourceList+"ssssssssss");
+        for (ReportResource r:reportResourceList){
+            System.out.println(r.getResource());
+        }
+        int num=resourceService.reportResourceNum();//获取被举报数量
+        JSONArray jsonArray=new JSONArray();
+        for (ReportResource rr:reportResourceList) {
+            JSONObject jsonObject=new JSONObject();
+            jsonObject.put("id",rr.getId());
+            jsonObject.put("reason",rr.getReason());
+            jsonObject.put("name",rr.getResource().getName());
+            jsonObject.put("rid",rr.getRid());
+            jsonArray.put(jsonObject);
+        }
+        JSONObject jsonObjectTwo=new JSONObject();
+        jsonObjectTwo.put("reportReNum",num);
+        jsonArray.put(jsonObjectTwo);
+        try {
+            Responser.responseToJson(response, request, jsonArray.toString());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
