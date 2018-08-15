@@ -78,4 +78,8 @@
     <delete id="deleteResource" parameterType="Resource">
         delete from resource where RID=#{rid}
     </delete>
+    <!--举报资源-->
+    <insert id="reportResource" parameterType="ReportResource">
+        insert into reportresource (uid,rid,reason) values (#{uid},#{rid},#{reason})
+    </insert>
 </mapper>
