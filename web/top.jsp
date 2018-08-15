@@ -13,6 +13,7 @@
 <link href="../js/searchMeme.css" rel="stylesheet" type="text/css" />
 <script src="../js/jquery-3.3.1.js" type="text/javascript"></script>
 <script src="../js/jquery.searchMeme.js" type="text/javascript"></script>--%>
+
 <c:if test="${not empty sessionScope.loginresult}">
 
     <%--聊天窗口--%>
@@ -155,6 +156,7 @@
     </div>
 
     <script>
+
         function p(s) {
             return s < 10 ? '0' + s: s;
         }
