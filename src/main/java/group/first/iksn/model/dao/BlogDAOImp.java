@@ -159,6 +159,16 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
         return getSqlSession().getMapper(BlogDAO.class).reportBlogNum();
     }
 
+    @Override
+    public UserToBlog getUserIsSpeak(int bid) {
+        return getSqlSession().getMapper(BlogDAO.class).getUserIsSpeak(bid);
+    }
+
+    @Override
+    public boolean shutUptoUser(int uid){
+        return getSqlSession().getMapper(BlogDAO.class).shutUptoUser(uid);
+    }
+
     /**
      * 删除博客
      * wenbin

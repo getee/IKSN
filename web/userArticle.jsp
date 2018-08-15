@@ -140,7 +140,7 @@
 	<script>
         $(document).ready(function(){
             $("#comeback-button").click(function(){
-                alert("sss")
+                //alert("sss")
                 location.href="/blog/mGetAllReportBlog";
             });
             $("#sendBack-ok").click(function(){

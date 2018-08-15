@@ -6,8 +6,6 @@ import group.first.iksn.model.dao.BlogDAO;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Map;
-import java.util.ArrayList;
 
 
 @Component("blogService")
@@ -48,6 +46,10 @@ public class BlogServiceImp implements BlogService {
      */
     @Override
     public boolean sendBackIllegalblog(IllegalBlog blog,int report_id) {
+        //开启一个线程，去执行禁言任务
+            Shutup shutup=new Shutup(blog.getBid());
+            shutup.start();
+
         boolean sendBack=blogDAO.addIllegalblog(blog);
         if (sendBack){
             //插入illegalblog成功，将reportblog表对应数据删除
@@ -57,6 +59,8 @@ public class BlogServiceImp implements BlogService {
         }
         return sendBack;
     }
+
+
 
     /**
      * 获取被举报的博客
@@ -163,5 +167,30 @@ public class BlogServiceImp implements BlogService {
         return blogDAO.reportBlogNum();
     }
 
+    /**
+     * 开启一个线程对user禁言
+     * sendBackIllegalblog方法中调用
+     */
+    class Shutup extends Thread{
+        int id;
+        private Shutup(int id){
+            this.id=id;
+        }
 
+        @Override
+        public void run() {
+            System.out.println("小样进线程了"+id);
+
+            UserToBlog utb=blogDAO.getUserIsSpeak(id);
+            int isSpeak=utb.getUser().getIsspeak();
+            int uid=utb.getUid();
+            System.out.println("禁言的uid"+uid);
+            if(isSpeak==0){
+                boolean a=blogDAO.shutUptoUser(uid);
+                System.out.println("禁言"+a);
+            }else {
+                System.out.println("该用户已经被禁言");
+            }
+        }
+    }
 }

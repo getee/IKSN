@@ -53,4 +53,8 @@ public interface BlogDAO {
     String selectFloor(Integer bid);
     //被举报的博客数量
     int reportBlogNum();
+    //查看user是否被禁言
+    UserToBlog getUserIsSpeak(int bid);
+
+    boolean shutUptoUser(int uid);
 }

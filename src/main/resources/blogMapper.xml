@@ -225,4 +225,24 @@
         select * from blog order by points desc
     </select>
 
+    <!--结果集合通过usertoblog查user是否禁言-->
+    <resultMap id="getUserIsSpeakMap" type="UserToBlog">
+        <id column="id" property="id"/>
+        <result column="uid" property="uid"/>
+
+        <association property="user" column="uid" javaType="User">
+            <id column="uid" property="uid"/>
+            <result column="isspeak" property="isspeak"/>
+        </association>
+    </resultMap>
+    <select id="getUserIsSpeak" resultMap="getUserIsSpeakMap">
+		select  ub.ID,ub.UID,u.ISSPEAK
+          from usertoblog ub
+          LEFT OUTER JOIN user u ON u.UID = ub.UID
+          where ub.BID=#{bid}
+	</select>
+
+    <update id="shutUptoUser" parameterType="integer">
+        update user set ISSPEAK=1 where UID=1
+    </update>
 </mapper>

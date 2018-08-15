@@ -359,7 +359,7 @@
         var a="/resource/mReject_oneReportResource/"+url;
         if(userChoice){
             $.get(a,function (data) {
-                alert(data)
+                //alert(data)
                 $("#"+url).hide();
             })
         }
