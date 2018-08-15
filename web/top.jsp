@@ -1,11 +1,3 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%--
-  Created by IntelliJ IDEA.
-  User: wenbin
-  Date: 2018/8/8
-  Time: 9:23
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <link rel="stylesheet" type="text/css" href="bootstrap-3.3.7/dist/css/iconfont.css">
 <link rel="stylesheet" type="text/css" href="bootstrap-3.3.7/dist/css/chat.css">
@@ -153,7 +145,6 @@
             </div>
         </div>
     </div>
-    <script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
     <script>
         function p(s) {
             return s < 10 ? '0' + s: s;
@@ -224,6 +215,7 @@
         //聊天窗口的js
         screenFuc();
         function screenFuc() {
+            $(".chatBox").hide(10);
             var topHeight = $(".chatBox-head").innerHeight();//聊天头部高度
             //屏幕小于768px时候,布局change
             var winWidth = $(window).innerWidth();
@@ -499,15 +491,13 @@
                     <li><a href="../xiazai.jsp">下载</a></li>
                     <li><a href="#">GitChat</a></li>
                     <li><a href="#">TinyMind</a></li>
-                    <li><a href="#">论坛</a></li>
                     <li><a href="#">问答</a></li>
-                    <li><a href="#">商城</a></li>
                     <li><a href="#">VIP</a></li>
                 </ul>
                 <form class="navbar-form navbar-left" method="post" action="/blog/blogSearch">
                     <div class="form-group">
 
-                        <input id="q1" type="text" class="quickQuery$focus" placeholder="Fuck you" name="content"/>
+                        <input id="q1" type="text" class="quickQuery$focus" placeholder="Search" name="content"/>
                        <%-- <input class="quickQuery$focus" id="" style="border: 3px solid #ccc;" />--%>
                         <div class="quickQuery$focus"></div>
                     </div> <button id="bSearch" type="submit"  class="btn btn-default" >搜索</button>
