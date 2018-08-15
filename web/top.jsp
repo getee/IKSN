@@ -153,8 +153,10 @@
             </div>
         </div>
     </div>
-    <script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+
     <script>
+       // alert( window.location.host)
+
         function p(s) {
             return s < 10 ? '0' + s: s;
         }
@@ -171,7 +173,7 @@
         var websocket=null;
         //判断当前浏览器是否支持WebSocket
         if ('WebSocket' in window) {
-            websocket = new WebSocket("ws://localhost:8080/websocket");
+            websocket = new WebSocket("ws://172.19.22.45:8080/websocket");
         }
         else {
             alert('当前浏览器 Not support websocket')
@@ -224,6 +226,7 @@
         //聊天窗口的js
         screenFuc();
         function screenFuc() {
+            $(".chatBox").hide(10);
             var topHeight = $(".chatBox-head").innerHeight();//聊天头部高度
             //屏幕小于768px时候,布局change
             var winWidth = $(window).innerWidth();
