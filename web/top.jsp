@@ -1,3 +1,11 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%--
+  Created by IntelliJ IDEA.
+  User: wenbin
+  Date: 2018/8/8
+  Time: 9:23
+  To change this template use File | Settings | File Templates.
+--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <link rel="stylesheet" type="text/css" href="bootstrap-3.3.7/dist/css/iconfont.css">
 <link rel="stylesheet" type="text/css" href="bootstrap-3.3.7/dist/css/chat.css">
@@ -145,6 +153,7 @@
             </div>
         </div>
     </div>
+
     <script>
         function p(s) {
             return s < 10 ? '0' + s: s;
@@ -162,7 +171,7 @@
         var websocket=null;
         //判断当前浏览器是否支持WebSocket
         if ('WebSocket' in window) {
-            websocket = new WebSocket("ws://localhost:8080/websocket");
+            websocket = new WebSocket("ws://172.19.22.45:8080/websocket");
         }
         else {
             alert('当前浏览器 Not support websocket')
