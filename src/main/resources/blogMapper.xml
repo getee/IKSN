@@ -120,6 +120,11 @@
         insert into blogcomments(uid,bid,time,content,COMMENTID,floor) value (#{uid},#{bid},#{time},#{content},#{commentid},#{floor})
     </insert>
 
+
+    <select id="selectFloor" resultType="String">
+        select count(*) from blogcomments where BID=(#{bid}) and COMMENTID is null
+    </select>
+
     <!--结果集合用来存储查询ReportResource表级联查询Resource表-->
     <resultMap id="getResourceBy_Reportrid" type="ReportResource">
         <id column="id" property="id"/>
