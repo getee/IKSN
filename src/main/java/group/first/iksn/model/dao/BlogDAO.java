@@ -1,12 +1,9 @@
 package group.first.iksn.model.dao;
 
 
-
 import group.first.iksn.model.bean.*;
 
 import java.util.List;
-
-
 import java.util.ArrayList;
 
 
@@ -52,4 +49,6 @@ public interface BlogDAO {
 
     //举报博客
     public boolean reportBlog(ReportBlog reportBlog);
+
+    String selectFloor(Integer bid);
 }

@@ -148,6 +148,12 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
         System.out.println(blogComments);
         return getSqlSession().getMapper(BlogDAO.class).answerDiscuss(blogComments);
     }
+
+    @Override
+    public String selectFloor(Integer bid) {
+        return getSqlSession().getMapper(BlogDAO.class).selectFloor(bid);
+    }
+
     /**
      * 删除博客
      * wenbin

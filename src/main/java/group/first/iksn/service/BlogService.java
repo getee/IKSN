@@ -44,4 +44,6 @@ public interface BlogService {
 
     //举报博客
     public boolean reportBlog(ReportBlog reportBlog);
+
+    String getFloor(Integer bid);
 }

@@ -153,5 +153,10 @@ public class BlogServiceImp implements BlogService {
         return serviceResult;
     }
 
+    @Override
+    public String getFloor(Integer bid) {
+        return blogDAO.selectFloor(bid);
+    }
+
 
 }
