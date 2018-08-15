@@ -26,8 +26,12 @@ public interface UserDAO {
     boolean deleteChooseFriend(@Param("selfid") int selfid,@Param("attenid") int attenid);
     boolean sendMessage(Message message);
     List checkIsAttention(@Param("selfid") int selfid,@Param("attenid") int attenid);
+    //分页查询好友，一页5条
     List listAllFriends(@Param("selfid") int uid,@Param("nowPage") int nowPage);
+    //一次性查询所有的好友
+    List FindAllFriendsOfThisUser(int selfid);
     List searchFriend(@Param("nickname") String nickname,@Param("selfid") int uid);
+
     int friendNum(int selfid);
 
     //修改用户
