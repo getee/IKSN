@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -63,7 +65,6 @@ public class BlogControl {
         mv.setViewName("sousuo");
         return  mv;
     }
-
 
     /**
      * 管理员删除被用户举报且不合法的博客
@@ -262,6 +263,20 @@ public class BlogControl {
         model.addAttribute("reportReason",reason);
         model.addAttribute("report_id",id);
         return "userArticle";
+    }
+    @RequestMapping(value="/getFloor",method = RequestMethod.POST)
+    public void getFloor( @RequestParam("bid") Integer bid , HttpServletRequest request, HttpServletResponse response) {
+        System.out.println(bid);
+        String resMsg = ""+blogService.getFloor(bid);//已存在相同资源
+       // request.setAttribute("Foor",99);
+        System.out.println("DDD"+bid+resMsg);
+        try {
+            response.getWriter().write(resMsg);
+            System.out.println("XXX"+bid+resMsg);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return;
     }
 
 }

@@ -20,26 +20,29 @@
     <script src="bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
     <script src="js/depend.js"></script>
     <script>
-        function setbid() {
-            var bokeid={'bid':'1'};
-            var ajaxUrl="blog/getFloor";
+        function getFoor() {
+            /*
+                        var bokeid="2";
+            */
+            var ajaxUrl="/blog/getFloor?bid="+"2";
             $.ajax({
                 type:"post",
                 url:ajaxUrl,
-                data:bokeid,
+                //data:bokeid,
                 async: false,
                 cache: false,
                 contentType: false,
                 processData: false,
-                success: function (date) {
-                    alert(data);
+                success: function (data) {
+                    $("#floor").attr("value",data)
 
                 },
                 error: function(data) {
                     alert("error:");
 
                 }
-            })
+            });
+            // alert("FFF+${requestScope.Foor}");
         }
 	</script>
 	<style>
@@ -225,7 +228,7 @@
 						<div class="span12" style="background-color:#A29E9E;padding: 25px">
 							<!-- Button trigger modal -->
 							有疑问？就说一说
-							<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+							<button type="button" onmouseover="getFoor()" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
 								我要评论
 							</button>
 
@@ -253,7 +256,7 @@
 												<!---->
 											</div>
 											<div class="form-group">
-												floor:<input type="text" name="floor">${requestScope.floor}<br>
+												floor:<input type="text" id="floor" name="floor"><br>
 											</div>
 											<div class="modal-footer">
 												<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
