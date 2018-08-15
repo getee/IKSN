@@ -61,7 +61,7 @@ public class ResourceControl {
         boolean result=resourceService.houseResource(collectResource);
         if (!result)
         {
-            return "shoucang";
+            return "success";
         }else
         {
             return "xq";
