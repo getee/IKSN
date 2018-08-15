@@ -22,6 +22,7 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.RequestParam;
 import java.io.UnsupportedEncodingException;
+import java.util.Date;
 
 @Controller
 @RequestMapping("/resource")
@@ -65,7 +66,7 @@ public class ResourceControl {
         boolean result=resourceService.houseResource(collectResource);
         if (!result)
         {
-            return "shoucang";
+            return "success";
         }else
         {
             return "xq";
@@ -93,12 +94,14 @@ public class ResourceControl {
         try {
 
             System.out.println("fileName：" + file.getOriginalFilename()+"XX"+uid);
+            String filename=file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));//取扩展名
+            filename=""+new Date().getTime()+filename;
             //String path="/resource/files/"+new Date().getTime()+file.getOriginalFilename();
 
             //获取项目输出路径
             String rootPath = request.getSession().getServletContext().getRealPath("/");
             rootPath = rootPath.substring(0, rootPath.lastIndexOf('\\'));
-            String filepath = rootPath.substring(0, rootPath.lastIndexOf('\\')) + "/resourcefile/" +uid+"/"+ file.getOriginalFilename();
+            String filepath = rootPath.substring(0, rootPath.lastIndexOf('\\')) + "/resourcefile/" +uid+"/"+ filename;
             //System.out.println("rootPath:" + rootPath);//D:\AppSCM\IKSN\out\artifacts\IKSN_war_exploded
             System.out.println("path:" + filepath);//D:\AppSCM\IKSN\out\artifacts/resourcefile/
             //String quotePath="resourcefile/" +uid+"/"+ file.getOriginalFilename();//资源引用路径
