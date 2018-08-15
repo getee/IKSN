@@ -140,7 +140,13 @@
 											<div style="padding-bottom: 3px;overflow: hidden">
 												<a><h3>${b.title}</h3></a>
 												<h5 id="type" style="color:#928F8F;float: left">
-														${b.userToBlog.blogtype==1 ?  "原创" : "转载"}
+													<c:if test="${b.userToBlog.blogtype eq 1}">
+														<c:out value="原创"></c:out>
+													</c:if>
+													<c:if test="${b.userToBlog.blogtype != 1}">
+														<c:out value="转载"></c:out>
+													</c:if>
+														<%--${b.userToBlog.blogtype==1 ?  "原创" : "转载"}--%>
 												&nbsp;&nbsp;</h5>
 
 												<h5 style="color:#928F8F;float: left">${b.time}&nbsp;&nbsp;</h5>

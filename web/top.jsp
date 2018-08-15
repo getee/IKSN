@@ -155,8 +155,6 @@
     </div>
 
     <script>
-       // alert( window.location.host)
-
         function p(s) {
             return s < 10 ? '0' + s: s;
         }
@@ -502,15 +500,13 @@
                     <li><a href="../xiazai.jsp">下载</a></li>
                     <li><a href="#">GitChat</a></li>
                     <li><a href="#">TinyMind</a></li>
-                    <li><a href="#">论坛</a></li>
                     <li><a href="#">问答</a></li>
-                    <li><a href="#">商城</a></li>
                     <li><a href="#">VIP</a></li>
                 </ul>
                 <form class="navbar-form navbar-left" method="post" action="/blog/blogSearch">
                     <div class="form-group">
 
-                        <input id="q1" type="text" class="quickQuery$focus" placeholder="Fuck you" name="content"/>
+                        <input id="q1" type="text" class="quickQuery$focus" placeholder="Search" name="content"/>
                        <%-- <input class="quickQuery$focus" id="" style="border: 3px solid #ccc;" />--%>
                         <div class="quickQuery$focus"></div>
                     </div> <button id="bSearch" type="submit"  class="btn btn-default" >搜索</button>

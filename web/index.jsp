@@ -13,6 +13,14 @@
 		String path = request.getContextPath();
 		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 	%>
+	<base href="<%=basePath%>">
+	<link type="text/css" href="/bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="/bootstrap-3.3.7/dist/css/bootstrap.css" rel="stylesheet">
+	<link rel="stylesheet" href="/bootstrap-3.3.7/dist/css/bootstrap-theme.min.css" crossorigin="anonymous">
+
+	<script src="/js/jquery-3.3.1.js"></script>
+	<script src="/bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
+	<script src="/js/depend.js"></script>
 
 	
 <style>
@@ -26,16 +34,7 @@
 </head>
 
 <body>
-<base href="<%=basePath%>">
-<link type="text/css" href="bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="bootstrap-3.3.7/dist/css/bootstrap.css" rel="stylesheet">
-<link rel="stylesheet" href="bootstrap-3.3.7/dist/css/bootstrap-theme.min.css" crossorigin="anonymous">
 
-<script src="js/jquery-3.3.1.js"></script>
-<script src="bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
-<script src="js/depend.js"></script>
-
-<c:set var="webRoot" value="<%=basePath%>" />
 <C:if test="${requestScope.BlogsPush eq null}">
 	<c:redirect url="/blog/blogPush"></c:redirect>
 </C:if>

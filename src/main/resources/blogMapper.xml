@@ -137,7 +137,10 @@
 		inner join resource as r on   rr.RID=r.RID ORDER BY rr.ID asc limit 0,6;
 	</select>
 
-
+    <!--举报博客-->
+    <insert id="reportBlog" parameterType="ReportBlog">
+        insert into reportblog (uid,bid,reason) values (#{uid},#{bid},#{reason})
+    </insert>
 
     <!--这是有关blog搜索的查询-->
     <!--定义的一个reaultmap结果集合来存储关联查询到的详细的博客，类型是自定义类型-->
@@ -214,7 +217,5 @@
     <select id="detailedBlogPush" resultType="Blog">
         select * from blog order by points desc
     </select>
-    <insert id="reportBlog" parameterType="ReportBlog">
-        insert into reportblog (uid,bid,reason) values (#{uid},#{bid},#{reason})
-    </insert>
+
 </mapper>

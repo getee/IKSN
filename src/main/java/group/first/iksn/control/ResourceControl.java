@@ -194,8 +194,8 @@ public class ResourceControl {
     @RequestMapping("/reportResource")
     public ModelAndView reportResource(@ModelAttribute("reportResource")ReportResource reportResource) throws UnsupportedEncodingException {
         ModelAndView mav=new ModelAndView("xq");
-        String reason=new String(reportResource.getReason().getBytes("ISO-8859-1"),"UTF-8");
-        reportResource.setReason(reason);
+        //String reason=new String(reportResource.getReason().getBytes("ISO-8859-1"),"UTF-8");
+        //reportResource.setReason(reason);
         System.out.println(reportResource);
        boolean result=resourceService.reportResource(reportResource);
         mav.getModel().put("result",result);
