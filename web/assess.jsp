@@ -146,9 +146,9 @@
             </div>
             <div class="form-group">
                 评分:<select name="star">
-                <C:forEach var="a" begin="1" end="10">
+                <c:forEach var="a" begin="1" end="10">
                     <option value="${a}">${a}分</option>
-                </C:forEach>
+                </c:forEach>
             </select><br/>
             </div>
             <button type="submit" class="btn btn-default" value="assess">提交</button>

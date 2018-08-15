@@ -137,7 +137,7 @@
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
     <li id="myTabs1" role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">举报博客</a></li>
-    <li id="myTabs2" role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">举报资源</a></li>
+    <li id="myTabs2" role="presentation" ><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab" onclick="firstPages()">举报资源</a></li>
   </ul>
 
   <!-- Tab panes -->
@@ -146,7 +146,7 @@
         <div class="row " id="test" style="margin: auto">
         </div>
         <!--    	博客举报面版-->
-
+        <div id="blog">
         <c:forEach var="item" items="${ReportBlogList}">
             <div id="${item.id}" class="row" style="margin:auto;border-bottom-style:solid;border-bottom-width:2px;border-bottom-color:#E9E9E9">
                 <div class="col-xs-12 col-md-8"><h4><a class="text-muted" target="_blank" href="javascript:clickTitle('${item.blog.bid}','${item.id}','${item.reason}')">${item.blog.title}</a></h4><small style="margin-left: 2% ">举报原因：${item.reason}</small></div>
@@ -157,7 +157,25 @@
                 </div>
             </div>
         </c:forEach>
-        <div class="row" style="margin:auto;border-bottom-style:solid;border-bottom-width:2px;border-bottom-color:#E9E9E9"><h4><a class="text-muted" href="#">待处理</a><small style="margin-left: 80% "><span class="badge" style="background-color: red">42</span></small></h4>
+        </div>
+        <%--分页按钮--%>
+        <div class="row" style="margin:auto;border-bottom-style:solid;border-bottom-width:2px;border-bottom-color:#E9E9E9">
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <li>
+                        <a href="javascript:blogPreviousPages()" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:blogNextPages()" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="row" style="margin:auto;border-bottom-style:solid;border-bottom-width:2px;border-bottom-color:#E9E9E9"><h4><a class="text-muted" href="#">待处理</a><small style="margin-left: 80% "><span id="viewBlogNum" class="badge" style="background-color: red">${rBlNum}</span></small></h4>
         </div>
     </div>
     
@@ -165,23 +183,29 @@
         <div class="row " id="test" style="margin: auto">
         </div>
         <!--    	资源举报面版-->
+        <div id="resouece">
 
-        <c:forEach var="item" items="${ReportResourceList}">
-            <div id="${item.id}" class="row" style="margin:auto;border-bottom-style:solid;border-bottom-width:2px;border-bottom-color:#E9E9E9">
-                <div class="col-xs-6 col-md-1">
-                    <div><a href="xq.jsp"><img src="img/2.svg"></a></div>
-                </div>
-                <div class="col-xs-12 col-md-8"><h4><a class="text-muted" target="_blank" href="javascript:clickName('${item.resource.rid}','${item.id}','${item.reason}')">${item.resource.name}</a></h4><small style="margin-left: 2% ">举报原因：${item.reason}</small></div>
-                <div class="col-xs-6 col-md-3"><small style="margin-right: 20% ">2017-8-2</small>
-                    <a href="javascript:delete_oneReportResource(${item.id})">
-                        <small id="del_oneReportResource" data-toggle="modal" style="margin-right:3%;cursor: pointer" class="glyphicon glyphicon-trash"></small>
-                    </a>
-                </div>
-            </div>
-        </c:forEach>
-        <div class="row" style="margin:auto;border-bottom-style:solid;border-bottom-width:2px;border-bottom-color:#E9E9E9"><h4><a class="text-muted" href="#">待处理</a><small style="margin-left: 80% "><span class="badge" style="background-color: red">42</span></small></h4>
         </div>
-   		
+        <%--分页按钮--%>
+        <div class="row" style="margin:auto;border-bottom-style:solid;border-bottom-width:2px;border-bottom-color:#E9E9E9">
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <li>
+                        <a href="javascript:previousPages()" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:nextPages()" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="row" style="margin:auto;border-bottom-style:solid;border-bottom-width:2px;border-bottom-color:#E9E9E9"><h4><a class="text-muted" href="#">待处理</a><small style="margin-left: 80% "><span id="viewResourceNum" class="badge" style="background-color: red">42</span></small></h4>
+        </div>
+
    		
    		
     </div>
@@ -192,8 +216,121 @@
 </div>
 
 <!--管理员权限-->
-
 <script>
+    var bpage=1;
+    var bNum=0;
+
+    function blogPreviousPages(){
+        if(bpage==1){
+            alert("没有上一页了哦！！！")
+        }
+        if(bpage>=2){
+            bpage=bpage-1;
+            loadPages(bpage);
+        }
+
+    }
+
+    function blogNextPages(){
+        bpage=bpage+1;
+        var maxPage;
+        bNum%5==0?maxPage=(bNum/5):maxPage=(bNum/5+1);
+        if(bpage>maxPage){
+            alert("没有下一页了哦！！！")
+        }
+        if(bpage<=maxPage){
+            blogLoadPages(bpage);
+        }
+    }
+    function blogLoadPages(page){
+
+        //alert("assas")
+        var a="/blog/mGetReportBlog/"+page;
+        $.get(a,function(data,status){
+            //alert(data[i]);
+            var htm="";
+            bNum=data[data.length-1].reportReNum;
+            for(var i=0;i<data.length;i++){
+                htm+="<div id=\""+data[i].id+"\" class=\"row\" style=\"margin:auto;border-bottom-style:solid;border-bottom-width:2px;border-bottom-color:#E9E9E9\">\n" +
+                    "                <div class=\"col-xs-12 col-md-8\"><h4><a class=\"text-muted\" target=\"_blank\" href=\"javascript:clickName('"+data[i].bid+"','"+data[i].id+"','"+data[i].reason+"')\">"+data[i].title+"</a></h4><small style=\"margin-left: 2% \">举报原因："+data[i].reason+"</small></div>\n" +
+                    "                <div class=\"col-xs-6 col-md-4\"><small style=\"margin-right: 20% \">2017-8-2</small>\n" +
+                    "                    <a href=\"javascript:delete_oneReportResource("+data[i].id+")\">\n" +
+                    "                        <small id=\"del_oneReportResource\" data-toggle=\"modal\" style=\"margin-right:3%;cursor: pointer\" class=\"glyphicon glyphicon-trash\"></small>\n" +
+                    "                    </a>\n" +
+                    "                </div>\n" +
+                    "            </div>";
+                // $("#profile").append(htm);
+                $("#blog").html(htm);
+            }
+            $("#viewBlogNum").text(bNum);
+        });
+        //location.href="blog/mReject_oneReportblog/"+url;
+
+    }
+
+</script>
+<script>
+    var page=1;
+    var num=0;
+
+
+    function firstPages() {
+        loadPages(1);
+    }
+
+
+    function previousPages(){
+        if(page==1){
+            alert("没有上一页了哦！！！")
+        }
+        if(page>=2){
+            page=page-1;
+            loadPages(page);
+        }
+
+    }
+    function nextPages(){
+        page=page+1;
+        var maxPage;
+        num%5==0?maxPage=(num/5):maxPage=(num/5+1);
+        if(page>maxPage){
+            alert("没有下一页了哦！！！")
+        }
+        if(page<=maxPage){
+            loadPages(page);
+        }
+    }
+
+    function loadPages(page){
+
+        //alert("assas")
+        var a="/resource/mGetReportResource/"+page;
+        $.get(a,function(data,status){
+            //alert(data[i]);
+            var htm="";
+            num=data[data.length-1].reportReNum;
+            for(var i=0;i<data.length-1;i++){
+                htm+="<div id=\""+data[i].id+"\" class=\"row\" style=\"margin:auto;border-bottom-style:solid;border-bottom-width:2px;border-bottom-color:#E9E9E9\">\n" +
+                    "                <div class=\"col-xs-6 col-md-1\">\n" +
+                    "                    <div><a href=\"xq.jsp\"><img src=\"img/2.svg\"></a></div>\n" +
+                    "                </div>\n" +
+                    "                <div class=\"col-xs-12 col-md-8\"><h4><a class=\"text-muted\" target=\"_blank\" href=\"javascript:clickName('"+data[i].rid+"','"+data[i].id+"','"+data[i].reason+"')\">"+data[i].name+"</a></h4><small style=\"margin-left: 2% \">举报原因："+data[i].reason+"</small></div>\n" +
+                    "                <div class=\"col-xs-6 col-md-3\"><small style=\"margin-right: 20% \">2017-8-2</small>\n" +
+                    "                    <a href=\"javascript:delete_oneReportResource("+data[i].id+")\">\n" +
+                    "                        <small id=\"del_oneReportResource\" data-toggle=\"modal\" style=\"margin-right:3%;cursor: pointer\" class=\"glyphicon glyphicon-trash\"></small>\n" +
+                    "                    </a>\n" +
+                    "                </div>\n" +
+                    "            </div>";
+                // $("#profile").append(htm);
+                $("#resouece").html(htm);
+            }
+            $("#viewResourceNum").text(num);
+           //alert(data[data.length-1].reportReNum);
+        });
+            //location.href="blog/mReject_oneReportblog/"+url;
+
+    }
+
     function clickTitle(blogid,reportid,reason) {
         //var reportReason=encodeURI(reason);
 
@@ -201,7 +338,7 @@
         location.href=a;
     }
     function clickName(resourceid,reportid,reason) {
-
+        alert(resourceid+reason+reportid)
         var a="/resource/mCheckReportResource/"+resourceid+"/"+reportid+"?reason="+reason;
         location.href=a;
     }
@@ -222,7 +359,7 @@
         var a="/resource/mReject_oneReportResource/"+url;
         if(userChoice){
             $.get(a,function (data) {
-                alert(data)
+                //alert(data)
                 $("#"+url).hide();
             })
         }

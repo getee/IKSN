@@ -57,10 +57,10 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
      * @return
      */
     @Override
-    public List<ReportBlog> getAllReportBlog() {
+    public List<ReportBlog> getAllReportBlog(int page) {
         List<ReportBlog> allReportBlog=null;
         try {
-            allReportBlog=getSqlSession().getMapper(BlogDAO.class).getAllReportBlog();
+            allReportBlog=getSqlSession().getMapper(BlogDAO.class).getAllReportBlog((page-1)*3);
             System.out.println("22222");
         }catch (Exception e){
             System.out.println("这是获取违规博客出错了");
@@ -152,6 +152,21 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
     @Override
     public String selectFloor(Integer bid) {
         return getSqlSession().getMapper(BlogDAO.class).selectFloor(bid);
+    }
+
+    @Override
+    public int reportBlogNum() {
+        return getSqlSession().getMapper(BlogDAO.class).reportBlogNum();
+    }
+
+    @Override
+    public UserToBlog getUserIsSpeak(int bid) {
+        return getSqlSession().getMapper(BlogDAO.class).getUserIsSpeak(bid);
+    }
+
+    @Override
+    public boolean shutUptoUser(int uid){
+        return getSqlSession().getMapper(BlogDAO.class).shutUptoUser(uid);
     }
 
     /**
