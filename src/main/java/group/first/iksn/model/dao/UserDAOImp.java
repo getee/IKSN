@@ -85,9 +85,21 @@ public class UserDAOImp extends BaseDAOImp implements UserDAO {
     }
 
     @Override
-    public List<Message> receiveMessage(int uid) {
+    public int listAllMessageNum(int uid) {
         try {
-            List<Message> allMessages=getSqlSession().getMapper(UserDAO.class).receiveMessage(uid);
+            int allMessageNum=getSqlSession().getMapper(UserDAO.class).listAllMessageNum(uid);
+            return allMessageNum;
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    @Override
+    public List<Message> receiveMessage(int uid,int nowPage) {
+        try {
+            List<Message> allMessages=getSqlSession().getMapper(UserDAO.class).receiveMessage(uid,(nowPage-1)*5);
             System.out.println("查询到的私信："+allMessages);
             return allMessages;
 

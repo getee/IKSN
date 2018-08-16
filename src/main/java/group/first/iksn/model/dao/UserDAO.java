@@ -11,7 +11,8 @@ public interface UserDAO {
     int listNotReadNoticeNum(@Param("uid") int uid);
     int listNotReadMessageNum(@Param("uid") int uid);
     int listAllNoticeNum(@Param("uid") int uid);
-    List<Message> receiveMessage(int uid);
+    int listAllMessageNum(@Param("toid") int uid);
+    List<Message> receiveMessage(@Param("toid") int uid,@Param("nowPage") int nowPage);
     List<User> listSendMessageUser(int uid);
     boolean changeIsRead(@Param("isRead") int isRead,@Param("uid") int uid);
     boolean changeMessageIsRead(@Param("isRead") int isRead,@Param("uid") int uid);

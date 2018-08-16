@@ -41,6 +41,12 @@ public class UserServiceImp implements UserService {
     public int listNotReadNoticeNum(int uid) {
         return userDAO.listNotReadNoticeNum(uid);
     }
+
+    @Override
+    public int listAllMessageNum(int uid) {
+        return userDAO.listAllMessageNum(uid);
+    }
+
     @Override
     public int listNotReadMessageNum(int uid) {
         return userDAO.listNotReadMessageNum(uid);
@@ -51,8 +57,8 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public List receiveMessage(int uid) {
-        return userDAO.receiveMessage(uid);
+    public List receiveMessage(int uid,int nowPage) {
+        return userDAO.receiveMessage(uid,nowPage);
     }
 
     @Override

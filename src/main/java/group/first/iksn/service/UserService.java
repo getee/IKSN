@@ -19,10 +19,12 @@ public interface UserService {
     int listNotReadMessageNum(int uid);
     //查询未读私信数量
     int listNotReadNoticeNum(int uid);
+    //查询所有私信数量
+    int listAllMessageNum(int uid);
     //查询所有通知数量
     int listAllNoticeNum(int uid);
-    //查询该用户所有的私信
-    List receiveMessage(int uid);
+    //查询该用户第一页的私信
+    List receiveMessage(int uid,int nowPage);
     //查询发送私信方的用户信息
     List listSendMessageUser(int uid);
 ;    //检查邮箱是否重复

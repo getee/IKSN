@@ -29,6 +29,10 @@
     <select id="listAllNoticeNum" resultType="Integer">
         select count(*)  from notice where UID=#{uid};
     </select>
+    <!--查询私信的总数量，用于求最大页数-->
+    <select id="listAllMessageNum" resultType="Integer">
+        select count(*)  from message where TOID=#{toid};
+    </select>
     <select id="listNotReadNoticeNum" resultType="Integer">
         select count(*)  from notice where UID=#{uid} and ISREAD=0;
     </select>
@@ -37,7 +41,7 @@
     </select>
 
     <select id="receiveMessage" resultType="Message">
-    select  * from message where TOID=#{toid};
+    select  * from message where TOID=#{toid} order by ID desc limit #{nowPage},5;
     </select>
     <!--查询到发送消息人的信息-->
     <select id="listSendMessageUser" resultType="User">
