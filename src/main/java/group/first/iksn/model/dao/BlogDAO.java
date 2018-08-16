@@ -1,12 +1,10 @@
 package group.first.iksn.model.dao;
 
 
-
 import group.first.iksn.model.bean.*;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-
-
 import java.util.ArrayList;
 
 
@@ -34,7 +32,7 @@ public interface BlogDAO {
 
     boolean addIllegalblog(IllegalBlog blog);
     //获取所有被举报博客
-    List<ReportBlog> getAllReportBlog();
+    List<ReportBlog> getAllReportBlog(int page);
 
     boolean commentBlog(BlogComments blogComments);
     //获取所有被举报资源
@@ -52,4 +50,18 @@ public interface BlogDAO {
 
     //举报博客
     public boolean reportBlog(ReportBlog reportBlog);
+    //获取被举报博客
+    ReportBlog selectReportBlog(int id);
+
+    String selectFloor(Integer bid);
+    //被举报的博客数量
+    int reportBlogNum();
+    //查看user是否被禁言
+    UserToBlog getUserIsSpeak(int bid);
+
+    boolean shutUptoUser(User user);
+    //我收藏的博客
+    List<Blog> myCollectBlog(int uid);
+    //我发布的博客
+    List<Blog> myBlog(int uid);
 }

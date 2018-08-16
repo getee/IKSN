@@ -48,7 +48,11 @@
         }
 
     </style>
-
+<script>
+    function house() {
+              alert("已收藏");
+    }
+</script>
 
 </head>
 <body  style="background-color:#F7F8F9">
@@ -80,7 +84,7 @@
         var userChoice=window.confirm("您确认要去除这个资源吗？");
         var a="/resource/mDeleteResourceForReport/"+url;
         if(userChoice){
-            // location.href=a;
+             location.href=a;
         }
     }
 </script>
@@ -108,10 +112,20 @@
                                 <span> 2018-06-08  上传</span>
                                 <span>&nbsp;&nbsp;&nbsp;&nbsp;大小：<em>308KB</em></span>
                             </div>
-                            <div style="height:23px;width:60px;float:left;margin-left:30px;border:1px solid;;border-radius:                         10px; border-color:#F75D47; color:#F75D47;text-align:center;">
+                            <div style="height:23px;width:60px;float:left;margin-left:30px;border:1px solid;;border-radius:10px; border-color:#F75D47; color:#F75D47;text-align:center;">
                                 <a href="#"> IP地址</a>
                             </div>
-
+                            <div style="height:23px;width:80px;float:left;margin-left:0px;text-align:right;">
+                                <form action="/resource/houseResource" method="post">
+                                <div class="form-group">
+                                    uid:<input type="text" name="uid"><br>
+                                </div>
+                                <div class="form-group">
+                                    rid:<input type="text" name="rid" ><br>
+                                </div>
+                                <button type="submit" onclick="house()"value="houseResource"><img src="img/sc.jpg">&nbsp;收藏</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                                </form>
+                            </div>
                         </div>
                     </div>
 
@@ -135,8 +149,6 @@
                   </span>
                         <span> 综合评分：<em>7.9</em></span>
                         <div style="float:right; width:250px;">
-                            <a href="#"><img src="img/sc.jpg">&nbsp;收藏</a>&nbsp;&nbsp;&nbsp;&nbsp;
-                            <a href="#"><img src="img/pl.jpg">&nbsp;评论</a>&nbsp;&nbsp;&nbsp;&nbsp;
                             <a data-toggle="modal" data-target="#modal-container-830220" ><img src="img/jb.jpg" >&nbsp;举报</a><input type="hidden" value="${isReportOk}"/>
                             <!-- 模态框（Modal） -->
                             <!-- Modal -->

@@ -1,12 +1,15 @@
 package group.first.iksn.service;
 
 import group.first.iksn.model.bean.CollectResource;
+import group.first.iksn.model.bean.ReportResource;
 import group.first.iksn.model.bean.Resource;
 import group.first.iksn.model.bean.ReportResource;
 import group.first.iksn.model.bean.ResourceComments;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.util.ArrayList;
+
+import java.util.List;
 
 public interface ResourceService {
     //评论评分
@@ -32,4 +35,8 @@ public interface ResourceService {
     //从reportResource表删除一行，处理违规资源的安置
     boolean Reject_oneReportResource(int report_id);
     boolean deleteIllegalResource(int resourceid);
+    //添加mGetAllReportResource的服务层
+    List<ReportResource> getAllReportResource(int page);
+    //获取被举报资源的数量
+    int reportResourceNum();
 }

@@ -16,7 +16,7 @@ public interface BlogService {
     boolean sendBackIllegalblog(IllegalBlog blog,int report_id);
 
     //添加mGetAllReportBlog的服务层
-    List<ReportBlog> getAllReportBlog();
+    List<ReportBlog> getAllReportBlog(int page);
     //添加mGetAllReportResource的服务层
     List<ReportResource> getAllReportResource();
     //回违规博客，处理违规博客的安置
@@ -44,4 +44,15 @@ public interface BlogService {
 
     //举报博客
     public boolean reportBlog(ReportBlog reportBlog);
+    //获取被举报的博客
+    ReportBlog selectReportBlog(int id);
+
+    String getFloor(Integer bid);
+    //被举报博客的数量
+    int getReportBlogNum();
+
+    // 我收藏的所有博客
+    List<Blog> myCollectBlog(int uid);
+    //我发布的博客
+    List<Blog> myBlog(int uid);
 }

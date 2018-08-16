@@ -13,6 +13,7 @@
 <link href="../js/searchMeme.css" rel="stylesheet" type="text/css" />
 <script src="../js/jquery-3.3.1.js" type="text/javascript"></script>
 <script src="../js/jquery.searchMeme.js" type="text/javascript"></script>--%>
+
 <c:if test="${not empty sessionScope.loginresult}">
 
     <%--聊天窗口--%>
@@ -155,6 +156,7 @@
     </div>
 
     <script>
+
         function p(s) {
             return s < 10 ? '0' + s: s;
         }
@@ -427,25 +429,64 @@
                     $("#canvas").fadeOut(8000);
                 }
             });
-            //启用弹出框
-            $(function () { $("[data-toggle='popover']").popover(); });
+            //启用弹出框并隐藏（当有未读信消息时弹出）
+           // $(function () { $("[data-toggle='popover']").popover(); });
+            $("[data-toggle='popover']").popover("hide")
             //当网页加载完毕后，用一个定时器10秒钟更新一次信息用来及时接收收到新的通知
             if(${not empty sessionScope.loginresult}){
-                var nowNoticeNum=0;
-                var previousNoticeNum=0;
-                $.get("/user/timingReceivingNotice/${sessionScope.loginresult.uid}",function(data){
-                    nowNoticeNum=data;
-                });
-                setInterval(function(){
-                    $.get("/user/timingReceivingNotice/${sessionScope.loginresult.uid}",function(data){
-                        previousNoticeNum=nowNoticeNum;
-                        nowNoticeNum=data;
-                        if(nowNoticeNum>previousNoticeNum){
 
+                $.get("/user/timingReceivingNotice/${sessionScope.loginresult.uid}",function(data){
+                    if(data>0){
+                        $("[data-toggle='popover']").popover({
+                            title:"提示",
+                            html:true,//为true时可以解析html标签
+                            content:"<a href='/user/receiveNotice/${sessionScope.loginresult.uid}/1'>有未读通知</a>"
+                        });
+                        $("[data-toggle='popover']").popover('show')
+                    }
+                });
+                $.get("/user/timingReceivingMessage/${sessionScope.loginresult.uid}",function(data){
+                    if(data>0){
+                        $("[data-toggle='popover']").popover({
+                            title:"提示",
+                            html:true,//为true时可以解析html标签
+                            content:"<a href='/user/receiveMessage/${sessionScope.loginresult.uid}'>有未读私信</a>"
+                        });
+                        $("[data-toggle='popover']").popover('show')
+                    }
+                });
+
+                setInterval(function(){
+                    var index0=0;
+                    var index1=0;
+                    $.get("/user/timingReceivingNotice/${sessionScope.loginresult.uid}",function(data){
+                        index0=data;
+                        if(data>0){
+                            $("[data-toggle='popover']").popover({
+                                title:"提示",
+                                html:true,//为true时可以解析html标签
+                                content:"<a href='/user/receiveNotice/${sessionScope.loginresult.uid}/1'>有未读通知</a>"
+                            });
                             $("[data-toggle='popover']").popover('show')
                         }
 
                     });
+                    $.get("/user/timingReceivingMessage/${sessionScope.loginresult.uid}",function(data){
+                        index1=data;
+                        if(data>0){
+                            $("[data-toggle='popover']").popover({
+                                title:"提示",
+                                html:true,//为true时可以解析html标签
+                                content:"<a href='/user/receiveMessage/${sessionScope.loginresult.uid}'>有未读私信</a>"
+                            });
+                            $("[data-toggle='popover']").popover('show')
+                        }
+
+                    });
+                    //当私信和通知都已读时，就隐藏提示
+                    if(index0*1+index1*1==0){
+                        $("[data-toggle='popover']").popover('hide')
+                    }
                 },10000);
             }
 
@@ -517,7 +558,7 @@
                     <li name="tx"><a id="ca" class="glyphicon glyphicon-leaf" href="#">发Chat</a></li>
                     <li id="rw" name="tx">
 
-                        <a id="me" class="glyphicon glyphicon-user"href="#">
+                        <a id="me" class="glyphicon glyphicon-user" href="#" data-toggle="popover" data-container="body"  data-placement="top" data-delay="5000" >
                             <span class="caret"></span>
                         </a>
                         <div id="xl" style="position: absolute;top:100%;left:0%;z-index: 10;display:none;">
