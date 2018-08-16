@@ -317,6 +317,18 @@ public class UserDAOImp extends BaseDAOImp implements UserDAO {
         }
     }
 
+    @Override
+    public List listAllFans(int uid) {
+        try{
+            List allFans=getSqlSession().getMapper(UserDAO.class).listAllFans(uid);
+            return allFans;
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     /**
      * 查询该用户好友的数量用来做分页限制
      * @author BruceLee

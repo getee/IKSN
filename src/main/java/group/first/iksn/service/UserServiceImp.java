@@ -112,6 +112,11 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
+    public List listAllFans(int uid) {
+        return userDAO.listAllFans(uid);
+    }
+
+    @Override
     public int friendNum(int uid) {
         return userDAO.friendNum(uid);
     }

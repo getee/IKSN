@@ -32,7 +32,8 @@ public interface UserDAO {
     //一次性查询所有的好友
     List FindAllFriendsOfThisUser(int selfid);
     List searchFriend(@Param("nickname") String nickname,@Param("selfid") int uid);
-
+    //查询该用户的粉丝
+    List listAllFans(@Param("attenid") int uid);
     int friendNum(int selfid);
 
     //修改用户

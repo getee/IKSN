@@ -50,7 +50,7 @@
         update message set ISREAD=#{isRead} where TOID=#{uid};
     </update>
     <insert id="addNotice" parameterType="Notice">
-        insert into notice(UID,CONTENT,TIME,ISREAD,TYPE) values (#{uid},#{content},#{time},#{inread},#{type});
+        insert into notice(UID,CONTENT,TIME,ISREAD,TYPE) values (#{uid},#{content},#{time},#{isread},#{type});
     </insert>
     <delete id="deleteNotice" parameterType="Notice">
         delete from notice where UID=#{uid};
@@ -70,11 +70,17 @@
     <select id="checkIsAttention" resultType="Attention">
         select * from attention where SELFID=#{selfid} and ATTENID=#{attenid}
     </select>
+    <!--分页查询关注的用户-->
     <select id="listAllFriends" resultType="User">
         select * from user  where UID in (select ATTENID from attention where SELFID=#{selfid}) order by UID asc limit #{nowPage},5;
     </select>
+    <!--查询所有关注的用户-->
     <select id="FindAllFriendsOfThisUser" resultType="User">
         select * from user  where UID in (select ATTENID from attention where SELFID=#{selfid});
+    </select>
+    <!--查询所有关注我的粉丝，并不知道我有没有关注他-->
+    <select id="listAllFans" resultType="User">
+        select * from user where UID in (select SELFID from attention where ATTENID=#{attenid} and SELFID!=#{attenid});
     </select>
 
     <select id="searchFriend" resultType="User">

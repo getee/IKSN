@@ -56,6 +56,8 @@ public interface UserService {
     List FindAllFriendsOfThisUser(int selfid);
     //列出该用户的所有关注的人(不分页)
     List<User> listAllFriends(int uid,int nowPage);
+    //列出该用户的所有粉丝
+    List listAllFans(int uid);
     int friendNum(int uid);
     //根据登录方法
     User login(String emailorphone,String password);

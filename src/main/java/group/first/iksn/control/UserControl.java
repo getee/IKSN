@@ -69,9 +69,18 @@ public class UserControl {
         Cookie passwordCookie=new Cookie("passwordCookie",password);
         System.out.println(iscollect);
         if (user!=null){
-            List<User> allFriendOfThisUser=userService.FindAllFriendsOfThisUser(user.getUid());
             session.setAttribute("loginresult",user);
+            List<User> allFriendOfThisUser=userService.FindAllFriendsOfThisUser(user.getUid());
+            List<User> allFansOfThisUser=userService.listAllFans(user.getUid());
+
+            //遍历筛选出我没有关注的粉丝
+//          使用Collection的removeAll方法删除两个集合中相同元素，泛型中的User必须重写HashCode
+            Collection notAttenedFans=new ArrayList<User>(allFansOfThisUser);
+            notAttenedFans.removeAll(allFriendOfThisUser);
+            System.out.println("未关注的粉丝"+notAttenedFans);
             session.setAttribute("allFriendOfThisUser",allFriendOfThisUser);
+            session.setAttribute("notAttenedFans",notAttenedFans);
+
             model.addAttribute("logmes",true);
             System.out.println(model);
             if(iscollect!=null){
@@ -95,6 +104,13 @@ public class UserControl {
     public String  exit(HttpSession session){
         session.removeAttribute("loginresult");
         return "index";
+    }
+    //登录后就开始查询该用户的好友
+    @RequestMapping("/FindAllFriendsOfThisUser/{uid}")
+    @ResponseBody
+    public void FindAllFriendsOfThisUser(@PathVariable("uid") int uid,HttpSession session){
+        List<User> allFriendOfThisUser=userService.FindAllFriendsOfThisUser(uid);
+        session.setAttribute("allFriendOfThisUser",allFriendOfThisUser);
     }
 
     /**
