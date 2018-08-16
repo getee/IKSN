@@ -102,4 +102,8 @@
     <insert id="reportResource" parameterType="ReportResource">
         insert into reportresource (uid,rid,reason) values (#{uid},#{rid},#{reason})
     </insert>
+    <!--根据rid查uid-->
+    <select id="selectUidByRid" parameterType="Integer" resultType="Resource">
+        select UID from resource where RID=#{rid}
+    </select>
 </mapper>

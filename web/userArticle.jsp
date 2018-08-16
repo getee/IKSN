@@ -109,6 +109,9 @@
 					<span class="label label-danger">删除文章</span>
 				</div>
 				<div id="delete-ok-innerHtml" class="modal-body">
+                    <div id="loadGif"  style="display: none;margin: auto;width: 5%;height: auto">
+                        <img alt="加载。。。" src="img/load.gif" style="width: 100%;height: auto">
+                    </div>
 					确定删除吗？
 				</div>
 				<div class="modal-footer">
@@ -128,7 +131,10 @@
 					<span class="label label-danger">下架文章</span>
 				</div>
 				<div id="sendBack-ok-innerHtml" class="modal-body">
-					确定下架至用户草稿吗？
+                    <div id="bloadGif"  style="display: none;margin: auto;width: 5%;height: auto">
+                        <img alt="加载。。。" src="img/load.gif" style="width: 100%;height: auto">
+                    </div>
+                    确定下架至用户草稿吗？
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -144,9 +150,11 @@
                 location.href="/blog/mGetAllReportBlog";
             });
             $("#sendBack-ok").click(function(){
-               var a="/blog/mSendBackIllegalblog/${reportBlog.bid}/${reportBlog.id}?reportReason=${reportBlog.reason}";
-               alert(a);
+                $("#bloadGif").show();
+               var a="/blog/mSendBackIllegalblog/${reportBlog.bid}/${reportBlog.id}/${reportBlog.uid}?reportReason=${reportBlog.reason}";
+               //alert(a);
                 $.get(a,function(data,status){
+                    $("#bloadGif").hide();
                     if(data=="success"){
                         $("#sendBack-ok-innerHtml").text("已下架");
                         $(this).prop("disabled","disabled");
@@ -159,7 +167,9 @@
                 });
             });
             $("#delete-ok").click(function(){
-                $.get("/blog/mDeleteBlogForReported/${blog_id}/${report_id}",function(data,status){
+                $("#loadGif").show();
+                $.get("/blog/mDeleteBlogForReported/${reportBlog.bid}/${reportBlog.id}",function(data,status){
+                    $("#loadGif").hide();
                     if(data=="success"){
                         $("#delete-ok-innerHtml").text("已删除");
                         $(this).prop("disabled","disabled");

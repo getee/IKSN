@@ -3,8 +3,11 @@ package group.first.iksn.service;
 
 import group.first.iksn.model.bean.*;
 import group.first.iksn.model.dao.BlogDAO;
+import group.first.iksn.model.dao.UserDAO;
+import group.first.iksn.util.LocalTime;
 import org.springframework.stereotype.Component;
 
+import javax.enterprise.inject.New;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -14,6 +17,24 @@ import java.util.List;
 @Component("blogService")
 public class BlogServiceImp implements BlogService {
     private BlogDAO blogDAO;
+    private UserDAO userDAO;
+    private Notice notice;
+
+    public Notice getNotice() {
+        return notice;
+    }
+
+    public void setNotice(Notice notice) {
+        this.notice = notice;
+    }
+
+    public UserDAO getUserDAO() {
+        return userDAO;
+    }
+
+    public void setUserDAO(UserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
 
     public BlogDAO getBlogDAO() {
         return blogDAO;
@@ -33,10 +54,21 @@ public class BlogServiceImp implements BlogService {
     @Override
     public boolean deleteIllegalblog(int blog_id,int  report_id) {
         boolean result=false;
-        //boolean deleteResult=blogDAO.deleteBlog(blog_id);
+        UserToBlog utd=blogDAO.selectUidByBid(blog_id);
+        //先删除跟blog表有关的表数据
         boolean deleteResult=blogDAO.deleteBlogOthers(blog_id);
         if(deleteResult){
+            //再删除blog表数据
             result=blogDAO.deleteBlog(blog_id);
+            //封装notice
+            Notice notice=new Notice();
+            notice.setUid(utd.getUid());
+            notice.setContent("您有一个违规博客，已被删除！！");
+            String time=LocalTime.getNowTime();
+            notice.setTime(time);
+            userDAO.addNotice(notice);
+            //下午写通知----------------userDao.addNotice
+
         }
         System.out.println("删除blog其他"+deleteResult);
         return result;
@@ -48,10 +80,17 @@ public class BlogServiceImp implements BlogService {
      * @return
      */
     @Override
-    public boolean sendBackIllegalblog(IllegalBlog blog,int report_id) {
+    public boolean sendBackIllegalblog(IllegalBlog blog,int report_id,int uid) {
         //开启一个线程，去执行禁言任务
             Shutup shutup=new Shutup(blog.getBid());
             shutup.start();
+        //封装notice(通知)
+        String time=LocalTime.getNowTime();
+        System.out.println("---"+time);
+        Notice notice=new Notice();
+        notice.setUid(uid);
+        notice.setContent("您有一个违规博客，已被下架");
+        notice.setTime(time);
 
         boolean sendBack=blogDAO.addIllegalblog(blog);
         if (sendBack){
@@ -59,6 +98,8 @@ public class BlogServiceImp implements BlogService {
             blogDAO.deleteBlogFromReport(report_id);
             //设置博客为不可见
             boolean b=blogDAO.blogIsPublic(blog.getBid());
+            //添加通知
+            userDAO.addNotice(notice);
         }
         return sendBack;
     }
@@ -191,29 +232,30 @@ public class BlogServiceImp implements BlogService {
             User user=new User();
 
             //禁言截止时间
-//            Date d = new Date();
-//            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//            String time=df.format(d);
-
             Calendar curr = Calendar.getInstance();
             curr.set(Calendar.DAY_OF_MONTH,curr.get(Calendar.DAY_OF_MONTH)+7);
             Date date=curr.getTime();
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String time=df.format(date);
 
-            System.out.println(time);
             //根据bid查user
             UserToBlog utb=blogDAO.getUserIsSpeak(id);
             int isSpeak=utb.getUser().getIsspeak();
             int uid=utb.getUid();
-
+            //封装notice(通知)
+            String nowtime=LocalTime.getNowTime();
+            Notice notice=new Notice();
+            notice.setUid(uid);
+            notice.setContent("由于您违规发表博客，以对您实施禁言！！截止："+time);
+            notice.setTime(nowtime);
+            //封装user
             user.setUid(uid);
             user.setTimeofban(time);
-            System.out.println(user.getTimeofban());
             System.out.println("禁言的uid"+uid);
             //对user实施禁言
             if(isSpeak==0){
                 boolean a=blogDAO.shutUptoUser(user);
+                userDAO.addNotice(notice);
                 System.out.println("禁言"+a);
             }else {
                 System.out.println("该用户已经被禁言");

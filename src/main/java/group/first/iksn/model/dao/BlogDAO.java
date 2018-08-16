@@ -57,6 +57,8 @@ public interface BlogDAO {
     int reportBlogNum();
     //查看user是否被禁言
     UserToBlog getUserIsSpeak(int bid);
-
+    //设置禁言
     boolean shutUptoUser(User user);
+    //根据bid查uid
+    UserToBlog selectUidByBid(int bid);
 }

@@ -146,9 +146,9 @@ public class BlogControl {
      * @param blog_id
      * @return
      */
-    @RequestMapping("/mSendBackIllegalblog/{blog_id}/{report_id}")
+    @RequestMapping("/mSendBackIllegalblog/{blog_id}/{report_id}/{uid}")
     @ResponseBody
-    public String mSendBackIllegalblog(@PathVariable int blog_id,@PathVariable int report_id,@RequestParam("reportReason") String reportReason){
+    public String mSendBackIllegalblog(@PathVariable int blog_id,@PathVariable int report_id,@PathVariable int uid,@RequestParam("reportReason") String reportReason){
         //对中文字符转码
         String reason=EncodingTool.encodeStr(reportReason);
 
@@ -156,7 +156,8 @@ public class BlogControl {
         blog.setIllegalcause(reason);
         blog.setBid(blog_id);
 
-        boolean sendBackResult=blogService.sendBackIllegalblog(blog,report_id);
+
+        boolean sendBackResult=blogService.sendBackIllegalblog(blog,report_id,uid);
         if(sendBackResult){
             return "success";
         }else{

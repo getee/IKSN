@@ -156,17 +156,51 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
 
     @Override
     public int reportBlogNum() {
-        return getSqlSession().getMapper(BlogDAO.class).reportBlogNum();
+        int num=0;
+        try {
+            num=getSqlSession().getMapper(BlogDAO.class).reportBlogNum();
+        }catch (Exception e){
+            System.out.println("reportBlogNum这时获取num出错了");
+            e.printStackTrace();
+        }
+        return num;
     }
 
     @Override
     public UserToBlog getUserIsSpeak(int bid) {
-        return getSqlSession().getMapper(BlogDAO.class).getUserIsSpeak(bid);
+        UserToBlog userToBlog=null;
+        try{
+            userToBlog=getSqlSession().getMapper(BlogDAO.class).getUserIsSpeak(bid);
+        }catch (Exception e){
+            System.out.println("getUserIsSpeak这是获取isSpeak出错了");
+            e.printStackTrace();
+        }
+        return userToBlog;
     }
 
     @Override
     public boolean shutUptoUser(User user){
-        return getSqlSession().getMapper(BlogDAO.class).shutUptoUser(user);
+        boolean isOK=false;
+        System.out.println(user);
+        try{
+            isOK=getSqlSession().getMapper(BlogDAO.class).shutUptoUser(user);
+        }catch (Exception e){
+            System.out.println("shutUptoUser这是设置禁言出错了");
+            e.printStackTrace();
+        }
+        return isOK;
+    }
+
+    @Override
+    public UserToBlog selectUidByBid(int bid) {
+        UserToBlog userToBlog=null;
+        try{
+            userToBlog=getSqlSession().getMapper(BlogDAO.class).selectUidByBid(bid);
+        }catch (Exception e){
+            System.out.println("selectUidByBid这是获取uid出错了");
+            e.printStackTrace();
+        }
+        return userToBlog;
     }
 
     /**

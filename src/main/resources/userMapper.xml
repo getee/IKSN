@@ -50,7 +50,7 @@
         update message set ISREAD=#{isRead} where TOID=#{uid};
     </update>
     <insert id="addNotice" parameterType="Notice">
-        insert into notice(UID,CONTENT,TIME,ISREAD,TYPE) values (#{uid},#{content},#{time},#{inread},#{type});
+        insert into notice(UID,CONTENT,TIME,ISREAD,TYPE) values (#{uid},#{content},#{time},#{isread},#{type});
     </insert>
     <delete id="deleteNotice" parameterType="Notice">
         delete from notice where UID=#{uid};

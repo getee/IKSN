@@ -248,4 +248,8 @@
     <update id="shutUptoUser" parameterType="Blog">
         update user set ISSPEAK=1,TIMEOFBAN=#{timeofban} where UID=#{uid}
     </update>
+    <!--根据bid查uid-->
+    <select id="selectUidByBid" parameterType="Integer" resultType="UserToBlog">
+        select UID from usertoblog where BID=#{bid}
+    </select>
 </mapper>

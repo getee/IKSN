@@ -337,14 +337,14 @@
 
     function clickTitle(reportid) {
         var a="/blog/mCheckReportblog/"+reportid;
-        //location.href=a;
-        window.open(a);
+        location.href=a;
+        //window.open(a);
     }
     function clickName(resourceid,reportid,reason) {
         //alert(resourceid+reason+reportid)
         var a="/resource/mCheckReportResource/"+resourceid+"/"+reportid+"?reason="+reason;
-        //location.href=a;
-        window.open(a);
+        location.href=a;
+        //window.open(a);
     }
     function delete_oneReportBlog(url){
         var  userChoice=window.confirm("您确认要去除这个博客吗?");

@@ -13,7 +13,7 @@ public interface BlogService {
     //删除违规博客
     boolean deleteIllegalblog(int Blog_id,int  report_id);
     //下架违规博客
-    boolean sendBackIllegalblog(IllegalBlog blog,int report_id);
+    boolean sendBackIllegalblog(IllegalBlog blog,int report_id,int uid);
 
     //添加mGetAllReportBlog的服务层
     List<ReportBlog> getAllReportBlog(int page);
