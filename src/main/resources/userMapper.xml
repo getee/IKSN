@@ -112,4 +112,8 @@ select * from user where NICKNAME=#{nickname} and  UID in (select ATTENID from a
     <select id="myAttention" resultType="User">
         select * from user where uid in (select attenid from attention where selfid=#{uid})
     </select>
+    <!--关注我的用户，即我的粉丝-->
+    <select id="myFans" resultType="User">
+        select * from user where uid in(select selfid from attention where attenid=#{uid})
+    </select>
 </mapper>

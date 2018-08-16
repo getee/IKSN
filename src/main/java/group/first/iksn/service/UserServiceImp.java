@@ -217,6 +217,20 @@ public class UserServiceImp implements UserService {
         return users;
     }
 
+    /**
+     * 我的粉丝
+     * @param uid
+     * @return
+     */
+    @Override
+    public List<User> myFans(int uid) {
+        List<User> users=userDAO.myFans(uid);
+        for (User u:users){
+            System.out.println(u.getNickname());
+        }
+        return users;
+    }
+
     //修改用户资料
     @Override
     public User updateUser(User user) {

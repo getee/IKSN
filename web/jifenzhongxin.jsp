@@ -134,8 +134,8 @@
 <div class="row" style="margin-top: 2%; margin-left: 15%;margin-right: 15%">
 <!--头像和资料-->
 <div class="col-md-3 well">
-	<div class="col-md-5"><img class="img-responsive img-thumbnail" src="img/adminIcon.jpg"></div>
-	<div class="col-md-7"><blockquote><p>NickName</p><footer>Message</footer></blockquote></div>
+	<div class="col-md-5"><img class="img-responsive img-thumbnail" src="${sessionScope.loginresult.picturepath}"></div>
+	<div class="col-md-7"><blockquote><p>${sessionScope.loginresult.nickname}</p><footer>Message</footer></blockquote></div>
 </div>
 <!--积分信息-->
 <div class="col-md-9 well">

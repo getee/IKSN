@@ -385,5 +385,16 @@ public class UserDAOImp extends BaseDAOImp implements UserDAO {
         return users;
     }
 
+    /**
+     * 我的粉丝
+     * @param uid
+     * @return
+     */
+    @Override
+    public List<User> myFans(int uid) {
+        List<User> users=getSqlSession().getMapper(UserDAO.class).myFans(uid);
+        return users;
+    }
+
 
 }

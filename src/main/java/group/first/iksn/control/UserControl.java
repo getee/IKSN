@@ -456,4 +456,35 @@ public class UserControl {
         out.close();
 
     }
+
+    //我的粉丝
+    @RequestMapping("/myFans")
+    public void myFans( HttpSession session,Model model,HttpServletResponse response) throws IOException {
+        User u= (User) session.getAttribute("loginresult");
+        int uid=u.getUid();
+        ArrayList<User> users= (ArrayList<User>) userService.myFans(uid);
+
+        JSONArray jsonArray=new JSONArray();
+        JSONObject jsonObject;
+        for (int i=0;i<users.size();i++){
+            jsonObject=new JSONObject();
+            try{
+                jsonObject.put("picturepath",users.get(i).getPicturepath());
+                jsonObject.put("nickname",users.get(i).getNickname());
+                jsonArray.put(jsonObject);
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+        }
+
+        System.out.println(users);
+        //悄悄把数据会给他
+        //用response（响应）对象中的输出流将处理好的结果输出给ajax请求对象
+        response.setContentType("textml;charset=UTF-8");//  textml     ,text/xml    ,text/json
+        PrintWriter  out=response.getWriter();//获取响应对象中的输出流
+        out.write(jsonArray.toString());
+        out.flush();
+        out.close();
+
+    }
 }
