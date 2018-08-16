@@ -31,6 +31,8 @@
 <script src="bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
 <script>
     $(document).ready(function(){
+        //启用所有的工具提示插件
+        $(function () { $("[data-toggle='tooltip']").tooltip(); });
         //所有li元素的点击事件
         $("li").click(function(){
             if($(this).click){
@@ -159,16 +161,16 @@
         </div>
         <!--	通知-->
         <div class="row well" style="margin: auto;height: 700px;">
-            <div class="col-md-8">
+
                 <c:forEach var="message" items="${allMessages}">
                     <c:forEach var="user" items="${allSendMessageUsers}">
                         <c:if test="${user.uid eq message.fromid}">
                             <c:choose>
                                 <c:when test="${message.isread==0}">
-                                    <div class="row well noticeContext" style="background-color: black"><a href=""><h4>${user.nickname}(${user.email}):${message.content}</h4></a></div>
+                                    <div class="row well noticeContext" style="background-color: black"><a class="tooltip_a" href="/user/listAllFriends/${sessionScope.loginresult.uid}/1?sendback=${user.uid}" data-toggle="tooltip" title="点击回Ta"><h4>${user.nickname}(${user.email}):${message.content}</h4></a><small>${message.time}</small></div>
                                 </c:when>
                                 <c:otherwise>
-                                    <div class="row well noticeContext"><a href=""><h4>${user.nickname}(${user.email}):${message.content}</h4></a></div>
+                                    <div class="row well noticeContext"><a class="tooltip_a" href="/user/listAllFriends/${sessionScope.loginresult.uid}/1?sendback=${user.uid}" data-toggle="tooltip" title="点击回Ta"><h4>${user.nickname}(${user.email}):${message.content}</h4></a><small>${message.time}</small></div>
                                 </c:otherwise>
                             </c:choose>
                         </c:if>
@@ -176,8 +178,8 @@
 
                 </c:forEach>
 
-            </div>
-            <div class="col-md-4">
+
+            <%--<div class="col-md-4">
                 <c:forEach var="message" items="${allMessages}">
                     <c:forEach var="user" items="${allSendMessageUsers}">
                         <c:if test="${user.uid eq message.fromid}">
@@ -194,7 +196,7 @@
 
                 </c:forEach>
 
-            </div>
+            </div>--%>
         </div>
         <%--通知结束--%>
 

@@ -1,5 +1,6 @@
 package group.first.iksn.service;
 
+import group.first.iksn.model.bean.Blog;
 import group.first.iksn.model.bean.Message;
 import group.first.iksn.model.bean.Notice;
 import group.first.iksn.model.bean.Scoring;
@@ -15,6 +16,8 @@ public interface UserService {
     //查询该用户所有的通知
     List receiveNotice(int uid,int nowPage);
     //查询未读通知数量
+    int listNotReadMessageNum(int uid);
+    //查询未读私信数量
     int listNotReadNoticeNum(int uid);
     //查询所有通知数量
     int listAllNoticeNum(int uid);
@@ -28,13 +31,15 @@ public interface UserService {
     //修改用户资料
     User updateUser(User user);
 
-    //判断用户是否存在
-    public boolean isUserExist(int uid);
     //修改用户密码
     public void updatePassword(int uid,String newpassword);
+
+    //修改用户邮箱
+    public void updateEmail(int uid,String newemail );
+
     //获取用户id
-    public String getId(int uid);
-     //用户等级
+    public User getId(int uid);
+    //用户等级
     int userGrade(int uid);
 
     //更改通知是否已读的状态
@@ -65,4 +70,10 @@ public interface UserService {
     List<Scoring> costScoring(int uid);
     //用户积分充值记录
     List<Scoring> rechargeScoring(int uid);
+
+
+    //我的关注列表
+    List<User> myAttention(int uid);
+    //我的粉丝
+    List<User> myFans(int uid);
 }

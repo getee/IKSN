@@ -94,7 +94,7 @@
     </update>
 
 
-    <!--结果集合用来存储查询ReportBlog表级联查询blog表-->
+    <!--分页。。结果集合用来存储查询ReportBlog表级联查询blog表-->
     <resultMap id="getBlogBy_Reportbid" type="ReportBlog">
         <id column="id" property="id"/>
         <result column="uid" property="uid"/>
@@ -108,7 +108,7 @@
     </resultMap>
     <select id="getAllReportBlog" resultMap="getBlogBy_Reportbid">
 		select  i.ID,i.BID,i.REASON,b.TITLE  from reportblog as i
-		inner join blog as b on   i.BID=b.BID ORDER BY i.ID asc limit 0,6;
+		inner join blog as b on   i.BID=b.BID ORDER BY i.ID asc limit #{page},3;
 	</select>
 
     <!-- 博客评论 -->
@@ -120,7 +120,12 @@
         insert into blogcomments(uid,bid,time,content,COMMENTID,floor) value (#{uid},#{bid},#{time},#{content},#{commentid},#{floor})
     </insert>
 
-    <!--结果集合用来存储查询ReportResource表级联查询Resource表-->
+
+    <select id="selectFloor" resultType="String">
+        select count(*) from blogcomments where BID=(#{bid}) and COMMENTID is null
+    </select>
+
+    <!--此Map写错位置，无人调用，可删除。。。结果集合用来存储查询ReportResource表级联查询Resource表-->
     <resultMap id="getResourceBy_Reportrid" type="ReportResource">
         <id column="id" property="id"/>
         <result column="uid" property="uid"/>
@@ -133,15 +138,18 @@
         </association>
     </resultMap>
     <select id="getAllReportResource" resultMap="getResourceBy_Reportrid">
-        select  rr.ID,rr.RID,rr.REASON,r.NAME  from reportresource as rr
-        inner join resource as r on   rr.RID=r.RID ORDER BY rr.ID asc limit 0,6;
-    </select>
+		select  rr.ID,rr.RID,rr.REASON,r.NAME  from reportresource as rr
+		inner join resource as r on   rr.RID=r.RID ORDER BY rr.ID asc limit 0,3;
+	</select>
 
     <!--举报博客-->
     <insert id="reportBlog" parameterType="ReportBlog">
         insert into reportblog (uid,bid,reason) values (#{uid},#{bid},#{reason})
     </insert>
-
+    <!--获取举报博客-->
+    <select id="selectReportBlog" resultType="ReportBlog">
+        select * from reportblog where ID=#{id}
+    </select>
     <!--这是有关blog搜索的查询-->
     <!--定义的一个reaultmap结果集合来存储关联查询到的详细的博客，类型是自定义类型-->
     <resultMap id="searchResultMap"  type="Blog">
@@ -157,10 +165,10 @@
             <id property="id" column="id"></id>
             <result property="bid" column="bid"></result>
             <!--userToBlog关联user的resultMap结果集-->
-            <!-- <association property="uid" column="uid" select="sUser"></association>-->
+           <!-- <association property="uid" column="uid" select="sUser"></association>-->
         </association>
 
-        <!-- 对博客标签来说，一条博客对应多条标签-->
+    <!-- 对博客标签来说，一条博客对应多条标签-->
         <collection property="blogTags" ofType="BlogTag">
             <id property="id" column="id"></id>
             <result property="bid" column="bid"></result>
@@ -169,51 +177,53 @@
 
     </resultMap>
     <select id="detailedBlogSearchResultMap" resultMap="searchResultMap" >
-        select b.* ,ub.*,t.* from blog as b
+       select b.* ,ub.*,t.* from blog as b
         inner join usertoblog as ub on ub.bid=b.bid
         inner join blogtag as t on t.bid=b.bid
-        where  b.TITLE like '%' #{s} '%'
+       where  b.TITLE like '%' #{s} '%'
+    </select>
+    <select id="reportBlogNum" resultType="Integer">
+        select count(*) from reportblog
     </select>
 
-
-    <!-- <select id="sUser" resultMap="sUser">
-         select u.*,ub.* from usertoblog as ub
-         inner join user as u on u.uid=ub.uid
-     </select>
-     <resultMap id="sUser" type="User">
-          <id property="uid" column="uid"></id>
-          <result property="nickname" column="nickname"></result>
-     </resultMap>-->
+   <!-- <select id="sUser" resultMap="sUser">
+        select u.*,ub.* from usertoblog as ub
+        inner join user as u on u.uid=ub.uid
+    </select>
+    <resultMap id="sUser" type="User">
+         <id property="uid" column="uid"></id>
+         <result property="nickname" column="nickname"></result>
+    </resultMap>-->
 
 
 
     <!--关于blog首页推送的查询-->
-    <!--   <resultMap id="blogsPush" type="BlogBrowsed">
-           <id property="id" column="id"></id>
-           <result property="browsetime" column="browsetime"></result>
+ <!--   <resultMap id="blogsPush" type="BlogBrowsed">
+        <id property="id" column="id"></id>
+        <result property="browsetime" column="browsetime"></result>
 
-           <association property="blog" javaType="Blog">
-               <id property="bid" column="bid"></id>
-               <result property="title" column="title"></result>
-               <result property="content" column="content"></result>
-               <result property="classify" column="classify"></result>
-               <result property="link" column="link"></result>
-               <result property="points" column="points"></result>
-               <result property="time" column="time"></result>
-           </association>
+        <association property="blog" javaType="Blog">
+            <id property="bid" column="bid"></id>
+            <result property="title" column="title"></result>
+            <result property="content" column="content"></result>
+            <result property="classify" column="classify"></result>
+            <result property="link" column="link"></result>
+            <result property="points" column="points"></result>
+            <result property="time" column="time"></result>
+        </association>
 
-           <association property="user" javaType="User">
-               <id property="uid" column="uid"></id>
-               <result property="nickanme" column="nickname"></result>
-           </association>
-       </resultMap>
-       <select id="detailedBlogPush" resultMap="blogsPush">
-           select s.*,b.*,u.NICKNAME from blogbrowsed as s
-              inner join blog as b on b.bid=s.bid
-              inner join user as u on u.uid=s.uid
-             order by b.POINTS desc limit 0,5
+        <association property="user" javaType="User">
+            <id property="uid" column="uid"></id>
+            <result property="nickanme" column="nickname"></result>
+        </association>
+    </resultMap>
+    <select id="detailedBlogPush" resultMap="blogsPush">
+        select s.*,b.*,u.NICKNAME from blogbrowsed as s
+           inner join blog as b on b.bid=s.bid
+           inner join user as u on u.uid=s.uid
+          order by b.POINTS desc limit 0,5
 
-       </select>-->
+    </select>-->
     <select id="detailedBlogPush" resultType="Blog">
         select * from blog order by points desc
     </select>
@@ -289,5 +299,35 @@
     </resultMap>
     <select id="selectTwoBlogByUser" resultMap="getTwoBlogBYUid">
        SELECT * from blog INNER JOIN usertoblog u ON blog.BID = u.BID WHERE u.uid=#{uid} ORDER BY blog.BID DESC LIMIT 0,2
+    </select>
+
+    <!--结果集合通过usertoblog查user是否禁言-->
+    <resultMap id="getUserIsSpeakMap" type="UserToBlog">
+        <id column="id" property="id"/>
+        <result column="uid" property="uid"/>
+
+        <association property="user" column="uid" javaType="User">
+            <id column="uid" property="uid"/>
+            <result column="isspeak" property="isspeak"/>
+        </association>
+    </resultMap>
+    <select id="getUserIsSpeak" resultMap="getUserIsSpeakMap">
+		select  ub.ID,ub.UID,u.ISSPEAK
+          from usertoblog ub
+          LEFT OUTER JOIN user u ON u.UID = ub.UID
+          where ub.BID=#{bid}
+	</select>
+
+    <update id="shutUptoUser" parameterType="Blog">
+        update user set ISSPEAK=1,TIMEOFBAN=#{timeofban} where UID=#{uid}
+    </update>
+
+    <!--我收藏的博客-->
+       <select id="myCollectBlog" resultType="Blog">
+        SELECT title, time FROM blog WHERE  BID IN ( SELECT BID FROM  collectblog WHERE UID=uid)
+    </select>
+    <!--我发布的博客-->
+    <select id="myBlog" resultType="Blog">
+      SELECT title, time FROM blog WHERE  BID IN ( SELECT BID FROM  usertoblog WHERE UID=uid)
     </select>
 </mapper>

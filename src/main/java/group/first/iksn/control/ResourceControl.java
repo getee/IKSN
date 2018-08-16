@@ -2,6 +2,9 @@ package group.first.iksn.control;
 
 import group.first.iksn.model.bean.*;
 import group.first.iksn.service.ResourceService;
+import group.first.iksn.util.Responser;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.ui.Model;
@@ -14,10 +17,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.io.IOException;
+import java.util.List;
 
 
 import org.springframework.web.bind.annotation.RequestParam;
 import java.io.UnsupportedEncodingException;
+import java.util.Date;
 
 @Controller
 @RequestMapping("/resource")
@@ -61,7 +66,7 @@ public class ResourceControl {
         boolean result=resourceService.houseResource(collectResource);
         if (!result)
         {
-            return "shoucang";
+            return "success";
         }else
         {
             return "xq";
@@ -89,12 +94,14 @@ public class ResourceControl {
         try {
 
             System.out.println("fileName：" + file.getOriginalFilename()+"XX"+uid);
+            String filename=file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));//取扩展名
+            filename=""+new Date().getTime()+filename;
             //String path="/resource/files/"+new Date().getTime()+file.getOriginalFilename();
 
             //获取项目输出路径
             String rootPath = request.getSession().getServletContext().getRealPath("/");
             rootPath = rootPath.substring(0, rootPath.lastIndexOf('\\'));
-            String filepath = rootPath.substring(0, rootPath.lastIndexOf('\\')) + "/resourcefile/" +uid+"/"+ file.getOriginalFilename();
+            String filepath = rootPath.substring(0, rootPath.lastIndexOf('\\')) + "/resourcefile/" +uid+"/"+ filename;
             //System.out.println("rootPath:" + rootPath);//D:\AppSCM\IKSN\out\artifacts\IKSN_war_exploded
             System.out.println("path:" + filepath);//D:\AppSCM\IKSN\out\artifacts/resourcefile/
             //String quotePath="resourcefile/" +uid+"/"+ file.getOriginalFilename();//资源引用路径
@@ -152,12 +159,12 @@ public class ResourceControl {
      * @return
      */
     @RequestMapping("/mCheckReportResource/{resourceid}/{id}")
-    public String mCheckReportResource(@PathVariable int resourceid, @PathVariable int id,String reason, Model model){
-        System.out.println(reason);
+    public String mCheckReportResource(@PathVariable int resourceid, @PathVariable int id,@RequestParam("reason") String reason, Model model){
+        String reportReason=EncodingTool.encodeStr(reason);
 
         model.addAttribute("resourceid",resourceid);
         model.addAttribute("reportRid",id);
-        model.addAttribute("reportRReason",reason);
+        model.addAttribute("reportRReason",reportReason);
 
         return "xq";
     }
@@ -201,5 +208,41 @@ public class ResourceControl {
         mav.getModel().put("result",result);
         System.out.println(result);
          return mav;
+    }
+
+    /**
+     * 分页
+     * @param page
+     * @param response
+     * @param request
+     */
+    @RequestMapping("mGetReportResource/{page}")
+    @ResponseBody
+    public void mGetReportResource(@PathVariable int page,HttpServletResponse response, HttpServletRequest request){
+        //int count=1;
+        System.out.println("进入分页");
+        List<ReportResource> reportResourceList= resourceService.getAllReportResource(page);
+        System.out.println(reportResourceList+"ssssssssss");
+        for (ReportResource r:reportResourceList){
+            System.out.println(r.getResource());
+        }
+        int num=resourceService.reportResourceNum();//获取被举报数量
+        JSONArray jsonArray=new JSONArray();
+        for (ReportResource rr:reportResourceList) {
+            JSONObject jsonObject=new JSONObject();
+            jsonObject.put("id",rr.getId());
+            jsonObject.put("reason",rr.getReason());
+            jsonObject.put("name",rr.getResource().getName());
+            jsonObject.put("rid",rr.getRid());
+            jsonArray.put(jsonObject);
+        }
+        JSONObject jsonObjectTwo=new JSONObject();
+        jsonObjectTwo.put("reportReNum",num);
+        jsonArray.put(jsonObjectTwo);
+        try {
+            Responser.responseToJson(response, request, jsonArray.toString());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

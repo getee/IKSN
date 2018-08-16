@@ -7,7 +7,9 @@ import group.first.iksn.service.UserService;
 import group.first.iksn.util.EncodingTool;
 import group.first.iksn.util.Responser;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+import group.first.iksn.util.Responser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +18,6 @@ import org.apache.ibatis.jdbc.Null;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.json.JsonArray;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -83,7 +84,6 @@ public class BlogControl {
         mv.setViewName("sousuo");
         return  mv;
     }
-
 
     /**
      * 管理员删除被用户举报且不合法的博客
@@ -162,13 +162,15 @@ public class BlogControl {
      * @param blog_id
      * @return
      */
-    @RequestMapping("/mSendBackIllegalblog/{blog_id}/{reportReason}/{report_id}")
+    @RequestMapping("/mSendBackIllegalblog/{blog_id}/{report_id}")
     @ResponseBody
-    public String mSendBackIllegalblog(@PathVariable int blog_id,@PathVariable String reportReason,@PathVariable int report_id){
-        IllegalBlog blog=new IllegalBlog();
-        blog.setIllegalcause(reportReason);
-        blog.setBid(blog_id);
+    public String mSendBackIllegalblog(@PathVariable int blog_id,@PathVariable int report_id,@RequestParam("reportReason") String reportReason){
+        //对中文字符转码
+        String reason=EncodingTool.encodeStr(reportReason);
 
+        IllegalBlog blog=new IllegalBlog();
+        blog.setIllegalcause(reason);
+        blog.setBid(blog_id);
 
         boolean sendBackResult=blogService.sendBackIllegalblog(blog,report_id);
         if(sendBackResult){
@@ -186,18 +188,16 @@ public class BlogControl {
      */
     @RequestMapping(value = "/mGetAllReportBlog")
     public String mGetAllReportBlog(Model model){
-        List<ReportBlog> reportBlogs=blogService.getAllReportBlog();
-        List<ReportResource> reportResources=blogService.getAllReportResource();
+        List<ReportBlog> reportBlogs=blogService.getAllReportBlog(1);
+        //List<ReportResource> reportResources=blogService.getAllReportResource();
+        int num=blogService.getReportBlogNum();
         System.out.println(reportBlogs);
         for (ReportBlog i:reportBlogs){
             System.out.println(i.getBlog());
         }
-        System.out.println(reportResources);
-        for (ReportResource r:reportResources){
-            System.out.println(r.getResource());
-        }
         model.addAttribute("ReportBlogList",reportBlogs);
-        model.addAttribute("ReportResourceList",reportResources);
+        model.addAttribute("rBlNum",num);
+        //model.addAttribute("ReportResourceList",reportResources);
         return  "jubaoguanl";
     }
 
@@ -267,20 +267,23 @@ public class BlogControl {
 
         return mav;
     }
+
     /**
      * 管理员查看被举报的博客，进行审核
-     * wenbin
-     * @param blog_id 博客id
-     * @param reason 举报原因
+     * @param id
      * @param model
      * @return
      */
-    @RequestMapping("/mCheckReportblog/{blog_id}/{id}")
-    public String mCheckReportblog(@PathVariable int blog_id,String reason,@PathVariable int id,Model model){
-        System.out.println(blog_id+reason);
-        model.addAttribute("blog_id",blog_id);
-        model.addAttribute("reportReason",reason);
-        model.addAttribute("report_id",id);
+    @RequestMapping("/mCheckReportblog/{id}")
+    public String mCheckReportblog(@PathVariable int id,Model model){
+        ReportBlog reportBlog=blogService.selectReportBlog(id);
+        System.out.println(reportBlog);
+        model.addAttribute("reportBlog",reportBlog);
+//        EncodingTool.encodeStr(reason);
+//        System.out.println(blog_id+reason);
+//        model.addAttribute("blog_id",blog_id);
+//        model.addAttribute("reportReason",reason);
+//        model.addAttribute("report_id",id);
         return "userArticle";
     }
     @RequestMapping(value="/getFloor",method = RequestMethod.POST)
@@ -298,6 +301,73 @@ public class BlogControl {
         return;
     }
 
+    /**
+     * 分页
+     * @param page
+     * @param response
+     * @param request
+     */
+    @RequestMapping("mGetReportBlog/{page}")
+    @ResponseBody
+    public void mGetReportBlog(@PathVariable int page,HttpServletResponse response, HttpServletRequest request){
+        //int count=1;
+        System.out.println("进入blog分页");
+        List<ReportBlog> reportBlogList= blogService.getAllReportBlog(page);
+        System.out.println(reportBlogList+"ssssssssss");
+        for (ReportBlog r:reportBlogList){
+            System.out.println(r.getBlog());
+        }
+        int reportBlogNum=blogService.getReportBlogNum();//被举报博客的数量
+        JSONArray jsonArray=new JSONArray();
+        for (ReportBlog rb:reportBlogList) {
+            JSONObject jsonObject=new JSONObject();
+            jsonObject.put("id",rb.getId());
+            jsonObject.put("reason",rb.getReason());
+            jsonObject.put("title",rb.getBlog().getTitle());
+            jsonObject.put("bid",rb.getBid());
+            jsonArray.put(jsonObject);
+        }
+        JSONObject jsonObjectTwo=new JSONObject();
+        jsonObjectTwo.put("reportBlNum",reportBlogNum);
+        jsonArray.put(jsonObjectTwo);
+        try {
+            Responser.responseToJson(response, request, jsonArray.toString());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    //我收藏的博客
+    @RequestMapping(value = "/myCollectBlog" )
+    public void  myCollectBlog(HttpServletResponse response,HttpSession session,Model model) throws IOException {
+        System.out.println("进入myCollectBlog");
+        User u= (User) session.getAttribute("loginresult");
+        System.out.println(u);
+        List<Blog> collectblog=blogService.myCollectBlog(u.getUid());
+        System.out.println(collectblog);
+        //session.setAttribute("collectblog",collectblog);
+        JSONArray jsonArray=new JSONArray();
+        JSONObject jsonObject=null;
+        for (int i=0;i<collectblog.size();i++){
+            jsonObject=new JSONObject();
+            try{
+                jsonObject.put("title",collectblog.get(i).getTitle());
+                jsonObject.put("time",collectblog.get(i).getTime());
+                jsonArray.put(jsonObject);
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+        }
+        System.out.println(jsonArray);
+        //悄悄把数据会给他
+        //用response（响应）对象中的输出流将处理好的结果输出给ajax请求对象
+        response.setContentType("textml;charset=UTF-8");//  textml     ,text/xml    ,text/json
+        PrintWriter out=response.getWriter();//获取响应对象中的输出流
+        out.write(jsonArray.toString());
+        out.flush();
+        out.close();
+
+    }
     @RequestMapping("/getBlogAndUser")
     //处理点击标题进入博客详情页的方法
     public String getBlogAndUser(@RequestParam("blogid") String blogid, Model model, HttpSession session){
@@ -440,4 +510,38 @@ public class BlogControl {
            }
 
         }
+
+    //我发布的博客
+    @RequestMapping(value = "/myBlog" )
+    public void  myBlog(HttpServletResponse response,HttpSession session,Model model) throws IOException {
+        System.out.println("进入myBlog");
+        User u= (User) session.getAttribute("loginresult");
+        System.out.println(u);
+        List<Blog> blog=blogService.myBlog(u.getUid());
+        System.out.println(blog);
+        //session.setAttribute("collectblog",collectblog);
+        JSONArray jsonArray=new JSONArray();
+        JSONObject jsonObject=null;
+        for (int i=0;i<blog.size();i++){
+            jsonObject=new JSONObject();
+            try{
+                jsonObject.put("title",blog.get(i).getTitle());
+                jsonObject.put("time",blog.get(i).getTime());
+                jsonArray.put(jsonObject);
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+        }
+        System.out.println(jsonArray);
+        //悄悄把数据会给他
+        //用response（响应）对象中的输出流将处理好的结果输出给ajax请求对象
+        response.setContentType("textml;charset=UTF-8");//  textml     ,text/xml    ,text/json
+        PrintWriter out=response.getWriter();//获取响应对象中的输出流
+        out.write(jsonArray.toString());
+        out.flush();
+        out.close();
+    }
+
+
+
 }

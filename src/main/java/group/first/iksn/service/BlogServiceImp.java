@@ -7,6 +7,9 @@ import group.first.iksn.model.dao.UserDAO;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
@@ -59,6 +62,10 @@ public class BlogServiceImp implements BlogService {
      */
     @Override
     public boolean sendBackIllegalblog(IllegalBlog blog,int report_id) {
+        //开启一个线程，去执行禁言任务
+            Shutup shutup=new Shutup(blog.getBid());
+            shutup.start();
+
         boolean sendBack=blogDAO.addIllegalblog(blog);
         if (sendBack){
             //插入illegalblog成功，将reportblog表对应数据删除
@@ -69,14 +76,16 @@ public class BlogServiceImp implements BlogService {
         return sendBack;
     }
 
+
+
     /**
      * 获取被举报的博客
      * wenbin
      * @return
      */
     @Override
-    public List<ReportBlog> getAllReportBlog() {
-        return blogDAO.getAllReportBlog();
+    public List<ReportBlog> getAllReportBlog(int page) {
+        return blogDAO.getAllReportBlog(page);
     }
 
     @Override
@@ -163,10 +172,78 @@ public class BlogServiceImp implements BlogService {
         boolean serviceResult=blogDAO.reportBlog(reportBlog);
         return serviceResult;
     }
+    //获取被举报的博客
+    @Override
+    public ReportBlog selectReportBlog(int id) {
+        return blogDAO.selectReportBlog(id);
+    }
 
     @Override
     public String getFloor(Integer bid) {
         return blogDAO.selectFloor(bid);
+    }
+
+    @Override
+    public int getReportBlogNum() {
+        return blogDAO.reportBlogNum();
+    }
+
+    /**
+     * 开启一个线程对user禁言
+     * sendBackIllegalblog方法中调用
+     */
+    class Shutup extends Thread{
+        int id;
+        private Shutup(int id){
+            this.id=id;
+        }
+
+        @Override
+        public void run() {
+            System.out.println("小样进线程了"+id);
+            User user=new User();
+
+            //禁言截止时间
+//            Date d = new Date();
+//            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//            String time=df.format(d);
+
+            Calendar curr = Calendar.getInstance();
+            curr.set(Calendar.DAY_OF_MONTH,curr.get(Calendar.DAY_OF_MONTH)+7);
+            Date date=curr.getTime();
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String time=df.format(date);
+
+            System.out.println(time);
+            //根据bid查user
+            UserToBlog utb=blogDAO.getUserIsSpeak(id);
+            int isSpeak=utb.getUser().getIsspeak();
+            int uid=utb.getUid();
+
+            user.setUid(uid);
+            user.setTimeofban(time);
+            System.out.println(user.getTimeofban());
+            System.out.println("禁言的uid"+uid);
+            //对user实施禁言
+            if(isSpeak==0){
+                boolean a=blogDAO.shutUptoUser(user);
+                System.out.println("禁言"+a);
+            }else {
+                System.out.println("该用户已经被禁言");
+            }
+        }
+    }
+
+    // 我收藏的所有博客
+    @Override
+    public List<Blog> myCollectBlog(int uid) {
+        return blogDAO.myCollectBlog(uid);
+    }
+
+    //我发布的博客
+    @Override
+    public List<Blog> myBlog(int uid) {
+        return blogDAO.myBlog(uid);
     }
 
 

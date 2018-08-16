@@ -22,14 +22,32 @@
 	<script src="/bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
 	<script src="/js/depend.js"></script>
 
-
+	
 <style>
 	#toTop {display: none;text-decoration: none;position: fixed;bottom: 10px;right: 10px;overflow: hidden;width: 40px;height: 40px;border: none;text-indent: 100%; background-image: url(img/goTop.jpg);background-size: 100% 100%;text-align: center;}
 	#contact-us{
-
+		
 	}
 </style>
+<script>
+	$(document).ready(function(){
+		$(document).scroll(function () {
+		   // alert($('#leftDaohang').offset().top )
+            if($(document).scrollTop()>=$("#leftDaohang").height()){
 
+                $("#leftDaohang").css({
+					"position":"fixed",
+					"top":"0px",
+					"left":"2%",
+					"width":"14%"
+				})
+            }else{
+                $("#leftDaohang").removeAttr("style")
+			}
+        })
+
+	})
+</script>
 
 </head>
 
@@ -56,7 +74,7 @@
 		<div class="container-fluid">
 		  <div class="row">
 			  <div class="col-md-1"></div>
-			  <div class="col-md-10">
+			  <div id="leftDaohang" class="col-md-10">
 			  	<ul class="nav nav-pills nav-stacked">
 				  <li class="active"><a href="#">推荐</a></li>
 				  <li><a href="#">最新文章</a></li>
@@ -439,7 +457,7 @@
 				  </script>
 			  	<!--			  登陆结束-->
 <!--			  	今日推荐开始-->
-				  <div class="span12" style="margin-top: 30px; background-color:#FFFFFF">
+				  <div id="jinrituijian" class="span12" style="margin-top: 30px; background-color:#FFFFFF">
 				  	<span>今日推荐</span>
 				  	
 				  	<div class="thumbnail">

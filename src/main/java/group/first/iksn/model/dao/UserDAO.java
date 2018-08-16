@@ -9,12 +9,13 @@ public interface UserDAO {
     public boolean addUser(User u);
     List<Notice> receiveNotice(@Param("uid") int uid,@Param("nowPage") int nowPage);
     int listNotReadNoticeNum(@Param("uid") int uid);
+    int listNotReadMessageNum(@Param("uid") int uid);
     int listAllNoticeNum(@Param("uid") int uid);
     List<Message> receiveMessage(int uid);
     List<User> listSendMessageUser(int uid);
     boolean changeIsRead(@Param("isRead") int isRead,@Param("uid") int uid);
     boolean changeMessageIsRead(@Param("isRead") int isRead,@Param("uid") int uid);
-    public User getId(int uid);
+
     User checkPhone(String phone);
     User checkEmail(String email);
 
@@ -36,9 +37,11 @@ public interface UserDAO {
 
     //修改用户
     public boolean updateUser( User user);
-
+    public User getId(int uid);
      //修改用户密码
     boolean updatePassword(User user);
+    //修改用户邮箱
+    boolean updateEmail(User user);
     //用户等级
     int userGrade(int uid);
     //获取用户的积分明细
@@ -47,4 +50,10 @@ public interface UserDAO {
     List<Scoring> costScoring(int uid);
     //积分充值记录
     List<Scoring> rechargeScoring(int uid);
+
+
+    //我的关注列表
+    List<User> myAttention(int uid);
+    //我的粉丝
+    List<User> myFans(int uid);
 }

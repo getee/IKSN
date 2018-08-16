@@ -71,7 +71,6 @@
 <c:if test="${requestScope.blog} eq null">
 	<c:redirect url="http://localhost:8080/blog/listBlogByBid"></c:redirect>
 </c:if>
-
 <div id="fluid_Div" class="container-fluid" style="background-color:#574949">
 
 
@@ -93,8 +92,8 @@
 			<c:if test="${sessionScope.loginresult.isadmin eq '1'}">
 				<button id="comeback-button" type="button" class="btn btn-primary" style="">返回举报页</button>
 				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#delete" style="">删除</button>
-				<button id="sendBack-button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#sendBack" style="">下架</button>
-				<h5 style="color: white">举报原因：${reportReason}</h5>
+				<button id="sendBack-button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#sendBack" style="">下架并禁言</button>
+				<h5 style="color: white">举报原因：${requestScope.reportBlog.reason}</h5>
 			</c:if>
 		</div>
 	</div>
@@ -142,11 +141,13 @@
 	<script>
         $(document).ready(function(){
             $("#comeback-button").click(function(){
-                alert("sss")
+                //alert("sss")
                 location.href="/blog/mGetAllReportBlog";
             });
             $("#sendBack-ok").click(function(){
-                $.get("/blog/mSendBackIllegalblog/${blog_id}/${reportReason}/${report_id}",function(data,status){
+               var a="/blog/mSendBackIllegalblog/${reportBlog.bid}/${reportBlog.id}?reportReason=${reportBlog.reason}";
+               alert(a);
+                $.get(a,function(data,status){
                     if(data=="success"){
                         $("#sendBack-ok-innerHtml").text("已下架");
                         $(this).prop("disabled","disabled");
@@ -501,6 +502,33 @@
 	</ul>
 </div>
 <!--点赞结束-->
+<!-- Modal -->
+<div class="modal fade" id="modal-container-830220" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="margin-top: 20%">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">举报原因</h4>
+            </div>
+            <div class="modal-body">
+                <!--								文本域-->
+                <form action="/blog/reportBlog" method="post">
+                    博客ID：<input name="bid" type="text" value="2" readonly="readonly"/>
+                    举报人ID：<input name="uid" type="text" value="${sessionScope.loginresult.uid}" readonly="readonly"/>
+                    <textarea name="reason" class="form-control" rows="3"></textarea><br/>
+                    <input  type="submit" value="提交" onclick="report(${result})" />
+                </form>
+                <!--								-->
+
+            </div>
+            <div class="modal-footer">
+                <!--<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary">提交</button>-->
+            </div>
+        </div>
+    </div>
+</div>
+<!--end-->
 <script>
 	$(document).ready(function () {
         var loguid="${sessionScope.loginresult.uid}";
@@ -628,4 +656,10 @@
 <!--返回顶部按钮，向下翻150px显示-->
 <a href="javascript:void(0)" id="toTop" style="border-radius: 20px"> </a>
 </body>
+<script>
+function report(result) {
+	alert("举报成功")
+}
+
+</script>
 </html>

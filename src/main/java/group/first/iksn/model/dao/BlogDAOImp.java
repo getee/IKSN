@@ -4,6 +4,7 @@ import group.first.iksn.model.bean.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
+import java.rmi.server.UID;
 import java.util.List;
 import java.util.Map;
 
@@ -58,10 +59,10 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
      * @return
      */
     @Override
-    public List<ReportBlog> getAllReportBlog() {
+    public List<ReportBlog> getAllReportBlog(int page) {
         List<ReportBlog> allReportBlog=null;
         try {
-            allReportBlog=getSqlSession().getMapper(BlogDAO.class).getAllReportBlog();
+            allReportBlog=getSqlSession().getMapper(BlogDAO.class).getAllReportBlog((page-1)*3);
             System.out.println("22222");
         }catch (Exception e){
             System.out.println("这是获取违规博客出错了");
@@ -153,6 +154,21 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
     @Override
     public String selectFloor(Integer bid) {
         return getSqlSession().getMapper(BlogDAO.class).selectFloor(bid);
+    }
+
+    @Override
+    public int reportBlogNum() {
+        return getSqlSession().getMapper(BlogDAO.class).reportBlogNum();
+    }
+
+    @Override
+    public UserToBlog getUserIsSpeak(int bid) {
+        return getSqlSession().getMapper(BlogDAO.class).getUserIsSpeak(bid);
+    }
+
+    @Override
+    public boolean shutUptoUser(User user){
+        return getSqlSession().getMapper(BlogDAO.class).shutUptoUser(user);
     }
 
     /**
@@ -282,5 +298,27 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
     @Override
     public List<Blog> selectTwoBlogByUser(int uid) {
         return getSqlSession().getMapper(BlogDAO.class).selectTwoBlogByUser(uid);
+    }
+
+    @Override
+    public ReportBlog selectReportBlog(int id) {
+        ReportBlog reportBlog=getSqlSession().getMapper(BlogDAO.class).selectReportBlog(id);
+        return reportBlog;
+    }
+
+
+
+    //我收藏的博客
+    @Override
+    public List<Blog> myCollectBlog(int uid) {
+        List<Blog> collectblog=getSqlSession().getMapper(BlogDAO.class).myCollectBlog(uid);
+        return collectblog;
+
+    }
+
+    //我发布的博客
+    @Override
+    public List<Blog> myBlog(int uid) {
+        return getSqlSession().getMapper(BlogDAO.class).myBlog(uid);
     }
 }
