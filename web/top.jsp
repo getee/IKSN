@@ -235,7 +235,7 @@
         screenFuc();
 
         function screenFuc() {
-            $(".chatBox").hide(10);
+
             var topHeight = $(".chatBox-head").innerHeight();//聊天头部高度
             //屏幕小于768px时候,布局change
             var winWidth = $(window).innerWidth();
@@ -312,6 +312,7 @@
             $(".chatBox-head-two").toggle(1);
             $(".chatBox-list").fadeToggle(1);
             $(".chatBox-kuang").fadeToggle(1);
+            $(".chatBox-content-demo").text("");
         });
 
 
