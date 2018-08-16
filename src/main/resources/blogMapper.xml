@@ -46,7 +46,7 @@
         where b.bid=#{bid}
     </select>
 
-<!--博客添加相关操作-->
+    <!--博客添加相关操作-->
     <insert id="processAddBlog" parameterType="Blog" useGeneratedKeys="true" keyColumn="bid">
         insert into blog(title,content,time,classify) values (#{title},#{content},#{time},#{classify})
     </insert>
@@ -227,6 +227,79 @@
     <select id="detailedBlogPush" resultType="Blog">
         select * from blog order by points desc
     </select>
+    <!--点击博客链接使用-->
+    <resultMap id="getUidByBid" type="UserToBlog">
+        <id property="id" column="id"></id>
+        <result property="uid" column="uid"></result>
+        <result property="bid" column="bid"></result>
+        <result property="isdraft" column="isdraft"></result>
+        <result property="ispublic" column="ispublic"></result>
+        <result property="blogtype" column="blogtype"></result>
+        <association property="blog" column="bid" javaType="Blog">
+            <id property="bid" column="bid"></id>
+        </association>
+    </resultMap>
+    <select id="getBlogAndUser" resultMap="getUidByBid">
+        SELECT  uid,BLOGTYPE from usertoblog INNER JOIN blog b ON usertoblog.BID = b.BID
+        WHERE b.BID=#{bid}
+    </select>
+    <!--根据id查找博客-->
+    <select id="getbokeByid" resultType="Blog">
+        SELECT * from blog WHERE  BID = #{bid}
+    </select>
+    <!--查询用户有多少原创博客-->
+    <select id="getOriginalBlog" resultType="java.lang.Integer">
+        SELECT count(BID) from usertoblog WHERE BLOGTYPE=1 and uid=#{uid} GROUP BY UID
+    </select>
+    <!--查询用户的粉丝数以及关注数-->
+    <select id="getFans" resultType="java.lang.Integer">
+      SELECT count(SELFID) FROM  attention WHERE ATTENID=#{uid} GROUP BY ATTENID
+    </select>
+    <select id="getAttention" resultType="java.lang.Integer">
+      SELECT  count(ATTENID) FROM  attention WHERE  SELFID =#{uid} GROUP BY  SELFID
+    </select>
+    <!--将浏览记录路插入到-浏览记录表-->
+    <insert id="insertBlogBrowse" parameterType="BlogBrowsed">
+        INSERT INTO blogbrowsed(UID,BID,BROWSETIME) VALUES (#{param1},#{param2},#{param3})
+    </insert>
+    <!--点击博客结束-->
+
+
+     <!--点赞-->
+    <update id="addBlogPoints" parameterType="Blog">
+        UPDATE  blog set POINTS=POINTS+1 WHERE BID=#{bid}
+    </update>
+    <insert id="collectBlog" parameterType="CollectBlog">
+        INSERT INTO collectblog(UID,BID) VALUES (#{param1},#{param2})
+    </insert>
+    <insert id="addAttention" parameterType="Attention">
+        INSERT  into attention (SELFID, ATTENID) VALUES (#{param1},#{param2})
+    </insert>
+    <delete id="deleteAttention" parameterType="Attention">
+        DELETE FROM attention WHERE SELFID=#{0} AND  ATTENID=#{1}
+    </delete>
+    <select id="checkIsAttention" resultType="Attention">
+        SELECT * FROM attention WHERE  SELFID=#{0} AND  ATTENID=#{1}
+    </select>
+    <resultMap id="getTwoBlogBYUid" type="Blog">
+        <id property="bid" column="bid"></id>
+        <result property="title" column="title"></result>
+        <result property="content" column="content"></result>
+        <result property="classify" column="classify"></result>
+        <result property="link" column="link"></result>
+        <result property="points" column="points"></result>
+        <result property="time" column="time"></result>
+
+        <association property="userToBlog"  javaType="UserToBlog">
+            <id property="id" column="id"></id>
+            <result property="bid" column="bid"></result>
+            <result property="uid" column="uid"></result>
+        </association>
+
+    </resultMap>
+    <select id="selectTwoBlogByUser" resultMap="getTwoBlogBYUid">
+       SELECT * from blog INNER JOIN usertoblog u ON blog.BID = u.BID WHERE u.uid=#{uid} ORDER BY blog.BID DESC LIMIT 0,2
+    </select>
 
     <!--结果集合通过usertoblog查user是否禁言-->
     <resultMap id="getUserIsSpeakMap" type="UserToBlog">
@@ -248,6 +321,15 @@
     <update id="shutUptoUser" parameterType="Blog">
         update user set ISSPEAK=1,TIMEOFBAN=#{timeofban} where UID=#{uid}
     </update>
+
+    <!--我收藏的博客-->
+       <select id="myCollectBlog" resultType="Blog">
+        SELECT title, time FROM blog WHERE  BID IN ( SELECT BID FROM  collectblog WHERE UID=uid)
+    </select>
+    <!--我发布的博客-->
+    <select id="myBlog" resultType="Blog">
+      SELECT title, time FROM blog WHERE  BID IN ( SELECT BID FROM  usertoblog WHERE UID=uid)
+    </select>
     <!--根据bid查uid-->
     <select id="selectUidByBid" parameterType="Integer" resultType="UserToBlog">
         select UID from usertoblog where BID=#{bid}

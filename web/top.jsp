@@ -13,7 +13,6 @@
 <link href="../js/searchMeme.css" rel="stylesheet" type="text/css" />
 <script src="../js/jquery-3.3.1.js" type="text/javascript"></script>
 <script src="../js/jquery.searchMeme.js" type="text/javascript"></script>--%>
-
 <c:if test="${not empty sessionScope.loginresult}">
 
     <%--聊天窗口--%>
@@ -156,7 +155,6 @@
     </div>
 
     <script>
-
         function p(s) {
             return s < 10 ? '0' + s: s;
         }
@@ -554,8 +552,8 @@
 
                 </form>
                 <ul class="nav navbar-nav navbar-right">
-                    <li name="tx"><a id="bk" class="glyphicon glyphicon-pencil" href="#"> 写博客</a></li>
-                    <li name="tx"><a id="ca" class="glyphicon glyphicon-leaf" href="#">发Chat</a></li>
+                    <li name="tx"><a id="bk" class="glyphicon glyphicon-pencil"  style="cursor: pointer"> 写博客</a></li>
+                    <li name="tx"><a id="ca" class="glyphicon glyphicon-leaf" style="cursor: pointer" >发Chat</a></li>
                     <li id="rw" name="tx">
 
                         <a id="me" class="glyphicon glyphicon-user" href="#" data-toggle="popover" data-container="body"  data-placement="top" data-delay="5000" >
@@ -584,7 +582,7 @@
             $("#tishikuang").slideDown("slow");
            setInterval(function () {
                $("#tishikuang").slideUp("slow");
-           },5000);
+           },3000);
         }
         else {
             $("#bk").attr("href","Writer.jsp");

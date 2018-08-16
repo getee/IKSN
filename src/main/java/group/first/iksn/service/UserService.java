@@ -72,4 +72,8 @@ public interface UserService {
     List<Scoring> rechargeScoring(int uid);
 
 
+    //我的关注列表
+    List<User> myAttention(int uid);
+    //我的粉丝
+    List<User> myFans(int uid);
 }

@@ -209,6 +209,34 @@ public class UserServiceImp implements UserService {
     }
 
 
+    /**
+     * 我的关注列表
+     * @param uid
+     * @return
+     */
+    @Override
+    public List<User> myAttention(int uid) {
+        List<User> users=userDAO.myAttention(uid);
+        for (User u:users){
+            System.out.println(u.getNickname());
+        }
+        return users;
+    }
+
+    /**
+     * 我的粉丝
+     * @param uid
+     * @return
+     */
+    @Override
+    public List<User> myFans(int uid) {
+        List<User> users=userDAO.myFans(uid);
+        for (User u:users){
+            System.out.println(u.getNickname());
+        }
+        return users;
+    }
+
     //修改用户资料
     @Override
     public User updateUser(User user) {
@@ -217,7 +245,6 @@ public class UserServiceImp implements UserService {
             //在进行查询
            return user;
     }
-
 
     //修改用户密码
     @Override
@@ -228,8 +255,6 @@ public class UserServiceImp implements UserService {
         userDAO.updatePassword(user);
     }
 
-
-
     //修改用户邮箱
     @Override
     public void updateEmail(int uid, String newemail) {
@@ -239,15 +264,11 @@ public class UserServiceImp implements UserService {
         userDAO.updateEmail(user);
 
     }
-
-
     //根据提供的id获取用户
     @Override
     public User getId(int uid) {
-
         return userDAO.getId(uid);
     }
-
     //用户等级
     @Override
     public int userGrade(int uid) {
