@@ -1,5 +1,6 @@
 package group.first.iksn.service;
 
+import group.first.iksn.model.bean.Blog;
 import group.first.iksn.model.bean.Message;
 import group.first.iksn.model.bean.Notice;
 import group.first.iksn.model.bean.Scoring;
@@ -39,6 +40,10 @@ public class UserServiceImp implements UserService {
     @Override
     public int listNotReadNoticeNum(int uid) {
         return userDAO.listNotReadNoticeNum(uid);
+    }
+    @Override
+    public int listNotReadMessageNum(int uid) {
+        return userDAO.listNotReadMessageNum(uid);
     }
     @Override
     public int listAllNoticeNum(int uid) {
@@ -203,6 +208,7 @@ public class UserServiceImp implements UserService {
         return scorings;
     }
 
+
     //修改用户资料
     @Override
     public User updateUser(User user) {
@@ -213,15 +219,6 @@ public class UserServiceImp implements UserService {
     }
 
 
-    //判断用户是否存在
-    @Override
-    public boolean isUserExist(int uid) {
-            if (userDAO.getId(uid) == null) {
-                return false;
-            } else {
-                return true;
-            }
-        }
     //修改用户密码
     @Override
     public void updatePassword(int uid,String newpassword) {
@@ -230,19 +227,35 @@ public class UserServiceImp implements UserService {
         user.setPassword(MD5.MD5(newpassword));
         userDAO.updatePassword(user);
     }
-    //根据提供的id获取密码
+
+
+
+    //修改用户邮箱
     @Override
-    public String getId(int uid) {
-        return userDAO.getId(uid).getPassword();
+    public void updateEmail(int uid, String newemail) {
+        User user=userDAO.getId(uid);
+        user.setUid(uid);
+        user.setEmail(newemail);
+        userDAO.updateEmail(user);
+
     }
 
-    //判断用户等级
+
+    //根据提供的id获取用户
+    @Override
+    public User getId(int uid) {
+
+        return userDAO.getId(uid);
+    }
+
+    //用户等级
     @Override
     public int userGrade(int uid) {
         int score=userDAO.userGrade(uid);
         int grade=score/100;
         return grade;
     }
+
 
 
 }

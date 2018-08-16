@@ -112,19 +112,21 @@
 <div class="row well" style="margin-top: 2%; margin-left: 15%;margin-right: 15%">
 <!--用户头像-->
 	<div class="col-md-2 " >
-		<img src="img/adminIcon.jpg" class="img-responsive img-rounded" alt="Responsive image">
+		<img src=${sessionScope.loginresult.picturepath} class="img-responsive img-rounded" alt="Responsive image">
 	</div>
 <!--	用户信息-->
 	<div class="col-md-10">
 		<div class="row">
 			<div class="col-md-6">
 			<h3>NickName</h3>
-				<h3 ><span class="label label-info ">等级<span class="badge">${user.grade}</span></span></h3>
+				<h3 ><span class="label label-info ">等级<span class="badge" name="grade">
+				${sessionScope.loginresult.grade}
+				</span></span></h3>
 			</div>
 			<div class="col-md-6">
 										<!-- Button trigger modal -->
 				<button type="button" class="btn btn-info btn-sm glyphicon glyphicon-edit" data-toggle="modal" data-target="#myModal" style="margin-left: 60%">
-					修改个人资料iksn
+					修改个人资料
 				</button>
 				<button  type="button"  color="#FFFFFF" class="btn btn-info btn-sm glyphicon glyphicon-edit" data-toggle="modal" style="margin-left: 60%; margin-top:2%">
 					<a href="zhanghao.jsp" ><font color="#FFFFFF">个人账号设置</font></a>
@@ -142,6 +144,7 @@
 							<!--修改表单-->
 								  <form action="/user/updateuser" method="post">
 									  <div class="form-group">
+										  <input type="hidden" name="uid" value="${sessionScope.loginresult.uid}"/>
 										  <label for="exampleInputEmail1">昵称</label>
 										  <input type="text" class="form-control" name="nickname" id="" placeholder="NickName">
 									  </div>
@@ -194,6 +197,31 @@
 		</div>
 	</div>
 </div>
+		<script>
+			function mycollect() {
+                var ajaxUrl = "/user/myBlog";
+                //$('#uploadPic').serialize() 无法序列化二进制文件，这里采用formData上传
+                //需要浏览器支持：Chrome 7+、Firefox 4+、IE 10+、Opera 12+、Safari 5+。
+                $.ajax({
+                    type: "POST",
+                    //dataType: "text",
+                    url: ajaxUrl,
+                    data: "getCollectBlog",//客户端传到服务器的数据
+                    async: false,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+					//data是服务器端返回客户端的数据
+                    success: function (data) {
+                        alert("OK");
+                        //插入查询到的blog信息
+                    },
+                    error: function(data) {
+                        alert("error:");
+                    }
+                });
+            }
+		</script>
 <!--面板-->
 <div class="row well" style="margin-left: 15%;margin-right: 15%">
 	<div style="margin-top: -1%">
@@ -201,7 +229,7 @@
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
     <li id="myTabs1" role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">我的博客</a></li>
-    <li id="myTabs2" role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">我的收藏</a></li>
+    <li id="myTabs2" role="presentation"><a href="#profile" onclick="mycollect()" aria-controls="profile" role="tab" data-toggle="tab">我的收藏</a></li>
     <li id="myTabs3" role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">我的关注</a></li>
     <li id="myTabs4" role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">我的粉丝</a></li>
     <li id="myTabs5" role="presentation"><a href="#jubao" aria-controls="jubao" role="tab" data-toggle="tab">举报管理</a></li>
@@ -224,17 +252,31 @@
     </div>
     
     <div role="tabpanel" class="tab-pane" id="profile">
-    	<div class="row " style="margin: auto">
-    		<h4 class="text-primary" style="margin-left: 93%;"><a class="text-muted" href="#">文章管理</a></h4>
-    	</div>
 <!--    	收藏内容-->
-   		<div class="row" style="margin:auto;border-bottom-style:solid;border-bottom-width:2px;border-bottom-color:#E9E9E9"><h4><a class="text-muted" href="#">收藏内容</a><small style="margin-left: 80% ">2017-8-2</small><small style="margin-left:3%;cursor: pointer" class="glyphicon glyphicon-trash"></small></h4>
+   		<div class="row" style="margin:auto;border-bottom-style:solid;border-bottom-width:2px;border-bottom-color:#E9E9E9">
+				<p><table class="table" contenteditable="true">
+				<thead>
+				<tr>
+					<th>博客名称</th>
+					<th>时间</th>
+					<th></th>
+				</tr>
+				</thead>
+				<tbody>
+				<c:forEach items="${requestScope.collectblog}" var="c">
+					<tr>
+						<th>
+							<a class="text-muted" href="/user/myBlog?bid=${s.bid}">${c.title}</a>
+						</th>
+						<th>${c.time}</th>
+						<th>删除</th>
+					</tr>
+				</c:forEach>
+				</tbody>
+			</table>
+				</p>
    		</div>
-   		<div class="row" style="margin:auto;border-bottom-style:solid;border-bottom-width:2px;border-bottom-color:#E9E9E9"><h4><a class="text-muted" href="#">收藏内容</a><small style="margin-left: 80% ">2017-8-2</small><small style="margin-left:3%;cursor: pointer" class="glyphicon glyphicon-trash"></small></h4>
-   		</div>
-   		<div class="row" style="margin:auto;border-bottom-style:solid;border-bottom-width:2px;border-bottom-color:#E9E9E9"><h4><a class="text-muted" href="#">收藏内容</a><small style="margin-left: 80% ">2017-8-2</small><small style="margin-left:3%;cursor: pointer" class="glyphicon glyphicon-trash"></small></h4>
-   		</div>
-   		
+
    		
    		
     </div>
