@@ -343,6 +343,13 @@ public class UserDAOImp extends BaseDAOImp implements UserDAO {
         boolean b=getSqlSession().getMapper(UserDAO.class).updatePassword(user);
         return b;
     }
+    //修改用户邮箱
+    @Override
+    public boolean updateEmail(User user) {
+        boolean b=getSqlSession().getMapper(UserDAO.class).updateEmail(user);
+        return b;
+    }
+
     //用户等级
     @Override
     public int  userGrade(int uid) {
@@ -373,6 +380,9 @@ public class UserDAOImp extends BaseDAOImp implements UserDAO {
         List<Scoring> scorings=getSqlSession().getMapper(UserDAO.class).rechargeScoring(uid);
         return scorings;
     }
+
+
+
 
 
 }

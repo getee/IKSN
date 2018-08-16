@@ -172,15 +172,18 @@
 
 
                 <!--    	修改密码-->
-                <div role="tabpanel" class="tab-pane active" id="home">
+                <div role="tabpanel" class="tab-pane active" id="home" >
 
                         <form style="margin-top:4%; margin-left:6%" action="/user/updatePassword" method="post">
 
                             <div class="input-group">
+                                <input type="hidden" name="uid" value="${sessionScope.loginresult.uid}"/>
                           <span class="input-group-btn">
                             <button class="btn btn-default" type="button"  style=" margin-left:20%" disabled >旧密码：</button>
                           </span> &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
-                                <input type="password" class="form-control" id="password" name="password" placeholder="旧密码"   value="" style=" width:50%;  margin-left:7%; background-color:#F8F8F8">
+
+                                <input type="password" class="form-control" id="password" name="password" placeholder="旧密码"  value="" style=" width:50%;  margin-left:7%; background-color:#F8F8F8"><span id="userExtist"></span>
+
                             </div>
 
                             <div class="input-group">
@@ -195,25 +198,148 @@
                           <span class="input-group-btn">
                             <button class="btn btn-default" type="button"    style="margin-top:11%" disabled>再次确认密码：</button>
                           </span> &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
-                                <input type="password" class="form-control" id="equelspassword" name="equelspassword" placeholder="再次确认密码" value="" onkeyup="validate()" style=" width:53%; margin-top:2%; margin-left:2%; background-color:#F8F8F8"><span id="tishi"></span>
+                                <input type="password" class="form-control" id="equelspassword" name="equelspassword" placeholder="再次确认密码" value="" style=" width:53%; margin-top:2%; margin-left:2%; background-color:#F8F8F8" onkeyup="validate()"><span id="tishi"></span>
                             </div>
-                            <input type="submit" class="form-control"  value="确认修改" style="width:12%; margin:2% 22%;background-color:#F4132F; color:#FFFFFF">
+                            <input type="submit" class="form-control" id="submit" value="确认修改" style="width:12%; margin:2% 22%;background-color:#F4132F; color:#FFFFFF" onclick="click()">
                         </form>
                 </div>
+
+                <script >
+
+                    $(document).ready(function(){
+                        $('#password').blur(function(){
+                            data={"uid":${sessionScope.loginresult.uid},"password":$("#password").val()};
+                            $.post("/user/checkPassword?uid=${sessionScope.loginresult.uid}&password="+$("#password").val(),function(data){
+                                if(data=='true'){
+                                    $("#userExtist").css("color","green");
+                                    $("#userExtist").html("密码与原密码一样");
+
+                                }else
+                                {
+                                    $("#userExtist").css("color","red");
+                                    $("#userExtist").html("密码与原密码不一样");
+
+                                }
+                            });
+                        });
+                    });
+
+                    function validate() {
+                        var pwd = $("#newpassword").val();
+                        var pwd1 = $("#equelspassword").val();
+                        <!-- 对比两次输入的密码 -->
+                        if(pwd == pwd1)
+                        {
+                            $("#tishi").html("两次密码相同");
+                            $("#tishi").css("color","green");
+                            $("#xiugai").removeAttr("disabled");
+                        }
+                        else {
+                            $("#tishi").html("两次密码不相同");
+                            $("#tishi").css("color","red")
+                            $("button").attr("disabled","disabled");
+                        }
+                    }
+
+                    $("#submit").click(function () {
+                        if ($("#password").val()!="") {
+                            alert("姓名不能为空");
+                            return false;
+                        }
+                        else if($("#remindTel").val()==""){
+                            alert("电话不能空");
+                            return false;
+                        }
+                        $.ajax({
+                            url: "remind.ashx",
+                            data: $("#formRemind").serialize(),
+                            type: 'post',
+                            success: function () {
+                                alert("发送成功");
+                            }
+                        })
+                    })
+
+
+                </script>
+                <!--    	修改密码结束   -->
 
 
                 <!--    	修改手机号-->
                 <div role="tabpanel" class="tab-pane" id="profile">
+                    <form id="password_protect" role="form" class="form-horizontal hide">
+                            <div class="step-verify-code_pp step"  style="display:none;">
+                                <input type="hidden" name="type" value="valid">
+                                <div style="display: none" class="alert alert-danger"></div>
+                                <div class="form-group">
+                                    <p class="tips"><span class="icon-warning"></span>系统已经向您的手机********0973发送了验证码，请于5分钟内完成验证</p>
+                                    <div class="col-xs-7"> </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="verify_code" class="col-xs-2 control-label">验证码：</label>
+                                    <div class="col-xs-3">
+                                        <input id="verify_code" type="text" maxlength="6" name="sms_code" class="form-control" >
+                                    </div>
+                                    <div class="col-xs-7" style="display: none" >
+                                        <div class="timeout">验证码已发送，<b>60</b>秒后可以再次发送。</div><a href="javascript:void 0" style="display: none" class="send-verify-code">再次发送</a>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-xs-offset-2 col-xs-9">
+                                        <button type="button" class="btn btn-default btn-lg" onclick="window.location='/my/account/secureqa'" >返回</button>
+                                        <button class="btn btn-primary btn-lg  check_sms_code" type="button">确认</button>
+                                    </div>
+                                </div>
+                            </div>
+                    </form>
 
+                            <form id="bind-phone" role="form" class="form-horizontal" style="margin-top:3%">
                     <div class="step-phone-number">
+                        <input type="hidden" name="type" value="chgmob">
+                        <div class="alert alert-danger hide js_alert_message"></div>
+                        <div class="form-group form-process step">
+                            <div class="row">
+                                <label for="phone_old_number" class="col-xs-2 control-label"></label>
+                                <div class="col-xs-5"><span class="text-infos js_text_infos">请输入原始手机号验证你的身份：</span></div>
+                            </div>
+                            <div class="row js_validate_step">
+                                <label for="phone_number" class="col-xs-2 control-label"></label>
+                                <div class="col-xs-3">
+                                    <input id="phone_number" type="text" class="form-control js_phone_number" placeholder = "请输入旧手机号">
+                                </div>
+                                <div class="col-xs-7 col-xs-no">
+                                    <span class="phone-code js_get_code">获取验证码</span>
+                                    <span class="code-message hide js_code_message">短信验证码已发送，请查收手机</span>
+                                </div>
+                            </div>
+                            <div class="row js_validate_step">
+                                <div class="col-xs-2"></div>
+                                <div class="col-xs-3"><input type="text" class="form-text form-control js_validate_code" placeholder="短信验证码"></div>
+                            </div>
+                        </div>
+                        <div class="form-group form-process step">
+                            <div class="col-xs-offset-2 col-xs-9">
+                                <button class="btn btn-primary btn-lg btn-primary-set js_bind_subimit" type="submit" style="background-color:#F13B3E; border:hidden">下一步</button>
+                                <p class="text-warin">如果验证身份出现问题，请联系客服</p>
+                            </div>
+                        </div>
+                    </div>
+                    </form>
+
+
+
+
+
+
+                  <%--  <div class="step-phone-number">
                         <input type="hidden" name="type" value="chgmob">
                         <div class="alert alert-danger hide js_alert_message"></div>
                         <div class="form-group form-process step">
 
                             <div class="row" >
-                                <%--@declare id="phone_old_number"--%><label for="phone_old_number" class="col-xs-2 control-label"></label>
+                                &lt;%&ndash;@declare id="phone_old_number"&ndash;%&gt;<label for="phone_old_number" class="col-xs-2 control-label"></label>
                                 <div class="col-xs-5" style="margin:1% ">
-                                    <span class="text-infos js_text_infos" >请输入尾号为********6279的手机号验证你的身份：</span>
+                                    <span class="text-infos js_text_infos" >请输入手机号验证你的身份：</span>
                                 </div>
                             </div>
 
@@ -237,31 +363,50 @@
                         <div class="form-group form-process step">
                             <div class="col-xs-offset-2 col-xs-9">
                                 <button class="btn btn-primary btn-lg btn-primary-set js_bind_subimit" type="submit" style="background-color:#F13B3E; border:hidden">下一步</button>
-                                <p class="text-warin">如果验证身份出现问题，请联系客服</p>
+                                <p class="text-warin"> <a href="#">如果验证身份出现问题，请联系客服</a></p>
                             </div>
                         </div>
                     </div>
-
+                    <div class="step-init">
+                        <div style="display: none" class="alert alert-danger"></div>
+                        <div class="form-group">
+                            <label class="col-xs-2 control-label">手机号：</label>
+                            <div class="col-xs-9"><span class="phone_number">
+                      <!-- TODO 需要后端将用户的原始手机号输出到这里-->********0973</span><a href="javascript:void 0" class="change js_btn_resetphone">修改手机号</a></div>
+                        </div>
+                        <div style="display: none" class="alert alert-success">
+                        </div>
+                    </div>
+--%>
 
 
                 </div>
                 <!--    修改邮箱-->
                 <div role="tabpanel" class="tab-pane" id="messages">
-                    <form style="margin-top:4%; margin-left:10%">
+                    <form style="margin-top:5%; margin-left:10%" action="/user/updateEmail" method="post">
 
                         <div class="input-group">
+                            <input type="hidden" name="uid" value="${sessionScope.loginresult.uid}"/>
                           <span class="input-group-btn">
-                            <button class="btn btn-default" type="button"  style=" margin-left:20%" disabled >旧邮箱：</button>
+                            <button class="btn btn-default" type="button"  style=" margin-left:30%" disabled >旧邮箱：</button>
                           </span> &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
-                            <input type="password" class="form-control" placeholder="旧邮箱"  value="" style=" width:50%;  margin-left:5%; background-color:#F8F8F8">
+                            <input type="" class="form-control" name="email" id="email" placeholder="旧邮箱"  value="" style=" width:50%;  margin-left:9%; background-color:#F8F8F8">
                         </div>
 
                         <div class="input-group">
                           <span class="input-group-btn">
-                            <button class="btn btn-default" type="button"   style="margin-top:20%; margin-left:20%" disabled>新邮箱：</button>
+                            <button class="btn btn-default" type="button"   style="margin-top:20%; margin-left:30%" disabled>新邮箱：</button>
                           </span> &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
-                            <input type="password" class="form-control" placeholder="新邮箱" value="" style=" width:50%; background-color:#F8F8F8;
-                           margin-top:2%; margin-left:5%">
+                            <input type="" class="form-control" name="newemail" id="newemail" placeholder="新邮箱" value="" style=" width:50%; background-color:#F8F8F8;
+                           margin-top:2%; margin-left:9%"><span id="Extist">
+                        </div>
+
+                        <div class="input-group">
+                          <span class="input-group-btn">
+                            <button class="btn btn-default" type="button"   style="margin-top:15%; margin-left:20%" disabled>确定新邮箱：</button>
+                          </span> &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+                            <input type="" class="form-control" name="equelsemail"id="equelsemail" placeholder="确定新邮箱" value="" style=" width:50%; background-color:#F8F8F8;
+                           margin-top:2%; margin-left:6%"onkeyup="valid()"><span id="ti"></span>
                         </div>
 
 
@@ -269,6 +414,49 @@
                     </form>
 
                 </div>
+
+                <script >
+
+                    $(document).ready(function(){
+                        /**
+                         登录用户mima的ajax代码
+                         **/
+                        $('#email').blur(function(){
+                            data={"uid":${sessionScope.loginresult.uid},"email":$("#email").val()};
+                            $.post("/user/checkEmail?uid=${sessionScope.loginresult.uid}&email="+$("#email").val(),function(data){
+                                if(data=='true'){
+                                    $("#Extist").css("color","green");
+                                    $("#Extist").html("邮箱与原邮箱一样");
+
+                                }else
+                                {
+                                    $("#Extist").css("color","red");
+                                    $("#Extist").html("邮箱与原邮箱不一样");
+
+                                }
+                            });
+                        });
+                    });
+
+                    function valid() {
+                        var pwd = $("#newemail").val();
+                        var pwd1 = $("#equelsemail").val();
+                        <!-- 对比两次输入的密码 -->
+                        if(pwd == pwd1)
+                        {
+                            $("#ti").html("两次输入的邮箱相同");
+                            $("#ti").css("color","green");
+                            $("#xiugai").removeAttr("disabled");
+                        }
+                        else {
+                            $("#ti").html("两次输入的邮箱不相同");
+                            $("#ti").css("color","red")
+                            $("button").attr("disabled","disabled");
+                        }
+                    }
+                </script>
+                <!--    修改邮箱结束  -->
+
                 <!--    登录日志-->
                 <div role="tabpanel" class="tab-pane" id="settings">
                     <div style=" font-size:12px; margin:2% 7%">

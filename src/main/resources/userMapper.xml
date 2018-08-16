@@ -83,19 +83,27 @@ select * from user where NICKNAME=#{nickname} and  UID in (select ATTENID from a
          delete from attention where SELFID=#{selfid} and ATTENID=#{attenid};
     </delete>
 
-
+    <!--修改用户资料-->
     <update id="updateUser" parameterType="User">
         UPDATE  user set  nickname=#{nickname},sex=#{sex},introduce=#{introduce} WHERE uid=#{uid}
     </update>
+    <!--修改用户密码-->
     <update id="updatePassword" parameterType="User">
         update user set password=#{password} where UID=#{uid}
     </update>
+    <!--获取用户id-->
     <select id="getId" resultType="User">
        select * from user where UID=#{uid}
     </select>
+    <!--用户等级-->
     <select id="userGrade" parameterType="User">
         SELECT score FROM USER WHERE UID=#{uid}
     </select>
+    <!--修改用户邮箱-->
+    <update id="updateEmail" parameterType="User">
+        update user set email=#{email} where UID=#{uid}
+    </update>
+
     <!--获取积分明细-->
     <select id="getScoring" resultType="Scoring">
         select * from scoring where uid=#{uid}
