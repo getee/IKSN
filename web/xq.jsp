@@ -65,11 +65,11 @@
     <div class="row"  style="margin-top: -1.2%; font-size:16px;background-color:#EAEBEC; min-width:1024px;" >
 
         <ul class="nav nav-tabs"  style="margin-left:15%;" >
-            <li ><a href="#">下载首页</a></li>
-            <li ><a href="#">我的资源</a></li>
-            <li ><a href="#">上传资源赚积分</a></li>
-            <li ><a href="#">已下载</a></li>
-            <li ><a href="#">我的收藏</a></li>
+            <li ><a href="xiazai.jsp">下载首页</a></li>
+            <li ><a href="myresource.jsp">我的资源</a></li>
+            <li ><a href="upload.jsp">上传资源赚积分</a></li>
+            <li ><a href="myresource.jsp">已下载</a></li>
+            <li ><a href="myresource.jsp">我的收藏</a></li>
             <c:if test="${sessionScope.loginresult.isadmin eq '1'}">
                 <li style="margin-left: 5%"><a href="/blog/mGetAllReportBlog">返回举报页</a></li>
                 <li><a href="javascript:deleteResource(${resourceid})">删除</a></li>
@@ -84,7 +84,7 @@
         var userChoice=window.confirm("您确认要去除这个资源吗？");
         var a="/resource/mDeleteResourceForReport/"+url;
         if(userChoice){
-            // location.href=a;
+             location.href=a;
         }
     }
 </script>
@@ -163,7 +163,7 @@
                                             <!--								文本域-->
                                             <form id="addForm" action="/resource/reportResource" method="post">
                                                 资源ID：<input name="rid" type="text" value="1" readonly="readonly"/>
-                                                举报人ID：<input name="uid" type="text" value="1" readonly="readonly"/>
+                                                举报人ID：<input name="uid" type="text" value="${sessionScope.loginresult.uid}" readonly="readonly"/>
                                                 <textarea name="reason" class="form-control" rows="3"></textarea><br/>
                                                 <input  type="submit" value="提交" onclick="report()"/>
                                             </form>

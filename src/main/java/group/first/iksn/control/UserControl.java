@@ -1,6 +1,6 @@
 package group.first.iksn.control;
 
-import com.sun.org.glassfish.gmbal.ParameterNames;
+import group.first.iksn.model.bean.Blog;
 import group.first.iksn.model.bean.Message;
 import com.sun.deploy.net.HttpResponse;
 import group.first.iksn.model.bean.Notice;
@@ -10,8 +10,10 @@ import group.first.iksn.service.UserService;
 import group.first.iksn.util.EncodingTool;
 import group.first.iksn.util.HttpUtil;
 import group.first.iksn.util.IndustrySMS;
+import group.first.iksn.util.MD5;
 import org.apache.ibatis.jdbc.Null;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.jws.soap.SOAPBinding;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,6 +39,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 
 import java.io.UnsupportedEncodingException;
+import java.rmi.server.UID;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -399,7 +403,6 @@ public class UserControl {
     }
 
 
-
     //修改用户密码
     @RequestMapping(value = "/updatePassword")
     public String updatePassword(@RequestParam("uid") int uid,
@@ -409,25 +412,46 @@ public class UserControl {
         System.out.println(uid);
         System.out.println(password);
         System.out.println(newpassword);
-        if (!userService.isUserExist(uid)) {
-            model.addAttribute("msg", "用户名不存在！");
-        } else {
-            if (password.equals(userService.getId(uid))) {
-                if (!newpassword.equals(equelspassword)) {
-                    model.addAttribute("msg", "密码不一致");
-                } else {
+            System.out.println(userService.getId(uid));
+            System.out.println(MD5.MD5(password));
+            String str=userService.getId(uid).getPassword();
+            System.out.println(str);
+            if (MD5.MD5(password).equals(str)) {
+
+                    System.out.println("jinru");
                     userService.updatePassword(uid, newpassword);
                     model.addAttribute("msg", "修改密码成功！");
+                    System.out.println("修改成功");
+            } else {
+                model.addAttribute("msg", "密码错误！");
+            }
+        return "zhanghao";
+    }
+
+    //修改用户邮箱
+    @RequestMapping(value = "/updateEmail")
+    public String updateEmail(@RequestParam("uid") int uid,
+                                 @RequestParam("email") String email,
+                                 @RequestParam("newemail") String newemail,
+                                 @RequestParam("equelsemail") String equelsemail, ModelMap model) {
+        System.out.println(uid);
+        System.out.println(email);
+        System.out.println(newemail);
+            if (email.equals(userService.getId(uid).getEmail())) {
+                if (!newemail.equals(equelsemail)) {
+                    model.addAttribute("msg", "密码不一致");
+                } else {
+                    userService.updateEmail(uid, newemail);
+                    model.addAttribute("msg", "修改邮箱成功！");
                     System.out.println("修改成功");
                 }
             } else {
                 model.addAttribute("msg", "密码错误！");
             }
-        }
         return "zhanghao";
     }
 
-
+    //用户等级
     @RequestMapping(value = "userGrade")
     public int  userGrade(@RequestParam("uid") int uid, Model model) {
          int grade=userService.userGrade(uid);
@@ -457,5 +481,107 @@ public class UserControl {
         List<Scoring> scorings=userService.rechargeScoring(uid);
         mad.addObject("recharge",scorings);
         return mad;
+    }
+
+//查询用户密码
+    @RequestMapping(value="/checkPassword", method = RequestMethod.POST)
+    public void checkPassword(
+                              HttpServletRequest request, HttpServletResponse response) throws IOException {
+        System.out.println("jinruXXXX");
+        boolean result=false;
+        String uid=request.getParameter("uid").trim();
+        String password=request.getParameter("password").trim();
+        System.out.println(password+uid);
+        System.out.println(userService.getId(Integer.parseInt(uid)).getPassword());
+       if (MD5.MD5(password).equals(userService.getId(Integer.parseInt(uid)).getPassword())){
+           System.out.println("ok");
+                  result=true;
+       }else {
+           System.out.println("error");
+             result=false;
+       }
+        response.getWriter().write(""+result);
+    }
+
+    //查询用户密码
+    @RequestMapping(value="/checkEmail", method = RequestMethod.POST)
+    public void checkEmail(
+            HttpServletRequest request, HttpServletResponse response) throws IOException {
+        System.out.println("jinru111");
+        boolean result=false;
+        String uid=request.getParameter("uid").trim();
+        String email=request.getParameter("email").trim();
+        System.out.println(email+uid);
+        System.out.println(userService.getId(Integer.parseInt(uid)).getEmail());
+        if (email.equals(userService.getId(Integer.parseInt(uid)).getEmail())){
+            System.out.println("ok");
+            result=true;
+        }else {
+            System.out.println("error");
+            result=false;
+        }
+        response.getWriter().write(""+result);
+    }
+
+    //我的关注列表
+    @RequestMapping("/myAttention")
+    public void myAttention( HttpSession session,Model model,HttpServletResponse response) throws IOException {
+        User u= (User) session.getAttribute("loginresult");
+        int uid=u.getUid();
+        ArrayList<User> users= (ArrayList<User>) userService.myAttention(uid);
+
+        JSONArray jsonArray=new JSONArray();
+        JSONObject jsonObject;
+        for (int i=0;i<users.size();i++){
+           jsonObject=new JSONObject();
+           try{
+               jsonObject.put("picturepath",users.get(i).getPicturepath());
+               jsonObject.put("nickname",users.get(i).getNickname());
+               jsonArray.put(jsonObject);
+           }catch (JSONException e){
+               e.printStackTrace();
+           }
+        }
+
+        System.out.println(users);
+        //悄悄把数据会给他
+        //用response（响应）对象中的输出流将处理好的结果输出给ajax请求对象
+        response.setContentType("textml;charset=UTF-8");//  textml     ,text/xml    ,text/json
+        PrintWriter  out=response.getWriter();//获取响应对象中的输出流
+        out.write(jsonArray.toString());
+        out.flush();
+        out.close();
+
+    }
+
+    //我的粉丝
+    @RequestMapping("/myFans")
+    public void myFans( HttpSession session,Model model,HttpServletResponse response) throws IOException {
+        User u= (User) session.getAttribute("loginresult");
+        int uid=u.getUid();
+        ArrayList<User> users= (ArrayList<User>) userService.myFans(uid);
+
+        JSONArray jsonArray=new JSONArray();
+        JSONObject jsonObject;
+        for (int i=0;i<users.size();i++){
+            jsonObject=new JSONObject();
+            try{
+                jsonObject.put("picturepath",users.get(i).getPicturepath());
+                jsonObject.put("nickname",users.get(i).getNickname());
+                jsonArray.put(jsonObject);
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+        }
+
+        System.out.println(users);
+        //悄悄把数据会给他
+        //用response（响应）对象中的输出流将处理好的结果输出给ajax请求对象
+        response.setContentType("textml;charset=UTF-8");//  textml     ,text/xml    ,text/json
+        PrintWriter  out=response.getWriter();//获取响应对象中的输出流
+        out.write(jsonArray.toString());
+        out.flush();
+        out.close();
+
     }
 }

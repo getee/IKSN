@@ -122,6 +122,10 @@ public class ResourceDAOImp extends BaseDAOImp implements ResourceDAO {
         return allReportResource;
     }
 
+    @Override
+    public Resource selectUidByRid(int rid) {
+        return getSqlSession().getMapper(ResourceDAO.class).selectUidByRid(rid);
+    }
 
 
     /**

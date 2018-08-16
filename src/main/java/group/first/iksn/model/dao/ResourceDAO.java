@@ -42,4 +42,6 @@ public interface ResourceDAO {
     int reportResourceNum();
     //获取所有被举报资源
     List<ReportResource> getAllReportResource(int page);
+    //根据rid查uid
+    Resource selectUidByRid(int rid);
 }
