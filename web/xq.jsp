@@ -84,7 +84,7 @@
         var userChoice=window.confirm("您确认要去除这个资源吗？");
         var a="/resource/mDeleteResourceForReport/"+url;
         if(userChoice){
-            // location.href=a;
+             location.href=a;
         }
     }
 </script>

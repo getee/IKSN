@@ -49,6 +49,8 @@ public interface BlogDAO {
 
     //举报博客
     public boolean reportBlog(ReportBlog reportBlog);
+    //获取被举报博客
+    ReportBlog selectReportBlog(int id);
 
     String selectFloor(Integer bid);
     //被举报的博客数量
@@ -56,5 +58,5 @@ public interface BlogDAO {
     //查看user是否被禁言
     UserToBlog getUserIsSpeak(int bid);
 
-    boolean shutUptoUser(int uid);
+    boolean shutUptoUser(User user);
 }

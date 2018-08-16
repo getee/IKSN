@@ -146,13 +146,15 @@ public class BlogControl {
      * @param blog_id
      * @return
      */
-    @RequestMapping("/mSendBackIllegalblog/{blog_id}/{reportReason}/{report_id}")
+    @RequestMapping("/mSendBackIllegalblog/{blog_id}/{report_id}")
     @ResponseBody
-    public String mSendBackIllegalblog(@PathVariable int blog_id,@PathVariable String reportReason,@PathVariable int report_id){
-        IllegalBlog blog=new IllegalBlog();
-        blog.setIllegalcause(reportReason);
-        blog.setBid(blog_id);
+    public String mSendBackIllegalblog(@PathVariable int blog_id,@PathVariable int report_id,@RequestParam("reportReason") String reportReason){
+        //对中文字符转码
+        String reason=EncodingTool.encodeStr(reportReason);
 
+        IllegalBlog blog=new IllegalBlog();
+        blog.setIllegalcause(reason);
+        blog.setBid(blog_id);
 
         boolean sendBackResult=blogService.sendBackIllegalblog(blog,report_id);
         if(sendBackResult){
@@ -249,21 +251,23 @@ public class BlogControl {
 
         return mav;
     }
+
     /**
      * 管理员查看被举报的博客，进行审核
-     * wenbin
-     * @param blog_id 博客id
-     * @param reason 举报原因
+     * @param id
      * @param model
      * @return
      */
-    @RequestMapping("/mCheckReportblog/{blog_id}/{id}")
-    public String mCheckReportblog(@PathVariable int blog_id,String reason,@PathVariable int id,Model model){
-        EncodingTool.encodeStr(reason);
-        System.out.println(blog_id+reason);
-        model.addAttribute("blog_id",blog_id);
-        model.addAttribute("reportReason",reason);
-        model.addAttribute("report_id",id);
+    @RequestMapping("/mCheckReportblog/{id}")
+    public String mCheckReportblog(@PathVariable int id,Model model){
+        ReportBlog reportBlog=blogService.selectReportBlog(id);
+        System.out.println(reportBlog);
+        model.addAttribute("reportBlog",reportBlog);
+//        EncodingTool.encodeStr(reason);
+//        System.out.println(blog_id+reason);
+//        model.addAttribute("blog_id",blog_id);
+//        model.addAttribute("reportReason",reason);
+//        model.addAttribute("report_id",id);
         return "userArticle";
     }
     @RequestMapping(value="/getFloor",method = RequestMethod.POST)

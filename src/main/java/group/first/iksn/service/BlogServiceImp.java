@@ -5,6 +5,9 @@ import group.first.iksn.model.bean.*;
 import group.first.iksn.model.dao.BlogDAO;
 import org.springframework.stereotype.Component;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 
@@ -156,6 +159,11 @@ public class BlogServiceImp implements BlogService {
         boolean serviceResult=blogDAO.reportBlog(reportBlog);
         return serviceResult;
     }
+    //获取被举报的博客
+    @Override
+    public ReportBlog selectReportBlog(int id) {
+        return blogDAO.selectReportBlog(id);
+    }
 
     @Override
     public String getFloor(Integer bid) {
@@ -180,13 +188,32 @@ public class BlogServiceImp implements BlogService {
         @Override
         public void run() {
             System.out.println("小样进线程了"+id);
+            User user=new User();
 
+            //禁言截止时间
+//            Date d = new Date();
+//            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//            String time=df.format(d);
+
+            Calendar curr = Calendar.getInstance();
+            curr.set(Calendar.DAY_OF_MONTH,curr.get(Calendar.DAY_OF_MONTH)+7);
+            Date date=curr.getTime();
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String time=df.format(date);
+
+            System.out.println(time);
+            //根据bid查user
             UserToBlog utb=blogDAO.getUserIsSpeak(id);
             int isSpeak=utb.getUser().getIsspeak();
             int uid=utb.getUid();
+
+            user.setUid(uid);
+            user.setTimeofban(time);
+            System.out.println(user.getTimeofban());
             System.out.println("禁言的uid"+uid);
+            //对user实施禁言
             if(isSpeak==0){
-                boolean a=blogDAO.shutUptoUser(uid);
+                boolean a=blogDAO.shutUptoUser(user);
                 System.out.println("禁言"+a);
             }else {
                 System.out.println("该用户已经被禁言");

@@ -165,8 +165,8 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
     }
 
     @Override
-    public boolean shutUptoUser(int uid){
-        return getSqlSession().getMapper(BlogDAO.class).shutUptoUser(uid);
+    public boolean shutUptoUser(User user){
+        return getSqlSession().getMapper(BlogDAO.class).shutUptoUser(user);
     }
 
     /**
@@ -221,5 +221,11 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
     public boolean reportBlog(ReportBlog reportBlog) {
         boolean result=getSqlSession().getMapper(BlogDAO.class).reportBlog(reportBlog);
         return result;
+    }
+
+    @Override
+    public ReportBlog selectReportBlog(int id) {
+        ReportBlog reportBlog=getSqlSession().getMapper(BlogDAO.class).selectReportBlog(id);
+        return reportBlog;
     }
 }

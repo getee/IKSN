@@ -94,7 +94,7 @@
     </update>
 
 
-    <!--结果集合用来存储查询ReportBlog表级联查询blog表-->
+    <!--分页。。结果集合用来存储查询ReportBlog表级联查询blog表-->
     <resultMap id="getBlogBy_Reportbid" type="ReportBlog">
         <id column="id" property="id"/>
         <result column="uid" property="uid"/>
@@ -125,7 +125,7 @@
         select count(*) from blogcomments where BID=(#{bid}) and COMMENTID is null
     </select>
 
-    <!--结果集合用来存储查询ReportResource表级联查询Resource表-->
+    <!--此Map写错位置，无人调用，可删除。。。结果集合用来存储查询ReportResource表级联查询Resource表-->
     <resultMap id="getResourceBy_Reportrid" type="ReportResource">
         <id column="id" property="id"/>
         <result column="uid" property="uid"/>
@@ -146,7 +146,10 @@
     <insert id="reportBlog" parameterType="ReportBlog">
         insert into reportblog (uid,bid,reason) values (#{uid},#{bid},#{reason})
     </insert>
-
+    <!--获取举报博客-->
+    <select id="selectReportBlog" resultType="ReportBlog">
+        select * from reportblog where ID=#{id}
+    </select>
     <!--这是有关blog搜索的查询-->
     <!--定义的一个reaultmap结果集合来存储关联查询到的详细的博客，类型是自定义类型-->
     <resultMap id="searchResultMap"  type="Blog">
@@ -242,7 +245,7 @@
           where ub.BID=#{bid}
 	</select>
 
-    <update id="shutUptoUser" parameterType="integer">
-        update user set ISSPEAK=1 where UID=1
+    <update id="shutUptoUser" parameterType="Blog">
+        update user set ISSPEAK=1,TIMEOFBAN=#{timeofban} where UID=#{uid}
     </update>
 </mapper>
