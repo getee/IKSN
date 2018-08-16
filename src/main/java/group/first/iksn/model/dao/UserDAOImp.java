@@ -374,5 +374,16 @@ public class UserDAOImp extends BaseDAOImp implements UserDAO {
         return scorings;
     }
 
+    /**
+     * 我的关注列表
+     * @param uid
+     * @return
+     */
+    @Override
+    public List<User> myAttention(int uid) {
+        List<User> users=getSqlSession().getMapper(UserDAO.class).myAttention(uid);
+        return users;
+    }
+
 
 }

@@ -203,6 +203,20 @@ public class UserServiceImp implements UserService {
         return scorings;
     }
 
+    /**
+     * 我的关注列表
+     * @param uid
+     * @return
+     */
+    @Override
+    public List<User> myAttention(int uid) {
+        List<User> users=userDAO.myAttention(uid);
+        for (User u:users){
+            System.out.println(u.getNickname());
+        }
+        return users;
+    }
+
     //修改用户资料
     @Override
     public User updateUser(User user) {

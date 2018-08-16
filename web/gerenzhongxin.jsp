@@ -202,7 +202,7 @@
   <ul class="nav nav-tabs" role="tablist">
     <li id="myTabs1" role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">我的博客</a></li>
     <li id="myTabs2" role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">我的收藏</a></li>
-    <li id="myTabs3" role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">我的关注</a></li>
+    <li id="myTabs3" role="presentation"><a id="attention" href="#messages" aria-controls="messages" role="tab" data-toggle="tab">我的关注</a></li>
     <li id="myTabs4" role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">我的粉丝</a></li>
     <li id="myTabs5" role="presentation"><a href="#jubao" aria-controls="jubao" role="tab" data-toggle="tab">举报管理</a></li>
   </ul>
@@ -240,47 +240,41 @@
     </div>
 <!--    我的关注列表-->
     <div role="tabpanel" class="tab-pane" id="messages">
-    	<div class="row" style="margin-top: 1%;margin-left: 1%;margin-right: 1%">
-    		<div class="col-md-3 well">
-    			<div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
-    			<div class="col-md-8 "><h4>Friend Name</h4></div>
-    		</div>
-       		<div class="col-md-3 well">
-    			<div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
-    			<div class="col-md-8 "><h4>Friend Name</h4></div>
-    		</div>
-			<div class="col-md-3 well">
-    			<div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
-    			<div class="col-md-8 "><h4>Friend Name</h4></div>
-    		</div>
-			<div class="col-md-3 well">
-    			<div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
-    			<div class="col-md-8 "><h4>Friend Name</h4></div>
-    		</div>
+		<%--<div class="row" style="margin-top: 1%;margin-left: 1%;margin-right: 1%">
+                <div class="col-md-3 well">
+                    <div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
+                    <div class="col-md-8 "><h4>Friend Name</h4></div>
+                </div>
+                <div class="col-md-3 well">
+                    <div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
+                    <div class="col-md-8 "><h4>Friend Name</h4></div>
+                </div>
+                <div class="col-md-3 well">
+                    <div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
+                    <div class="col-md-8 "><h4>Friend Name</h4></div>
+                </div>
 			
     		
-    	</div>
-    	
-    	<div class="row" style="margin-top: 1%;margin-left: 1%;margin-right: 1%">
-    		<div class="col-md-3 well">
-    			<div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
-    			<div class="col-md-8 "><h4>Friend Name</h4></div>
-    		</div>
-       		<div class="col-md-3 well">
-    			<div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
-    			<div class="col-md-8 "><h4>Friend Name</h4></div>
-    		</div>
-			<div class="col-md-3 well">
-    			<div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
-    			<div class="col-md-8 "><h4>Friend Name</h4></div>
-    		</div>
-			<div class="col-md-3 well">
-    			<div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
-    			<div class="col-md-8 "><h4>Friend Name</h4></div>
-    		</div>
-			
-    		
-    	</div>
+    	</div>--%>
+
+		<div id="area" class="row" style="margin-top: 1%;margin-left: 1%;margin-right: 1%">
+
+
+			<%-- <div class="col-md-3 well">
+              <div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
+              <div class="col-md-8 "><h4>Friend Name</h4></div>
+          </div>
+          <div class="col-md-3 well">
+              <div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
+              <div class="col-md-8 "><h4>Friend Name</h4></div>
+          </div>
+          <div class="col-md-3 well">
+              <div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
+              <div class="col-md-8 "><h4>Friend Name</h4></div>
+          </div>--%>
+
+
+      </div>
     </div>
 <!--    粉丝列表-->
     <div role="tabpanel" class="tab-pane" id="settings">
@@ -385,4 +379,22 @@
 <!--底部信息-结束-->
 	</div>
   </body>
+<script>
+    $(document).ready(function (){
+        var a=1;
+        $("#attention").click(function (){
+            $.getJSON("/user/myAttention?uid=${sessionScope.loginresult.uid}",function (data) {
+                var html="";
+                for(var i=0;i<data.length;i++){
+                    html+='<div class="col-md-12 well"><div style="height: 50px;" class="col-md-4 "><img style="height: 50px;" class="img-responsive img-rounded" src="'+data[i].picturepath+'"></div><div class="col-md-8 "><h4>' + data[i].nickname + '</h4></div></div>';
+                }
+                if(a==1){
+                    $("#area").append(html);a++;
+				}
+
+            });
+
+        });
+    });
+</script>
 </html>

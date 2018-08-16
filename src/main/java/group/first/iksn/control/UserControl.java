@@ -12,6 +12,7 @@ import group.first.iksn.util.HttpUtil;
 import group.first.iksn.util.IndustrySMS;
 import org.apache.ibatis.jdbc.Null;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.jws.soap.SOAPBinding;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -422,5 +424,36 @@ public class UserControl {
         List<Scoring> scorings=userService.rechargeScoring(uid);
         mad.addObject("recharge",scorings);
         return mad;
+    }
+
+    //我的关注列表
+    @RequestMapping("/myAttention")
+    public void myAttention( HttpSession session,Model model,HttpServletResponse response) throws IOException {
+        User u= (User) session.getAttribute("loginresult");
+        int uid=u.getUid();
+        ArrayList<User> users= (ArrayList<User>) userService.myAttention(uid);
+
+        JSONArray jsonArray=new JSONArray();
+        JSONObject jsonObject;
+        for (int i=0;i<users.size();i++){
+           jsonObject=new JSONObject();
+           try{
+               jsonObject.put("picturepath",users.get(i).getPicturepath());
+               jsonObject.put("nickname",users.get(i).getNickname());
+               jsonArray.put(jsonObject);
+           }catch (JSONException e){
+               e.printStackTrace();
+           }
+        }
+
+        System.out.println(users);
+        //悄悄把数据会给他
+        //用response（响应）对象中的输出流将处理好的结果输出给ajax请求对象
+        response.setContentType("textml;charset=UTF-8");//  textml     ,text/xml    ,text/json
+        PrintWriter  out=response.getWriter();//获取响应对象中的输出流
+        out.write(jsonArray.toString());
+        out.flush();
+        out.close();
+
     }
 }

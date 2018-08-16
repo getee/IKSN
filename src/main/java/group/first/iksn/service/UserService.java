@@ -65,4 +65,6 @@ public interface UserService {
     List<Scoring> costScoring(int uid);
     //用户积分充值记录
     List<Scoring> rechargeScoring(int uid);
+    //我的关注列表
+    List<User> myAttention(int uid);
 }
