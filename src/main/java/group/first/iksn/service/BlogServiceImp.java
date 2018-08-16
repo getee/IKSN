@@ -3,8 +3,10 @@ package group.first.iksn.service;
 
 import group.first.iksn.model.bean.*;
 import group.first.iksn.model.dao.BlogDAO;
+import group.first.iksn.model.dao.UserDAO;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
@@ -13,6 +15,15 @@ import java.util.ArrayList;
 @Component("blogService")
 public class BlogServiceImp implements BlogService {
     private BlogDAO blogDAO;
+    private UserDAO userDAO;
+
+    public UserDAO getUserDAO() {
+        return userDAO;
+    }
+
+    public void setUserDAO(UserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
 
     public BlogDAO getBlogDAO() {
         return blogDAO;
@@ -159,4 +170,72 @@ public class BlogServiceImp implements BlogService {
     }
 
 
+    //处理点击标题进入博客详情页的方法
+    public Map<String,Object> getBlogAndUser(int bid){
+        Map<String,Object> map=new HashMap<String, Object>();
+        //取页面博客
+        Blog blog=blogDAO.getbokeByid(bid);
+
+        List<UserToBlog> l=blogDAO.getBlogAndUser(bid);
+        UserToBlog ub=l.get(0);
+        User user=userDAO.getId(ub.getUid());
+
+        map.put("boke",blog);
+        map.put("yonghu",user);
+        map.put("original",getOriginalBlog(user.getUid()));
+        map.put("fans",getFans(user.getUid()));
+        map.put("attention",getAttention(user.getUid()));
+
+        return  map;
+    }
+
+    @Override
+    public int getOriginalBlog(int uid) {
+        return blogDAO.getOriginalBlog(uid);
+    }
+
+    @Override
+    public int getFans(int uid) {
+        return blogDAO.getFans(uid);
+    }
+
+    @Override
+    public int getAttention(int uid) {
+        return blogDAO.getAttention(uid);
+    }
+
+    @Override
+    public boolean addBlogPoints(int bid){
+        return blogDAO.addBlogPoints(bid);
+    }
+
+    @Override
+    public boolean collectBlog(int uid, int bid) {
+        return blogDAO.collectBlog(uid,bid);
+    }
+
+    @Override
+    public boolean addAttention(int selfid, int attenid) {
+        return blogDAO.addAttention(selfid,attenid);
+    }
+
+    @Override
+    public Attention checkIsAttention(int selfid, int attenid) {
+        return blogDAO.checkIsAttention(selfid, attenid);
+    }
+
+    @Override
+    public boolean deleteAttention(int selfid, int attenid) {
+        return blogDAO.deleteAttention(selfid, attenid);
+    }
+
+    @Override
+    public List<Blog> selectTwoBlogByUser(int uid) {
+        return blogDAO.selectTwoBlogByUser(uid);
+    }
+
+    @Override
+    public boolean insertBlogBrowse(int uid, int bid, String browsetime) {
+        return blogDAO.insertBlogBrowse(uid, bid, browsetime);
+    }
 }

@@ -51,4 +51,18 @@ public interface BlogDAO {
     public boolean reportBlog(ReportBlog reportBlog);
 
     String selectFloor(Integer bid);
+
+    //点击打开博客使用
+    List<UserToBlog> getBlogAndUser(int bid);
+    int getOriginalBlog(int uid);
+    int getFans(int uid);
+    int getAttention(int uid);
+    Blog getbokeByid(int bid);
+    boolean addBlogPoints(int bid);
+    boolean collectBlog(int uid,int bid);
+    boolean addAttention(int selfid,int attenid);
+    Attention checkIsAttention(int selfid,int attenid);
+    boolean deleteAttention(int selfid,int attenid);
+    boolean insertBlogBrowse(int uid,int bid,String browsetime);
+    List<Blog> selectTwoBlogByUser(int uid);
 }

@@ -1,6 +1,7 @@
 package group.first.iksn.model.dao;
 
 import group.first.iksn.model.bean.*;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -206,5 +207,80 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
     public boolean reportBlog(ReportBlog reportBlog) {
         boolean result=getSqlSession().getMapper(BlogDAO.class).reportBlog(reportBlog);
         return result;
+    }
+    //点击打开博客
+    public  List<UserToBlog> getBlogAndUser(int bid){
+        return getSqlSession().getMapper(BlogDAO.class).getBlogAndUser(bid);
+    }
+    //获得原创博客数
+    @Override
+    public int getOriginalBlog(int uid) {
+        try{
+            return getSqlSession().getMapper(BlogDAO.class).getOriginalBlog(uid);
+        }
+        catch (Exception e){
+            return 0;
+        }
+
+    }
+    //获得粉丝数
+    @Override
+    public int getFans(int uid) {
+        try{
+            return getSqlSession().getMapper(BlogDAO.class).getFans(uid);
+        }
+        catch (Exception e){
+            return 0;
+        }
+
+    }
+    //获得关注数
+    @Override
+    public int getAttention(int uid) {
+        try{
+          int  n=getSqlSession().getMapper(BlogDAO.class).getAttention(uid);
+            return n;
+        }catch (Exception e){
+            return 0;
+        }
+
+    }
+    //根据id查询博客
+    public Blog getbokeByid(int bid){
+        return getSqlSession().getMapper(BlogDAO.class).getbokeByid(bid);
+    }
+    public  boolean addBlogPoints(int bid){
+        return getSqlSession().getMapper(BlogDAO.class).addBlogPoints(bid);
+    }
+
+    //收藏博客方法
+    @Override
+    public boolean collectBlog(@Param("uid") int uid, @Param("bid") int bid) {
+        return getSqlSession().getMapper(BlogDAO.class).collectBlog(uid,bid);
+    }
+    //添加关注
+    @Override
+    public boolean addAttention(@Param("selfid")int selfid,@Param("attenid") int attenid) {
+        return getSqlSession().getMapper(BlogDAO.class).addAttention(selfid,attenid);
+    }
+
+    @Override
+    public Attention checkIsAttention(@Param("selfid")int selfid,@Param("attenid") int attenid) {
+        return getSqlSession().getMapper(BlogDAO.class).checkIsAttention(selfid, attenid);
+    }
+
+    @Override
+    public boolean deleteAttention(@Param("selfid")int selfid,@Param("attenid") int attenid) {
+        return  getSqlSession().getMapper(BlogDAO.class).deleteAttention(selfid,attenid);
+    }
+
+    @Override
+    public boolean insertBlogBrowse(@Param("uid") int uid, @Param("bid") int bid, @Param("browsetime") String browsetime) {
+        return getSqlSession().getMapper(BlogDAO.class).insertBlogBrowse(uid,bid,browsetime);
+    }
+
+    @Override
+    public List<Blog> selectTwoBlogByUser(int uid) {
+        return getSqlSession().getMapper(BlogDAO.class).selectTwoBlogByUser(uid);
     }
 }

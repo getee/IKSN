@@ -3,18 +3,28 @@ package group.first.iksn.control;
 
 import group.first.iksn.model.bean.*;
 import group.first.iksn.service.BlogService;
+import group.first.iksn.service.UserService;
 import group.first.iksn.util.EncodingTool;
+import group.first.iksn.util.Responser;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.apache.ibatis.jdbc.Null;
 
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.json.JsonArray;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -24,10 +34,18 @@ import java.util.Map;
 @RequestMapping("/blog")
 public class BlogControl {
     private BlogService blogService;
-
+    private UserService userService;
 
     public BlogService getBlogService() {
         return blogService;
+    }
+
+    public UserService getUserService() {
+        return userService;
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 
     public void setBlogService(BlogService blogService) {
@@ -65,6 +83,7 @@ public class BlogControl {
         mv.setViewName("sousuo");
         return  mv;
     }
+
 
     /**
      * 管理员删除被用户举报且不合法的博客
@@ -279,4 +298,146 @@ public class BlogControl {
         return;
     }
 
+    @RequestMapping("/getBlogAndUser")
+    //处理点击标题进入博客详情页的方法
+    public String getBlogAndUser(@RequestParam("blogid") String blogid, Model model, HttpSession session){
+        Date d = new Date();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        int bid=Integer.parseInt(blogid);
+
+        Map<String,Object> map=blogService.getBlogAndUser(bid);
+        model.addAttribute("boke",map.get("boke"));
+        model.addAttribute("yonghu",map.get("yonghu"));
+        model.addAttribute("original",map.get("original"));
+        model.addAttribute("fans",map.get("fans"));
+        model.addAttribute("attention",map.get("attention"));
+        //获取登录用户
+        User u=(User)session.getAttribute("loginresult");
+        System.out.println(u);
+        System.out.println("DDDDD"+bid);
+        if(u!=null){
+            blogService.insertBlogBrowse(u.getUid(),bid,df.format(d));
+        }
+        else {
+            blogService.insertBlogBrowse(1,bid,df.format(d));
+
+        }
+
+        return "userArticle";
+    }
+    //点赞方法
+    @RequestMapping("dianzan")
+    public void dianZan(@RequestParam("bid") int bid){
+
+        boolean flag=blogService.addBlogPoints(bid);
+        System.out.println("点赞"+flag);
+    }
+    //收藏方法
+    @RequestMapping("shoucang")
+    public  void shouCang(@RequestParam("uid")int uid,@RequestParam("bid")int bid,HttpServletResponse response){
+        PrintWriter pw = null;
+        try{
+            pw=response.getWriter();
+            try{
+                boolean b= blogService.collectBlog(uid,bid);
+                pw.print("success");
+                System.out.println(b);
+            }
+            catch (Exception e){
+                pw.print("fail");
+            }
+        }
+        catch (IOException e){
+            shouCang(uid,bid,response);
+        }
+    }
+    //添加关注
+    @RequestMapping("guanzhu")
+    public  void guanZhu(@RequestParam("selfid")int selfid,@RequestParam("attenid")int attenid,@RequestParam("nickname")String nickname, HttpServletResponse response){
+        Notice notice=new Notice();
+        Date d = new Date();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        notice.setUid(attenid);
+        notice.setTime(df.format(d));
+        notice.setContent(nickname+"关注了你");
+        PrintWriter pw = null;
+        try{
+            pw=response.getWriter();
+            try{
+                boolean b= blogService.addAttention(selfid,attenid);
+                pw.print("success");
+                userService.addNotice(notice);
+                System.out.println();
+                System.out.println(b);
+            }
+            catch (Exception e){
+                pw.print("fail");
+            }
+        }
+        catch (IOException e){
+            guanZhu(selfid,attenid,nickname,response);
+        }
+        }
+        //检查是否关注
+        @RequestMapping("checkguanzhu")
+        public  void checkGuanZhu(@RequestParam("selfid")int selfid,@RequestParam("attenid")int attenid,HttpServletResponse response){
+            Attention a=blogService.checkIsAttention(selfid, attenid);
+            PrintWriter pw=null;
+            try{
+                pw=response.getWriter();
+            }
+            catch (IOException e){
+                e.printStackTrace();
+            }
+            if(a!=null){
+               pw.print("success");
+            }
+            else {
+                pw.print("fail");
+            }
+        }
+        //取消关注
+        @RequestMapping("quguan")
+        public void quGuan(@RequestParam("selfid")int selfid,@RequestParam("attenid")int attenid,HttpServletResponse response){
+            boolean b=blogService.deleteAttention(selfid, attenid);
+            System.out.println(b+"取消关注成功");
+            try{
+                PrintWriter pw=response.getWriter();
+                if(b==true){
+                    pw.print("success");
+                }
+            }
+            catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+        //取推送的博客
+        @RequestMapping("twotui")
+        public  void getTwoTuiBlog(@RequestParam("uid")int uid,HttpServletRequest request,HttpServletResponse response){
+            System.out.println("******************************************");
+           List<Blog> l=blogService.selectTwoBlogByUser(uid);
+            System.out.println(l);
+            JSONArray ja=new JSONArray();
+           for (Blog b:l){
+               JSONObject jo=new JSONObject();
+               jo.put("bid",b.getBid());
+               jo.put("title",b.getTitle());
+               jo.put("content",b.getContent());
+               jo.put("time",b.getTime());
+               jo.put("link",b.getLink());
+               jo.put("points",b.getPoints());
+               jo.put("classify",b.getClassify());
+               ja.put(jo);
+           }
+           String con=ja.toString();
+            System.out.println(con);
+           try{
+               Responser.responseToJson(response,request,con);
+           }
+           catch (Exception e){
+               e.printStackTrace();
+           }
+
+        }
 }

@@ -46,7 +46,7 @@
         update message set ISREAD=#{isRead} where TOID=#{uid};
     </update>
     <insert id="addNotice" parameterType="Notice">
-        insert into notice(UID,CONTENT,TIME,ISREAD,TYPE) values (#{uid},#{content},#{time},#{inread},#{type});
+        insert into notice(UID,CONTENT,TIME,ISREAD,TYPE) values (#{uid},#{content},#{time},#{isread},#{type});
     </insert>
     <delete id="deleteNotice" parameterType="Notice">
         delete from notice where UID=#{uid};
@@ -108,4 +108,5 @@ select * from user where NICKNAME=#{nickname} and  UID in (select ATTENID from a
     <select id="rechargeScoring" resultType="Scoring">
         select * from scoring where uid=#{uid} and operation='充值'
     </select>
+
 </mapper>
