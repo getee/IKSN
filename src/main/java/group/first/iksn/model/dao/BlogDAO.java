@@ -2,6 +2,7 @@ package group.first.iksn.model.dao;
 
 
 import group.first.iksn.model.bean.*;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -57,4 +58,8 @@ public interface BlogDAO {
     UserToBlog getUserIsSpeak(int bid);
 
     boolean shutUptoUser(int uid);
+    //我收藏的博客
+    List<Blog> myCollectBlog(int uid);
+    //我发布的博客
+    List<Blog> myBlog(int uid);
 }

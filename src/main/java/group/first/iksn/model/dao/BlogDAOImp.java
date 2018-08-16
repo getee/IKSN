@@ -3,6 +3,7 @@ package group.first.iksn.model.dao;
 import group.first.iksn.model.bean.*;
 import org.springframework.stereotype.Component;
 
+import java.rmi.server.UID;
 import java.util.List;
 import java.util.Map;
 
@@ -221,5 +222,21 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
     public boolean reportBlog(ReportBlog reportBlog) {
         boolean result=getSqlSession().getMapper(BlogDAO.class).reportBlog(reportBlog);
         return result;
+    }
+
+
+
+    //我收藏的博客
+    @Override
+    public List<Blog> myCollectBlog(int uid) {
+        List<Blog> collectblog=getSqlSession().getMapper(BlogDAO.class).myCollectBlog(uid);
+        return collectblog;
+
+    }
+
+    //我发布的博客
+    @Override
+    public List<Blog> myBlog(int uid) {
+        return getSqlSession().getMapper(BlogDAO.class).myBlog(uid);
     }
 }

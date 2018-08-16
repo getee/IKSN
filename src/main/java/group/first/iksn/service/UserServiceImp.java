@@ -218,7 +218,6 @@ public class UserServiceImp implements UserService {
            return user;
     }
 
-
     //修改用户密码
     @Override
     public void updatePassword(int uid,String newpassword) {
@@ -227,8 +226,6 @@ public class UserServiceImp implements UserService {
         user.setPassword(MD5.MD5(newpassword));
         userDAO.updatePassword(user);
     }
-
-
 
     //修改用户邮箱
     @Override
@@ -239,15 +236,11 @@ public class UserServiceImp implements UserService {
         userDAO.updateEmail(user);
 
     }
-
-
     //根据提供的id获取用户
     @Override
     public User getId(int uid) {
-
         return userDAO.getId(uid);
     }
-
     //用户等级
     @Override
     public int userGrade(int uid) {

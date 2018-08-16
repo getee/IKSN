@@ -204,64 +204,7 @@
                         </form>
                 </div>
 
-                <script >
 
-                    $(document).ready(function(){
-                        $('#password').blur(function(){
-                            data={"uid":${sessionScope.loginresult.uid},"password":$("#password").val()};
-                            $.post("/user/checkPassword?uid=${sessionScope.loginresult.uid}&password="+$("#password").val(),function(data){
-                                if(data=='true'){
-                                    $("#userExtist").css("color","green");
-                                    $("#userExtist").html("密码与原密码一样");
-
-                                }else
-                                {
-                                    $("#userExtist").css("color","red");
-                                    $("#userExtist").html("密码与原密码不一样");
-
-                                }
-                            });
-                        });
-                    });
-
-                    function validate() {
-                        var pwd = $("#newpassword").val();
-                        var pwd1 = $("#equelspassword").val();
-                        <!-- 对比两次输入的密码 -->
-                        if(pwd == pwd1)
-                        {
-                            $("#tishi").html("两次密码相同");
-                            $("#tishi").css("color","green");
-                            $("#xiugai").removeAttr("disabled");
-                        }
-                        else {
-                            $("#tishi").html("两次密码不相同");
-                            $("#tishi").css("color","red")
-                            $("button").attr("disabled","disabled");
-                        }
-                    }
-
-                    $("#submit").click(function () {
-                        if ($("#password").val()!="") {
-                            alert("姓名不能为空");
-                            return false;
-                        }
-                        else if($("#remindTel").val()==""){
-                            alert("电话不能空");
-                            return false;
-                        }
-                        $.ajax({
-                            url: "remind.ashx",
-                            data: $("#formRemind").serialize(),
-                            type: 'post',
-                            success: function () {
-                                alert("发送成功");
-                            }
-                        })
-                    })
-
-
-                </script>
                 <!--    	修改密码结束   -->
 
 
@@ -415,46 +358,7 @@
 
                 </div>
 
-                <script >
 
-                    $(document).ready(function(){
-                        /**
-                         登录用户mima的ajax代码
-                         **/
-                        $('#email').blur(function(){
-                            data={"uid":${sessionScope.loginresult.uid},"email":$("#email").val()};
-                            $.post("/user/checkEmail?uid=${sessionScope.loginresult.uid}&email="+$("#email").val(),function(data){
-                                if(data=='true'){
-                                    $("#Extist").css("color","green");
-                                    $("#Extist").html("邮箱与原邮箱一样");
-
-                                }else
-                                {
-                                    $("#Extist").css("color","red");
-                                    $("#Extist").html("邮箱与原邮箱不一样");
-
-                                }
-                            });
-                        });
-                    });
-
-                    function valid() {
-                        var pwd = $("#newemail").val();
-                        var pwd1 = $("#equelsemail").val();
-                        <!-- 对比两次输入的密码 -->
-                        if(pwd == pwd1)
-                        {
-                            $("#ti").html("两次输入的邮箱相同");
-                            $("#ti").css("color","green");
-                            $("#xiugai").removeAttr("disabled");
-                        }
-                        else {
-                            $("#ti").html("两次输入的邮箱不相同");
-                            $("#ti").css("color","red")
-                            $("button").attr("disabled","disabled");
-                        }
-                    }
-                </script>
                 <!--    修改邮箱结束  -->
 
                 <!--    登录日志-->
@@ -518,52 +422,96 @@
                                 <td class="col-xs-3"><span class="numbers">13</span><span class="time">2017-06-18 21:41</span></td>
                                 <td class="col-xs-9">中国湖北襄阳（116.208.99.*)</td>
                             </tr>
-                            <tr class="row">
-                                <td class="col-xs-3"><span class="numbers">14</span><span class="time">2017-06-16 17:30</span></td>
-                                <td class="col-xs-9">中国湖北襄阳（27.22.95.*)</td>collectblog
-                            </tr>
-                            <tr class="row">
-                                <td class="col-xs-3"><span class="numbers">15</span><span class="time">2017-06-09 19:35</span></td>
-                                <td class="col-xs-9">中国湖北襄阳（111.177.117.*)</td>
-                            </tr>
-                            <tr class="row">
-                                <td class="col-xs-3"><span class="numbers">16</span><span class="time">2017-06-07 23:01</span></td>
-                                <td class="col-xs-9">中国湖北襄阳（27.29.177.*)</td>
-                            </tr>
-                            <tr class="row">
-                                <td class="col-xs-3"><span class="numbers">17</span><span class="time">2017-06-07 22:02</span></td>
-                                <td class="col-xs-9">中国湖北襄阳（27.22.94.*)</td>
-                            </tr>
-                            <tr class="row">
-                                <td class="col-xs-3"><span class="numbers">18</span><span class="time">2017-06-07 10:08</span></td>
-                                <td class="col-xs-9">中国湖北襄阳（111.177.117.*)</td>
-                            </tr>
-                            <tr class="row">
-                                <td class="col-xs-3"><span class="numbers">19</span><span class="time">2017-06-04 23:05</span></td>
-                                <td class="col-xs-9">中国湖北襄阳（27.29.146.*)</td>
-                            </tr>
-                            <tr class="row">
-                                <td class="col-xs-3"><span class="numbers">20</span><span class="time">2017-06-04 22:47</span></td>
-                                <td class="col-xs-9">中国湖北襄阳（27.29.146.*)</td>
-                            </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-
-
             </div>
-
         </div>
-
-
 
     </div>
 </div>
 </body>
 </html>
+<!--修改用户密码-->
+<script >
+    $(document).ready(function(){
+        $('#password').blur(function(){
+            data={"uid":${sessionScope.loginresult.uid},"password":$("#password").val()};
+            $.post("/user/checkPassword?uid=${sessionScope.loginresult.uid}&password="+$("#password").val(),function(data){
+                if(data=='true'){
+                    $("#userExtist").css("color","green");
+                    $("#userExtist").html("密码与原密码一样");
 
+                }else
+                {
+                    $("#userExtist").css("color","red");
+                    $("#userExtist").html("密码与原密码不一样");
 
+                }
+            });
+        });
+    });
+    function validate() {
+        var pwd = $("#newpassword").val();
+        var pwd1 = $("#equelspassword").val();
+        <!-- 对比两次输入的密码 -->
+        if(pwd == pwd1)
+        {
+            $("#tishi").html("两次密码相同");
+            $("#tishi").css("color","green");
+            $("#xiugai").removeAttr("disabled");
+        }
+        else {
+            $("#tishi").html("两次密码不相同");
+            $("#tishi").css("color","red")
+            $("button").attr("disabled","disabled");
+        }
+    }
+</script>
+<!--修改用户邮箱-->
+<script >
+
+    $(document).ready(function(){
+        /**
+         登录用户mima的ajax代码
+         **/
+        $('#email').blur(function(){
+            data={"uid":${sessionScope.loginresult.uid},"email":$("#email").val()};
+            $.post("/user/checkEmail?uid=${sessionScope.loginresult.uid}&email="+$("#email").val(),function(data){
+                if(data=='true'){
+                    $("#Extist").css("color","green");
+                    $("#Extist").html("邮箱与原邮箱一样");
+
+                }else
+                {
+                    $("#Extist").css("color","red");
+                    $("#Extist").html("邮箱与原邮箱不一样");
+
+                }
+            });
+        });
+    });
+
+    function valid() {
+        var pwd = $("#newemail").val();
+        var pwd1 = $("#equelsemail").val();
+        <!-- 对比两次输入的密码 -->
+        if(pwd == pwd1)
+        {
+            $("#ti").html("两次输入的邮箱相同");
+            $("#ti").css("color","green");
+            $("#xiugai").removeAttr("disabled");
+        }
+        else {
+            $("#ti").html("两次输入的邮箱不相同");
+            $("#ti").css("color","red")
+            $("button").attr("disabled","disabled");
+        }
+    }
+</script>
+
+<!--修改手机号-->
 <script>
     /*
    * @Author: TimLie.yaoleixia

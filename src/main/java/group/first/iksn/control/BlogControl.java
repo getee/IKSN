@@ -6,6 +6,7 @@ import group.first.iksn.service.BlogService;
 import group.first.iksn.util.EncodingTool;
 import group.first.iksn.util.Responser;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +17,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -316,5 +320,70 @@ public class BlogControl {
             e.printStackTrace();
         }
     }
+
+    //我收藏的博客
+    @RequestMapping(value = "/myCollectBlog" )
+    public void  myCollectBlog(HttpServletResponse response,HttpSession session,Model model) throws IOException {
+        System.out.println("进入myCollectBlog");
+        User u= (User) session.getAttribute("loginresult");
+        System.out.println(u);
+        List<Blog> collectblog=blogService.myCollectBlog(u.getUid());
+        System.out.println(collectblog);
+        //session.setAttribute("collectblog",collectblog);
+        JSONArray jsonArray=new JSONArray();
+        JSONObject jsonObject=null;
+        for (int i=0;i<collectblog.size();i++){
+            jsonObject=new JSONObject();
+            try{
+                jsonObject.put("title",collectblog.get(i).getTitle());
+                jsonObject.put("time",collectblog.get(i).getTime());
+                jsonArray.put(jsonObject);
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+        }
+        System.out.println(jsonArray);
+        //悄悄把数据会给他
+        //用response（响应）对象中的输出流将处理好的结果输出给ajax请求对象
+        response.setContentType("textml;charset=UTF-8");//  textml     ,text/xml    ,text/json
+        PrintWriter out=response.getWriter();//获取响应对象中的输出流
+        out.write(jsonArray.toString());
+        out.flush();
+        out.close();
+
+    }
+
+    //我发布的博客
+    @RequestMapping(value = "/myBlog" )
+    public void  myBlog(HttpServletResponse response,HttpSession session,Model model) throws IOException {
+        System.out.println("进入myBlog");
+        User u= (User) session.getAttribute("loginresult");
+        System.out.println(u);
+        List<Blog> blog=blogService.myBlog(u.getUid());
+        System.out.println(blog);
+        //session.setAttribute("collectblog",collectblog);
+        JSONArray jsonArray=new JSONArray();
+        JSONObject jsonObject=null;
+        for (int i=0;i<blog.size();i++){
+            jsonObject=new JSONObject();
+            try{
+                jsonObject.put("title",blog.get(i).getTitle());
+                jsonObject.put("time",blog.get(i).getTime());
+                jsonArray.put(jsonObject);
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+        }
+        System.out.println(jsonArray);
+        //悄悄把数据会给他
+        //用response（响应）对象中的输出流将处理好的结果输出给ajax请求对象
+        response.setContentType("textml;charset=UTF-8");//  textml     ,text/xml    ,text/json
+        PrintWriter out=response.getWriter();//获取响应对象中的输出流
+        out.write(jsonArray.toString());
+        out.flush();
+        out.close();
+    }
+
+
 
 }

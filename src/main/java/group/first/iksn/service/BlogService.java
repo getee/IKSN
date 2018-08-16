@@ -48,4 +48,9 @@ public interface BlogService {
     String getFloor(Integer bid);
     //被举报博客的数量
     int getReportBlogNum();
+
+    // 我收藏的所有博客
+    List<Blog> myCollectBlog(int uid);
+    //我发布的博客
+    List<Blog> myBlog(int uid);
 }

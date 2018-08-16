@@ -245,4 +245,13 @@
     <update id="shutUptoUser" parameterType="integer">
         update user set ISSPEAK=1 where UID=1
     </update>
+
+    <!--我收藏的博客-->
+       <select id="myCollectBlog" resultType="Blog">
+        SELECT title, time FROM blog WHERE  BID IN ( SELECT BID FROM  collectblog WHERE UID=uid)
+    </select>
+    <!--我发布的博客-->
+    <select id="myBlog" resultType="Blog">
+      SELECT title, time FROM blog WHERE  BID IN ( SELECT BID FROM  usertoblog WHERE UID=uid)
+    </select>
 </mapper>

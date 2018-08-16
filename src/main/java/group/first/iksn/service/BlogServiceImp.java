@@ -193,4 +193,18 @@ public class BlogServiceImp implements BlogService {
             }
         }
     }
+
+    // 我收藏的所有博客
+    @Override
+    public List<Blog> myCollectBlog(int uid) {
+        return blogDAO.myCollectBlog(uid);
+    }
+
+    //我发布的博客
+    @Override
+    public List<Blog> myBlog(int uid) {
+        return blogDAO.myBlog(uid);
+    }
+
+
 }

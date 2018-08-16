@@ -51,4 +51,5 @@ public interface UserDAO {
     //积分充值记录
     List<Scoring> rechargeScoring(int uid);
 
+
 }
