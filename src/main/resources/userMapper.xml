@@ -32,6 +32,10 @@
     <select id="listNotReadNoticeNum" resultType="Integer">
         select count(*)  from notice where UID=#{uid} and ISREAD=0;
     </select>
+    <select id="listNotReadMessageNum" resultType="Integer">
+        select count(*)  from message where TOID=#{uid} and ISREAD=0;
+    </select>
+
     <select id="receiveMessage" resultType="Message">
     select  * from message where TOID=#{toid};
     </select>

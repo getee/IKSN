@@ -1,6 +1,7 @@
 package group.first.iksn.service;
 
 import group.first.iksn.model.bean.CollectResource;
+import group.first.iksn.model.bean.ReportResource;
 import group.first.iksn.model.bean.Resource;
 import group.first.iksn.model.bean.ReportResource;
 import group.first.iksn.model.bean.ResourceComments;
@@ -151,6 +152,17 @@ public class ResourceServiceImp  implements ResourceService{
         System.out.println(reportResource);
         boolean result=resourceDAO.reportResource(reportResource);
         return result;
+    }
+
+
+    @Override
+    public List<ReportResource> getAllReportResource(int page) {
+        return resourceDAO.getAllReportResource(page);
+    }
+
+    @Override
+    public int reportResourceNum() {
+        return resourceDAO.reportResourceNum();
     }
 
 

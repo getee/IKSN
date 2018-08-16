@@ -181,14 +181,18 @@ public class UserControl {
      * @return
      */
     @RequestMapping("/sendMessage/{fromid}")
-    public String  sendMessage(HttpServletRequest request,@PathVariable("fromid") int fromid,Model model){
+    @ResponseBody
+    public String   sendMessage(HttpServletRequest request,@PathVariable("fromid") int fromid,Model model){
 
+
+        System.out.println("toid:"+request.getParameter("toid"));
+        System.out.println("content:"+EncodingTool.encodeStr(request.getParameter("content")));
         String[] everyToId=request.getParameter("toid").split(",");
         for (int i=0;i<everyToId.length;i++){
             Message message=new Message();
             message.setFromid(fromid);
             message.setToid(Integer.parseInt(everyToId[i]));
-            message.setContent(request.getParameter("content"));
+            message.setContent(EncodingTool.encodeStr(request.getParameter("content")));
             Date d = new Date();
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             message.setTime(df.format(d));
@@ -197,15 +201,16 @@ public class UserControl {
           // message.setTime(new Date().toLocaleString());
             boolean result=userService.sendMessage(message);
             if(result){
-                model.addAttribute("sendResult","sendSuccess");
+               // model.addAttribute("sendResult","sendSuccess");
 
             }else{
-                model.addAttribute("sendResult","sendError");
-
+                //model.addAttribute("sendResult","sendError");
+                return "error";
             }
         }
 
-        return "wodexiaoxi";
+        return "success";
+
     }
 
     /**
@@ -285,8 +290,22 @@ public class UserControl {
     @RequestMapping("/timingReceivingNotice/{uid}")
     @ResponseBody
     public String timingReceivingNotice(@PathVariable("uid") int uid){
-        int nowNoticeNum=userService.listAllNoticeNum(uid);
-        return String.valueOf(nowNoticeNum);
+        //int nowNoticeNum=userService.listAllNoticeNum(uid);
+        int notReadNoticeNum=userService.listNotReadNoticeNum(uid);
+        return String.valueOf(notReadNoticeNum);
+    }
+
+    /**
+     * 定时刷新新的私信及时提示用户
+     * @author BruceLee
+     * @return
+     */
+    @RequestMapping("/timingReceivingMessage/{uid}")
+    @ResponseBody
+    public String timingReceivingMessage(@PathVariable("uid") int uid){
+        //int nowNoticeNum=userService.listAllNoticeNum(uid);
+        int notReadMessageNum=userService.listNotReadMessageNum(uid);
+        return String.valueOf(notReadMessageNum);
     }
 
     /**

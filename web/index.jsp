@@ -29,11 +29,31 @@
 		
 	}
 </style>
+<script>
+	$(document).ready(function(){
+		$(document).scroll(function () {
+		   // alert($('#leftDaohang').offset().top )
+            if($(document).scrollTop()>=$("#leftDaohang").height()){
 
+                $("#leftDaohang").css({
+					"position":"fixed",
+					"top":"0px",
+					"left":"2%",
+					"width":"14%"
+				})
+            }else{
+                $("#leftDaohang").removeAttr("style")
+			}
+        })
+
+	})
+</script>
 
 </head>
 
 <body>
+
+
 
 <C:if test="${requestScope.BlogsPush eq null}">
 	<c:redirect url="/blog/blogPush"></c:redirect>
@@ -56,7 +76,7 @@
 		<div class="container-fluid">
 		  <div class="row">
 			  <div class="col-md-1"></div>
-			  <div class="col-md-10">
+			  <div id="leftDaohang" class="col-md-10">
 			  	<ul class="nav nav-pills nav-stacked">
 				  <li class="active"><a href="#">推荐</a></li>
 				  <li><a href="#">最新文章</a></li>
@@ -439,7 +459,7 @@
 				  </script>
 			  	<!--			  登陆结束-->
 <!--			  	今日推荐开始-->
-				  <div class="span12" style="margin-top: 30px; background-color:#FFFFFF">
+				  <div id="jinrituijian" class="span12" style="margin-top: 30px; background-color:#FFFFFF">
 				  	<span>今日推荐</span>
 				  	
 				  	<div class="thumbnail">

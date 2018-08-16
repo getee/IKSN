@@ -16,6 +16,8 @@ public interface UserService {
     //查询该用户所有的通知
     List receiveNotice(int uid,int nowPage);
     //查询未读通知数量
+    int listNotReadMessageNum(int uid);
+    //查询未读私信数量
     int listNotReadNoticeNum(int uid);
     //查询所有通知数量
     int listAllNoticeNum(int uid);

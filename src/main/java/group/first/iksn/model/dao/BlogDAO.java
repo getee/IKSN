@@ -31,7 +31,7 @@ public interface BlogDAO {
 
     boolean addIllegalblog(IllegalBlog blog);
     //获取所有被举报博客
-    List<ReportBlog> getAllReportBlog();
+    List<ReportBlog> getAllReportBlog(int page);
 
     boolean commentBlog(BlogComments blogComments);
     //获取所有被举报资源
@@ -51,4 +51,10 @@ public interface BlogDAO {
     public boolean reportBlog(ReportBlog reportBlog);
 
     String selectFloor(Integer bid);
+    //被举报的博客数量
+    int reportBlogNum();
+    //查看user是否被禁言
+    UserToBlog getUserIsSpeak(int bid);
+
+    boolean shutUptoUser(int uid);
 }

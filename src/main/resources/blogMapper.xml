@@ -108,7 +108,7 @@
     </resultMap>
     <select id="getAllReportBlog" resultMap="getBlogBy_Reportbid">
 		select  i.ID,i.BID,i.REASON,b.TITLE  from reportblog as i
-		inner join blog as b on   i.BID=b.BID ORDER BY i.ID asc limit 0,6;
+		inner join blog as b on   i.BID=b.BID ORDER BY i.ID asc limit #{page},3;
 	</select>
 
     <!-- 博客评论 -->
@@ -139,7 +139,7 @@
     </resultMap>
     <select id="getAllReportResource" resultMap="getResourceBy_Reportrid">
 		select  rr.ID,rr.RID,rr.REASON,r.NAME  from reportresource as rr
-		inner join resource as r on   rr.RID=r.RID ORDER BY rr.ID asc limit 0,6;
+		inner join resource as r on   rr.RID=r.RID ORDER BY rr.ID asc limit 0,3;
 	</select>
 
     <!--举报博客-->
@@ -179,7 +179,9 @@
         inner join blogtag as t on t.bid=b.bid
        where  b.TITLE like '%' #{s} '%'
     </select>
-
+    <select id="reportBlogNum" resultType="Integer">
+        select count(*) from reportblog
+    </select>
 
    <!-- <select id="sUser" resultMap="sUser">
         select u.*,ub.* from usertoblog as ub
@@ -223,4 +225,24 @@
         select * from blog order by points desc
     </select>
 
+    <!--结果集合通过usertoblog查user是否禁言-->
+    <resultMap id="getUserIsSpeakMap" type="UserToBlog">
+        <id column="id" property="id"/>
+        <result column="uid" property="uid"/>
+
+        <association property="user" column="uid" javaType="User">
+            <id column="uid" property="uid"/>
+            <result column="isspeak" property="isspeak"/>
+        </association>
+    </resultMap>
+    <select id="getUserIsSpeak" resultMap="getUserIsSpeakMap">
+		select  ub.ID,ub.UID,u.ISSPEAK
+          from usertoblog ub
+          LEFT OUTER JOIN user u ON u.UID = ub.UID
+          where ub.BID=#{bid}
+	</select>
+
+    <update id="shutUptoUser" parameterType="integer">
+        update user set ISSPEAK=1 where UID=1
+    </update>
 </mapper>

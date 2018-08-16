@@ -52,6 +52,22 @@ public class UserDAOImp extends BaseDAOImp implements UserDAO {
         }
     }
     /**
+     * 收到未读私信的数量
+     * @auther BruceLee
+     * @return
+     */
+    @Override
+    public int listNotReadMessageNum(int uid) {
+        try {
+            int notReadMessageNum=getSqlSession().getMapper(UserDAO.class).listNotReadMessageNum(uid);
+            return notReadMessageNum;
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+    /**
      * 收到所有通知的数量
      * @auther BruceLee
      * @return

@@ -4,6 +4,9 @@ package group.first.iksn.control;
 import group.first.iksn.model.bean.*;
 import group.first.iksn.service.BlogService;
 import group.first.iksn.util.EncodingTool;
+import group.first.iksn.util.Responser;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -167,18 +170,16 @@ public class BlogControl {
      */
     @RequestMapping(value = "/mGetAllReportBlog")
     public String mGetAllReportBlog(Model model){
-        List<ReportBlog> reportBlogs=blogService.getAllReportBlog();
-        List<ReportResource> reportResources=blogService.getAllReportResource();
+        List<ReportBlog> reportBlogs=blogService.getAllReportBlog(1);
+        //List<ReportResource> reportResources=blogService.getAllReportResource();
+        int num=blogService.getReportBlogNum();
         System.out.println(reportBlogs);
         for (ReportBlog i:reportBlogs){
             System.out.println(i.getBlog());
         }
-        System.out.println(reportResources);
-        for (ReportResource r:reportResources){
-            System.out.println(r.getResource());
-        }
         model.addAttribute("ReportBlogList",reportBlogs);
-        model.addAttribute("ReportResourceList",reportResources);
+        model.addAttribute("rBlNum",num);
+        //model.addAttribute("ReportResourceList",reportResources);
         return  "jubaoguanl";
     }
 
@@ -258,6 +259,7 @@ public class BlogControl {
      */
     @RequestMapping("/mCheckReportblog/{blog_id}/{id}")
     public String mCheckReportblog(@PathVariable int blog_id,String reason,@PathVariable int id,Model model){
+        EncodingTool.encodeStr(reason);
         System.out.println(blog_id+reason);
         model.addAttribute("blog_id",blog_id);
         model.addAttribute("reportReason",reason);
@@ -277,6 +279,42 @@ public class BlogControl {
             e.printStackTrace();
         }
         return;
+    }
+
+    /**
+     * 分页
+     * @param page
+     * @param response
+     * @param request
+     */
+    @RequestMapping("mGetReportBlog/{page}")
+    @ResponseBody
+    public void mGetReportBlog(@PathVariable int page,HttpServletResponse response, HttpServletRequest request){
+        //int count=1;
+        System.out.println("进入blog分页");
+        List<ReportBlog> reportBlogList= blogService.getAllReportBlog(page);
+        System.out.println(reportBlogList+"ssssssssss");
+        for (ReportBlog r:reportBlogList){
+            System.out.println(r.getBlog());
+        }
+        int reportBlogNum=blogService.getReportBlogNum();//被举报博客的数量
+        JSONArray jsonArray=new JSONArray();
+        for (ReportBlog rb:reportBlogList) {
+            JSONObject jsonObject=new JSONObject();
+            jsonObject.put("id",rb.getId());
+            jsonObject.put("reason",rb.getReason());
+            jsonObject.put("title",rb.getBlog().getTitle());
+            jsonObject.put("bid",rb.getBid());
+            jsonArray.put(jsonObject);
+        }
+        JSONObject jsonObjectTwo=new JSONObject();
+        jsonObjectTwo.put("reportBlNum",reportBlogNum);
+        jsonArray.put(jsonObjectTwo);
+        try {
+            Responser.responseToJson(response, request, jsonArray.toString());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 }
