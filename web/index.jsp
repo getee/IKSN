@@ -157,7 +157,7 @@
 					<c:forEach var="t" items="${BlogsPush}" >
 						<div class="span12" style="border-radius: 10px;background-color:#FFFFFF;margin-top: 30px">
 							<h2>
-								<a href="userArticle.jsp">${t.title}</a>
+								<a target="_blank" href="userArticle.jsp">${t.title}</a>
 							</h2>
 							<p>
 								${fn:substring(t.content,0,150)}.........

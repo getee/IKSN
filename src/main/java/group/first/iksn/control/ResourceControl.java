@@ -159,13 +159,12 @@ public class ResourceControl {
      * @return
      */
     @RequestMapping("/mCheckReportResource/{resourceid}/{id}")
-    public String mCheckReportResource(@PathVariable int resourceid, @PathVariable int id,String reason, Model model){
-        EncodingTool.encodeStr(reason);
-        System.out.println(reason);
+    public String mCheckReportResource(@PathVariable int resourceid, @PathVariable int id,@RequestParam("reason") String reason, Model model){
+        String reportReason=EncodingTool.encodeStr(reason);
 
         model.addAttribute("resourceid",resourceid);
         model.addAttribute("reportRid",id);
-        model.addAttribute("reportRReason",reason);
+        model.addAttribute("reportRReason",reportReason);
 
         return "xq";
     }

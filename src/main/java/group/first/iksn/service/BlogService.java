@@ -44,6 +44,8 @@ public interface BlogService {
 
     //举报博客
     public boolean reportBlog(ReportBlog reportBlog);
+    //获取被举报的博客
+    ReportBlog selectReportBlog(int id);
 
     String getFloor(Integer bid);
     //被举报博客的数量
