@@ -140,7 +140,7 @@
         </association>
     </resultMap>
     <select id="getAllReportBlog" resultMap="getBlogBy_Reportbid">
-		select  i.ID,i.BID,i.REASON,b.TITLE  from reportblog as i
+		select  i.ID,i.BID,i.REASON,b.TITLE,b.TIME  from reportblog as i
 		inner join blog as b on   i.BID=b.BID ORDER BY i.ID asc limit #{page},5;
 	</select>
 
@@ -395,11 +395,11 @@
 
     <!--我收藏的博客-->
        <select id="myCollectBlog" resultType="Blog">
-        SELECT title, time FROM blog WHERE  BID IN ( SELECT BID FROM  collectblog WHERE UID=uid)
+        SELECT title, time FROM blog WHERE  BID IN ( SELECT BID FROM  collectblog WHERE UID=#{uid})
     </select>
     <!--我发布的博客-->
     <select id="myBlog" resultType="Blog">
-      SELECT title, time FROM blog WHERE  BID IN ( SELECT BID FROM  usertoblog WHERE UID=uid)
+      SELECT title, time FROM blog WHERE  BID IN ( SELECT BID FROM  usertoblog WHERE UID=#{uid})
     </select>
     <!--根据bid查uid-->
     <select id="selectUidByBid" parameterType="Integer" resultType="UserToBlog">

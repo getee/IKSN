@@ -170,6 +170,9 @@ public class ResourceServiceImp  implements ResourceService{
         if(deleteResult){
             //再删除resource表数据
             result=resourceDAO.deleteResource(resourceid);
+            //删除实体文件
+            File file=new File(r.getPath());
+            file.delete();
             //封装notice(通知)
             Notice notice=new Notice();
             notice.setUid(r.getUid());
@@ -199,6 +202,8 @@ public class ResourceServiceImp  implements ResourceService{
     public int reportResourceNum() {
         return resourceDAO.reportResourceNum();
     }
+
+
     //查询上传的资源
     @Override
     public List<Resource> getUploadResource(int uid) {
@@ -223,7 +228,7 @@ public class ResourceServiceImp  implements ResourceService{
     }
      //下载资源
     @Override
-    public List<Resource> downloadResource(int uid) {
+    public List<Resource> getdownloadResource(int uid) {
         return resourceDAO.downloadResource(uid);
     }
 

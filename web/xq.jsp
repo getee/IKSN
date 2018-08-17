@@ -78,7 +78,7 @@
             <li ><a href="myresource.jsp">我的收藏</a></li>
             <c:if test="${sessionScope.loginresult.isadmin eq '1'}">
                 <li style="margin-left: 5%"><a href="/blog/mGetAllReportBlog">返回举报页</a></li>
-                <li><a href="javascript:deleteResource(${requestScope.resouce.path})">删除</a></li>
+                <li><a href="javascript:deleteResource('${requestScope.resouce.path}')">删除</a></li>
                 <li><a style="cursor: default">举报原因：${reportRReason}</a></li>
             </c:if>
         </ul>
@@ -88,9 +88,18 @@
 <script>
     function deleteResource(url) {
         var userChoice=window.confirm("您确认要去除这个资源吗？");
-        var a="/"+url;
+        var a="/resource/mDeleteResourceForReport/${resourceid}";
         if(userChoice){
-             location.href=a;
+            $("loadGif").show();
+            $.get(a,function (data) {
+                $("loadGif").hide();
+                if(data=="success"){
+                    location.href="/blog/mGetAllReportBlog";
+                }else {
+                    alert("未知错误，请再试一次！！")
+                }
+            })
+
         }
     }
 </script>
@@ -334,6 +343,9 @@
         </div>
     </div>
 </div>
+</div>
+<div id="loadGif"  style="display: none;margin: auto;width: 50px;height: auto;position: fixed;left: 45%;top: 35%;z-index: 10;border-radius: 25px">
+    <img alt="加载。。。" src="img/Rload.gif" style="width: 100%;height: auto;border-radius: 25px">
 </div>
 </body>
 <script type="text/javascript">
