@@ -53,8 +53,6 @@
 
 <body>
 
-
-
 <C:if test="${requestScope.BlogsPush eq null}">
 	<c:redirect url="/blog/blogPush"></c:redirect>
 </C:if>
@@ -69,7 +67,7 @@
 
 </div>
 		  <!--		  导航结束-->
-  <div class="row" style="background-color:#EBEBEB">
+  <div class="row" style="background-color:#EBEBEB;margin-right: 0px">
 <!--	  左边导航栏-->
 	  <div class="col-xs-12 col-md-2">
 	  	
@@ -157,7 +155,7 @@
 					<c:forEach var="t" items="${BlogsPush}" >
 						<div class="span12" style="border-radius: 10px;background-color:#FFFFFF;margin-top: 30px">
 							<h2>
-								<a target="_blank" href="userArticle.jsp">${t.title}</a>
+								<a href="/blog/getBlogAndUser?blogid=${t.bid}">${t.title}</a>
 							</h2>
 							<p>
 								${fn:substring(t.content,0,150)}.........

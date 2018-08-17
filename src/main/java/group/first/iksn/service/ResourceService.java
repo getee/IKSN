@@ -21,6 +21,8 @@ public interface ResourceService {
 
     int downResource(Integer rid);
 
+    //资源详情界面加载
+    Resource loadResource(int rid);
 
     //查询下载次数
     //举报资源
@@ -39,6 +41,9 @@ public interface ResourceService {
     List<ReportResource> getAllReportResource(int page);
     //获取被举报资源的数量
     int reportResourceNum();
+
+    //上传者，下载者，积分数
+    boolean downLoadResource(int pushId, int downId, int scoring);
     //查询上传的资源
     List<Resource> getUploadResource(int uid);
 }

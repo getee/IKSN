@@ -73,9 +73,18 @@ public class UserControl {
         Cookie passwordCookie=new Cookie("passwordCookie",password);
         System.out.println(iscollect);
         if (user!=null){
-            List<User> allFriendOfThisUser=userService.FindAllFriendsOfThisUser(user.getUid());
             session.setAttribute("loginresult",user);
+            List<User> allFriendOfThisUser=userService.FindAllFriendsOfThisUser(user.getUid());
+            List<User> allFansOfThisUser=userService.listAllFans(user.getUid());
+
+            //遍历筛选出我没有关注的粉丝
+//          使用Collection的removeAll方法删除两个集合中相同元素，泛型中的User必须重写HashCode
+            Collection notAttenedFans=new ArrayList<User>(allFansOfThisUser);
+            notAttenedFans.removeAll(allFriendOfThisUser);
+            System.out.println("未关注的粉丝"+notAttenedFans);
             session.setAttribute("allFriendOfThisUser",allFriendOfThisUser);
+            session.setAttribute("notAttenedFans",notAttenedFans);
+
             model.addAttribute("logmes",true);
             System.out.println(model);
             if(iscollect!=null){
@@ -100,6 +109,18 @@ public class UserControl {
         session.removeAttribute("loginresult");
         return "index";
     }
+    //登录后就开始查询该用户的好友
+    @RequestMapping("/FindAllFriendsOfThisUser/{uid}")
+    @ResponseBody
+    public void FindAllFriendsOfThisUser(@PathVariable("uid") int uid,HttpSession session){
+        List<User> allFriendOfThisUser=userService.FindAllFriendsOfThisUser(uid);
+        List<User> allFansOfThisUser=userService.listAllFans(uid);
+        Collection notAttenedFans=new ArrayList<User>(allFansOfThisUser);
+        notAttenedFans.removeAll(allFriendOfThisUser);
+        System.out.println("未关注的粉丝"+notAttenedFans);
+        session.setAttribute("allFriendOfThisUser",allFriendOfThisUser);
+        session.setAttribute("notAttenedFans",notAttenedFans);
+    }
 
     /**
      * 查询收到的通知消息
@@ -114,7 +135,7 @@ public class UserControl {
         model.addAttribute("nowNoticePage",nowPage);
         model.addAttribute("AllNoticeNum",AllNoticeNum);
         model.addAttribute("notReadNum",notReadNoticeNum);//返回未读的消息数量
-        model.addAttribute("allNotices",allNotices);//返回所有的消息
+        model.addAttribute("allNotices",allNotices);//返回第一页所有的消息
         return "tongzhi";
     }
     /**
@@ -143,14 +164,9 @@ public class UserControl {
     public String changeMessageIsRead(@PathVariable("isRead") int isRead,@PathVariable("uid") int uid){
         boolean result=userService.changeMessageIsRead(isRead,uid);//isRead 为前台传入的参数0或者1，表示已读或者未读
         if(result){
-            int index=0;//定义一个计数器来记录未读的通知数量
-            List<Message> allMessage=userService.receiveMessage(uid);//遍历出所有的通知
-            for (Message message:allMessage) {
-                if(message.getIsread()==0){
-                    index+=1;
-                }
-            }
-            return String.valueOf(index);//ajax返回未读数量，进行实时更新
+            int notReadMessageNum=userService.listNotReadMessageNum(uid);//遍历出所有的通知
+
+            return String.valueOf(notReadMessageNum);//ajax返回未读数量，进行实时更新
         }else{
             return null;
         }
@@ -268,19 +284,17 @@ public class UserControl {
      * @author BruceLee
      * @return
      */
-    @RequestMapping("/receiveMessage/{uid}")
-    public String receiveMessage(@PathVariable("uid") int uid,Model model){
-        int index=0;//定义一个计数器来记录未读的通知数量
+    @RequestMapping("/receiveMessage/{uid}/{nowPage}")
+    public String receiveMessage(@PathVariable("uid") int uid,@PathVariable("nowPage") int nowPage,Model model){
         List<User> allSendMessageUsers=userService.listSendMessageUser(uid);
-        List<Message> allMessages=userService.receiveMessage(uid);//遍历该用户所有的私信
-        for (Message message:allMessages) {
-            if(message.getIsread()==0){
-                index+=1;
-            }
-        }
-        model.addAttribute("notReadMessageNum",index);//返回未读的消息数量
-        model.addAttribute("allMessages",allMessages);//返回所有的消息
+        List<Message> allMessages=userService.receiveMessage(uid,nowPage);//遍历该用户第一页的私信
+        int allMessageNum=userService.listAllMessageNum(uid);
+        int notReadMessageNum=userService.listNotReadMessageNum(uid);
+        model.addAttribute("nowMessagePage",nowPage);
+        model.addAttribute("notReadMessageNum",notReadMessageNum);//返回未读的消息数量
+        model.addAttribute("allMessages",allMessages);//返回所有第一页的私信
         model.addAttribute("allSendMessageUsers",allSendMessageUsers);
+        model.addAttribute("allMessageNum",allMessageNum);
         return "shouxiaoxi";
     }
 
