@@ -3,6 +3,8 @@ package group.first.iksn.model.dao;
 import group.first.iksn.model.bean.CollectResource;
 import group.first.iksn.model.bean.ReportResource;
 import group.first.iksn.model.bean.Resource;
+import group.first.iksn.model.bean.ReportResource;
+import org.apache.ibatis.session.SqlSession;
 import group.first.iksn.model.bean.ResourceComments;
 import org.springframework.stereotype.Component;
 
@@ -124,6 +126,11 @@ public class ResourceDAOImp extends BaseDAOImp implements ResourceDAO {
         }
         System.out.println("查到数据");
         return allReportResource;
+    }
+
+    @Override
+    public Resource selectUidByRid(int rid) {
+        return getSqlSession().getMapper(ResourceDAO.class).selectUidByRid(rid);
     }
 
     //更改积分

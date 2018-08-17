@@ -118,6 +118,23 @@
         });
 
     }
+    //分页
+    function shangyiye(nowPage){
+        if(nowPage-1>0){
+           // $.get("",function(data){});
+
+            window.location="/user/receiveMessage/${sessionScope.loginresult.uid}/"+(nowPage-1);
+        }
+
+    }
+
+    function xiayiye(nowPage,AllNoticeNum){
+        var maxPage;
+        AllNoticeNum%5==0?AllNoticeNum=(friendNums/5):maxPage=(AllNoticeNum/5+1);
+        if((nowPage*1+1)<=maxPage){
+            window.location="/user/receiveMessage/${sessionScope.loginresult.uid}/"+(nowPage*1+1);
+        }
+    }
 </script>
 <!--	特效-->
 
@@ -145,7 +162,7 @@
                 <ul class="nav nav-tabs">
                     <li role="presentation"><a href="/user/receiveNotice/${sessionScope.loginresult.uid}/1">通知</a></li>
                     <li role="presentation"><a href="/user/listAllFriends/${sessionScope.loginresult.uid}/1">私信</a></li>
-                    <li role="presentation"><a href="/user/receiveMessage/${sessionScope.loginresult.uid}">@我</a></li>
+                    <li role="presentation"><a href="/user/receiveMessage/${sessionScope.loginresult.uid}/1">@我</a></li>
                 </ul>
             </nav>
         </div>
@@ -199,7 +216,17 @@
             </div>--%>
         </div>
         <%--通知结束--%>
+        <!--	分页-->
+        <div class="row ">
 
+            <nav aria-label="...">
+                <ul class="pager">
+                    <li><a href="javascript:shangyiye(${nowMessagePage})">上一页</a></li>
+                    <li><a href="javascript:xiayiye('${nowMessagePage}','${allMessageNum}')">下一页</a></li>
+                </ul>
+            </nav>
+
+        </div>
     </div>
 
 

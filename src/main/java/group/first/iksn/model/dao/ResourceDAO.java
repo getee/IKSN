@@ -44,6 +44,8 @@ public interface ResourceDAO {
     int reportResourceNum();
     //获取所有被举报资源
     List<ReportResource> getAllReportResource(int page);
+    //根据rid查uid
+    Resource selectUidByRid(int rid);
     //更改积分数（更改者，更改后积分）
     boolean changeScore(int uid, int scoring);
 

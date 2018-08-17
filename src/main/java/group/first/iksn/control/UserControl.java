@@ -13,6 +13,7 @@ import group.first.iksn.util.IndustrySMS;
 import group.first.iksn.util.MD5;
 import org.apache.ibatis.jdbc.Null;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.jws.soap.SOAPBinding;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -71,9 +73,18 @@ public class UserControl {
         Cookie passwordCookie=new Cookie("passwordCookie",password);
         System.out.println(iscollect);
         if (user!=null){
-            List<User> allFriendOfThisUser=userService.FindAllFriendsOfThisUser(user.getUid());
             session.setAttribute("loginresult",user);
+            List<User> allFriendOfThisUser=userService.FindAllFriendsOfThisUser(user.getUid());
+            List<User> allFansOfThisUser=userService.listAllFans(user.getUid());
+
+            //遍历筛选出我没有关注的粉丝
+//          使用Collection的removeAll方法删除两个集合中相同元素，泛型中的User必须重写HashCode
+            Collection notAttenedFans=new ArrayList<User>(allFansOfThisUser);
+            notAttenedFans.removeAll(allFriendOfThisUser);
+            System.out.println("未关注的粉丝"+notAttenedFans);
             session.setAttribute("allFriendOfThisUser",allFriendOfThisUser);
+            session.setAttribute("notAttenedFans",notAttenedFans);
+
             model.addAttribute("logmes",true);
             System.out.println(model);
             if(iscollect!=null){
@@ -98,6 +109,18 @@ public class UserControl {
         session.removeAttribute("loginresult");
         return "index";
     }
+    //登录后就开始查询该用户的好友
+    @RequestMapping("/FindAllFriendsOfThisUser/{uid}")
+    @ResponseBody
+    public void FindAllFriendsOfThisUser(@PathVariable("uid") int uid,HttpSession session){
+        List<User> allFriendOfThisUser=userService.FindAllFriendsOfThisUser(uid);
+        List<User> allFansOfThisUser=userService.listAllFans(uid);
+        Collection notAttenedFans=new ArrayList<User>(allFansOfThisUser);
+        notAttenedFans.removeAll(allFriendOfThisUser);
+        System.out.println("未关注的粉丝"+notAttenedFans);
+        session.setAttribute("allFriendOfThisUser",allFriendOfThisUser);
+        session.setAttribute("notAttenedFans",notAttenedFans);
+    }
 
     /**
      * 查询收到的通知消息
@@ -112,7 +135,7 @@ public class UserControl {
         model.addAttribute("nowNoticePage",nowPage);
         model.addAttribute("AllNoticeNum",AllNoticeNum);
         model.addAttribute("notReadNum",notReadNoticeNum);//返回未读的消息数量
-        model.addAttribute("allNotices",allNotices);//返回所有的消息
+        model.addAttribute("allNotices",allNotices);//返回第一页所有的消息
         return "tongzhi";
     }
     /**
@@ -141,14 +164,9 @@ public class UserControl {
     public String changeMessageIsRead(@PathVariable("isRead") int isRead,@PathVariable("uid") int uid){
         boolean result=userService.changeMessageIsRead(isRead,uid);//isRead 为前台传入的参数0或者1，表示已读或者未读
         if(result){
-            int index=0;//定义一个计数器来记录未读的通知数量
-            List<Message> allMessage=userService.receiveMessage(uid);//遍历出所有的通知
-            for (Message message:allMessage) {
-                if(message.getIsread()==0){
-                    index+=1;
-                }
-            }
-            return String.valueOf(index);//ajax返回未读数量，进行实时更新
+            int notReadMessageNum=userService.listNotReadMessageNum(uid);//遍历出所有的通知
+
+            return String.valueOf(notReadMessageNum);//ajax返回未读数量，进行实时更新
         }else{
             return null;
         }
@@ -266,19 +284,17 @@ public class UserControl {
      * @author BruceLee
      * @return
      */
-    @RequestMapping("/receiveMessage/{uid}")
-    public String receiveMessage(@PathVariable("uid") int uid,Model model){
-        int index=0;//定义一个计数器来记录未读的通知数量
+    @RequestMapping("/receiveMessage/{uid}/{nowPage}")
+    public String receiveMessage(@PathVariable("uid") int uid,@PathVariable("nowPage") int nowPage,Model model){
         List<User> allSendMessageUsers=userService.listSendMessageUser(uid);
-        List<Message> allMessages=userService.receiveMessage(uid);//遍历该用户所有的私信
-        for (Message message:allMessages) {
-            if(message.getIsread()==0){
-                index+=1;
-            }
-        }
-        model.addAttribute("notReadMessageNum",index);//返回未读的消息数量
-        model.addAttribute("allMessages",allMessages);//返回所有的消息
+        List<Message> allMessages=userService.receiveMessage(uid,nowPage);//遍历该用户第一页的私信
+        int allMessageNum=userService.listAllMessageNum(uid);
+        int notReadMessageNum=userService.listNotReadMessageNum(uid);
+        model.addAttribute("nowMessagePage",nowPage);
+        model.addAttribute("notReadMessageNum",notReadMessageNum);//返回未读的消息数量
+        model.addAttribute("allMessages",allMessages);//返回所有第一页的私信
         model.addAttribute("allSendMessageUsers",allSendMessageUsers);
+        model.addAttribute("allMessageNum",allMessageNum);
         return "shouxiaoxi";
     }
 
@@ -503,5 +519,67 @@ public class UserControl {
             result=false;
         }
         response.getWriter().write(""+result);
+    }
+
+    //我的关注列表
+    @RequestMapping("/myAttention")
+    public void myAttention( HttpSession session,Model model,HttpServletResponse response) throws IOException {
+        User u= (User) session.getAttribute("loginresult");
+        int uid=u.getUid();
+        ArrayList<User> users= (ArrayList<User>) userService.myAttention(uid);
+
+        JSONArray jsonArray=new JSONArray();
+        JSONObject jsonObject;
+        for (int i=0;i<users.size();i++){
+           jsonObject=new JSONObject();
+           try{
+               jsonObject.put("picturepath",users.get(i).getPicturepath());
+               jsonObject.put("nickname",users.get(i).getNickname());
+               jsonArray.put(jsonObject);
+           }catch (JSONException e){
+               e.printStackTrace();
+           }
+        }
+
+        System.out.println(users);
+        //悄悄把数据会给他
+        //用response（响应）对象中的输出流将处理好的结果输出给ajax请求对象
+        response.setContentType("textml;charset=UTF-8");//  textml     ,text/xml    ,text/json
+        PrintWriter  out=response.getWriter();//获取响应对象中的输出流
+        out.write(jsonArray.toString());
+        out.flush();
+        out.close();
+
+    }
+
+    //我的粉丝
+    @RequestMapping("/myFans")
+    public void myFans( HttpSession session,Model model,HttpServletResponse response) throws IOException {
+        User u= (User) session.getAttribute("loginresult");
+        int uid=u.getUid();
+        ArrayList<User> users= (ArrayList<User>) userService.myFans(uid);
+
+        JSONArray jsonArray=new JSONArray();
+        JSONObject jsonObject;
+        for (int i=0;i<users.size();i++){
+            jsonObject=new JSONObject();
+            try{
+                jsonObject.put("picturepath",users.get(i).getPicturepath());
+                jsonObject.put("nickname",users.get(i).getNickname());
+                jsonArray.put(jsonObject);
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+        }
+
+        System.out.println(users);
+        //悄悄把数据会给他
+        //用response（响应）对象中的输出流将处理好的结果输出给ajax请求对象
+        response.setContentType("textml;charset=UTF-8");//  textml     ,text/xml    ,text/json
+        PrintWriter  out=response.getWriter();//获取响应对象中的输出流
+        out.write(jsonArray.toString());
+        out.flush();
+        out.close();
+
     }
 }

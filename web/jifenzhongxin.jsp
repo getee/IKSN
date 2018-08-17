@@ -119,7 +119,7 @@
 <div class="row" style="background-color:#E9E9E9;margin-left: 15%;margin-right: 15%">
 	<table class="table well" style="margin: 0px">
 	  <tr>
-	  	<td style="cursor: pointer"><a class="text-muted" href="/blog/mGetAllReportBlog"><h4>个人中心</h4></a></td>
+	  	<td style="cursor: pointer"><a class="text-muted" href="gerenzhongxin.jsp"><h4>个人中心</h4></a></td>
 	  	<td style="cursor: pointer"><a class="text-muted" href="/user/listAllFriends/${sessionScope.loginresult.uid}/1"><h4>我的消息</h4></a></td>
 	  	<td style="cursor: pointer"><a class="text-muted" href="jifenzhongxin.jsp"><h4>积分</h4></a></td>
 	  	<td style="cursor: pointer"><a class="text-muted" href="writingCenter.jsp"><h4>我的博客</h4></a></td>
@@ -134,8 +134,8 @@
 <div class="row" style="margin-top: 2%; margin-left: 15%;margin-right: 15%">
 <!--头像和资料-->
 <div class="col-md-3 well">
-	<div class="col-md-5"><img class="img-responsive img-thumbnail" src="img/adminIcon.jpg"></div>
-	<div class="col-md-7"><blockquote><p>NickName</p><footer>Message</footer></blockquote></div>
+	<div class="col-md-5"><img class="img-responsive img-thumbnail" src="${sessionScope.loginresult.picturepath}"></div>
+	<div class="col-md-7"><blockquote><p>${sessionScope.loginresult.nickname}</p><footer>Message</footer></blockquote></div>
 </div>
 <!--积分信息-->
 <div class="col-md-9 well">

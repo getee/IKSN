@@ -13,7 +13,7 @@ public interface BlogService {
     //删除违规博客
     boolean deleteIllegalblog(int Blog_id,int  report_id);
     //下架违规博客
-    boolean sendBackIllegalblog(IllegalBlog blog,int report_id);
+    boolean sendBackIllegalblog(IllegalBlog blog,int report_id,int uid);
 
     //添加mGetAllReportBlog的服务层
     List<ReportBlog> getAllReportBlog(int page);
@@ -44,8 +44,38 @@ public interface BlogService {
 
     //举报博客
     public boolean reportBlog(ReportBlog reportBlog);
+    //获取被举报的博客
+    ReportBlog selectReportBlog(int id);
 
+    //处理点击标题进入博客详情页的方法
+    public Map<String,Object>getBlogAndUser(int bid);
+    //获得原创博客数
+    public int getOriginalBlog(int uid);
+    //获得粉丝数
+    public int getFans(int uid) ;
+    //    //获得关注数
+    public int getAttention(int uid);
+    //增加点赞数
+    public  boolean addBlogPoints(int bid);
+    //收藏博客
+    public  boolean collectBlog(int uid,int bid);
+    //添加关注
+    public boolean addAttention(int selfid, int attenid);
+    //检查是否关注
+    public  Attention checkIsAttention(int selfid, int attenid);
+    //取消关注
+    public boolean deleteAttention(int selfid, int attenid);
+    //博客页面取两个最近的博客推送
+    public  List<Blog> selectTwoBlogByUser(int uid);
+    //存入浏览记录
+    public  boolean insertBlogBrowse(int uid, int bid, String browsetime);
     String getFloor(Integer bid);
     //被举报博客的数量
     int getReportBlogNum();
+
+    // 我收藏的所有博客
+    List<Blog> myCollectBlog(int uid);
+    //我发布的博客
+    List<Blog> myBlog(int uid);
+
 }

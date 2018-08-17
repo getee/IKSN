@@ -13,19 +13,24 @@
 <link href="../js/searchMeme.css" rel="stylesheet" type="text/css" />
 <script src="../js/jquery-3.3.1.js" type="text/javascript"></script>
 <script src="../js/jquery.searchMeme.js" type="text/javascript"></script>--%>
-
 <c:if test="${not empty sessionScope.loginresult}">
+    <script>
+        //当登录不为空时，用ajax请求后台该用户的好友列表
+        $.post("/user/FindAllFriendsOfThisUser/${sessionScope.loginresult.uid}",function (data) {
 
+        })
+    </script>
+<audio id="tishiyin" src="../caidan/media/8400.wav"></audio>
     <%--聊天窗口--%>
     <div class="chatContainer" style="z-index: 10;">
         <div class="chatBtn">
             <i class="iconfont icon-xiaoxi1"></i>
         </div>
-        <div class="chat-message-num">10</div>
+        <div id="allNotReadNum" class="chat-message-num"></div>
         <div class="chatBox" ref="chatBox">
             <div class="chatBox-head">
                 <div class="chatBox-head-one">
-                    Conversations
+                    ${sessionScope.loginresult.nickname}的聊天窗口
                     <div class="chat-close" style="margin: 10px 10px 0 0;font-size: 14px">关闭</div>
                 </div>
                 <div class="chatBox-head-two">
@@ -43,120 +48,113 @@
                 <div class="chatBox-list" ref="chatBoxlist">
                     <c:forEach items="${sessionScope.allFriendOfThisUser}" var="friend">
                         <%--单个好友--%>
-                        <div class="chat-list-people">
+                        <div id="${friend.uid}" class="chat-list-people">
                             <div><img src="${friend.picturepath}" alt="头像"/></div>
                             <div class="chat-name">
                                 <p>${friend.nickname}</p>
                             </div>
-                            <div class="message-num">10</div>
+                            <div id="messagenum${friend.uid}" class="message-num"></div>
                         </div>
                         <%--单个好友结束--%>
                     </c:forEach>
 
+                    <c:forEach items="${sessionScope.notAttenedFans}" var="fans">
+                        <%--单个粉丝--%>
+                        <div id="${fans.uid}" class="chat-list-people">
+                            <div><img src="${fans.picturepath}" alt="头像"/></div>
+                            <div class="chat-name">
+                                <p>${fans.nickname}(未关注)</p>
+                            </div>
+                            <div id="messagenum${fans.uid}" class="message-num"></div>
+                        </div>
+                        <%--单个粉丝结束--%>
+                    </c:forEach>
+
+
 
                 </div>
-                <div class="chatBox-kuang" ref="chatBoxkuang">
-                    <div class="chatBox-content">
-                        <div class="chatBox-content-demo" id="chatBox-content-demo">
-                            <%--
-                            <div class="clearfloat">
-                                <div class="author-name">
-                                    <small class="chat-date">2017-12-02 14:26:58</small>
-                                </div>
-                                <div class="left">
-                                    <div class="chat-avatars"><img src="img/icon01.png" alt="头像"/></div>
-                                    <div class="chat-message">
-                                        给你看张图
-                                    </div>
-                                </div>
+
+
+                    <%--与某人的聊天窗口--%>
+                    <div class="chatBox-kuang" ref="chatBoxkuang">
+                        <div id="content${friend.uid}"  class="chatBox-content">
+                            <div class="chatBox-content-demo" id="chatBox-content-demo" >
+
+
                             </div>
+                        </div>
 
-                            <div class="clearfloat">
-                                <div class="author-name">
-                                    <small class="chat-date">2017-12-02 14:26:58</small>
-                                </div>
-                                <div class="left">
-                                    <div class="chat-avatars"><img src="img/icon01.png" alt="头像"/></div>
-                                    <div class="chat-message">
-                                        <img src="img/1.png" alt="">
-                                    </div>
-                                </div>
+                        <div class="chatBox-send" >
+                            <div class="div-textarea" contenteditable="true"></div>
+                            <div>
+                                <button id="chat-biaoqing" class="btn-default-styles">
+                                    <i class="iconfont icon-biaoqing"></i>
+                                </button>
+                                <label id="chat-tuxiang" title="发送图片" for="inputImage" class="btn-default-styles">
+                                    <input type="file" onchange="selectImg(this)" accept="image/jpg,image/jpeg,image/png"
+                                           name="file" id="inputImage" class="hidden">
+                                    <i class="iconfont icon-tuxiang"></i>
+                                </label>
+                                <button id="chat-fasong"  class="btn-default-styles"><i class="iconfont icon-fasong"></i>
+                                </button>
                             </div>
-
-                            <div class="clearfloat">
-                                <div class="author-name">
-                                    <small class="chat-date">2017-12-02 14:26:58</small>
-                                </div>
-                                <div class="right">
-                                    <div class="chat-message">嗯，适合做壁纸</div>
-                                    <div class="chat-avatars"><img src="img/icon02.png" alt="头像"/></div>
-                                </div>
-                            </div>--%>
-
+                            <div class="biaoqing-photo">
+                                <ul>
+                                    <li><span class="emoji-picker-image" style="background-position: -9px -18px;"></span></li>
+                                    <li><span class="emoji-picker-image" style="background-position: -40px -18px;"></span></li>
+                                    <li><span class="emoji-picker-image" style="background-position: -71px -18px;"></span></li>
+                                    <li><span class="emoji-picker-image" style="background-position: -102px -18px;"></span></li>
+                                    <li><span class="emoji-picker-image" style="background-position: -133px -18px;"></span></li>
+                                    <li><span class="emoji-picker-image" style="background-position: -164px -18px;"></span></li>
+                                    <li><span class="emoji-picker-image" style="background-position: -9px -52px;"></span></li>
+                                    <li><span class="emoji-picker-image" style="background-position: -40px -52px;"></span></li>
+                                    <li><span class="emoji-picker-image" style="background-position: -71px -52px;"></span></li>
+                                    <li><span class="emoji-picker-image" style="background-position: -102px -52px;"></span></li>
+                                    <li><span class="emoji-picker-image" style="background-position: -133px -52px;"></span></li>
+                                    <li><span class="emoji-picker-image" style="background-position: -164px -52px;"></span></li>
+                                    <li><span class="emoji-picker-image" style="background-position: -9px -86px;"></span></li>
+                                    <li><span class="emoji-picker-image" style="background-position: -40px -86px;"></span></li>
+                                    <li><span class="emoji-picker-image" style="background-position: -71px -86px;"></span></li>
+                                    <li><span class="emoji-picker-image" style="background-position: -102px -86px;"></span></li>
+                                    <li><span class="emoji-picker-image" style="background-position: -133px -86px;"></span></li>
+                                    <li><span class="emoji-picker-image" style="background-position: -164px -86px;"></span></li>
+                                    <li><span class="emoji-picker-image" style="background-position: -9px -120px;"></span></li>
+                                    <li><span class="emoji-picker-image" style="background-position: -40px -120px;"></span></li>
+                                    <li><span class="emoji-picker-image" style="background-position: -71px -120px;"></span></li>
+                                    <li><span class="emoji-picker-image" style="background-position: -102px -120px;"></span>
+                                    </li>
+                                    <li><span class="emoji-picker-image" style="background-position: -133px -120px;"></span>
+                                    </li>
+                                    <li><span class="emoji-picker-image" style="background-position: -164px -120px;"></span>
+                                    </li>
+                                    <li><span class="emoji-picker-image" style="background-position: -9px -154px;"></span></li>
+                                    <li><span class="emoji-picker-image" style="background-position: -40px -154px;"></span></li>
+                                    <li><span class="emoji-picker-image" style="background-position: -71px -154px;"></span></li>
+                                    <li><span class="emoji-picker-image" style="background-position: -102px -154px;"></span>
+                                    </li>
+                                    <li><span class="emoji-picker-image" style="background-position: -133px -154px;"></span>
+                                    </li>
+                                    <li><span class="emoji-picker-image" style="background-position: -164px -154px;"></span>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                    <div class="chatBox-send">
-                        <div class="div-textarea" contenteditable="true"></div>
-                        <div>
-                            <button id="chat-biaoqing" class="btn-default-styles">
-                                <i class="iconfont icon-biaoqing"></i>
-                            </button>
-                            <label id="chat-tuxiang" title="发送图片" for="inputImage" class="btn-default-styles">
-                                <input type="file" onchange="selectImg(this)" accept="image/jpg,image/jpeg,image/png"
-                                       name="file" id="inputImage" class="hidden">
-                                <i class="iconfont icon-tuxiang"></i>
-                            </label>
-                            <button id="chat-fasong" class="btn-default-styles"><i class="iconfont icon-fasong"></i>
-                            </button>
-                        </div>
-                        <div class="biaoqing-photo">
-                            <ul>
-                                <li><span class="emoji-picker-image" style="background-position: -9px -18px;"></span></li>
-                                <li><span class="emoji-picker-image" style="background-position: -40px -18px;"></span></li>
-                                <li><span class="emoji-picker-image" style="background-position: -71px -18px;"></span></li>
-                                <li><span class="emoji-picker-image" style="background-position: -102px -18px;"></span></li>
-                                <li><span class="emoji-picker-image" style="background-position: -133px -18px;"></span></li>
-                                <li><span class="emoji-picker-image" style="background-position: -164px -18px;"></span></li>
-                                <li><span class="emoji-picker-image" style="background-position: -9px -52px;"></span></li>
-                                <li><span class="emoji-picker-image" style="background-position: -40px -52px;"></span></li>
-                                <li><span class="emoji-picker-image" style="background-position: -71px -52px;"></span></li>
-                                <li><span class="emoji-picker-image" style="background-position: -102px -52px;"></span></li>
-                                <li><span class="emoji-picker-image" style="background-position: -133px -52px;"></span></li>
-                                <li><span class="emoji-picker-image" style="background-position: -164px -52px;"></span></li>
-                                <li><span class="emoji-picker-image" style="background-position: -9px -86px;"></span></li>
-                                <li><span class="emoji-picker-image" style="background-position: -40px -86px;"></span></li>
-                                <li><span class="emoji-picker-image" style="background-position: -71px -86px;"></span></li>
-                                <li><span class="emoji-picker-image" style="background-position: -102px -86px;"></span></li>
-                                <li><span class="emoji-picker-image" style="background-position: -133px -86px;"></span></li>
-                                <li><span class="emoji-picker-image" style="background-position: -164px -86px;"></span></li>
-                                <li><span class="emoji-picker-image" style="background-position: -9px -120px;"></span></li>
-                                <li><span class="emoji-picker-image" style="background-position: -40px -120px;"></span></li>
-                                <li><span class="emoji-picker-image" style="background-position: -71px -120px;"></span></li>
-                                <li><span class="emoji-picker-image" style="background-position: -102px -120px;"></span>
-                                </li>
-                                <li><span class="emoji-picker-image" style="background-position: -133px -120px;"></span>
-                                </li>
-                                <li><span class="emoji-picker-image" style="background-position: -164px -120px;"></span>
-                                </li>
-                                <li><span class="emoji-picker-image" style="background-position: -9px -154px;"></span></li>
-                                <li><span class="emoji-picker-image" style="background-position: -40px -154px;"></span></li>
-                                <li><span class="emoji-picker-image" style="background-position: -71px -154px;"></span></li>
-                                <li><span class="emoji-picker-image" style="background-position: -102px -154px;"></span>
-                                </li>
-                                <li><span class="emoji-picker-image" style="background-position: -133px -154px;"></span>
-                                </li>
-                                <li><span class="emoji-picker-image" style="background-position: -164px -154px;"></span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+                    <%--与某人的聊天窗口结束--%>
+
             </div>
+
         </div>
     </div>
 
     <script>
-
+        var toid;
+        var webFromid;
+        var webToid;
+        var webContent;
+        var webTime;
+        var allNotReadNum=0;
+        var oneNOtFriendNum=0;
         function p(s) {
             return s < 10 ? '0' + s: s;
         }
@@ -173,7 +171,7 @@
         var websocket=null;
         //判断当前浏览器是否支持WebSocket
         if ('WebSocket' in window) {
-            websocket = new WebSocket("ws://172.19.22.45:8080/websocket");
+            websocket = new WebSocket("ws://172.19.22.45:8080/websocket/${sessionScope.loginresult.uid}");
         }
         else {
             alert('当前浏览器 Not support websocket')
@@ -190,11 +188,21 @@
 
         //接收到消息的回调方法
         websocket.onmessage = function (event) {
-
+            oneNOtFriendNum+=1;
+            allNotReadNum+=oneNOtFriendNum;
+            var str =$.parseJSON(event.data);
+             webFromid=str.fromid;
+             webToid=str.toid;
+             webContent=str.content;
+             webTime=str.time;
+            $("#tishiyin").get(0).play();
+            $("#allNotReadNum").html(allNotReadNum);
+            $("#messagenum"+webFromid).html(oneNOtFriendNum);
+            //接收到消息的回调方法
             $(".chatBox-content-demo").append("<div class=\"clearfloat\">" +
-                "<div class=\"author-name\"><small class=\"chat-date\">"+now+"</small> </div> " +
+                "<div class=\"author-name\"><small class=\"chat-date\">"+webTime+"</small> </div> " +
                 "<div class=\"left\"><div class=\"chat-avatars\"><img src=\"${sessionScope.loginresult.picturepath}\" alt=\"头像\" /></div>  " +
-                " <div class=\"chat-message\"> " + event.data + " </div></div> </div>");
+                " <div class=\"chat-message\"> " + webContent + " </div></div> </div>");
 
         }
 
@@ -213,20 +221,21 @@
         }
         //发送消息
         function send() {
-            var message=$(".div-textarea").html()
-            websocket.send(message);
+            var message=$(".div-textarea").html();
+            websocket.send(JSON.stringify({'content':message,'toid':toid}));
         }
         function sendbiaoqing(bq){
 
-            websocket.send(bq)
+            websocket.send(JSON.stringify({'content':bq,'toid':toid}))
         }
 
 
 
         //聊天窗口的js
         screenFuc();
+
         function screenFuc() {
-            $(".chatBox").hide(10);
+
             var topHeight = $(".chatBox-head").innerHeight();//聊天头部高度
             //屏幕小于768px时候,布局change
             var winWidth = $(window).innerWidth();
@@ -276,6 +285,8 @@
         //进聊天页面
         $(".chat-list-people").each(function () {
             $(this).click(function () {
+                oneNOtFriendNum=0;
+                toid=$(this).attr("id");
                 var n = $(this).index();
                 $(".chatBox-head-one").toggle();
                 $(".chatBox-head-two").toggle();
@@ -301,7 +312,9 @@
             $(".chatBox-head-two").toggle(1);
             $(".chatBox-list").fadeToggle(1);
             $(".chatBox-kuang").fadeToggle(1);
+            $(".chatBox-content-demo").text("");
         });
+
 
         //      发送信息
         $("#chat-fasong").click(function () {
@@ -547,15 +560,15 @@
                 <form class="navbar-form navbar-left" method="post" action="/blog/blogSearch">
                     <div class="form-group">
 
-                        <input id="q1" type="text" class="quickQuery$focus" placeholder="Search" name="content"/>
+                        <input id="q1" type="text" class="quickQuery$focus form-control" placeholder="Search" name="content"/>
                        <%-- <input class="quickQuery$focus" id="" style="border: 3px solid #ccc;" />--%>
                         <div class="quickQuery$focus"></div>
                     </div> <button id="bSearch" type="submit"  class="btn btn-default" >搜索</button>
 
                 </form>
                 <ul class="nav navbar-nav navbar-right">
-                    <li name="tx"><a id="bk" class="glyphicon glyphicon-pencil" href="#"> 写博客</a></li>
-                    <li name="tx"><a id="ca" class="glyphicon glyphicon-leaf" href="#">发Chat</a></li>
+                    <li name="tx"><a id="bk" class="glyphicon glyphicon-pencil"  style="cursor: pointer"> 写博客</a></li>
+                    <li name="tx"><a id="ca" class="glyphicon glyphicon-leaf" style="cursor: pointer" >发Chat</a></li>
                     <li id="rw" name="tx">
 
                         <a id="me" class="glyphicon glyphicon-user" href="#" data-toggle="popover" data-container="body"  data-placement="top" data-delay="5000" >
@@ -584,7 +597,7 @@
             $("#tishikuang").slideDown("slow");
            setInterval(function () {
                $("#tishikuang").slideUp("slow");
-           },5000);
+           },3000);
         }
         else {
             $("#bk").attr("href","Writer.jsp");

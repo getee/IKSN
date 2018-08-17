@@ -85,9 +85,21 @@ public class UserDAOImp extends BaseDAOImp implements UserDAO {
     }
 
     @Override
-    public List<Message> receiveMessage(int uid) {
+    public int listAllMessageNum(int uid) {
         try {
-            List<Message> allMessages=getSqlSession().getMapper(UserDAO.class).receiveMessage(uid);
+            int allMessageNum=getSqlSession().getMapper(UserDAO.class).listAllMessageNum(uid);
+            return allMessageNum;
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    @Override
+    public List<Message> receiveMessage(int uid,int nowPage) {
+        try {
+            List<Message> allMessages=getSqlSession().getMapper(UserDAO.class).receiveMessage(uid,(nowPage-1)*5);
             System.out.println("查询到的私信："+allMessages);
             return allMessages;
 
@@ -317,6 +329,18 @@ public class UserDAOImp extends BaseDAOImp implements UserDAO {
         }
     }
 
+    @Override
+    public List listAllFans(int uid) {
+        try{
+            List allFans=getSqlSession().getMapper(UserDAO.class).listAllFans(uid);
+            return allFans;
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     /**
      * 查询该用户好友的数量用来做分页限制
      * @author BruceLee
@@ -395,6 +419,28 @@ public class UserDAOImp extends BaseDAOImp implements UserDAO {
     public List<Scoring> rechargeScoring(int uid) {
         List<Scoring> scorings=getSqlSession().getMapper(UserDAO.class).rechargeScoring(uid);
         return scorings;
+    }
+
+    /**
+     * 我的关注列表
+     * @param uid
+     * @return
+     */
+    @Override
+    public List<User> myAttention(int uid) {
+        List<User> users=getSqlSession().getMapper(UserDAO.class).myAttention(uid);
+        return users;
+    }
+
+    /**
+     * 我的粉丝
+     * @param uid
+     * @return
+     */
+    @Override
+    public List<User> myFans(int uid) {
+        List<User> users=getSqlSession().getMapper(UserDAO.class).myFans(uid);
+        return users;
     }
 
 
