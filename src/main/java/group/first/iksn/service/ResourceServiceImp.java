@@ -63,6 +63,11 @@ public class ResourceServiceImp  implements ResourceService{
     }
 
     @Override
+    public Resource loadResource(int rid) {
+        return resourceDAO.getResource(rid);
+    }
+
+    @Override
     //上传文件，在service检测重复
     public boolean checkResource(CommonsMultipartFile file, String filePath) {
 
@@ -181,6 +186,26 @@ public class ResourceServiceImp  implements ResourceService{
     @Override
     public int reportResourceNum() {
         return resourceDAO.reportResourceNum();
+    }
+    //查询上传的资源
+    @Override
+    public List<Resource> getUploadResource(int uid) {
+        List<Resource> resources=resourceDAO.getUploadResource(uid);
+        return resources;
+    }
+
+    @Override
+    public boolean downLoadResource(int pushId, int downId, int scoring) {
+        try {
+            int pushScore=userDAO.getId(pushId).getScore();
+            int downScore=userDAO.getId(downId).getScore();
+            boolean isLessen=resourceDAO.changeScore(downId, downScore-scoring);//下载者减少后的积分
+            boolean isnAdd=resourceDAO.changeScore(pushId, pushScore+scoring);//上传者增加后的积分
+            if(!isLessen || !isnAdd) return false;
+        }catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
 

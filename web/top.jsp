@@ -567,8 +567,14 @@
 
                 </form>
                 <ul class="nav navbar-nav navbar-right">
-                    <li name="tx"><a id="bk" class="glyphicon glyphicon-pencil"  style="cursor: pointer"> 写博客</a></li>
-                    <li name="tx"><a id="ca" class="glyphicon glyphicon-leaf" style="cursor: pointer" >发Chat</a></li>
+
+                    <li name="tx"><a id="bk" class="glyphicon glyphicon-pencil" href="#"> 写博客</a></li>
+                    <c:if test="${sessionScope.loginresult.isspeak==1}">
+                        <script>
+                            $("#bk").attr("href","javascript:void(0)");
+                        </script>
+                    </c:if>
+                    <li name="tx"><a id="ca" class="glyphicon glyphicon-leaf" href="#">发Chat</a></li>
                     <li id="rw" name="tx">
 
                         <a id="me" class="glyphicon glyphicon-user" href="#" data-toggle="popover" data-container="body"  data-placement="top" data-delay="5000" >

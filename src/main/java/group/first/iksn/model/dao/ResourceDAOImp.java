@@ -40,6 +40,12 @@ public class ResourceDAOImp extends BaseDAOImp implements ResourceDAO {
        return  num;
     }
 
+    @Override
+    public Resource getResource(int rid) {
+        Resource r=getSqlSession().getMapper(ResourceDAO.class).getResource(rid);
+        return r;
+    }
+
     public Resource checkFile(String MD5,String SHA){
         Resource r=getSqlSession().getMapper(ResourceDAO.class).checkFile(MD5,SHA);
         return r;
@@ -126,7 +132,22 @@ public class ResourceDAOImp extends BaseDAOImp implements ResourceDAO {
     public Resource selectUidByRid(int rid) {
         return getSqlSession().getMapper(ResourceDAO.class).selectUidByRid(rid);
     }
+    /**
+     * 查询上传的资源
+     * @param uid
+     * @return
+     */
+    @Override
+    public List<Resource> getUploadResource(int uid) {
+        List<Resource> resources=getSqlSession().getMapper(ResourceDAO.class).getUploadResource(uid);
+        return resources;
+    }
 
+    //更改积分
+    @Override
+    public boolean changeScore(int uid, int scoring) {
+        return getSqlSession().getMapper(ResourceDAO.class).changeScore(uid, scoring);
+    }
 
     /**
      * 举报的资源保存到表中

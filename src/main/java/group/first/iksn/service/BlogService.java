@@ -34,11 +34,28 @@ public interface BlogService {
     boolean discuss(BlogComments blogComments);
 
     boolean answerComment(BlogComments blogComments);
+    //根据用户ID查询博客的服务层
     public List<Blog> scanBlogService(int uid);
-
+    //查询已发表的博客
+    public  List<Blog> scanReportedBlogService(int uid);
+    //查询私密的博客
+    public  List<Blog> scanSimiBlogService(int uid);
+    //查询草稿的博客
+    public  List<Blog> scanDraftBlogService(int uid);
+    //根据博客ID查询博客的服务层
     public Blog listBlogService(int bid);
-
+    //根据添加时间查询Bid
     public int selectBidService(String time);
+    //修改博客Blog的服务层
+    public  boolean updateBlogService(Blog blog);
+    //修改BlogTag的服务层
+    public  boolean updateBlogTagService(BlogTag blogTag);
+    //修改UserToBlog的服务层
+    public  boolean updateUserToBlogService(UserToBlog userToBlog);
+
+    public  boolean deleteBlogOther(int bid);
+
+    public boolean deleteBlog(int bid);
 
 
 

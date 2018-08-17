@@ -50,6 +50,7 @@ public class BlogServiceImp implements BlogService {
         UserToBlog utd=blogDAO.selectUidByBid(blog_id);
         //先删除跟blog表有关的表数据
         boolean deleteResult=blogDAO.deleteBlogOthers(blog_id);
+        System.out.println(blog_id);
         if(deleteResult){
             //再删除blog表数据
             result=blogDAO.deleteBlog(blog_id);
@@ -143,8 +144,6 @@ public class BlogServiceImp implements BlogService {
         return blogDAO.detailedBlogPush();
     }
 
-
-
     @Override
     public boolean addBlogService(Blog blog) {
         return blogDAO.processAddBlog(blog);
@@ -166,6 +165,21 @@ public class BlogServiceImp implements BlogService {
     }
 
     @Override
+    public List<Blog> scanReportedBlogService(int uid) {
+        return blogDAO.processScanReportedBlog(uid);
+    }
+
+    @Override
+    public List<Blog> scanSimiBlogService(int uid) {
+        return blogDAO.processScanSimiBlog(uid);
+    }
+
+    @Override
+    public List<Blog> scanDraftBlogService(int uid) {
+        return blogDAO.processScanDraftBlog(uid);
+    }
+
+    @Override
     public Blog listBlogService(int bid) {
         return blogDAO.processListBlog(bid);
     }
@@ -173,6 +187,39 @@ public class BlogServiceImp implements BlogService {
     @Override
     public int selectBidService(String time) {
         return blogDAO.selectBid(time);
+    }
+
+    @Override
+    public boolean updateBlogService(Blog blog) {
+        return blogDAO.processUpdateBlog(blog);
+    }
+
+    @Override
+    public boolean updateBlogTagService(BlogTag blogTag) {
+        return blogDAO.processUpdateBlogtag(blogTag);
+    }
+
+    @Override
+    public boolean updateUserToBlogService(UserToBlog userToBlog) {
+        return blogDAO.processUpdateUserToBlog(userToBlog);
+    }
+
+    @Override
+    public boolean deleteBlogOther(int bid) {
+        boolean result=false;
+        //boolean deleteResult=blogDAO.deleteBlog(blog_id);
+        boolean deleteResult=blogDAO.deleteBlogOther(bid);
+        System.out.println(bid);
+        if(deleteResult){
+            result=blogDAO.deleteBlog(bid);
+        }
+        System.out.println("删除blog其他"+deleteResult);
+        return result;
+    }
+
+    @Override
+    public boolean deleteBlog(int bid) {
+        return blogDAO.deleteBlog(bid);
     }
 
     @Override

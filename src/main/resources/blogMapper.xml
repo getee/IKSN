@@ -45,6 +45,27 @@
         inner join blogtag as t on t.bid=b.bid
         where b.bid=#{bid}
     </select>
+    <!--根据博客ID来准确查出已经发表博客信息-->
+    <select id="processScanReportedBlog" resultMap="searchBlog">
+        select b.* ,u.*,t.* from blog as b
+        inner join usertoblog as u on u.bid=b.bid
+        inner join blogtag as t on t.bid=b.bid
+        where u.uid=#{uid} and isdraft=1
+    </select>
+    <!--根据博客ID来准确查出私密博客信息-->
+    <select id="processScanSimiBlog" resultMap="searchBlog">
+        select b.* ,u.*,t.* from blog as b
+        inner join usertoblog as u on u.bid=b.bid
+        inner join blogtag as t on t.bid=b.bid
+        where u.uid=#{uid} and ispublic=1
+    </select>
+    <!--根据博客ID来准确查出草稿博客信息-->
+    <select id="processScanDraftBlog" resultMap="searchBlog">
+        select b.* ,u.*,t.* from blog as b
+        inner join usertoblog as u on u.bid=b.bid
+        inner join blogtag as t on t.bid=b.bid
+        where u.uid=#{uid} and isdraft=0
+    </select>
 
     <!--博客添加相关操作-->
     <insert id="processAddBlog" parameterType="Blog" useGeneratedKeys="true" keyColumn="bid">
@@ -59,8 +80,16 @@
     <insert id="processAddUserToBlog" parameterType="UserToBlog" useGeneratedKeys="true" keyColumn="id">
         insert into usertoblog(uid,bid,ISDRAFT,ISPUBLIC,BLOGTYPE) values (#{uid},#{bid},#{isdraft},#{ispublic},#{blogtype})
     </insert>
-    <!--博客修改相关操作-->
-
+    <!--博客修改相关操作 -->
+     <update id="processUpdateBlog">
+         UPDATE blog  SET  title=#{title},content=#{content},classify=#{classify} WHERE  bid=#{bid}
+     </update>
+     <update id="processUpdateBlogtag">
+         UPDATE blogtag  SET  btag=#{btag} WHERE  bid=#{bid}
+     </update>
+     <update id="processUpdateUserToBlog">
+         UPDATE usertoblog  SET  isdraft=#{isdraft},ispublic=#{ispublic},blogtype=#{blogtype} WHERE  bid=#{bid}
+     </update>
 
     <!--向illegalblog表中插入违规博客信息-->
     <insert id="addIllegalblog" parameterType="IllegalBlog">
@@ -69,11 +98,11 @@
 
     <!--从reportBlog表中根据id删除一个选中行-->
     <delete id="deleteBlogFromReport" parameterType="ReportBlog">
-      delete from reportblog where id = #{report_id}
+        delete from reportblog where id = #{report_id}
     </delete>
     <!--从blog表中根据id删除一个博客信息-->
     <delete id="deleteBlog" parameterType="Blog">
-      delete from blog where BID = #{bid}
+        delete from blog where BID = #{bid}
     </delete>
     <!--删除与blog表相关的信息，illegalblog，blogtag，blogbrowsed，blogcomments，collectblog，usertoblog，reportblog-->
     <delete id="deleteBlogOthers" parameterType="Blog">
@@ -87,7 +116,11 @@
       WHERE r.BID=#{bid}
     </delete>
 
-
+    <delete id="deleteBlogOther" parameterType="Blog">
+        DELETE b,utb FROM usertoblog utb
+        INNER JOIN blogtag b  ON b.BID = utb.BID
+        WHERE utb.BID=#{bid}
+    </delete>
     <!--设置博客为不公开-->
     <update id="blogIsPublic" parameterType="UserToBlog">
         update usertoblog set ISPUBLIC=1 where BID=#{bid};
