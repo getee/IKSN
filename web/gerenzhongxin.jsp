@@ -123,7 +123,7 @@
 			<div class="col-md-6">
 										<!-- Button trigger modal -->
 				<button type="button" class="btn btn-info btn-sm glyphicon glyphicon-edit" data-toggle="modal" data-target="#myModal" style="margin-left: 60%">
-					修改个人资料iksn
+					修改个人资料
 				</button>
 				<button  type="button"  color="#FFFFFF" class="btn btn-info btn-sm glyphicon glyphicon-edit" data-toggle="modal" style="margin-left: 60%; margin-top:2%">
 					<a href="zhanghao.jsp" ><font color="#FFFFFF">个人账号设置</font></a>
@@ -160,7 +160,7 @@
 										  <div class="input-group">
 											  <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email1"  disabled value="${sessionScope.loginresult.email}">
 											  <span class="input-group-btn">
-                                          <button class="btn btn-default" type="button">修改</button>
+                                          <button class="btn btn-default" type="button"><a href="zhanghao.jsp"> 修改</a></button>
                                         </span>
 										  </div>
 									  </div>
@@ -170,7 +170,7 @@
 										  <div class="input-group">
 											  <input type="number" class="form-control" id="exampleInputPassword1" placeholder="Phone"  disabled value="${sessionScope.loginresult.phone}">
 											  <span class="input-group-btn">
-                                        <button class="btn btn-default" type="button">修改</button>
+                                        <button class="btn btn-default" type="button"><a href="zhanghao.jsp"> 修改</a></button>
                                       </span>
 										  </div>
 									  </div>
