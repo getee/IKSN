@@ -4,6 +4,7 @@ import group.first.iksn.model.bean.*;
 import group.first.iksn.service.ResourceService;
 import group.first.iksn.util.Responser;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.ModelAndView;
@@ -15,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.io.IOException;
 import java.util.List;
@@ -244,5 +247,36 @@ public class ResourceControl {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    //查询上传的资源
+    @RequestMapping("/getUploadResource")
+    public void getUploadResource(HttpSession session, Model model, HttpServletResponse response) throws IOException {
+        User u= (User) session.getAttribute("loginresult");
+        int uid=u.getUid();
+        ArrayList<Resource> resources= (ArrayList<Resource>) resourceService.getUploadResource(uid);
+
+        JSONArray jsonArray=new JSONArray();
+        JSONObject jsonObject;
+        for (int i=0;i<resources.size();i++){
+            jsonObject=new JSONObject();
+            try{
+                jsonObject.put("name",resources.get(i).getName());
+                jsonObject.put("introduce",resources.get(i).getIntroduce());
+                jsonObject.put("time",resources.get(i).getTime());
+                jsonObject.put("scoring",resources.get(i).getScoring());
+                jsonArray.put(jsonObject);
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+        }
+        //悄悄把数据会给他
+        //用response（响应）对象中的输出流将处理好的结果输出给ajax请求对象
+        response.setContentType("textml;charset=UTF-8");//  textml     ,text/xml    ,text/json
+        PrintWriter out=response.getWriter();//获取响应对象中的输出流
+        out.write(jsonArray.toString());
+        out.flush();
+        out.close();
+
     }
 }

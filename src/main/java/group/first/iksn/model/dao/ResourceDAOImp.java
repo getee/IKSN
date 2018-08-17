@@ -122,6 +122,16 @@ public class ResourceDAOImp extends BaseDAOImp implements ResourceDAO {
         return allReportResource;
     }
 
+    /**
+     * 查询上传的资源
+     * @param uid
+     * @return
+     */
+    @Override
+    public List<Resource> getUploadResource(int uid) {
+        List<Resource> resources=getSqlSession().getMapper(ResourceDAO.class).getUploadResource(uid);
+        return resources;
+    }
 
 
     /**

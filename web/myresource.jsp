@@ -87,15 +87,14 @@
                 	<div style="min-height:230px;">
         			<div class="tabbable" id="tabs-853379"> <!-- Only required for left/right tabs -->
                       <ul class="nav nav-tabs">
-                        <li id="b1" ><a href="#panel-717300" >上传资源</a></li>
+                        <li id="b1" ><a id="upload" href="#panel-717300" >上传资源</a></li>
                         <li id="b2"><a id="jifen" href="#panel-622341">积分明细</a></li>
                         <li id="b3" ><a href="#panel-622342" >下载明细</a></li>
                         <li id="b4"><a href="#panel-622343" >我的收藏</a></li>
-                        <li id="b5"><a href="#panel-622344" >VIP服务</a></li>
                       </ul>
                       <div class="tab-content">
-                            <div class="tab-pane active" id="panel-717300" contenteditable="true">
-                              <p>上传资源.</p>
+                            <div id="uploadresource" class="tab-pane active" id="panel-717300" contenteditable="true">
+
                             </div>
                             <div class="tab-pane " id="panel-622341" contenteditable="true">
                               <p><table class="table" contenteditable="true">
@@ -126,9 +125,6 @@
                             </div>
                             <div class="tab-pane " id="panel-622343" contenteditable="true">
                               <p>我的收藏.</p>
-                            </div>
-                            <div class="tab-pane " id="panel-622344" contenteditable="true">
-                              <p>VIP服务.</p>
                             </div>
                       </div>
                    </div>
@@ -218,10 +214,6 @@
             e.preventDefault()
             $(this).tab('show')
         });
-        $('#b5 a').click(function (e) {
-            e.preventDefault()
-            $(this).tab('show')
-        });
         $('#a1 a').click(function (e) {
             e.preventDefault()
             $(this).tab('show')
@@ -241,6 +233,29 @@
         $("#jifen").click(function (){
             window.location.href = '/user/getScoring?uid=${sessionScope.loginresult.uid}';
         });
+    });
+    //查询上传的资源
+    $(document).ready(function (){
+        var a=1;
+        $("#upload").ready(function (){
+            $.getJSON("/resource/getUploadResource?uid=${sessionScope.loginresult.uid}",function (data) {
+                var html="";
+                for(var i=0;i< data.length;i++){
+                    html+='<p><div style="height:100px; width:90%; margin-left:20px;">' ;
+                    html+='<div style="height:48px; width:5%; float:left; margin-top:15px "><a href="xq.jsp"><img src="img/2.svg"></a></div>' ;
+                    html+='<div style="height:20px; width:66%; float:left; margin-top:15px; margin-left:40px;  font-size:20px ; color:#000000;"><a href="xq.jsp">'+data[i].name+'</a></div>';
+                    html+=' <div style="height:30px; width:82%; float:left;margin-top:12px; margin-left:40px;font-size:14px;"><div style="width:250px; height:30px;"><span>'+data[i].introduce+'</span></div>' ;
+                    html+='<div style="float:left;margin-left:30px;text-align:center;"><span>上传时间：'+data[i].time+'</span><span style="margin-left: 30px;">所需积分：'+data[i].scoring+'</span></div>' ;
+                    html+='</div></p>';
+                }
+                if(a==1){
+                    $("#uploadresource").append(html);a++;
+                }
+
+            });
+
+        });
+
     });
 </script>
 </html>

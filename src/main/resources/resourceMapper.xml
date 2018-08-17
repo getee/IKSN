@@ -102,4 +102,8 @@
     <insert id="reportResource" parameterType="ReportResource">
         insert into reportresource (uid,rid,reason) values (#{uid},#{rid},#{reason})
     </insert>
+    <!--上传资源查询-->
+    <select id="getUploadResource" resultType="Resource">
+        select * from resource where uid=#{uid}
+    </select>
 </mapper>

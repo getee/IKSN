@@ -164,6 +164,12 @@ public class ResourceServiceImp  implements ResourceService{
     public int reportResourceNum() {
         return resourceDAO.reportResourceNum();
     }
+    //查询上传的资源
+    @Override
+    public List<Resource> getUploadResource(int uid) {
+        List<Resource> resources=resourceDAO.getUploadResource(uid);
+        return resources;
+    }
 
 
 }
