@@ -95,7 +95,7 @@
         </association>
     </resultMap>
     <select id="getAllReportResource" resultMap="getResourceBy_Reportrid">
-		select  rr.ID,rr.RID,rr.REASON,r.NAME  from reportresource as rr
+		select  rr.ID,rr.RID,rr.REASON,r.NAME,r.TIME  from reportresource as rr
 		inner join resource as r on   rr.RID=r.RID ORDER BY rr.ID asc limit #{page},5;
 	</select>
     <!--举报资源-->
@@ -104,7 +104,7 @@
     </insert>
     <!--根据rid查uid-->
     <select id="selectUidByRid" parameterType="Integer" resultType="Resource">
-        select UID from resource where RID=#{rid}
+        select UID,PATH from resource where RID=#{rid}
     </select>
 
     <select id="getResource" resultMap="LoadResource">
@@ -137,11 +137,11 @@
     </select>
     <!--下载资源-->
     <select id="downloadResource" resultType="Resource">
-        SELECT name,scoring,time FROM  resource WHERE  rid IN (SELECT  rid FROM  downresources WHERE uid=uid)
+        SELECT name,scoring,time FROM  resource WHERE  rid IN (SELECT  rid FROM  downresources WHERE uid=#{uid})
     </select>
     <!--我收藏的资源-->
     <select id="myCollectResource" resultType="Resource">
-        SELECT name,scoring,time FROM  resource WHERE  rid IN (SELECT  rid FROM  collectresource WHERE uid=uid)
+        SELECT name,scoring,time FROM  resource WHERE  rid IN (SELECT  rid FROM  collectresource WHERE uid=#{uid})
     </select>
     <insert id="addDownResource" >
         INSERT INTO downresources(UID,RID,TIME) VALUES(#{0},#{1},#{2})

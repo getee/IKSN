@@ -160,9 +160,9 @@
                 for(var i=0;i<data.length;i++){
                     html+='<div class="col-md-12 well">';
                     html+='<div class="col-md-2 "><a href="xq.jsp"><img src="img/2.svg"></a></div>';
-                    html+='<div class="col-md-10"><div style="height: 40px;">'+data[i].title+'</div>';
+                    html+='<div class="col-md-10"><div style="height: 40px;">'+data[i].name+'</div>';
                     html+='<div>';
-                    html+='<div style=" float: left"><a>积&nbsp;分:&nbsp;&nbsp;&nbsp;</a>'+data[i].scoring+'</div>';
+                    html+='<div style=" float: left"><a>所需积分:&nbsp;&nbsp;&nbsp;</a>'+data[i].scoring+'</div>';
                     html+='<div style="float: left; margin-left: 50%">'+data[i].time+'</div>';
                     html+='</div>';
                     html+='</div>';
