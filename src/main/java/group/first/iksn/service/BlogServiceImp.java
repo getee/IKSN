@@ -3,17 +3,31 @@ package group.first.iksn.service;
 
 import group.first.iksn.model.bean.*;
 import group.first.iksn.model.dao.BlogDAO;
+import group.first.iksn.model.dao.UserDAO;
+import group.first.iksn.util.LocalTime;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.ArrayList;
 
 
 @Component("blogService")
 public class BlogServiceImp implements BlogService {
     private BlogDAO blogDAO;
+    private UserDAO userDAO;
+
+    public UserDAO getUserDAO() {
+        return userDAO;
+    }
+
+    public void setUserDAO(UserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
 
     public BlogDAO getBlogDAO() {
         return blogDAO;
@@ -33,10 +47,22 @@ public class BlogServiceImp implements BlogService {
     @Override
     public boolean deleteIllegalblog(int blog_id,int  report_id) {
         boolean result=false;
-        //boolean deleteResult=blogDAO.deleteBlog(blog_id);
+        UserToBlog utd=blogDAO.selectUidByBid(blog_id);
+        //先删除跟blog表有关的表数据
         boolean deleteResult=blogDAO.deleteBlogOthers(blog_id);
+        System.out.println(blog_id);
         if(deleteResult){
+            //再删除blog表数据
             result=blogDAO.deleteBlog(blog_id);
+            //封装notice
+            Notice notice=new Notice();
+            notice.setUid(utd.getUid());
+            notice.setContent("您有一个违规博客，已被删除！！");
+            String time=LocalTime.getNowTime();
+            notice.setTime(time);
+            userDAO.addNotice(notice);
+            //下午写通知----------------userDao.addNotice
+
         }
         System.out.println("删除blog其他"+deleteResult);
         return result;
@@ -48,10 +74,17 @@ public class BlogServiceImp implements BlogService {
      * @return
      */
     @Override
-    public boolean sendBackIllegalblog(IllegalBlog blog,int report_id) {
+    public boolean sendBackIllegalblog(IllegalBlog blog,int report_id,int uid) {
         //开启一个线程，去执行禁言任务
             Shutup shutup=new Shutup(blog.getBid());
             shutup.start();
+        //封装notice(通知)
+        String time=LocalTime.getNowTime();
+        System.out.println("---"+time);
+        Notice notice=new Notice();
+        notice.setUid(uid);
+        notice.setContent("您有一个违规博客，已被下架");
+        notice.setTime(time);
 
         boolean sendBack=blogDAO.addIllegalblog(blog);
         if (sendBack){
@@ -59,6 +92,8 @@ public class BlogServiceImp implements BlogService {
             blogDAO.deleteBlogFromReport(report_id);
             //设置博客为不可见
             boolean b=blogDAO.blogIsPublic(blog.getBid());
+            //添加通知
+            userDAO.addNotice(notice);
         }
         return sendBack;
     }
@@ -109,8 +144,6 @@ public class BlogServiceImp implements BlogService {
         return blogDAO.detailedBlogPush();
     }
 
-
-
     @Override
     public boolean addBlogService(Blog blog) {
         return blogDAO.processAddBlog(blog);
@@ -132,6 +165,21 @@ public class BlogServiceImp implements BlogService {
     }
 
     @Override
+    public List<Blog> scanReportedBlogService(int uid) {
+        return blogDAO.processScanReportedBlog(uid);
+    }
+
+    @Override
+    public List<Blog> scanSimiBlogService(int uid) {
+        return blogDAO.processScanSimiBlog(uid);
+    }
+
+    @Override
+    public List<Blog> scanDraftBlogService(int uid) {
+        return blogDAO.processScanDraftBlog(uid);
+    }
+
+    @Override
     public Blog listBlogService(int bid) {
         return blogDAO.processListBlog(bid);
     }
@@ -139,6 +187,39 @@ public class BlogServiceImp implements BlogService {
     @Override
     public int selectBidService(String time) {
         return blogDAO.selectBid(time);
+    }
+
+    @Override
+    public boolean updateBlogService(Blog blog) {
+        return blogDAO.processUpdateBlog(blog);
+    }
+
+    @Override
+    public boolean updateBlogTagService(BlogTag blogTag) {
+        return blogDAO.processUpdateBlogtag(blogTag);
+    }
+
+    @Override
+    public boolean updateUserToBlogService(UserToBlog userToBlog) {
+        return blogDAO.processUpdateUserToBlog(userToBlog);
+    }
+
+    @Override
+    public boolean deleteBlogOther(int bid) {
+        boolean result=false;
+        //boolean deleteResult=blogDAO.deleteBlog(blog_id);
+        boolean deleteResult=blogDAO.deleteBlogOther(bid);
+        System.out.println(bid);
+        if(deleteResult){
+            result=blogDAO.deleteBlog(bid);
+        }
+        System.out.println("删除blog其他"+deleteResult);
+        return result;
+    }
+
+    @Override
+    public boolean deleteBlog(int bid) {
+        return blogDAO.deleteBlog(bid);
     }
 
     @Override
@@ -191,29 +272,30 @@ public class BlogServiceImp implements BlogService {
             User user=new User();
 
             //禁言截止时间
-//            Date d = new Date();
-//            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//            String time=df.format(d);
-
             Calendar curr = Calendar.getInstance();
             curr.set(Calendar.DAY_OF_MONTH,curr.get(Calendar.DAY_OF_MONTH)+7);
             Date date=curr.getTime();
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String time=df.format(date);
 
-            System.out.println(time);
             //根据bid查user
             UserToBlog utb=blogDAO.getUserIsSpeak(id);
             int isSpeak=utb.getUser().getIsspeak();
             int uid=utb.getUid();
-
+            //封装notice(通知)
+            String nowtime=LocalTime.getNowTime();
+            Notice notice=new Notice();
+            notice.setUid(uid);
+            notice.setContent("由于您违规发表博客，以对您实施禁言！！截止："+time);
+            notice.setTime(nowtime);
+            //封装user
             user.setUid(uid);
             user.setTimeofban(time);
-            System.out.println(user.getTimeofban());
             System.out.println("禁言的uid"+uid);
             //对user实施禁言
             if(isSpeak==0){
                 boolean a=blogDAO.shutUptoUser(user);
+                userDAO.addNotice(notice);
                 System.out.println("禁言"+a);
             }else {
                 System.out.println("该用户已经被禁言");
@@ -234,4 +316,72 @@ public class BlogServiceImp implements BlogService {
     }
 
 
+    //处理点击标题进入博客详情页的方法
+    public Map<String,Object> getBlogAndUser(int bid){
+        Map<String,Object> map=new HashMap<String, Object>();
+        //取页面博客
+        Blog blog=blogDAO.getbokeByid(bid);
+
+        List<UserToBlog> l=blogDAO.getBlogAndUser(bid);
+        UserToBlog ub=l.get(0);
+        User user=userDAO.getId(ub.getUid());
+
+        map.put("boke",blog);
+        map.put("yonghu",user);
+        map.put("original",getOriginalBlog(user.getUid()));
+        map.put("fans",getFans(user.getUid()));
+        map.put("attention",getAttention(user.getUid()));
+
+        return  map;
+    }
+
+    @Override
+    public int getOriginalBlog(int uid) {
+        return blogDAO.getOriginalBlog(uid);
+    }
+
+    @Override
+    public int getFans(int uid) {
+        return blogDAO.getFans(uid);
+    }
+
+    @Override
+    public int getAttention(int uid) {
+        return blogDAO.getAttention(uid);
+    }
+
+    @Override
+    public boolean addBlogPoints(int bid){
+        return blogDAO.addBlogPoints(bid);
+    }
+
+    @Override
+    public boolean collectBlog(int uid, int bid) {
+        return blogDAO.collectBlog(uid,bid);
+    }
+
+    @Override
+    public boolean addAttention(int selfid, int attenid) {
+        return blogDAO.addAttention(selfid,attenid);
+    }
+
+    @Override
+    public Attention checkIsAttention(int selfid, int attenid) {
+        return blogDAO.checkIsAttention(selfid, attenid);
+    }
+
+    @Override
+    public boolean deleteAttention(int selfid, int attenid) {
+        return blogDAO.deleteAttention(selfid, attenid);
+    }
+
+    @Override
+    public List<Blog> selectTwoBlogByUser(int uid) {
+        return blogDAO.selectTwoBlogByUser(uid);
+    }
+
+    @Override
+    public boolean insertBlogBrowse(int uid, int bid, String browsetime) {
+        return blogDAO.insertBlogBrowse(uid, bid, browsetime);
+    }
 }

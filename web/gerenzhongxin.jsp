@@ -123,7 +123,7 @@
 			<div class="col-md-6">
 										<!-- Button trigger modal -->
 				<button type="button" class="btn btn-info btn-sm glyphicon glyphicon-edit" data-toggle="modal" data-target="#myModal" style="margin-left: 60%">
-					修改个人资料
+					修改个人资料iksn
 				</button>
 				<button  type="button"  color="#FFFFFF" class="btn btn-info btn-sm glyphicon glyphicon-edit" data-toggle="modal" style="margin-left: 60%; margin-top:2%">
 					<a href="zhanghao.jsp" ><font color="#FFFFFF">个人账号设置</font></a>
@@ -143,7 +143,7 @@
 									  <div class="form-group">
 										  <input type="hidden" name="uid" value="${sessionScope.loginresult.uid}"/>
 										  <label for="exampleInputEmail1">昵称</label>
-										  <input type="text" class="form-control" name="nickname" id="" placeholder="NickName">
+										  <input type="text" class="form-control" name="nickname" id="" placeholder="NickName" value="${sessionScope.loginresult.nickname}">
 									  </div>
 
 									  <div class="form-group">
@@ -158,7 +158,7 @@
 									  <div class="form-group">
 										  <label for="exampleInputEmail1">邮箱</label>
 										  <div class="input-group">
-											  <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email1"  disabled>
+											  <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email1"  disabled value="${sessionScope.loginresult.email}">
 											  <span class="input-group-btn">
                                           <button class="btn btn-default" type="button">修改</button>
                                         </span>
@@ -168,7 +168,7 @@
 									  <div class="form-group">
 										  <illegalresourcelabel for="exampleInputPassword1">手机号码</illegalresourcelabel>
 										  <div class="input-group">
-											  <input type="number" class="form-control" id="exampleInputPassword1" placeholder="Phone"  disabled>
+											  <input type="number" class="form-control" id="exampleInputPassword1" placeholder="Phone"  disabled value="${sessionScope.loginresult.phone}">
 											  <span class="input-group-btn">
                                         <button class="btn btn-default" type="button">修改</button>
                                       </span>
@@ -177,7 +177,7 @@
 
 									  <div class="form-group">
 										  <label for="exampleInputEmail1">自我简介</label>
-										  <textarea placeholder="自我简介" name="introduce" style=" width:100%;height: 100px;"></textarea>
+										  <textarea placeholder="自我简介" name="introduce" style=" width:100%;height: 100px;" value="${sessionScope.loginresult.introduce}"></textarea>
 									  </div>
 									  <div class="modal-footer">
 										  <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -204,8 +204,9 @@
   <ul class="nav nav-tabs" role="tablist">
     <li id="myTabs1" role="presentation" class="active"><a id="blog" href="#home" aria-controls="home" role="tab" data-toggle="tab">我的博客</a></li>
     <li id="myTabs2" role="presentation"><a id="collect" href="#profile" aria-controls="profile" role="tab" data-toggle="tab">我的收藏</a></li>
-    <li id="myTabs3" role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">我的关注</a></li>
-    <li id="myTabs4" role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">我的粉丝</a></li>
+    <li id="myTabs3" role="presentation"><a id="attention" href="#messages" aria-controls="messages" role="tab" data-toggle="tab">我的关注</a></li>
+    <li id="myTabs4" role="presentation"><a id="fans" href="#settings" aria-controls="settings" role="tab" data-toggle="tab">我的粉丝</a></li>
+
     <li id="myTabs5" role="presentation"><a href="#jubao" aria-controls="jubao" role="tab" data-toggle="tab">举报管理</a></li>
   </ul>
 
@@ -226,90 +227,13 @@
 
 <!--    我的关注列表-->
     <div role="tabpanel" class="tab-pane" id="messages">
-    	<div class="row" style="margin-top: 1%;margin-left: 1%;margin-right: 1%">
-    		<div class="col-md-3 well">
-    			<div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
-    			<div class="col-md-8 "><h4>Friend Name</h4></div>
-    		</div>
-       		<div class="col-md-3 well">
-    			<div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
-    			<div class="col-md-8 "><h4>Friend Name</h4></div>
-    		</div>
-			<div class="col-md-3 well">
-    			<div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
-    			<div class="col-md-8 "><h4>Friend Name</h4></div>
-    		</div>
-			<div class="col-md-3 well">
-    			<div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
-    			<div class="col-md-8 "><h4>Friend Name</h4></div>
-    		</div>
-			
-    		
-    	</div>
-    	
-    	<div class="row" style="margin-top: 1%;margin-left: 1%;margin-right: 1%">
-    		<div class="col-md-3 well">
-    			<div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
-    			<div class="col-md-8 "><h4>Friend Name</h4></div>
-    		</div>
-       		<div class="col-md-3 well">
-    			<div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
-    			<div class="col-md-8 "><h4>Friend Name</h4></div>
-    		</div>
-			<div class="col-md-3 well">
-    			<div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
-    			<div class="col-md-8 "><h4>Friend Name</h4></div>
-    		</div>
-			<div class="col-md-3 well">
-    			<div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
-    			<div class="col-md-8 "><h4>Friend Name</h4></div>
-    		</div>
-			
-    		
-    	</div>
+		<div id="area" class="row" style="margin-top: 1%;margin-left: 1%;margin-right: 1%">
+      </div>
     </div>
 <!--    粉丝列表-->
     <div role="tabpanel" class="tab-pane" id="settings">
-    	    	<div class="row" style="margin-top: 1%;margin-left: 1%;margin-right: 1%">
-    		<div class="col-md-3 well">
-    			<div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
-    			<div class="col-md-8 "><h4>Fans Name</h4></div>
-    		</div>
-       		<div class="col-md-3 well">
-    			<div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
-    			<div class="col-md-8 "><h4>Fans Name</h4></div>
-    		</div>
-			<div class="col-md-3 well">
-    			<div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
-    			<div class="col-md-8 "><h4>Fans Name</h4></div>
-    		</div>
-			<div class="col-md-3 well">
-    			<div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
-    			<div class="col-md-8 "><h4>Fans Name</h4></div>
-    		</div>
-			
-    		
-    	</div>
-    	
-    	<div class="row" style="margin-top: 1%;margin-left: 1%;margin-right: 1%">
-    		<div class="col-md-3 well">
-    			<div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
-    			<div class="col-md-8 "><h4>Fans Name</h4></div>
-    		</div>
-       		<div class="col-md-3 well">
-    			<div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
-    			<div class="col-md-8 "><h4>Fans Name</h4></div>
-    		</div>
-			<div class="col-md-3 well">
-    			<div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
-    			<div class="col-md-8 "><h4>Fans Name</h4></div>
-    		</div>
-			<div class="col-md-3 well">
-    			<div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
-    			<div class="col-md-8 "><h4>Fans Name</h4></div>
-    		</div>
-			
-    		
+    	<div id="fansArea" class="row" style="margin-top: 1%;margin-left: 1%;margin-right: 1%">
+
     	</div>
     </div>
 
@@ -413,4 +337,40 @@
 
 
 
+<script>
+    $(document).ready(function (){
+        var a=1;
+        //我的关注
+        $("#attention").click(function (){
+            $.getJSON("/user/myAttention?uid=${sessionScope.loginresult.uid}",function (data) {
+                var html="";
+                for(var i=0;i<data.length;i++){
+                    html+='<div class="col-md-12 well"><div style="height: 50px;" class="col-md-4 "><img style="height: 50px;" class="img-responsive img-rounded" src="'+data[i].picturepath+'"></div><div class="col-md-8 "><h4>' + data[i].nickname + '</h4></div></div>';
+                }
+                if(a==1){
+                    $("#area").append(html);a++;
+				}
+
+            });
+
+        });
+
+    });
+    $(document).ready(function () {
+		var a=1;
+        //我的粉丝
+        $("#fans").click(function (){
+            $.getJSON("/user/myFans?uid=${sessionScope.loginresult.uid}",function (data) {
+                var html="";
+                for(var i=0;i<data.length;i++){
+                    html+='<div class="col-md-12 well"><div style="height: 50px;" class="col-md-4 "><img style="height: 50px;" class="img-responsive img-rounded" src="'+data[i].picturepath+'"></div><div class="col-md-8 "><h4>' + data[i].nickname + '</h4></div></div>';
+                }
+                if(a==1){
+                    $("#fansArea").append(html);a++;
+                }
+            });
+
+        });
+    })
+</script>
 </html>

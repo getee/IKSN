@@ -118,7 +118,7 @@
 	<table class="table well" style="margin: 0px">
 	  <tr>
           <td style="cursor: pointer"><a href="/blog/mGetAllReportBlog"><h4>个人中心</h4></a></td>
-          <td style="cursor: pointer"><a href="/user/listAllFriends/1/1"><h4>我的消息</h4></a></td>
+          <td style="cursor: pointer"><a href="/user/listAllFriends/${sessionScope.loginresult.uid}/1"><h4>我的消息</h4></a></td>
           <td style="cursor: pointer"><a href="jifenzhongxin.jsp"><h4>积分</h4></a></td>
           <td style="cursor: pointer"><a href="writingCenter.jsp"><h4>我的博客</h4></a></td>
           <td style="cursor: pointer"><a href="#"><h4>我的下载</h4></a></td>
@@ -337,14 +337,14 @@
 
     function clickTitle(reportid) {
         var a="/blog/mCheckReportblog/"+reportid;
-        //location.href=a;
-        window.open(a);
+        location.href=a;
+        //window.open(a);
     }
     function clickName(resourceid,reportid,reason) {
         //alert(resourceid+reason+reportid)
         var a="/resource/mCheckReportResource/"+resourceid+"/"+reportid+"?reason="+reason;
-        //location.href=a;
-        window.open(a);
+        location.href=a;
+        //window.open(a);
     }
     function delete_oneReportBlog(url){
         var  userChoice=window.confirm("您确认要去除这个博客吗?");

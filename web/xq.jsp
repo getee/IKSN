@@ -56,6 +56,12 @@
 
 </head>
 <body  style="background-color:#F7F8F9">
+<c:if test="${requestScope.resouce eq null}">
+    <c:redirect url="/index.jsp"></c:redirect>
+</c:if>
+<c:if test="${requestScope.downloapath != null}">
+    <c:redirect url="/${requestScope.downloapath}"></c:redirect>
+</c:if>
 <div class="container-fluid">
     <!--	导航栏-->
     <%@ include file="top.jsp"%>
@@ -65,14 +71,14 @@
     <div class="row"  style="margin-top: -1.2%; font-size:16px;background-color:#EAEBEC; min-width:1024px;" >
 
         <ul class="nav nav-tabs"  style="margin-left:15%;" >
-            <li ><a href="#">下载首页</a></li>
-            <li ><a href="#">我的资源</a></li>
-            <li ><a href="#">上传资源赚积分</a></li>
-            <li ><a href="#">已下载</a></li>
-            <li ><a href="#">我的收藏</a></li>
+            <li ><a href="xiazai.jsp">下载首页</a></li>
+            <li ><a href="myresource.jsp">我的资源</a></li>
+            <li ><a href="upload.jsp">上传资源赚积分</a></li>
+            <li ><a href="myresource.jsp">已下载</a></li>
+            <li ><a href="myresource.jsp">我的收藏</a></li>
             <c:if test="${sessionScope.loginresult.isadmin eq '1'}">
                 <li style="margin-left: 5%"><a href="/blog/mGetAllReportBlog">返回举报页</a></li>
-                <li><a href="javascript:deleteResource(${resourceid})">删除</a></li>
+                <li><a href="javascript:deleteResource(${requestScope.resouce.path})">删除</a></li>
                 <li><a style="cursor: default">举报原因：${reportRReason}</a></li>
             </c:if>
         </ul>
@@ -82,7 +88,7 @@
 <script>
     function deleteResource(url) {
         var userChoice=window.confirm("您确认要去除这个资源吗？");
-        var a="/resource/mDeleteResourceForReport/"+url;
+        var a="/"+url;
         if(userChoice){
              location.href=a;
         }
@@ -105,27 +111,18 @@
                             <img src="img/2.svg">
                         </div>
                         <div style="height:20px; width:420px; float:left; margin-top:15px; margin-left:40px;  font-size:20px ; color:#000000;">
-                            <a> 仿安居客地图找房源码</a>
+                            <a>${requestScope.resouce.name}</a>
                         </div>
                         <div style="height:30px; width:700px; float:left;margin-top:12px; margin-left:40px;font-size:14px;">
                             <div style="width:250px; height:30px;  float:left">
-                                <span> 2018-06-08  上传</span>
+                                <span> ${requestScope.resouce.time}  上传</span>
                                 <span>&nbsp;&nbsp;&nbsp;&nbsp;大小：<em>308KB</em></span>
                             </div>
-                            <div style="height:23px;width:60px;float:left;margin-left:30px;border:1px solid;;border-radius:10px; border-color:#F75D47; color:#F75D47;text-align:center;">
-                                <a href="#"> IP地址</a>
-                            </div>
-                            <div style="height:23px;width:80px;float:left;margin-left:0px;text-align:right;">
-                                <form action="/resource/houseResource" method="post">
-                                <div class="form-group">
-                                    uid:<input type="text" name="uid"><br>
+                            <c:forEach items="${requestScope.resouce.resourceTags}" var="tag">
+                                <div style="height:23px;min-width:60px;float:left;margin-left:30px;border:1px solid;;border-radius:10px; border-color:#F75D47; color:#F75D47;text-align:center;">
+                                    <a href="#">${tag.rtag}</a>
                                 </div>
-                                <div class="form-group">
-                                    rid:<input type="text" name="rid" ><br>
-                                </div>
-                                <button type="submit" onclick="house()"value="houseResource"><img src="img/sc.jpg">&nbsp;收藏</button>&nbsp;&nbsp;&nbsp;&nbsp;
-                                </form>
-                            </div>
+                            </c:forEach>
                         </div>
                     </div>
 
@@ -133,8 +130,7 @@
                     <div style=" background-color:#F5F5F5; margin-left:20px">
                         <div class="row-fluid">
                             <div class="span12" style="width:600px; ">
-                                <p>地图找房-高德地图显示数据点 - 按比例尺缩放显示数目---&gt; (1.发起请求传给后台当前用户坐标。 2.让                              后台按用户位置将周边一定范围内（后台可调）的排序，返回。 3.前端请求到数据后，最近的电站数据                              在数组第一个，此时调用地图API
-                                </p>
+                                <p>${requestScope.resouce.introduce}</p>
                             </div>
                         </div>
                     </div>
@@ -145,10 +141,15 @@
                 <div class="border" style=" height:45px;">
                     <div style=" height:25px; width:600px;  margin-top:10px; margin-left:20px">
                   <span>
-                   下载次数：${requestScope.num}&nbsp;&nbsp;&nbsp;&nbsp;
+                   下载次数：${requestScope.downNum}&nbsp;&nbsp;&nbsp;&nbsp;
                   </span>
                         <span> 综合评分：<em>7.9</em></span>
                         <div style="float:right; width:250px;">
+                                <form style="float:right; width:100px;" action="/resource/houseResource" method="post">
+                                        <input type="hidden" name="uid">
+                                        <input type="hidden" name="rid">
+                                    <button type="submit" onclick="house()" value="houseResource"><img src="img/sc.jpg">&nbsp;收藏</button>
+                                </form>
                             <a data-toggle="modal" data-target="#modal-container-830220" ><img src="img/jb.jpg" >&nbsp;举报</a><input type="hidden" value="${isReportOk}"/>
                             <!-- 模态框（Modal） -->
                             <!-- Modal -->
@@ -161,11 +162,11 @@
                                         </div>
                                         <div class="modal-body">
                                             <!--								文本域-->
-                                            <form id="addForm" action="/resource/reportResource" method="post">
-                                                资源ID：<input name="rid" type="text" value="1" readonly="readonly"/>
-                                                举报人ID：<input name="uid" type="text" value="1" readonly="readonly"/>
+                                            <form action="/resource/reportResource" method="post">
+                                                <input name="rid" type="hidden" value="${requestScope.resouce.rid}" readonly="readonly"/>
+                                                <input name="uid" type="hidden" value="${sessionScope.loginresult.uid}" readonly="readonly"/>
                                                 <textarea name="reason" class="form-control" rows="3"></textarea><br/>
-                                                <input  type="submit" value="提交" onclick="report()"/>
+                                                <input style="margin-left: 92%;"  type="submit" value="提交" onclick="report(${result})" />
                                             </form>
                                             <!--								-->
 
@@ -190,7 +191,7 @@
                     <div  style=" height:28px; width:200px; padding:15px 20px;  float:left">
                         <label style="font-size:16px">
                             所需:
-                            <em style="color:#FACC16;font-size:22px">1</em>
+                            <em style="color:#FACC16;font-size:22px">${requestScope.resouce.scoring}</em>
                             积分/C币
                         </label>
                     </div>
@@ -202,11 +203,44 @@
                     </div>
 
                     <div class="float" style="height:38px;width:120px;margin-right:20px;border:1px solid;border-color:#95E2E8;">
-                        <a  href="assess.jsp" ><div style="height:20px; margin-top:8px">立即下载</div></a>
+                        <%--<a  href="assess.jsp" onclick="downLoad()" >
+                            <div style="height:20px; margin-top:8px">立即下载</div>
+                        </a>--%>
+                        <!--需要在点击时候进行判断登录操作,举报和下载需要登录方法-->
+                        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                            立即下载
+                        </button>
                     </div>
 
                 </div>
             </div>
+            <!--下载确认模态框-->
+
+            <c:if test="${sessionScope.loginresult !=null}">
+            <!-- Modal -->
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">确认下载</h4>
+                        </div>
+                        <div class="modal-body">
+                            本次下载将扣取${requestScope.resouce.scoring}积分,你现有${sessionScope.loginresult.score}积分
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <c:if test="${sessionScope.loginresult.score - requestScope.resouce.scoring > 0}">
+                                <a href="/resource/downLoadResource?rid=${requestScope.resouce.rid}&downUserid=${sessionScope.loginresult.uid}" target="_blank">
+                                    <button type="button" class="btn btn-primary">确定下载</button>
+                                </a>
+                            </c:if>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--下载确认模态框结束-->
+            </c:if>
 
             <!--左第一大块div结束-->
 
@@ -240,15 +274,15 @@
             <div style="height:73px; width:300px; background-color:#FFFFFF; margin-top:15px;">
                 <!--最左边-->
                 <div style="height:50px; width:50px; float:left; margin-top:11px; margin-left:15px">
-                    <a herf="#"><img src="img/taotaoheros.jpg" /></a>
+                    <a herf="#"><img height="50px" width="50px" src="${requestScope.pushUser.picturepath}" /></a>
                 </div>
                 <!--最左边-->
                 <!--中间-->
                 <div style="height:50px; width:80px; float:left; margin-top:11px; margin-left:10px;">
                     <div style="height:20px; margin-top:6px; font-size:14px">
-                        <a href="#">taotaohero</a>
+                        <a href="#">${requestScope.pushUser.nickname}</a>
                     </div>
-                    <div style="height:20px; margin-top:0px; font-size:14px">
+                    <div style="height:20px; width: 20px; margin-top:0px; font-size:14px">
                         <a href="#"><img src="img/xz.jpg" /></a>
                     </div>
                 </div>
@@ -305,7 +339,7 @@
     {
         alert("已收藏！")
     }
-   function report() {
+   function report(result) {
        alert("举报成功！")
    }
 

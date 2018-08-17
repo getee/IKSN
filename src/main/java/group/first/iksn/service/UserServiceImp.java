@@ -41,6 +41,12 @@ public class UserServiceImp implements UserService {
     public int listNotReadNoticeNum(int uid) {
         return userDAO.listNotReadNoticeNum(uid);
     }
+
+    @Override
+    public int listAllMessageNum(int uid) {
+        return userDAO.listAllMessageNum(uid);
+    }
+
     @Override
     public int listNotReadMessageNum(int uid) {
         return userDAO.listNotReadMessageNum(uid);
@@ -51,8 +57,8 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public List receiveMessage(int uid) {
-        return userDAO.receiveMessage(uid);
+    public List receiveMessage(int uid,int nowPage) {
+        return userDAO.receiveMessage(uid,nowPage);
     }
 
     @Override
@@ -110,6 +116,11 @@ public class UserServiceImp implements UserService {
     @Override
     public List<User> listAllFriends(int uid,int nowPage) {
         return userDAO.listAllFriends(uid,nowPage);
+    }
+
+    @Override
+    public List listAllFans(int uid) {
+        return userDAO.listAllFans(uid);
     }
 
     @Override
@@ -208,6 +219,34 @@ public class UserServiceImp implements UserService {
         return scorings;
     }
 
+
+    /**
+     * 我的关注列表
+     * @param uid
+     * @return
+     */
+    @Override
+    public List<User> myAttention(int uid) {
+        List<User> users=userDAO.myAttention(uid);
+        for (User u:users){
+            System.out.println(u.getNickname());
+        }
+        return users;
+    }
+
+    /**
+     * 我的粉丝
+     * @param uid
+     * @return
+     */
+    @Override
+    public List<User> myFans(int uid) {
+        List<User> users=userDAO.myFans(uid);
+        for (User u:users){
+            System.out.println(u.getNickname());
+        }
+        return users;
+    }
 
     //修改用户资料
     @Override

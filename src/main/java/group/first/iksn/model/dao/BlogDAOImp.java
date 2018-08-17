@@ -1,6 +1,7 @@
 package group.first.iksn.model.dao;
 
 import group.first.iksn.model.bean.*;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 import java.rmi.server.UID;
@@ -107,16 +108,45 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
     }
 
     @Override
+    public List<Blog> processScanReportedBlog(int uid) {
+        return getSqlSession().getMapper(BlogDAO.class).processScanReportedBlog(uid);
+    }
+
+    @Override
+    public List<Blog> processScanSimiBlog(int uid) {
+        return getSqlSession().getMapper(BlogDAO.class).processScanSimiBlog(uid);
+    }
+
+    @Override
+    public List<Blog> processScanDraftBlog(int uid) {
+        return getSqlSession().getMapper(BlogDAO.class).processScanDraftBlog(uid);
+    }
+
+    @Override
     public Blog processListBlog(int bid) {
         Blog blog= getSqlSession().getMapper(BlogDAO.class).processListBlog(bid);
         return blog;
     }
 
 
-
     @Override
     public int selectBid(String time) {
         return getSqlSession().getMapper(BlogDAO.class).selectBid(time);
+    }
+
+    @Override
+    public boolean processUpdateBlog(Blog blog) {
+        return getSqlSession().getMapper(BlogDAO.class).processUpdateBlog(blog);
+    }
+
+    @Override
+    public boolean processUpdateBlogtag(BlogTag blogTag) {
+        return getSqlSession().getMapper(BlogDAO.class).processUpdateBlogtag(blogTag);
+    }
+
+    @Override
+    public boolean processUpdateUserToBlog(UserToBlog userToBlog) {
+        return getSqlSession().getMapper(BlogDAO.class).processUpdateUserToBlog(userToBlog);
     }
 
 
@@ -157,17 +187,51 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
 
     @Override
     public int reportBlogNum() {
-        return getSqlSession().getMapper(BlogDAO.class).reportBlogNum();
+        int num=0;
+        try {
+            num=getSqlSession().getMapper(BlogDAO.class).reportBlogNum();
+        }catch (Exception e){
+            System.out.println("reportBlogNum这时获取num出错了");
+            e.printStackTrace();
+        }
+        return num;
     }
 
     @Override
     public UserToBlog getUserIsSpeak(int bid) {
-        return getSqlSession().getMapper(BlogDAO.class).getUserIsSpeak(bid);
+        UserToBlog userToBlog=null;
+        try{
+            userToBlog=getSqlSession().getMapper(BlogDAO.class).getUserIsSpeak(bid);
+        }catch (Exception e){
+            System.out.println("getUserIsSpeak这是获取isSpeak出错了");
+            e.printStackTrace();
+        }
+        return userToBlog;
     }
 
     @Override
     public boolean shutUptoUser(User user){
-        return getSqlSession().getMapper(BlogDAO.class).shutUptoUser(user);
+        boolean isOK=false;
+        System.out.println(user);
+        try{
+            isOK=getSqlSession().getMapper(BlogDAO.class).shutUptoUser(user);
+        }catch (Exception e){
+            System.out.println("shutUptoUser这是设置禁言出错了");
+            e.printStackTrace();
+        }
+        return isOK;
+    }
+
+    @Override
+    public UserToBlog selectUidByBid(int bid) {
+        UserToBlog userToBlog=null;
+        try{
+            userToBlog=getSqlSession().getMapper(BlogDAO.class).selectUidByBid(bid);
+        }catch (Exception e){
+            System.out.println("selectUidByBid这是获取uid出错了");
+            e.printStackTrace();
+        }
+        return userToBlog;
     }
 
     /**
@@ -202,6 +266,11 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
     }
 
     @Override
+    public boolean deleteBlogOther(int bid) {
+        return getSqlSession().getMapper(BlogDAO.class).deleteBlogOther(bid);
+    }
+
+    @Override
     public boolean blogIsPublic(int bid) {
         boolean isOK=false;
         try{
@@ -222,6 +291,81 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
     public boolean reportBlog(ReportBlog reportBlog) {
         boolean result=getSqlSession().getMapper(BlogDAO.class).reportBlog(reportBlog);
         return result;
+    }
+    //点击打开博客
+    public  List<UserToBlog> getBlogAndUser(int bid){
+        return getSqlSession().getMapper(BlogDAO.class).getBlogAndUser(bid);
+    }
+    //获得原创博客数
+    @Override
+    public int getOriginalBlog(int uid) {
+        try{
+            return getSqlSession().getMapper(BlogDAO.class).getOriginalBlog(uid);
+        }
+        catch (Exception e){
+            return 0;
+        }
+
+    }
+    //获得粉丝数
+    @Override
+    public int getFans(int uid) {
+        try{
+            return getSqlSession().getMapper(BlogDAO.class).getFans(uid);
+        }
+        catch (Exception e){
+            return 0;
+        }
+
+    }
+    //获得关注数
+    @Override
+    public int getAttention(int uid) {
+        try{
+          int  n=getSqlSession().getMapper(BlogDAO.class).getAttention(uid);
+            return n;
+        }catch (Exception e){
+            return 0;
+        }
+
+    }
+    //根据id查询博客
+    public Blog getbokeByid(int bid){
+        return getSqlSession().getMapper(BlogDAO.class).getbokeByid(bid);
+    }
+    public  boolean addBlogPoints(int bid){
+        return getSqlSession().getMapper(BlogDAO.class).addBlogPoints(bid);
+    }
+
+    //收藏博客方法
+    @Override
+    public boolean collectBlog(@Param("uid") int uid, @Param("bid") int bid) {
+        return getSqlSession().getMapper(BlogDAO.class).collectBlog(uid,bid);
+    }
+    //添加关注
+    @Override
+    public boolean addAttention(@Param("selfid")int selfid,@Param("attenid") int attenid) {
+        return getSqlSession().getMapper(BlogDAO.class).addAttention(selfid,attenid);
+    }
+
+    @Override
+    public Attention checkIsAttention(@Param("selfid")int selfid,@Param("attenid") int attenid) {
+        return getSqlSession().getMapper(BlogDAO.class).checkIsAttention(selfid, attenid);
+    }
+
+    @Override
+    public boolean deleteAttention(@Param("selfid")int selfid,@Param("attenid") int attenid) {
+        return  getSqlSession().getMapper(BlogDAO.class).deleteAttention(selfid,attenid);
+    }
+
+    @Override
+    public boolean insertBlogBrowse(@Param("uid") int uid, @Param("bid") int bid, @Param("browsetime") String browsetime) {
+        return getSqlSession().getMapper(BlogDAO.class).insertBlogBrowse(uid,bid,browsetime);
+    }
+
+    @Override
+    public List<Blog> selectTwoBlogByUser(int uid) {
+        return getSqlSession().getMapper(BlogDAO.class).selectTwoBlogByUser(uid);
     }
 
     @Override
