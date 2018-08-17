@@ -53,7 +53,7 @@
                       		<div style="margin-left:14.7%; margin-top:-9%;">qq_41581629</div>
                             <div style="margin-left:14.7%; padding-top:1%;">
                             	<span class="label" contenteditable="true" style="background-color:#9DC75F;">下载
-                                <span class="badge" contenteditable="true" style="background-color:#2D5315;">1</span></span> 上传权限：<span>220MB</span>
+                                <span id="tag" class="badge" contenteditable="true" style="background-color:#2D5315;"></span></span> 上传权限：<span>220MB</span>
                              </div>
                       </div>
                       <div style=" margin-left:5%; margin-top:8%;">
@@ -261,12 +261,15 @@
             $.getJSON("/resource/getUploadResource?uid=${sessionScope.loginresult.uid}",function (data) {
                 var html="";
                 for(var i=0;i< data.length;i++){
-                    html+='<p><div style="height:100px; width:90%; margin-left:20px;">' ;
-                    html+='<div style="height:48px; width:5%; float:left; margin-top:15px "><a href="xq.jsp"><img src="img/2.svg"></a></div>' ;
-                    html+='<div style="height:20px; width:66%; float:left; margin-top:15px; margin-left:40px;  font-size:20px ; color:#000000;"><a href="xq.jsp">'+data[i].name+'</a></div>';
-                    html+=' <div style="height:30px; width:82%; float:left;margin-top:12px; margin-left:40px;font-size:14px;"><div style="width:250px; height:30px;"><span>'+data[i].introduce+'</span></div>' ;
-                    html+='<div style="float:left;margin-left:30px;text-align:center;"><span>上传时间：'+data[i].time+'</span><span style="margin-left: 30px;">所需积分：'+data[i].scoring+'</span></div>' ;
-                    html+='</div></p>';
+                    html+='<div class="col-md-12 well">';
+                    html+='<div class="col-md-2 "><a href="xq.jsp"><img src="img/2.svg"></a></div>';
+                    html+='<div class="col-md-10"><div style=" font-size:20px ; color:#000000;height: 40px;">'+data[i].name+'</div>';
+                    html+='<div>';
+                    html+='<div style=" float: left"><a>所需积分:&nbsp;&nbsp;&nbsp;</a>'+data[i].scoring+'</div>';
+                    html+='<div style="float: left; margin-left: 50%">'+data[i].time+'</div>';
+                    html+='</div>';
+                    html+='</div>';
+                    html+='</div>';
                 }
                 if(a==1){
                     $("#panel-717300").append(html);
@@ -294,7 +297,7 @@
               html+='<div class="col-md-2 "><a href="xq.jsp"><img src="img/2.svg"></a></div>';
               html+='<div class="col-md-10"><div style="height: 40px;">'+data[i].title+'</div>';
               html+='<div>';
-              html+='<div style=" float: left"><a>积&nbsp;分:&nbsp;&nbsp;&nbsp;</a>'+data[i].scoring+'</div>';
+              html+='<div style=" float: left"><a>所需积分:&nbsp;&nbsp;&nbsp;</a>'+data[i].scoring+'</div>';
               html+='<div style="float: left; margin-left: 50%">'+data[i].time+'</div>';
               html+='</div>';
               html+='</div>';
@@ -303,6 +306,7 @@
                 if (a==1){
                     $("#panel-622342").append(html);
                     $("#downloadcount").append(data.length);
+                    $("#tag").append(data.length);
                     a++;
                 }
             })
@@ -322,7 +326,7 @@
                     html+='<div class="col-md-2 "><a href="xq.jsp"><img src="img/2.svg"></a></div>';
                     html+='<div class="col-md-10"><div style="height: 40px;">'+data[i].title+'</div>';
                     html+='<div>';
-                    html+='<div style=" float: left"><a>积&nbsp;分:&nbsp;&nbsp;&nbsp;</a>'+data[i].scoring+'</div>';
+                    html+='<div style=" float: left"><a>所需积分:&nbsp;&nbsp;&nbsp;</a>'+data[i].scoring+'</div>';
                     html+='<div style="float: left; margin-left: 50%">'+data[i].time+'</div>';
                     html+='</div>';
                     html+='</div>';
