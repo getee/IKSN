@@ -42,4 +42,8 @@ public interface ResourceDAO {
     int reportResourceNum();
     //获取所有被举报资源
     List<ReportResource> getAllReportResource(int page);
+    //下载资源
+    List<Resource> downloadResource(int uid);
+    //我收藏的资源
+    List<Resource> myCollectResource(int uid);
 }

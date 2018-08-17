@@ -39,4 +39,8 @@ public interface ResourceService {
     List<ReportResource> getAllReportResource(int page);
     //获取被举报资源的数量
     int reportResourceNum();
+    //下载资源
+    List<Resource> downloadResource(int uid);
+    //我收藏的资源
+    List<Resource> myCollectResource(int uid);
 }

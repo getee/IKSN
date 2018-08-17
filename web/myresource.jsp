@@ -17,6 +17,7 @@
 	<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
     <script type="text/javascript" src="js/jquery-3.3.1.js"></script>
     <script type="text/javascript" src="bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
+
 </head>
 <body  style="background-color:#F7F8F9">
  <div class="container-fluid">
@@ -54,22 +55,9 @@
                       </div>
                       <div style=" margin-left:5%; margin-top:8%;">
                       	
-                        <span style="float:left;">积分<div style="color:#36F;font-weight:bolder">
-                            <c:set var="total" value="0"></c:set>
-                            <c:forEach items="${requestScope.scorings}" var="s">
-                                <c:if  test="${s.state=='0'}">
-                                    <c:set var="number" value="-${s.number}" />
-                                </c:if>
-                                <c:if  test="${s.state=='1'}">
-                                    <c:set var="number" value="${s.number}" />
-                                </c:if>
-                                <c:set var="total" value="${total +(number) }" />
-                            </c:forEach>${total} </div>
-                        </span>
-                        <span style="margin-left:8%;float:left">总排名<div style="color:#36F;font-weight:bolder">200000+</div></span>
-                        <span style="margin-left:8%;float:left">上传资源<div style="color:#36F;font-weight:bolder">0</div> </span>   
-                        <span style="margin-left:8%;float:left">下载资源<div style="color:#36F;font-weight:bolder">0</div></span>     
-                        <span style="margin-left:8%;float:left">创建专辑<div style="color:#36F;font-weight:bolder">0</div></sapn>
+                        <span style="float:left;">积分<div style="color:#36F;font-weight:bolder"></div></span>
+                        <span style="margin-left:8%;float:left">上传资源<div style="color:#36F;font-weight:bolder">0</div> </span>
+                        <span style="margin-left:8%;float:left">下载资源<div style="color:#36F;font-weight:bolder">0</div></span>
                            
                       </div>
   				</div >
@@ -84,14 +72,18 @@
                       <ul class="nav nav-tabs">
                         <li id="b1" ><a href="#panel-717300" >上传资源</a></li>
                         <li id="b2"><a id="jifen" href="#panel-622341">积分明细</a></li>
-                        <li id="b3" ><a href="#panel-622342" >下载明细</a></li>
-                        <li id="b4"><a href="#panel-622343" >我的收藏</a></li>
+                        <li id="b3" ><a id="download"  href="#panel-622342" >下载资源</a></li>
+                        <li id="b4"><a id="collect" href="#panel-622343" >我的收藏</a></li>
                         <li id="b5"><a href="#panel-622344" >VIP服务</a></li>
                       </ul>
                       <div class="tab-content">
+
+                          <!--上传资源-->
                             <div class="tab-pane active" id="panel-717300" contenteditable="true">
                               <p>上传资源.</p>
                             </div>
+
+                          <!--积分明细-->
                             <div class="tab-pane " id="panel-622341" contenteditable="true">
                               <p><table class="table" contenteditable="true">
                                     <thead>
@@ -116,12 +108,18 @@
                                 </table>
                                 </p>
                             </div>
+
+                          <!--下载明细-->
                             <div class="tab-pane " id="panel-622342" contenteditable="true">
-                              <p>下载明细.</p>
+
                             </div>
+
+                          <!--我的收藏-->
                             <div class="tab-pane " id="panel-622343" contenteditable="true">
-                              <p>我的收藏.</p>
+
                             </div>
+
+                          <!--VIP服务-->
                             <div class="tab-pane " id="panel-622344" contenteditable="true">
                               <p>VIP服务.</p>
                             </div>
@@ -184,7 +182,7 @@
                 	</div>
                 </div>
                 
-        		
+
                
                	
 </div> 
@@ -239,3 +237,55 @@
     });
 </script>
 </html>
+
+<!--下载资源-->
+<script>
+    $(document).ready(function () {
+        var a=1;
+        $("#download").click(function () {
+            $.getJSON("/resource/downloadResource?uid=${sessionScope.loginresult.uid}",function (data) {
+                var html="";
+                for(var i=0;i<data.length;i++){
+              html+='<div class="col-md-12 well">';
+              html+='<div class="col-md-2 "><a href="xq.jsp"><img src="img/2.svg"></a></div>';
+              html+='<div class="col-md-10"><div style="height: 40px;">'+data[i].title+'</div>';
+              html+='<div>';
+              html+='<div style=" float: left"><a>积&nbsp;分:&nbsp;&nbsp;&nbsp;</a>'+data[i].scoring+'</div>';
+              html+='<div style="float: left; margin-left: 50%">'+data[i].time+'</div>';
+              html+='</div>';
+              html+='</div>';
+              html+='</div>';
+                }
+                if (a==1){
+                    $("#panel-622342").append(html);a++;
+                }
+            })
+        })
+    })
+</script>
+
+<!--我收藏的资源-->
+<script>
+    $(document).ready(function () {
+        var a=1;
+        $("#collect").click(function () {
+            $.getJSON("/resource/myCollectResource?uid=${sessionScope.loginresult.uid}",function (data) {
+                var html="";
+                for(var i=0;i<data.length;i++){
+                    html+='<div class="col-md-12 well">';
+                    html+='<div class="col-md-2 "><a href="xq.jsp"><img src="img/2.svg"></a></div>';
+                    html+='<div class="col-md-10"><div style="height: 40px;">'+data[i].title+'</div>';
+                    html+='<div>';
+                    html+='<div style=" float: left"><a>积&nbsp;分:&nbsp;&nbsp;&nbsp;</a>'+data[i].scoring+'</div>';
+                    html+='<div style="float: left; margin-left: 50%">'+data[i].time+'</div>';
+                    html+='</div>';
+                    html+='</div>';
+                    html+='</div>';
+                }
+                if (a==1){
+                    $("#panel-622343").append(html);a++;
+                }
+            })
+        })
+    })
+</script>

@@ -236,7 +236,7 @@
                             </div>
                     </form>
 
-                            <form id="bind-phone" role="form" class="form-horizontal" style="margin-top:3%">
+                    <form id="bind-phone" role="form" class="form-horizontal" style="margin-top:3%">
                     <div class="step-phone-number">
                         <input type="hidden" name="type" value="chgmob">
                         <div class="alert alert-danger hide js_alert_message"></div>
@@ -268,62 +268,8 @@
                         </div>
                     </div>
                     </form>
-
-
-
-
-
-
-                  <%--  <div class="step-phone-number">
-                        <input type="hidden" name="type" value="chgmob">
-                        <div class="alert alert-danger hide js_alert_message"></div>
-                        <div class="form-group form-process step">
-
-                            <div class="row" >
-                                &lt;%&ndash;@declare id="phone_old_number"&ndash;%&gt;<label for="phone_old_number" class="col-xs-2 control-label"></label>
-                                <div class="col-xs-5" style="margin:1% ">
-                                    <span class="text-infos js_text_infos" >请输入手机号验证你的身份：</span>
-                                </div>
-                            </div>
-
-                            <div class="row js_validate_step">
-                                <label for="phone_number" class="col-xs-2 control-label"></label>
-                                <div class="col-xs-3">
-                                    <input id="phone_number" type="text" class="form-control js_phone_number" placeholder = "请输入旧手机号">
-                                </div>
-                                <div class="col-xs-7 col-xs-no">
-                                    <span class="phone-code js_get_code">获取验证码</span>
-                                    <span class="code-message hide js_code_message">短信验证码已发送，请查收手机</span>
-                                </div>
-                            </div>
-
-                            <div class="row js_validate_step">
-                                <div class="col-xs-2"></div>
-                                <div class="col-xs-3"><input type="text" class="form-text form-control js_validate_code" placeholder="短信验证码"></div>
-                            </div>
-                        </div>
-
-                        <div class="form-group form-process step">
-                            <div class="col-xs-offset-2 col-xs-9">
-                                <button class="btn btn-primary btn-lg btn-primary-set js_bind_subimit" type="submit" style="background-color:#F13B3E; border:hidden">下一步</button>
-                                <p class="text-warin"> <a href="#">如果验证身份出现问题，请联系客服</a></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="step-init">
-                        <div style="display: none" class="alert alert-danger"></div>
-                        <div class="form-group">
-                            <label class="col-xs-2 control-label">手机号：</label>
-                            <div class="col-xs-9"><span class="phone_number">
-                      <!-- TODO 需要后端将用户的原始手机号输出到这里-->********0973</span><a href="javascript:void 0" class="change js_btn_resetphone">修改手机号</a></div>
-                        </div>
-                        <div style="display: none" class="alert alert-success">
-                        </div>
-                    </div>
---%>
-
-
                 </div>
+
                 <!--    修改邮箱-->
                 <div role="tabpanel" class="tab-pane" id="messages">
                     <form style="margin-top:5%; margin-left:10%" action="/user/updateEmail" method="post">
