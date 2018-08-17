@@ -13,7 +13,43 @@ public class Blog {
     private Set<BlogTag> blogTags;
     private BlogTag blogTag;
     private  UserToBlog userToBlog;
+    private BlogBrowsed blogBrowsed;
+    private BlogComments blogComments;
+    private  CollectBlog collectBlog;
+    private  ReportBlog reportBlog;
 
+
+    public BlogBrowsed getBlogBrowsed() {
+        return blogBrowsed;
+    }
+
+    public void setBlogBrowsed(BlogBrowsed blogBrowsed) {
+        this.blogBrowsed = blogBrowsed;
+    }
+
+    public BlogComments getBlogComments() {
+        return blogComments;
+    }
+
+    public void setBlogComments(BlogComments blogComments) {
+        this.blogComments = blogComments;
+    }
+
+    public CollectBlog getCollectBlog() {
+        return collectBlog;
+    }
+
+    public void setCollectBlog(CollectBlog collectBlog) {
+        this.collectBlog = collectBlog;
+    }
+
+    public ReportBlog getReportBlog() {
+        return reportBlog;
+    }
+
+    public void setReportBlog(ReportBlog reportBlog) {
+        this.reportBlog = reportBlog;
+    }
 
     public void setBlogTags(Set<BlogTag> blogTags) {
         this.blogTags = blogTags;
@@ -100,7 +136,7 @@ public class Blog {
     public Blog() {
     }
 
-    public Blog(int bid, String title, String content, String time, String link, int points, int classify, BlogTag blogTag, UserToBlog userToBlog) {
+    public Blog(int bid, String title, String content, String time, String link, int points, int classify, Set<BlogTag> blogTags, BlogTag blogTag, UserToBlog userToBlog, BlogBrowsed blogBrowsed, BlogComments blogComments, CollectBlog collectBlog, ReportBlog reportBlog) {
         this.bid = bid;
         this.title = title;
         this.content = content;
@@ -108,8 +144,13 @@ public class Blog {
         this.link = link;
         this.points = points;
         this.classify = classify;
+        this.blogTags = blogTags;
         this.blogTag = blogTag;
         this.userToBlog = userToBlog;
+        this.blogBrowsed = blogBrowsed;
+        this.blogComments = blogComments;
+        this.collectBlog = collectBlog;
+        this.reportBlog = reportBlog;
     }
 
     @Override
@@ -122,8 +163,8 @@ public class Blog {
                 ", link='" + link + '\'' +
                 ", points=" + points +
                 ", classify=" + classify +
+                ", blogTag=" + blogTag +
+                ", userToBlog=" + userToBlog +
                 '}';
     }
-
-
 }

@@ -513,7 +513,13 @@
 
                 </form>
                 <ul class="nav navbar-nav navbar-right">
+
                     <li name="tx"><a id="bk" class="glyphicon glyphicon-pencil" href="#"> 写博客</a></li>
+                    <c:if test="${sessionScope.loginresult.isspeak==1}">
+                        <script>
+                            $("#bk").attr("href","javascript:void(0)");
+                        </script>
+                    </c:if>
                     <li name="tx"><a id="ca" class="glyphicon glyphicon-leaf" href="#">发Chat</a></li>
                     <li id="rw" name="tx">
 
