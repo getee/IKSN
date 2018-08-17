@@ -11,12 +11,9 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-
-import java.util.ArrayList;
+import java.util.*;
 
 @Component("resourceService")
 public class ResourceServiceImp  implements ResourceService{
@@ -198,17 +195,58 @@ public class ResourceServiceImp  implements ResourceService{
     }
 
     @Override
-    public boolean downLoadResource(int pushId, int downId, int scoring) {
+    public boolean downLoadResource(int pushId, int downId, int rid,int scoring) {
         try {
             int pushScore=userDAO.getId(pushId).getScore();
             int downScore=userDAO.getId(downId).getScore();
             boolean isLessen=resourceDAO.changeScore(downId, downScore-scoring);//下载者减少后的积分
             boolean isnAdd=resourceDAO.changeScore(pushId, pushScore+scoring);//上传者增加后的积分
-            if(!isLessen || !isnAdd) return false;
+            //往下载表插入数据
+            boolean isOK=resourceDAO.addDownResource(downId,rid,LocalTime.getNowTime());
+            if(!isLessen || !isnAdd || !isOK) return false;
         }catch (Exception e) {
             return false;
         }
         return true;
+    }
+     //下载资源
+    @Override
+    public List<Resource> downloadResource(int uid) {
+        return resourceDAO.downloadResource(uid);
+    }
+
+    //我收藏的资源
+    @Override
+    public List<Resource> myCollectResource(int uid) {
+        return resourceDAO.myCollectResource(uid);
+    }
+
+    @Override
+    public boolean downHour(int rid, int uid) {
+        String nowTime=LocalTime.getNowTime();
+        String oldTime=resourceDAO.getDownedTime(rid,uid);//获取最大时间判断
+        if(oldTime == null){
+            return false;
+        }
+        SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        Date  d = null;
+        try {
+            d = df.parse(oldTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Calendar cal=Calendar.getInstance();
+        cal.setTime(d);
+        cal.add(Calendar.HOUR, +1);  //加1小时，数据库时间之后大于现在时间不扣钱
+
+        oldTime=df.format(cal.getTime());
+        if(oldTime.compareTo(nowTime)>0){//数据库时间大于 下载时间，所以评为已下载
+            System.out.println(oldTime+"++"+nowTime);
+            return true;
+        }
+
+        return false;
     }
 
 

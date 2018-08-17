@@ -142,11 +142,32 @@ public class ResourceDAOImp extends BaseDAOImp implements ResourceDAO {
         List<Resource> resources=getSqlSession().getMapper(ResourceDAO.class).getUploadResource(uid);
         return resources;
     }
+    //下载资源
+    @Override
+    public List<Resource> downloadResource(int uid) {
+        return getSqlSession().getMapper(ResourceDAO.class).downloadResource(uid);
+    }
+    //我收藏的资源
+    @Override
+    public List<Resource> myCollectResource(int uid) {
+        return getSqlSession().getMapper(ResourceDAO.class).myCollectResource(uid);
+    }
 
     //更改积分
     @Override
     public boolean changeScore(int uid, int scoring) {
         return getSqlSession().getMapper(ResourceDAO.class).changeScore(uid, scoring);
+    }
+
+    @Override
+    public boolean addDownResource(int downId, int rid, String nowTime) {
+
+        return getSqlSession().getMapper(ResourceDAO.class).addDownResource(downId,rid,nowTime);
+    }
+
+    @Override
+    public String getDownedTime(int rid, int uid) {
+        return getSqlSession().getMapper(ResourceDAO.class).getDownedTime(rid,uid);
     }
 
     /**

@@ -145,34 +145,43 @@ public class ResourceControl {
             return  "xq";
         }
         /**
-         * 资源下载
+         * 资源下载================================================
          */
         @RequestMapping("/downLoadResource")
         public String downLoadResource(@RequestParam("rid") Integer rid,
                                        @RequestParam("downUserid") Integer downUserid,//下载者
                                        HttpServletRequest request, HttpSession session){
             Resource r=resourceService.loadResource(rid);//获取资源信息
-            boolean isDown=resourceService.downLoadResource(r.getUid(),downUserid,r.getScoring());//上传者，下载者，积分数
-            //更新session用户积分值
-            User u= (User) session.getAttribute("loginresult");
-            u.setScore(u.getScore()-r.getScoring());
-            session.setAttribute("loginresult",u);
-            System.out.println(u);
 
+            boolean isDowned=resourceService.downHour(rid,downUserid);//判断该用户是否下载过（一小时内）
+            if(!isDowned) {
+                boolean isDown = resourceService.downLoadResource(r.getUid(), downUserid, rid, r.getScoring());//上传者，下载者，积分数
+                //更新session用户积分值
+                User u = (User) session.getAttribute("loginresult");
+                u.setScore(u.getScore() - r.getScoring());
+                session.setAttribute("loginresult", u);
+            }
             String path=r.getPath();
             request.setAttribute("downloapath",path);
             request.setAttribute("resouce",r);
             return  "xq";
         }
         /*
-        加载资源界面获取资源数据
+        加载资源界面获取资源数据=====================================================
          */
         @RequestMapping("/loadResource")
-        public String loadResource(@RequestParam("rid") Integer rid,HttpServletRequest request){
+        public String loadResource(@RequestParam("rid") Integer rid,HttpSession session,HttpServletRequest request){
             System.out.println("r"+rid);
             Resource r=resourceService.loadResource(rid);//查询语句缺少标签表信息已修复
             User pushUser=userService.getId(r.getUid());
-            System.out.println(r);
+            User downUser= (User) session.getAttribute("loginresult");
+            if(downUser!=null){
+                boolean isDowned=resourceService.downHour(rid,downUser.getUid());//判断该用户是否下载过（一小时内）
+                if(isDowned){
+                    request.setAttribute("isDowned","(已下载过，一小时内下载不扣积分)");
+                }
+            }
+
 
             request.setAttribute("resouce",r);
             request.setAttribute("pushUser",pushUser);
@@ -266,14 +275,15 @@ public class ResourceControl {
 
     //资源举报
     @RequestMapping("/reportResource")
-    public ModelAndView reportResource(@ModelAttribute("reportResource")ReportResource reportResource) throws UnsupportedEncodingException {
+    public ModelAndView reportResource(ReportResource reportResource) {
+        System.out.println(reportResource);
         ModelAndView mav=new ModelAndView("xq");
         //String reason=new String(reportResource.getReason().getBytes("ISO-8859-1"),"UTF-8");
         //reportResource.setReason(reason);
         System.out.println(reportResource);
        boolean result=resourceService.reportResource(reportResource);
         mav.getModel().put("result",result);
-        System.out.println(result);
+        System.out.println("SSDD"+result);
          return mav;
     }
 
@@ -344,4 +354,69 @@ public class ResourceControl {
         out.close();
 
     }
+
+    //下载资源
+    @RequestMapping(value = "/downloadResource" )
+    public void  downloadResource(HttpServletResponse response, HttpSession session, Model model) throws IOException {
+        System.out.println("downloadResource");
+        User u= (User) session.getAttribute("loginresult");
+        System.out.println(u);
+        List<Resource> resource=resourceService.downloadResource(u.getUid());
+        System.out.println(resource);
+        //session.setAttribute("collectblog",collectblog);
+        JSONArray jsonArray=new JSONArray();
+        JSONObject jsonObject=null;
+        for (int i=0;i<resource.size();i++){
+            jsonObject=new JSONObject();
+            try{
+                jsonObject.put("title",resource.get(i).getName());
+                jsonObject.put("scoring",resource.get(i).getScoring());
+                jsonObject.put("time",resource.get(i).getTime());
+                jsonArray.put(jsonObject);
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+        }
+        System.out.println(jsonArray);
+        //悄悄把数据会给他
+        //用response（响应）对象中的输出流将处理好的结果输出给ajax请求对象
+        response.setContentType("textml;charset=UTF-8");//  textml     ,text/xml    ,text/json
+        PrintWriter out=response.getWriter();//获取响应对象中的输出流
+        out.write(jsonArray.toString());
+        out.flush();
+        out.close();
+    }
+
+    //我收藏的资源
+    @RequestMapping(value = "/myCollectResource" )
+    public void  collectResource(HttpServletResponse response, HttpSession session, Model model) throws IOException {
+        System.out.println("myCollectResource");
+        User u= (User) session.getAttribute("loginresult");
+        System.out.println(u);
+        List<Resource> collect=resourceService.myCollectResource(u.getUid());
+        System.out.println(collect);
+        //session.setAttribute("collectblog",collectblog);
+        JSONArray jsonArray=new JSONArray();
+        JSONObject jsonObject=null;
+        for (int i=0;i<collect.size();i++){
+            jsonObject=new JSONObject();
+            try{
+                jsonObject.put("title",collect.get(i).getName());
+                jsonObject.put("scoring",collect.get(i).getScoring());
+                jsonObject.put("time",collect.get(i).getTime());
+                jsonArray.put(jsonObject);
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+        }
+        System.out.println(jsonArray);
+        //悄悄把数据会给他
+        //用response（响应）对象中的输出流将处理好的结果输出给ajax请求对象
+        response.setContentType("textml;charset=UTF-8");//  textml     ,text/xml    ,text/json
+        PrintWriter out=response.getWriter();//获取响应对象中的输出流
+        out.write(jsonArray.toString());
+        out.flush();
+        out.close();
+    }
+
 }

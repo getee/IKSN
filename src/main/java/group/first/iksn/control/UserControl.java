@@ -455,11 +455,31 @@ public class UserControl {
     }
     //用户积分明细
     @RequestMapping("/getScoring")
-    public ModelAndView getScoring(@RequestParam("uid") int uid){
+    public void getScoring(@RequestParam("uid") int uid,HttpServletResponse response) throws IOException {
         List<Scoring> scorings=userService.getScoring(uid);
-        ModelAndView mav=new ModelAndView("myscore");
-        mav.addObject("scorings",scorings);
-        return mav;
+        JSONArray jsonArray=new JSONArray();
+        JSONObject jsonObject;
+        for (int i=0;i<scorings.size();i++){
+            jsonObject=new JSONObject();
+            try{
+                jsonObject.put("state",scorings.get(i).getState());
+                jsonObject.put("number",scorings.get(i).getNumber());
+                jsonObject.put("operation",scorings.get(i).getOperation());
+                jsonObject.put("time",scorings.get(i).getTime());
+                jsonArray.put(jsonObject);
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+        }
+
+        System.out.println("积分明细："+scorings);
+        //悄悄把数据会给他
+        //用response（响应）对象中的输出流将处理好的结果输出给ajax请求对象
+        response.setContentType("textml;charset=UTF-8");//  textml     ,text/xml    ,text/json
+        PrintWriter  out=response.getWriter();//获取响应对象中的输出流
+        out.write(jsonArray.toString());
+        out.flush();
+        out.close();
     }
     //积分消费记录
     @RequestMapping("/costScoring")

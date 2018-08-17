@@ -36,7 +36,6 @@
                 processData: false,
                 success: function (data) {
                     $("#floor").attr("value",data)
-
                 },
                 error: function(data) {
                     alert("error:");
@@ -46,6 +45,85 @@
             // alert("FFF+${requestScope.Foor}");
         }
 	</script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            var ajaxUrl="/blog/getComments?bid="+"2";
+            $.ajax({
+                type:"post",
+                url:ajaxUrl,
+                //data:bokeid,
+                async: false,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    var blogComments="";
+                    for(var i=0;i<data.length;i++){
+                        blogComments+='';
+                        blogComments+='<ul>';
+                        blogComments+='<hr>';
+                        blogComments+='<li id="getpl">';
+                        blogComments+= '<div style="">';
+                        blogComments+='<div style="margin-top: 5px">';
+                        blogComments+='<a href="#">'+data[i].nickname+'</a>&nbsp;<a style="color: #CCCCCC" data-toggle="modal" data-target="#myModa">点击回复</a>';
+                        blogComments+='<h5 style="color:#928F8F;float: right">'+data[i].time +'</h5>&nbsp;&nbsp;&nbsp;';
+                        if(data[i].commentid==0){
+                            blogComments+='<h5 style="color:#928F8F;float: right">#'+data[i].floor +'楼&nbsp;&nbsp;&nbsp;</h5>';
+
+                        }else{
+                            blogComments+='<h5 style="color:#928F8F;float: right">@'+data[i].floor +'楼&nbsp;&nbsp;&nbsp;</h5>';
+
+                        }
+                        blogComments+='</div>';
+                        blogComments+='</div>';
+                        blogComments+='<h5 style="margin: 25px 10px 10px 0px">'+data[i].content+'</h5>';
+                        blogComments+='</li>';
+                        blogComments+='<hr>';
+                        blogComments+='';
+                            <!-- Modal -->
+                        blogComments+='<div class="modal fade" id="myModa" tabindex="-1" role="dialog" aria-labelledby="myModalLabe" style="margin-top: 20%">';
+                        blogComments+='<div class="modal-dialog" role="document">';
+                        blogComments+='<div class="modal-content">';
+                        blogComments+='<div class="modal-header">';
+                        blogComments+='<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+                        blogComments+='<h4 class="modal-title" id="myModalLabe">我的回复</h4>';
+                        blogComments+='</div>';
+                        blogComments+='<form action="/blog/answerComment" method="post">';
+                        blogComments+='<div class="form-group">';
+                        blogComments+='uid:<input type="text" name="uid"><br>';
+                        blogComments+='</div>';
+                        blogComments+='<div class="form-group">';
+                        blogComments+='bid:<input type="text" name="bid" value="'+data[i].bid+'"><br>';
+                        blogComments+='</div>';
+                        blogComments+='<div class="modal-body">';
+                            <!--文本域-->
+                        blogComments+='<textarea class="form-control" rows="3" name="content"></textarea>';
+                            <!---->
+                        blogComments+='</div>';
+                        blogComments+='<div class="form-group">';
+                        blogComments+='commentid:<input type="text" name="commentid" value="'+data[i].id+'"><br>';
+                        blogComments+='</div>';
+                        blogComments+='<div class="form-group">';
+                        blogComments+='floor:<input type="text" name="floor"value="'+data[i].floor+'"><br>';
+                        blogComments+='</div>';
+                        blogComments+='<div class="modal-footer">';
+                        blogComments+='<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>';
+                        blogComments+='<button type="submit" class="btn btn-primary"value="discuss">回复</button>';
+                        blogComments+='</div>';
+                        blogComments+='</form>';
+                        blogComments+='</div>';
+                        blogComments+='</div>';
+                        blogComments+='</div>';
+                        blogComments+='</ul>';
+                      }
+                      $('#getcommrnts').append(blogComments);
+                },
+                error: function(data) {
+                    alert("error:");
+                }
+            });
+        });
+    </script>
 	<style>
 		.li-left{
 			display:block;
@@ -60,7 +138,6 @@
 			position: fixed;top: 30%;left: 2%;
 		}
 		#toTop {display: none;text-decoration: none;position: fixed;bottom: 10px;right: 10px;overflow: hidden;width: 40px;height: 40px;border: none;text-indent: 100%; background-image: url(image/goTop.jpg);background-size: 100% 100%;text-align: center;}
-		.icon-observer{
 			display:block;width: 30px;height: 30px;border: none;background-size: 100% 100%;text-align: center;border-radius: 20px
 		}
 	</style>
@@ -260,9 +337,6 @@
 											<div class="form-group">
 												bid:<input type="text" name="bid"><br>
 											</div>
-											<div class="form-group">
-												time:<input type="text" name="time"><br>
-											</div>
 											<div class="modal-body">
 												<!--文本域-->
 												<textarea class="form-control" rows="3" name="content"></textarea>
@@ -282,101 +356,73 @@
 						</div>
 
 						<!--别人的品论-->
-						<div class="span12" style="background-color:#FFFFFF;padding-left: 25px;padding-right: 25px">
-							<ul>
-								<hr>
-								<li>
-									<div style="">
-										<div style="float: left"><a class="icon-observer" href="#" style="background-image: url(image/3_qq.jpg)"></a></div>
-										<div style="margin-top: 5px">
-											<a href="#">用户名</a>
-											<h5 style="color:#928F8F;float: right">2018年8月2日16：05：25</h5>&nbsp;
-											<h5 style="color:#928F8F;float: right">#1楼</h5>
-										</div>
-									</div>
-									<h5 style="margin: 25px 10px 10px 50px">作者写的666</h5>
-								</li>
-								<hr>
-								<div class="span12" style="background-color:#A29E9E;padding: 2px" align="right">
-									<!-- Button trigger modal -->
-									有疑问？就说一说
-									<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModa">
-										回复
-									</button>
+						<div class="span12" style="background-color:#FFFFFF;padding-left: 25px;padding-right: 25px" id="getcommrnts">
+                            <%--<ul>
+                                <hr>
+                                <li id="getpl">
+                                    <div style="">
+                                        <div style="float: left"><a class="icon-observer" href="#" style="background-image: url(image/3_qq.jpg)"></a></div>
+                                        <div style="margin-top: 5px">
+                                            <a href="#">用户名</a>
+                                            <h5 style="color:#928F8F;float: right">2018年8月2日16：05：25</h5>&nbsp;
+                                            <h5 style="color:#928F8F;float: right">#1楼</h5>
+                                        </div>
+                                    </div>
+                                    <h5 style="margin: 25px 10px 10px 50px">作者写的666</h5>
+                                </li>
+                                <hr>
+                                <div class="span12" style="background-color:white;padding: 25px"align="right">
+                                    <!-- Button trigger modal -->
+                                    有疑问？就说一说
+                                    <button type="button"  class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModa">
+                                        我要回复
+                                    </button>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="myModa" tabindex="-1" role="dialog" aria-labelledby="myModalLabe" style="margin-top: 20%">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title" id="myModalLabe">我的回复</h4>
+                                                </div>
+                                                <form action="/blog/answerComment" method="post">
+                                                    <div class="form-group">
+                                                        uid:<input type="text" name="uid"><br>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        bid:<input type="text" name="bid"><br>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        time:<input type="text" name="time"id="timer"><br>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <!--文本域-->
+                                                        <textarea class="form-control" rows="3" name="content"></textarea>
+                                                        <!---->
+                                                    </div>
+                                                    <div class="form-group">
+                                                        commentid:<input type="text" name="commentid"><br>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        floor:<input type="text" name="floor"><br>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                                        <button type="submit" class="btn btn-primary"value="discuss">回复</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
-									<!-- Modal -->
-									<div class="modal fade" id="myModa" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="margin-top: 20%">
-										<div class="modal-dialog" role="document">
-											<div class="modal-content" style="text-align: right">
-												<div class="modal-header">
-													<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-													<h4 class="modal-title" id="myModalLabe">我的回复</h4>
-												</div>
-												<form action="/blog/answerComment" method="post">
-													<div class="form-group">
-														uid:<input type="text" name="uid"><br>
-													</div>
-													<div class="form-group">
-														bid:<input type="text" name="bid"><br>
-													</div>
-													<div class="form-group">
-														time:<input type="text" name="time"><br>
-													</div>
-													<div class="modal-body">
-														<!--文本域-->
-														<textarea class="form-control" rows="3" name="content"></textarea>
-														<!---->
-													</div>
-													<div class="form-group">
-														commentid:<input type="text" name="commentid"><br>
-													</div>
-													<div class="form-group">
-														floor:<input type="text" name="floor">${requestScope.floor}<br>
-													</div>
-													<div class="modal-footer">
-														<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-														<button type="submit" class="btn btn-primary"value="discuss">回复</button>
-													</div>
-												</form>
-											</div>
-										</div>
-									</div>
-								</div>
-								<li>
-									<div style="">
-										<div style="float: left"><a class="icon-observer" href="#" style="background-image: url(image/3_qq.jpg)"></a></div>
-										<div style="margin-top: 5px">
-											<a href="#">用户名</a>
-											<h5 style="color:#928F8F;float: right">2018年8月2日16：05：25</h5>&nbsp;
-											<h5 style="color:#928F8F;float: right">#2楼</h5>
-										</div>
-									</div>
-									<h5 style="margin: 25px 10px 10px 50px">作者写的666</h5>
 
-								</li>
-								<hr>
-
-								<li>
-									<div style="">
-										<div style="float: left"><a class="icon-observer" href="#" style="background-image: url(image/3_qq.jpg)"></a></div>
-										<div style="margin-top: 5px">
-											<a href="#">用户名</a>
-											<h5 style="color:#928F8F;float: right">2018年8月2日16：05：25</h5>&nbsp;
-											<h5 style="color:#928F8F;float: right">#3楼</h5>
-										</div>
-									</div>
-									<h5 style="margin: 25px 10px 10px 50px">作者写的666</h5>
-
-								</li>
-								<hr>
-
-								<p>
-									<a class="btn" href="#">查看更多 »</a>
-								</p>
-							</ul>
+                            </ul>--%>
 						</div>
 						<!--					评论结束-->
-
+                        <p>
+                            <a class="btn" href="#">查看更多 »</a>
+                        </p>
 					</div>
 
 					<div class="col-xs-6 col-md-3">
@@ -671,5 +717,8 @@ function report(result) {
 	alert("举报成功")
 }
 
+</script>
+<script>
+    document.getElementById("time").value=new Date();
 </script>
 </html>

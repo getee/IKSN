@@ -236,6 +236,7 @@
                         </div>
                         <div class="modal-body">
                             本次下载将扣取${requestScope.resouce.scoring}积分,你现有${sessionScope.loginresult.score}积分
+                            <br/><font color="red">${requestScope.isDowned}</font>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>

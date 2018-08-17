@@ -135,4 +135,18 @@
     <select id="getUploadResource" resultType="Resource">
         select * from resource where uid=#{uid}
     </select>
+    <!--下载资源-->
+    <select id="downloadResource" resultType="Resource">
+        SELECT name,scoring,time FROM  resource WHERE  rid IN (SELECT  rid FROM  downresources WHERE uid=uid)
+    </select>
+    <!--我收藏的资源-->
+    <select id="myCollectResource" resultType="Resource">
+        SELECT name,scoring,time FROM  resource WHERE  rid IN (SELECT  rid FROM  collectresource WHERE uid=uid)
+    </select>
+    <insert id="addDownResource" >
+        INSERT INTO downresources(UID,RID,TIME) VALUES(#{0},#{1},#{2})
+    </insert>
+    <select id="getDownedTime" resultType="java.lang.String">
+        SELECT MAX(TIME) FROM downresources WHERE uid=#{1} and rid=#{0}
+    </select>
 </mapper>
