@@ -210,8 +210,18 @@ public class ResourceControl {
      * @return
      */
     @RequestMapping("/mCheckReportResource/{resourceid}/{id}")
-    public String mCheckReportResource(@PathVariable int resourceid, @PathVariable int id,@RequestParam("reason") String reason, Model model){
+    public String mCheckReportResource(@PathVariable int resourceid, @PathVariable int id,@RequestParam("reason") String reason, Model model,HttpServletRequest request){
         String reportReason=EncodingTool.encodeStr(reason);
+        System.out.println("进入mcheck");
+        Resource r=resourceService.loadResource(resourceid);//查询语句缺少标签表信息已修复
+        System.out.println(r);
+        User pushUser=userService.getId(r.getUid());
+        System.out.println(pushUser);
+        request.setAttribute("resouce",r);
+        request.setAttribute("pushUser",pushUser);
+        //下载次数参数初始化
+        int num=resourceService.downResource(resourceid);
+        request.setAttribute("downNum",num);
 
         model.addAttribute("resourceid",resourceid);
         model.addAttribute("reportRid",id);
@@ -227,9 +237,15 @@ public class ResourceControl {
      * @return
      */
     @RequestMapping("/mDeleteResourceForReport/{resourceid}")
+    @ResponseBody
     public String mDeleteResourceForReport(@PathVariable int resourceid){
-        resourceService.deleteIllegalResource(resourceid);
-        return "jubaoguanl";
+//        boolean delResult= resourceService.deleteIllegalResource(resourceid);
+//        if(delResult){
+//            return "success";
+//        }else {
+//            return "error";
+//        }
+        return "success";
     }
 
 
@@ -284,7 +300,8 @@ public class ResourceControl {
             jsonObject.put("id",rr.getId());
             jsonObject.put("reason",rr.getReason());
             jsonObject.put("name",rr.getResource().getName());
-            jsonObject.put("rid",rr.getRid());
+            jsonObject.put("rid",rr.getResource().getRid());
+            jsonObject.put("time",rr.getResource().getTime());
             jsonArray.put(jsonObject);
         }
         JSONObject jsonObjectTwo=new JSONObject();

@@ -95,7 +95,7 @@
         </association>
     </resultMap>
     <select id="getAllReportResource" resultMap="getResourceBy_Reportrid">
-		select  rr.ID,rr.RID,rr.REASON,r.NAME  from reportresource as rr
+		select  rr.ID,rr.RID,rr.REASON,r.NAME,r.TIME  from reportresource as rr
 		inner join resource as r on   rr.RID=r.RID ORDER BY rr.ID asc limit #{page},5;
 	</select>
     <!--举报资源-->
@@ -104,7 +104,7 @@
     </insert>
     <!--根据rid查uid-->
     <select id="selectUidByRid" parameterType="Integer" resultType="Resource">
-        select UID from resource where RID=#{rid}
+        select UID,PATH from resource where RID=#{rid}
     </select>
 
     <select id="getResource" resultMap="LoadResource">

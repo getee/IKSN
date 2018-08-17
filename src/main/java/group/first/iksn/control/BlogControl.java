@@ -378,6 +378,7 @@ public class BlogControl {
             jsonObject.put("id",rb.getId());
             jsonObject.put("reason",rb.getReason());
             jsonObject.put("title",rb.getBlog().getTitle());
+            jsonObject.put("time",rb.getBlog().getTime());
             jsonObject.put("bid",rb.getBid());
             jsonArray.put(jsonObject);
         }

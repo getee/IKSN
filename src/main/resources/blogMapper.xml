@@ -140,7 +140,7 @@
         </association>
     </resultMap>
     <select id="getAllReportBlog" resultMap="getBlogBy_Reportbid">
-		select  i.ID,i.BID,i.REASON,b.TITLE  from reportblog as i
+		select  i.ID,i.BID,i.REASON,b.TITLE,b.TIME  from reportblog as i
 		inner join blog as b on   i.BID=b.BID ORDER BY i.ID asc limit #{page},5;
 	</select>
 
