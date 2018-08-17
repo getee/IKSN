@@ -1,5 +1,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<c:if test="${empty sessionScope.loginresult}">
+    <c:redirect url="index.jsp"></c:redirect>
+</c:if>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -10,6 +14,7 @@
         String path = request.getContextPath();
         String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
     %>
+
     <base href="<%=basePath%>">
     <link href="bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -54,22 +59,9 @@
                       </div>
                       <div style=" margin-left:5%; margin-top:8%;">
                       	
-                        <span style="float:left;">积分<div style="color:#36F;font-weight:bolder">
-                            <c:set var="total" value="0"></c:set>
-                            <c:forEach items="${requestScope.scorings}" var="s">
-                                <c:if  test="${s.state=='0'}">
-                                    <c:set var="number" value="-${s.number}" />
-                                </c:if>
-                                <c:if  test="${s.state=='1'}">
-                                    <c:set var="number" value="${s.number}" />
-                                </c:if>
-                                <c:set var="total" value="${total +(number) }" />
-                            </c:forEach>${total} </div>
-                        </span>
-                        <span style="margin-left:8%;float:left">总排名<div style="color:#36F;font-weight:bolder">200000+</div></span>
-                        <span style="margin-left:8%;float:left">上传资源<div style="color:#36F;font-weight:bolder">0</div> </span>   
-                        <span style="margin-left:8%;float:left">下载资源<div style="color:#36F;font-weight:bolder">0</div></span>     
-                        <span style="margin-left:8%;float:left">创建专辑<div style="color:#36F;font-weight:bolder">0</div></sapn>
+                        <span style="float:left;">积分<div style="color:#36F;font-weight:bolder"></div></span>
+                        <span style="margin-left:8%;float:left">上传资源<div style="color:#36F;font-weight:bolder">0</div> </span>
+                        <span style="margin-left:8%;float:left">下载资源<div style="color:#36F;font-weight:bolder">0</div></span>
                            
                       </div>
   				</div >
@@ -82,16 +74,18 @@
                 	<div style="min-height:230px;">
         			<div class="tabbable" id="tabs-853379"> <!-- Only required for left/right tabs -->
                       <ul class="nav nav-tabs">
-                        <li id="b1" ><a href="#panel-717300" >上传资源</a></li>
+                        <li id="b1" ><a id="upload" href="#panel-717300" >上传资源</a></li>
                         <li id="b2"><a id="jifen" href="#panel-622341">积分明细</a></li>
-                        <li id="b3" ><a href="#panel-622342" >下载明细</a></li>
-                        <li id="b4"><a href="#panel-622343" >我的收藏</a></li>
-                        <li id="b5"><a href="#panel-622344" >VIP服务</a></li>
+                        <li id="b3" ><a id="download"  href="#panel-622342" >下载资源</a></li>
+                        <li id="b4"><a id="collect" href="#panel-622343" >我的收藏</a></li>
+
                       </ul>
                       <div class="tab-content">
-                            <div class="tab-pane active" id="panel-717300" contenteditable="true">
-                              <p>上传资源.</p>
+                            <div id="uploadresource" class="tab-pane active" id="panel-717300" contenteditable="true">
+
                             </div>
+
+                          <!--积分明细-->
                             <div class="tab-pane " id="panel-622341" contenteditable="true">
                               <p><table class="table" contenteditable="true">
                                     <thead>
@@ -116,14 +110,15 @@
                                 </table>
                                 </p>
                             </div>
+
+                          <!--下载明细-->
                             <div class="tab-pane " id="panel-622342" contenteditable="true">
-                              <p>下载明细.</p>
+
                             </div>
+
+                          <!--我的收藏-->
                             <div class="tab-pane " id="panel-622343" contenteditable="true">
-                              <p>我的收藏.</p>
-                            </div>
-                            <div class="tab-pane " id="panel-622344" contenteditable="true">
-                              <p>VIP服务.</p>
+
                             </div>
                       </div>
                    </div>
@@ -184,7 +179,7 @@
                 	</div>
                 </div>
                 
-        		
+
                
                	
 </div> 
@@ -213,10 +208,6 @@
             e.preventDefault()
             $(this).tab('show')
         });
-        $('#b5 a').click(function (e) {
-            e.preventDefault()
-            $(this).tab('show')
-        });
         $('#a1 a').click(function (e) {
             e.preventDefault()
             $(this).tab('show')
@@ -237,5 +228,80 @@
             window.location.href = '/user/getScoring?uid=${sessionScope.loginresult.uid}';
         });
     });
+    //查询上传的资源
+    $(document).ready(function (){
+        var a=1;
+        $("#upload").ready(function (){
+            $.getJSON("/resource/getUploadResource?uid=${sessionScope.loginresult.uid}",function (data) {
+                var html="";
+                for(var i=0;i< data.length;i++){
+                    html+='<p><div style="height:100px; width:90%; margin-left:20px;">' ;
+                    html+='<div style="height:48px; width:5%; float:left; margin-top:15px "><a href="xq.jsp"><img src="img/2.svg"></a></div>' ;
+                    html+='<div style="height:20px; width:66%; float:left; margin-top:15px; margin-left:40px;  font-size:20px ; color:#000000;"><a href="xq.jsp">'+data[i].name+'</a></div>';
+                    html+=' <div style="height:30px; width:82%; float:left;margin-top:12px; margin-left:40px;font-size:14px;"><div style="width:250px; height:30px;"><span>'+data[i].introduce+'</span></div>' ;
+                    html+='<div style="float:left;margin-left:30px;text-align:center;"><span>上传时间：'+data[i].time+'</span><span style="margin-left: 30px;">所需积分：'+data[i].scoring+'</span></div>' ;
+                    html+='</div></p>';
+                }
+                if(a==1){
+                    $("#uploadresource").append(html);a++;
+                }
+
+            });
+
+        });
+
+    });
 </script>
 </html>
+
+<!--下载资源-->
+<script>
+    $(document).ready(function () {
+        var a=1;
+        $("#download").click(function () {
+            $.getJSON("/resource/downloadResource?uid=${sessionScope.loginresult.uid}",function (data) {
+                var html="";
+                for(var i=0;i<data.length;i++){
+              html+='<div class="col-md-12 well">';
+              html+='<div class="col-md-2 "><a href="xq.jsp"><img src="img/2.svg"></a></div>';
+              html+='<div class="col-md-10"><div style="height: 40px;">'+data[i].title+'</div>';
+              html+='<div>';
+              html+='<div style=" float: left"><a>积&nbsp;分:&nbsp;&nbsp;&nbsp;</a>'+data[i].scoring+'</div>';
+              html+='<div style="float: left; margin-left: 50%">'+data[i].time+'</div>';
+              html+='</div>';
+              html+='</div>';
+              html+='</div>';
+                }
+                if (a==1){
+                    $("#panel-622342").append(html);a++;
+                }
+            })
+        })
+    })
+</script>
+
+<!--我收藏的资源-->
+<script>
+    $(document).ready(function () {
+        var a=1;
+        $("#collect").click(function () {
+            $.getJSON("/resource/myCollectResource?uid=${sessionScope.loginresult.uid}",function (data) {
+                var html="";
+                for(var i=0;i<data.length;i++){
+                    html+='<div class="col-md-12 well">';
+                    html+='<div class="col-md-2 "><a href="xq.jsp"><img src="img/2.svg"></a></div>';
+                    html+='<div class="col-md-10"><div style="height: 40px;">'+data[i].title+'</div>';
+                    html+='<div>';
+                    html+='<div style=" float: left"><a>积&nbsp;分:&nbsp;&nbsp;&nbsp;</a>'+data[i].scoring+'</div>';
+                    html+='<div style="float: left; margin-left: 50%">'+data[i].time+'</div>';
+                    html+='</div>';
+                    html+='</div>';
+                    html+='</div>';
+                }
+                if (a==1){
+                    $("#panel-622343").append(html);a++;
+                }
+            })
+        })
+    })
+</script>

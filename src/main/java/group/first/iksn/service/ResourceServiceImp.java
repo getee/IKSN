@@ -1,11 +1,11 @@
 package group.first.iksn.service;
 
-import group.first.iksn.model.bean.CollectResource;
-import group.first.iksn.model.bean.Resource;
+import group.first.iksn.model.bean.*;
 import group.first.iksn.model.bean.ReportResource;
-import group.first.iksn.model.bean.ResourceComments;
 import group.first.iksn.model.dao.ResourceDAO;
+import group.first.iksn.model.dao.UserDAO;
 import group.first.iksn.util.Inspect;
+import group.first.iksn.util.LocalTime;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
@@ -21,6 +21,15 @@ import java.util.ArrayList;
 @Component("resourceService")
 public class ResourceServiceImp  implements ResourceService{
     private ResourceDAO resourceDAO;
+    private UserDAO userDAO;
+
+    public UserDAO getUserDAO() {
+        return userDAO;
+    }
+
+    public void setUserDAO(UserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
 
     public ResourceDAO getResourceDAO() {
         return resourceDAO;
@@ -51,6 +60,11 @@ public class ResourceServiceImp  implements ResourceService{
     @Override
     public int downResource(Integer rid) {
         return resourceDAO.downnum(rid);
+    }
+
+    @Override
+    public Resource loadResource(int rid) {
+        return resourceDAO.getResource(rid);
     }
 
     @Override
@@ -137,10 +151,20 @@ public class ResourceServiceImp  implements ResourceService{
     @Override
     public boolean deleteIllegalResource(int resourceid) {
         boolean result=false;
-        //boolean deleteResult=blogDAO.deleteBlog(blog_id);
+        //获取uid
+        Resource r=resourceDAO.selectUidByRid(resourceid);
+        //先删除跟resource有关的表数据
         boolean deleteResult=resourceDAO.deleteResourceOthers(resourceid);
         if(deleteResult){
+            //再删除resource表数据
             result=resourceDAO.deleteResource(resourceid);
+            //封装notice(通知)
+            Notice notice=new Notice();
+            notice.setUid(r.getUid());
+            notice.setContent("您有一个违规资源，已被删除！！");
+            String time=LocalTime.getNowTime();
+            notice.setTime(time);
+            userDAO.addNotice(notice);
         }
         System.out.println("删除resource其他"+deleteResult);
         return result;
@@ -151,6 +175,48 @@ public class ResourceServiceImp  implements ResourceService{
         System.out.println(reportResource);
         boolean result=resourceDAO.reportResource(reportResource);
         return result;
+    }
+
+
+    @Override
+    public List<ReportResource> getAllReportResource(int page) {
+        return resourceDAO.getAllReportResource(page);
+    }
+
+    @Override
+    public int reportResourceNum() {
+        return resourceDAO.reportResourceNum();
+    }
+    //查询上传的资源
+    @Override
+    public List<Resource> getUploadResource(int uid) {
+        List<Resource> resources=resourceDAO.getUploadResource(uid);
+        return resources;
+    }
+
+    @Override
+    public boolean downLoadResource(int pushId, int downId, int scoring) {
+        try {
+            int pushScore=userDAO.getId(pushId).getScore();
+            int downScore=userDAO.getId(downId).getScore();
+            boolean isLessen=resourceDAO.changeScore(downId, downScore-scoring);//下载者减少后的积分
+            boolean isnAdd=resourceDAO.changeScore(pushId, pushScore+scoring);//上传者增加后的积分
+            if(!isLessen || !isnAdd) return false;
+        }catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+     //下载资源
+    @Override
+    public List<Resource> downloadResource(int uid) {
+        return resourceDAO.downloadResource(uid);
+    }
+
+    //我收藏的资源
+    @Override
+    public List<Resource> myCollectResource(int uid) {
+        return resourceDAO.myCollectResource(uid);
     }
 
 

@@ -78,8 +78,69 @@
     <delete id="deleteResource" parameterType="Resource">
         delete from resource where RID=#{rid}
     </delete>
+    <!--被举报资源的数量-->
+    <select id="reportResourceNum" resultType="Integer">
+        select count(*) from reportresource
+    </select>
+    <!--分页。。结果集合用来存储查询ReportResource表级联查询Resource表-->
+    <resultMap id="getResourceBy_Reportrid" type="ReportResource">
+        <id column="id" property="id"/>
+        <result column="uid" property="uid"/>
+        <result column="reason" property="reason"/>
+
+
+        <association property="resource" column="rid" javaType="Resource">
+            <id column="rid" property="rid"/>
+            <result column="name" property="name"/>
+        </association>
+    </resultMap>
+    <select id="getAllReportResource" resultMap="getResourceBy_Reportrid">
+		select  rr.ID,rr.RID,rr.REASON,r.NAME  from reportresource as rr
+		inner join resource as r on   rr.RID=r.RID ORDER BY rr.ID asc limit #{page},5;
+	</select>
     <!--举报资源-->
     <insert id="reportResource" parameterType="ReportResource">
         insert into reportresource (uid,rid,reason) values (#{uid},#{rid},#{reason})
     </insert>
+    <!--根据rid查uid-->
+    <select id="selectUidByRid" parameterType="Integer" resultType="Resource">
+        select UID from resource where RID=#{rid}
+    </select>
+
+    <select id="getResource" resultMap="LoadResource">
+        SELECT r.RID,r.UID,r.NAME,r.PATH,r.SCORING,r.CLASSIFY,r.INTRODUCE,r.TIME,rt.RTAG
+        FROM resource r
+        INNER JOIN resourcetag rt ON rt.RID=r.RID
+        WHERE r.RID=#{rid}
+    </select>
+    <resultMap id="LoadResource" type="Resource">
+        <id property="rid" column="rid"></id>
+        <result property="uid" column="uid"></result>
+        <result property="name" column="name"></result>
+        <result property="path" column="path"></result>
+        <result property="scoring" column="scoring"></result>
+        <result property="classify" column="classify"></result>
+        <result property="introduce" column="introduce"></result>
+        <result property="time" column="time"></result>
+        <collection property="resourceTags" ofType="ResourceTag">
+            <id property="id" column="id"></id>
+            <result property="rid" column="rid"></result>
+            <result property="rtag" column="rtag"></result>
+        </collection>
+    </resultMap>
+    <update id="changeScore">
+        UPDATE user SET SCORE=#{1} WHERE UID=#{0}
+    </update>
+    <!--上传资源查询-->
+    <select id="getUploadResource" resultType="Resource">
+        select * from resource where uid=#{uid}
+    </select>
+    <!--下载资源-->
+    <select id="downloadResource" resultType="Resource">
+        SELECT name,scoring,time FROM  resource WHERE  rid IN (SELECT  rid FROM  downresources WHERE uid=uid)
+    </select>
+    <!--我收藏的资源-->
+    <select id="myCollectResource" resultType="Resource">
+        SELECT name,scoring,time FROM  resource WHERE  rid IN (SELECT  rid FROM  collectresource WHERE uid=uid)
+    </select>
 </mapper>

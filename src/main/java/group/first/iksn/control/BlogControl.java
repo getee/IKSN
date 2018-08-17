@@ -3,13 +3,19 @@ package group.first.iksn.control;
 
 import group.first.iksn.model.bean.*;
 import group.first.iksn.service.BlogService;
+import group.first.iksn.service.UserService;
 import group.first.iksn.util.EncodingTool;
-import group.first.iksn.util.LocalTime;
+import org.apache.ibatis.annotations.Param;
+import group.first.iksn.util.Responser;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+import group.first.iksn.util.Responser;
+import group.first.iksn.util.LocalTime;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.apache.ibatis.jdbc.Null;
 
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -19,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -28,10 +35,18 @@ import java.util.*;
 @RequestMapping("/blog")
 public class BlogControl {
     private BlogService blogService;
-
+    private UserService userService;
 
     public BlogService getBlogService() {
         return blogService;
+    }
+
+    public UserService getUserService() {
+        return userService;
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 
     public void setBlogService(BlogService blogService) {
@@ -100,7 +115,6 @@ public class BlogControl {
     System.out.println(blog);
     System.out.println(userToBlog.getUid());
     boolean result = blogService.addBlogService(blog);
-
     //因为的多张表关联，要首先把主表的数据插入完成在进行其他副表的数据插入
     if (result == true) {
         System.out.println(time);
@@ -128,17 +142,69 @@ public class BlogControl {
     public String selectBlogByID(@PathVariable("uid") int uid,Model model){
         System.out.println("222222");
         List<Blog> blogs=blogService.scanBlogService(uid);
+        List<Blog> reportedblogs=blogService.scanReportedBlogService(uid);
+        List<Blog> simiblogs=blogService.scanSimiBlogService(uid);
+        List<Blog> draftblogs=blogService.scanDraftBlogService(uid);
         model.addAttribute("blogs",blogs);
+        model.addAttribute("reportedblogs",reportedblogs);
+        model.addAttribute("simiblogs",simiblogs);
+        model.addAttribute("draftblogs",draftblogs);
         System.out.println(blogs);
              return "writingCenter";
     }
+    //根据bid用户ID来查询博客的相应数据
+    @RequestMapping("/scanBlog/{bid}")
+    public String scanBlog(@PathVariable("bid") int bid,Model model){
+        System.out.println("222222");
+        Blog blogs=blogService.listBlogService(bid);
+        model.addAttribute("scanblog",blogs);
+        System.out.println(blogs);
+        return "alterBlog";
+    }
+    //根据bid用户ID来删除博客
+    @RequestMapping("/deleteBlog")
+    @ResponseBody
+    public String deleteBlog(@Param("bid") int bid) {
+        System.out.println("222222");
+       boolean result1=blogService.deleteBlogOther(bid);
+        System.out.println(result1);
+        if(result1){
+            return "success";
+        }else {
+            return "error";
+        }
+    }
+
+    //修改博客
+    @RequestMapping("/updateBlog/{bid}")
+    public String  updateBlog(@PathVariable("bid") int bid,@ModelAttribute ("blog")  Blog blog,@ModelAttribute ("blogTag") BlogTag blogTag,@ModelAttribute ("userToBlog") UserToBlog userToBlog,Model model){
+        System.out.println("33333修改");
+        Date d = new Date();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String time=df.format(d);
+        blog.setTime(time);
+        boolean result=blogService.updateBlogService(blog);
+        boolean result1=blogService.updateBlogTagService(blogTag);
+        boolean result2=blogService.updateUserToBlogService(userToBlog);
+        System.out.println("修改博客");
+        if(result==true&&result1==true&&result2==true){
+            Blog blogs=blogService.listBlogService(bid);
+            model.addAttribute("listblog",blogs);
+            System.out.println(blogs);
+            return "blogDetail";
+        }
+        else {
+            return "alterBlog";
+        }
+    }
 
     //根据bid博客ID来查询博客的相应数据
-    @RequestMapping("/listBlogByBid")
-    public ModelAndView listBlogByID(@RequestParam(value = "bid",defaultValue = "8") int bid){
+    @RequestMapping("/listBlogByBid/{bid}")
+    public String  listBlogByID(@PathVariable("bid") int bid,Model model){
         Blog listblog=blogService.listBlogService(bid);
+        model.addAttribute("listblog",listblog);
         System.out.println(listblog);
-        return new ModelAndView("userArticle","listblog",listblog);
+        return "blogDetail";
     }
 
     /**
@@ -147,15 +213,18 @@ public class BlogControl {
      * @param blog_id
      * @return
      */
-    @RequestMapping("/mSendBackIllegalblog/{blog_id}/{reportReason}/{report_id}")
+    @RequestMapping("/mSendBackIllegalblog/{blog_id}/{report_id}/{uid}")
     @ResponseBody
-    public String mSendBackIllegalblog(@PathVariable int blog_id,@PathVariable String reportReason,@PathVariable int report_id){
+    public String mSendBackIllegalblog(@PathVariable int blog_id,@PathVariable int report_id,@PathVariable int uid,@RequestParam("reportReason") String reportReason){
+        //对中文字符转码
+        String reason=EncodingTool.encodeStr(reportReason);
+
         IllegalBlog blog=new IllegalBlog();
-        blog.setIllegalcause(reportReason);
+        blog.setIllegalcause(reason);
         blog.setBid(blog_id);
 
 
-        boolean sendBackResult=blogService.sendBackIllegalblog(blog,report_id);
+        boolean sendBackResult=blogService.sendBackIllegalblog(blog,report_id,uid);
         if(sendBackResult){
             return "success";
         }else{
@@ -171,18 +240,16 @@ public class BlogControl {
      */
     @RequestMapping(value = "/mGetAllReportBlog")
     public String mGetAllReportBlog(Model model){
-        List<ReportBlog> reportBlogs=blogService.getAllReportBlog();
-        List<ReportResource> reportResources=blogService.getAllReportResource();
+        List<ReportBlog> reportBlogs=blogService.getAllReportBlog(1);
+        //List<ReportResource> reportResources=blogService.getAllReportResource();
+        int num=blogService.getReportBlogNum();
         System.out.println(reportBlogs);
         for (ReportBlog i:reportBlogs){
             System.out.println(i.getBlog());
         }
-        System.out.println(reportResources);
-        for (ReportResource r:reportResources){
-            System.out.println(r.getResource());
-        }
         model.addAttribute("ReportBlogList",reportBlogs);
-        model.addAttribute("ReportResourceList",reportResources);
+        model.addAttribute("rBlNum",num);
+        //model.addAttribute("ReportResourceList",reportResources);
         return  "jubaoguanl";
     }
 
@@ -229,7 +296,6 @@ public class BlogControl {
     @RequestMapping("/answerComment")
     public String answerComment(@ModelAttribute("answerComment")BlogComments blogComments){
         System.out.println(blogComments);
-        blogComments.setTime(LocalTime.getNowTime());
         boolean result=blogService.answerComment(blogComments);
         if(!result)
         {
@@ -256,18 +322,20 @@ public class BlogControl {
     }
     /**
      * 管理员查看被举报的博客，进行审核
-     * wenbin
-     * @param blog_id 博客id
-     * @param reason 举报原因
+     * @param id
      * @param model
      * @return
      */
-    @RequestMapping("/mCheckReportblog/{blog_id}/{id}")
-    public String mCheckReportblog(@PathVariable int blog_id,String reason,@PathVariable int id,Model model){
-        System.out.println(blog_id+reason);
-        model.addAttribute("blog_id",blog_id);
-        model.addAttribute("reportReason",reason);
-        model.addAttribute("report_id",id);
+    @RequestMapping("/mCheckReportblog/{id}")
+    public String mCheckReportblog(@PathVariable int id,Model model){
+        ReportBlog reportBlog=blogService.selectReportBlog(id);
+        System.out.println(reportBlog);
+        model.addAttribute("reportBlog",reportBlog);
+//        EncodingTool.encodeStr(reason);
+//        System.out.println(blog_id+reason);
+//        model.addAttribute("blog_id",blog_id);
+//        model.addAttribute("reportReason",reason);
+//        model.addAttribute("report_id",id);
         return "userArticle";
     }
 
@@ -292,6 +360,246 @@ public class BlogControl {
         return;
     }
 
+    /**
+     * 分页
+     * @param page
+     * @param response
+     * @param request
+     */
+    @RequestMapping("mGetReportBlog/{page}")
+    @ResponseBody
+    public void mGetReportBlog(@PathVariable int page,HttpServletResponse response, HttpServletRequest request){
+        //int count=1;
+        System.out.println("进入blog分页");
+        List<ReportBlog> reportBlogList= blogService.getAllReportBlog(page);
+        System.out.println(reportBlogList+"ssssssssss");
+        for (ReportBlog r:reportBlogList){
+            System.out.println(r.getBlog());
+        }
+        int reportBlogNum=blogService.getReportBlogNum();//被举报博客的数量
+        JSONArray jsonArray=new JSONArray();
+        for (ReportBlog rb:reportBlogList) {
+            JSONObject jsonObject=new JSONObject();
+            jsonObject.put("id",rb.getId());
+            jsonObject.put("reason",rb.getReason());
+            jsonObject.put("title",rb.getBlog().getTitle());
+            jsonObject.put("bid",rb.getBid());
+            jsonArray.put(jsonObject);
+        }
+        JSONObject jsonObjectTwo=new JSONObject();
+        jsonObjectTwo.put("reportBlNum",reportBlogNum);
+        jsonArray.put(jsonObjectTwo);
+        try {
+            Responser.responseToJson(response, request, jsonArray.toString());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    //我收藏的博客
+    @RequestMapping(value = "/myCollectBlog" )
+    public void  myCollectBlog(HttpServletResponse response,HttpSession session,Model model) throws IOException {
+        System.out.println("进入myCollectBlog");
+        User u= (User) session.getAttribute("loginresult");
+        System.out.println(u);
+        List<Blog> collectblog=blogService.myCollectBlog(u.getUid());
+        System.out.println(collectblog);
+        //session.setAttribute("collectblog",collectblog);
+        JSONArray jsonArray=new JSONArray();
+        JSONObject jsonObject=null;
+        for (int i=0;i<collectblog.size();i++){
+            jsonObject=new JSONObject();
+            try{
+                jsonObject.put("title",collectblog.get(i).getTitle());
+                jsonObject.put("time",collectblog.get(i).getTime());
+                jsonArray.put(jsonObject);
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+        }
+        System.out.println(jsonArray);
+        //悄悄把数据会给他
+        //用response（响应）对象中的输出流将处理好的结果输出给ajax请求对象
+        response.setContentType("textml;charset=UTF-8");//  textml     ,text/xml    ,text/json
+        PrintWriter out=response.getWriter();//获取响应对象中的输出流
+        out.write(jsonArray.toString());
+        out.flush();
+        out.close();
+
+    }
+    @RequestMapping("/getBlogAndUser")
+    //处理点击标题进入博客详情页的方法
+    public String getBlogAndUser(@RequestParam("blogid") String blogid, Model model, HttpSession session){
+        Date d = new Date();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        int bid=Integer.parseInt(blogid);
+
+        Map<String,Object> map=blogService.getBlogAndUser(bid);
+        model.addAttribute("boke",map.get("boke"));
+        model.addAttribute("yonghu",map.get("yonghu"));
+        model.addAttribute("original",map.get("original"));
+        model.addAttribute("fans",map.get("fans"));
+        model.addAttribute("attention",map.get("attention"));
+        //获取登录用户
+        User u=(User)session.getAttribute("loginresult");
+        System.out.println(u);
+        System.out.println("DDDDD"+bid);
+        if(u!=null){
+            blogService.insertBlogBrowse(u.getUid(),bid,df.format(d));
+        }
+        else {
+            blogService.insertBlogBrowse(1,bid,df.format(d));
+
+        }
+
+        return "userArticle";
+    }
+    //点赞方法
+    @RequestMapping("dianzan")
+    public void dianZan(@RequestParam("bid") int bid){
+
+        boolean flag=blogService.addBlogPoints(bid);
+        System.out.println("点赞"+flag);
+    }
+    //收藏方法
+    @RequestMapping("shoucang")
+    public  void shouCang(@RequestParam("uid")int uid,@RequestParam("bid")int bid,HttpServletResponse response){
+        PrintWriter pw = null;
+        try{
+            pw=response.getWriter();
+            try{
+                boolean b= blogService.collectBlog(uid,bid);
+                pw.print("success");
+                System.out.println(b);
+            }
+            catch (Exception e){
+                pw.print("fail");
+            }
+        }
+        catch (IOException e){
+            shouCang(uid,bid,response);
+        }
+    }
+    //添加关注
+    @RequestMapping("guanzhu")
+    public  void guanZhu(@RequestParam("selfid")int selfid,@RequestParam("attenid")int attenid,@RequestParam("nickname")String nickname, HttpServletResponse response){
+        Notice notice=new Notice();
+        Date d = new Date();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        notice.setUid(attenid);
+        notice.setTime(df.format(d));
+        notice.setContent(nickname+"关注了你");
+        PrintWriter pw = null;
+        try{
+            pw=response.getWriter();
+            try{
+                boolean b= blogService.addAttention(selfid,attenid);
+                pw.print("success");
+                userService.addNotice(notice);
+                System.out.println();
+                System.out.println(b);
+            }
+            catch (Exception e){
+                pw.print("fail");
+            }
+        }
+        catch (IOException e){
+            guanZhu(selfid,attenid,nickname,response);
+        }
+        }
+        //检查是否关注
+        @RequestMapping("checkguanzhu")
+        public  void checkGuanZhu(@RequestParam("selfid")int selfid,@RequestParam("attenid")int attenid,HttpServletResponse response){
+            Attention a=blogService.checkIsAttention(selfid, attenid);
+            PrintWriter pw=null;
+            try{
+                pw=response.getWriter();
+            }
+            catch (IOException e){
+                e.printStackTrace();
+            }
+            if(a!=null){
+               pw.print("success");
+            }
+            else {
+                pw.print("fail");
+            }
+        }
+        //取消关注
+        @RequestMapping("quguan")
+        public void quGuan(@RequestParam("selfid")int selfid,@RequestParam("attenid")int attenid,HttpServletResponse response){
+            boolean b=blogService.deleteAttention(selfid, attenid);
+            System.out.println(b+"取消关注成功");
+            try{
+                PrintWriter pw=response.getWriter();
+                if(b==true){
+                    pw.print("success");
+                }
+            }
+            catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+        //取推送的博客
+        @RequestMapping("twotui")
+        public  void getTwoTuiBlog(@RequestParam("uid")int uid,HttpServletRequest request,HttpServletResponse response){
+            System.out.println("******************************************");
+           List<Blog> l=blogService.selectTwoBlogByUser(uid);
+            System.out.println(l);
+            JSONArray ja=new JSONArray();
+           for (Blog b:l){
+               JSONObject jo=new JSONObject();
+               jo.put("bid",b.getBid());
+               jo.put("title",b.getTitle());
+               jo.put("content",b.getContent());
+               jo.put("time",b.getTime());
+               jo.put("link",b.getLink());
+               jo.put("points",b.getPoints());
+               jo.put("classify",b.getClassify());
+               ja.put(jo);
+           }
+           String con=ja.toString();
+            System.out.println(con);
+           try{
+               Responser.responseToJson(response,request,con);
+           }
+           catch (Exception e){
+               e.printStackTrace();
+           }
+
+        }
+
+    //我发布的博客
+    @RequestMapping(value = "/myBlog" )
+    public void  myBlog(HttpServletResponse response,HttpSession session,Model model) throws IOException {
+        System.out.println("进入myBlog");
+        User u= (User) session.getAttribute("loginresult");
+        System.out.println(u);
+        List<Blog> blog=blogService.myBlog(u.getUid());
+        System.out.println(blog);
+        //session.setAttribute("collectblog",collectblog);
+        JSONArray jsonArray=new JSONArray();
+        JSONObject jsonObject=null;
+        for (int i=0;i<blog.size();i++){
+            jsonObject=new JSONObject();
+            try{
+                jsonObject.put("title",blog.get(i).getTitle());
+                jsonObject.put("time",blog.get(i).getTime());
+                jsonArray.put(jsonObject);
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+        }
+        System.out.println(jsonArray);
+        //悄悄把数据会给他
+        //用response（响应）对象中的输出流将处理好的结果输出给ajax请求对象
+        response.setContentType("textml;charset=UTF-8");//  textml     ,text/xml    ,text/json
+        PrintWriter out=response.getWriter();//获取响应对象中的输出流
+        out.write(jsonArray.toString());
+        out.flush();
+        out.close();
+    }
     /**
      *
      * @param bid

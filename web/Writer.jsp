@@ -46,21 +46,17 @@
                 var val=$('#biaoti').val();
                 var val1=UE.getEditor('editor').getContent();
                 if (val.length==0 || val1.length==0){
-
                     alert("标题or博客内容不能为空！");
                     $('#fbblog').attr("disable",true);
                 }else {
                     $('#fbblog').attr("disable",false);
                 }
-
-
             }
         </script>
 
                         <button type="button" class="btn btn-info" >返回</button>
                         <!-- 表示一个成功的或积极的动作 -->
                         <button type="button" id="fbblog" class="btn btn-primary"  data-toggle="modal" data-target="#myModal" onmousemove="check()" >发布博客</button>
-
                     </div>
                 </div>
             </div>
@@ -127,7 +123,7 @@
                         <br>
                         <!---->
                         <label class="control-label" for="notification1">是否设为私密</label>
-                        <input id="notification1" type="checkbox"  value="1" name="ispublic" />
+                        <input id="notification1" type="checkbox"  value="0" name="ispublic" onclick="this.value=(this.value==0)?1:0"/>
 
                     </div>
                 </div>
