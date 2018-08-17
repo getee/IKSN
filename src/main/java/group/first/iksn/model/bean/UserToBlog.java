@@ -8,6 +8,15 @@ public class UserToBlog {
     private  int ispublic;//是否公开博客
     private  int blogtype;//是否原创,翻译，转载..
     private  User user;
+    private  Blog blog;
+
+    public Blog getBlog() {
+        return blog;
+    }
+
+    public void setBlog(Blog blog) {
+        this.blog = blog;
+    }
 
     public UserToBlog(int id, int uid, int bid, int isdraft, int ispublic, int blogtype, User user) {
         this.id = id;

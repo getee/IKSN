@@ -1,6 +1,7 @@
 package group.first.iksn.model.dao;
 
 import group.first.iksn.model.bean.CollectResource;
+import group.first.iksn.model.bean.ReportResource;
 import group.first.iksn.model.bean.Resource;
 import group.first.iksn.model.bean.ReportResource;
 import org.apache.ibatis.session.SqlSession;
@@ -39,6 +40,12 @@ public class ResourceDAOImp extends BaseDAOImp implements ResourceDAO {
        return  num;
     }
 
+    @Override
+    public Resource getResource(int rid) {
+        Resource r=getSqlSession().getMapper(ResourceDAO.class).getResource(rid);
+        return r;
+    }
+
     public Resource checkFile(String MD5,String SHA){
         Resource r=getSqlSession().getMapper(ResourceDAO.class).checkFile(MD5,SHA);
         return r;
@@ -59,7 +66,7 @@ public class ResourceDAOImp extends BaseDAOImp implements ResourceDAO {
         try{
             isOK=getSqlSession().getMapper(ResourceDAO.class).deleteResourceFromReport(id);
         }catch (Exception e){
-            System.out.println("这是添加违规博客出错了");
+            System.out.println("这是删除ReportResource出错了");
             e.printStackTrace();
         }
         return isOK;
@@ -71,7 +78,7 @@ public class ResourceDAOImp extends BaseDAOImp implements ResourceDAO {
         try{
             isOK=getSqlSession().getMapper(ResourceDAO.class).deleteResourceOthers(rid);
         }catch (Exception e){
-            System.out.println("这是添加违规博客出错了");
+            System.out.println("这是删除资源出错了");
             e.printStackTrace();
         }
         return isOK;
@@ -95,7 +102,42 @@ public class ResourceDAOImp extends BaseDAOImp implements ResourceDAO {
         System.out.println("resourceDAOImp:"+re);
         return re;
     }
+    @Override
+    public int reportResourceNum() {
+        int num=getSqlSession().getMapper(ResourceDAO.class).reportResourceNum();
+        return num;
+    }
 
+    /**
+     * 获取所有被举报资源
+     * wenbin
+     * @return
+     */
+    @Override
+    public List<ReportResource> getAllReportResource(int page) {
+        System.out.println("进入dao");
+        List<ReportResource> allReportResource=null;
+        try {
+            allReportResource=getSqlSession().getMapper(ResourceDAO.class).getAllReportResource((page-1)*2);
+            System.out.println("获取举报资源成功");
+        }catch (Exception e){
+            System.out.println("这是获取违规资源出错了");
+            e.printStackTrace();
+        }
+        System.out.println("查到数据");
+        return allReportResource;
+    }
+
+    @Override
+    public Resource selectUidByRid(int rid) {
+        return getSqlSession().getMapper(ResourceDAO.class).selectUidByRid(rid);
+    }
+
+    //更改积分
+    @Override
+    public boolean changeScore(int uid, int scoring) {
+        return getSqlSession().getMapper(ResourceDAO.class).changeScore(uid, scoring);
+    }
 
     /**
      * 举报的资源保存到表中

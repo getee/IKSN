@@ -29,7 +29,25 @@
 		
 	}
 </style>
+<script>
+	$(document).ready(function(){
+		$(document).scroll(function () {
+		   // alert($('#leftDaohang').offset().top )
+            if($(document).scrollTop()>=$("#leftDaohang").height()){
 
+                $("#leftDaohang").css({
+					"position":"fixed",
+					"top":"0px",
+					"left":"2%",
+					"width":"14%"
+				})
+            }else{
+                $("#leftDaohang").removeAttr("style")
+			}
+        })
+
+	})
+</script>
 
 </head>
 
@@ -49,14 +67,14 @@
 
 </div>
 		  <!--		  导航结束-->
-  <div class="row" style="background-color:#EBEBEB">
+  <div class="row" style="background-color:#EBEBEB;margin-right: 0px">
 <!--	  左边导航栏-->
 	  <div class="col-xs-12 col-md-2">
 	  	
 		<div class="container-fluid">
 		  <div class="row">
 			  <div class="col-md-1"></div>
-			  <div class="col-md-10">
+			  <div id="leftDaohang" class="col-md-10">
 			  	<ul class="nav nav-pills nav-stacked">
 				  <li class="active"><a href="#">推荐</a></li>
 				  <li><a href="#">最新文章</a></li>
@@ -137,7 +155,7 @@
 					<c:forEach var="t" items="${BlogsPush}" >
 						<div class="span12" style="border-radius: 10px;background-color:#FFFFFF;margin-top: 30px">
 							<h2>
-								<a href="userArticle.jsp">${t.title}</a>
+								<a href="/blog/getBlogAndUser?blogid=${t.bid}">${t.title}</a>
 							</h2>
 							<p>
 								${fn:substring(t.content,0,150)}.........
@@ -439,7 +457,7 @@
 				  </script>
 			  	<!--			  登陆结束-->
 <!--			  	今日推荐开始-->
-				  <div class="span12" style="margin-top: 30px; background-color:#FFFFFF">
+				  <div id="jinrituijian" class="span12" style="margin-top: 30px; background-color:#FFFFFF">
 				  	<span>今日推荐</span>
 				  	
 				  	<div class="thumbnail">

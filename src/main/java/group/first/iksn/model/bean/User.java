@@ -1,5 +1,7 @@
 package group.first.iksn.model.bean;
 
+import java.util.Objects;
+
 public class User {
     private int uid;
     private String email;
@@ -119,6 +121,32 @@ public class User {
 
     public void setTimeofban(String timeofban) {
         this.timeofban = timeofban;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return uid == user.uid &&
+                sex == user.sex &&
+                grade == user.grade &&
+                score == user.score &&
+                isadmin == user.isadmin &&
+                isspeak == user.isspeak &&
+                Objects.equals(email, user.email) &&
+                Objects.equals(phone, user.phone) &&
+                Objects.equals(password, user.password) &&
+                Objects.equals(nickname, user.nickname) &&
+                Objects.equals(introduce, user.introduce) &&
+                Objects.equals(timeofban, user.timeofban) &&
+                Objects.equals(picturepath, user.picturepath);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(uid, email, phone, password, nickname, sex, introduce, grade, score, isadmin, isspeak, timeofban, picturepath);
     }
 
     @Override
