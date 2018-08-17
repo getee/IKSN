@@ -49,4 +49,8 @@ public interface ResourceDAO {
     //更改积分数（更改者，更改后积分）
     boolean changeScore(int uid, int scoring);
 
+    //添加下载表
+    boolean addDownResource(int downId, int rid, String nowTime);
+
+    String getDownedTime(int rid, int uid);
 }

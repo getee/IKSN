@@ -139,6 +139,17 @@ public class ResourceDAOImp extends BaseDAOImp implements ResourceDAO {
         return getSqlSession().getMapper(ResourceDAO.class).changeScore(uid, scoring);
     }
 
+    @Override
+    public boolean addDownResource(int downId, int rid, String nowTime) {
+
+        return getSqlSession().getMapper(ResourceDAO.class).addDownResource(downId,rid,nowTime);
+    }
+
+    @Override
+    public String getDownedTime(int rid, int uid) {
+        return getSqlSession().getMapper(ResourceDAO.class).getDownedTime(rid,uid);
+    }
+
     /**
      * 举报的资源保存到表中
      * @param reportResource

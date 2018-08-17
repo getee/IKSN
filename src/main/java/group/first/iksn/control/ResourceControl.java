@@ -143,34 +143,43 @@ public class ResourceControl {
             return  "xq";
         }
         /**
-         * 资源下载
+         * 资源下载================================================
          */
         @RequestMapping("/downLoadResource")
         public String downLoadResource(@RequestParam("rid") Integer rid,
                                        @RequestParam("downUserid") Integer downUserid,//下载者
                                        HttpServletRequest request, HttpSession session){
             Resource r=resourceService.loadResource(rid);//获取资源信息
-            boolean isDown=resourceService.downLoadResource(r.getUid(),downUserid,r.getScoring());//上传者，下载者，积分数
-            //更新session用户积分值
-            User u= (User) session.getAttribute("loginresult");
-            u.setScore(u.getScore()-r.getScoring());
-            session.setAttribute("loginresult",u);
-            System.out.println(u);
 
+            boolean isDowned=resourceService.downHour(rid,downUserid);//判断该用户是否下载过（一小时内）
+            if(!isDowned) {
+                boolean isDown = resourceService.downLoadResource(r.getUid(), downUserid, rid, r.getScoring());//上传者，下载者，积分数
+                //更新session用户积分值
+                User u = (User) session.getAttribute("loginresult");
+                u.setScore(u.getScore() - r.getScoring());
+                session.setAttribute("loginresult", u);
+            }
             String path=r.getPath();
             request.setAttribute("downloapath",path);
             request.setAttribute("resouce",r);
             return  "xq";
         }
         /*
-        加载资源界面获取资源数据
+        加载资源界面获取资源数据=====================================================
          */
         @RequestMapping("/loadResource")
-        public String loadResource(@RequestParam("rid") Integer rid,HttpServletRequest request){
+        public String loadResource(@RequestParam("rid") Integer rid,HttpSession session,HttpServletRequest request){
             System.out.println("r"+rid);
             Resource r=resourceService.loadResource(rid);//查询语句缺少标签表信息已修复
             User pushUser=userService.getId(r.getUid());
-            System.out.println(r);
+            User downUser= (User) session.getAttribute("loginresult");
+            if(downUser!=null){
+                boolean isDowned=resourceService.downHour(rid,downUser.getUid());//判断该用户是否下载过（一小时内）
+                if(isDowned){
+                    request.setAttribute("isDowned","(已下载过，一小时内下载不扣积分)");
+                }
+            }
+
 
             request.setAttribute("resouce",r);
             request.setAttribute("pushUser",pushUser);
@@ -248,14 +257,15 @@ public class ResourceControl {
 
     //资源举报
     @RequestMapping("/reportResource")
-    public ModelAndView reportResource(@ModelAttribute("reportResource")ReportResource reportResource) throws UnsupportedEncodingException {
+    public ModelAndView reportResource(ReportResource reportResource) {
+        System.out.println(reportResource);
         ModelAndView mav=new ModelAndView("xq");
         //String reason=new String(reportResource.getReason().getBytes("ISO-8859-1"),"UTF-8");
         //reportResource.setReason(reason);
         System.out.println(reportResource);
        boolean result=resourceService.reportResource(reportResource);
         mav.getModel().put("result",result);
-        System.out.println(result);
+        System.out.println("SSDD"+result);
          return mav;
     }
 

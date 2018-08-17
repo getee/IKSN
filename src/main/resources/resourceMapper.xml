@@ -131,4 +131,10 @@
     <update id="changeScore">
         UPDATE user SET SCORE=#{1} WHERE UID=#{0}
     </update>
+    <insert id="addDownResource" >
+        INSERT INTO downresources(UID,RID,TIME) VALUES(#{0},#{1},#{2})
+    </insert>
+    <select id="getDownedTime" resultType="java.lang.String">
+        SELECT MAX(TIME) FROM downresources WHERE uid=#{1} and rid=#{0}
+    </select>
 </mapper>
