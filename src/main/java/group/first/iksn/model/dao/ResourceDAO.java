@@ -17,6 +17,8 @@ public interface ResourceDAO {
 
     int downnum(Integer rid);
 
+    Resource getResource(int rid);
+
     //检测资源是否重复
     public Resource checkFile(String MD5, String SHA);
 
@@ -42,4 +44,7 @@ public interface ResourceDAO {
     int reportResourceNum();
     //获取所有被举报资源
     List<ReportResource> getAllReportResource(int page);
+    //更改积分数（更改者，更改后积分）
+    boolean changeScore(int uid, int scoring);
+
 }

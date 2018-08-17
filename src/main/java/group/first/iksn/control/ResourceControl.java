@@ -2,6 +2,7 @@ package group.first.iksn.control;
 
 import group.first.iksn.model.bean.*;
 import group.first.iksn.service.ResourceService;
+import group.first.iksn.service.UserService;
 import group.first.iksn.util.Responser;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -15,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.io.IOException;
 import java.util.List;
@@ -28,6 +30,15 @@ import java.util.Date;
 @RequestMapping("/resource")
 public class ResourceControl {
     private ResourceService resourceService;
+    private UserService userService;
+
+    public UserService getUserService() {
+        return userService;
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
     public ResourceService getResourceService() {
         return resourceService;
@@ -126,10 +137,48 @@ public class ResourceControl {
       */
         @RequestMapping("/downResource")
         public String downResource(@RequestParam("rid") Integer rid,HttpServletRequest request){
-            System.out.println(rid);
-            int c=resourceService.downResource(rid);
-            request.setAttribute("num",c);
+//            System.out.println(rid);
+//            int c=resourceService.downResource(rid);
+//            request.setAttribute("num",c);
             return  "xq";
+        }
+        /**
+         * 资源下载
+         */
+        @RequestMapping("/downLoadResource")
+        public String downLoadResource(@RequestParam("rid") Integer rid,
+                                       @RequestParam("downUserid") Integer downUserid,//下载者
+                                       HttpServletRequest request, HttpSession session){
+            Resource r=resourceService.loadResource(rid);//获取资源信息
+            boolean isDown=resourceService.downLoadResource(r.getUid(),downUserid,r.getScoring());//上传者，下载者，积分数
+            //更新session用户积分值
+            User u= (User) session.getAttribute("loginresult");
+            u.setScore(u.getScore()-r.getScoring());
+            session.setAttribute("loginresult",u);
+            System.out.println(u);
+
+            String path=r.getPath();
+            request.setAttribute("downloapath",path);
+            request.setAttribute("resouce",r);
+            return  "xq";
+        }
+        /*
+        加载资源界面获取资源数据
+         */
+        @RequestMapping("/loadResource")
+        public String loadResource(@RequestParam("rid") Integer rid,HttpServletRequest request){
+            System.out.println("r"+rid);
+            Resource r=resourceService.loadResource(rid);//查询语句缺少标签表信息已修复
+            User pushUser=userService.getId(r.getUid());
+            System.out.println(r);
+
+            request.setAttribute("resouce",r);
+            request.setAttribute("pushUser",pushUser);
+
+            //下载次数参数初始化
+            int num=resourceService.downResource(rid);
+            request.setAttribute("downNum",num);
+            return "xq";
         }
 
     /**

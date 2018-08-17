@@ -6,6 +6,7 @@ import group.first.iksn.model.bean.Resource;
 import group.first.iksn.model.bean.ReportResource;
 import group.first.iksn.model.bean.ResourceComments;
 import group.first.iksn.model.dao.ResourceDAO;
+import group.first.iksn.model.dao.UserDAO;
 import group.first.iksn.util.Inspect;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
@@ -22,6 +23,15 @@ import java.util.ArrayList;
 @Component("resourceService")
 public class ResourceServiceImp  implements ResourceService{
     private ResourceDAO resourceDAO;
+    private UserDAO userDAO;
+
+    public UserDAO getUserDAO() {
+        return userDAO;
+    }
+
+    public void setUserDAO(UserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
 
     public ResourceDAO getResourceDAO() {
         return resourceDAO;
@@ -52,6 +62,11 @@ public class ResourceServiceImp  implements ResourceService{
     @Override
     public int downResource(Integer rid) {
         return resourceDAO.downnum(rid);
+    }
+
+    @Override
+    public Resource loadResource(int rid) {
+        return resourceDAO.getResource(rid);
     }
 
     @Override
@@ -163,6 +178,20 @@ public class ResourceServiceImp  implements ResourceService{
     @Override
     public int reportResourceNum() {
         return resourceDAO.reportResourceNum();
+    }
+
+    @Override
+    public boolean downLoadResource(int pushId, int downId, int scoring) {
+        try {
+            int pushScore=userDAO.getId(pushId).getScore();
+            int downScore=userDAO.getId(downId).getScore();
+            boolean isLessen=resourceDAO.changeScore(downId, downScore-scoring);//下载者减少后的积分
+            boolean isnAdd=resourceDAO.changeScore(pushId, pushScore+scoring);//上传者增加后的积分
+            if(!isLessen || !isnAdd) return false;
+        }catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
 

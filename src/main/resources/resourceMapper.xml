@@ -102,4 +102,31 @@
     <insert id="reportResource" parameterType="ReportResource">
         insert into reportresource (uid,rid,reason) values (#{uid},#{rid},#{reason})
     </insert>
+    <!--<select id="getResourceSS" resultType="Resource">-->
+        <!--SELECT * FROM resource WHERE RID=#{rid}-->
+    <!--</select>-->
+    <select id="getResource" resultMap="LoadResource">
+        SELECT r.RID,r.UID,r.NAME,r.PATH,r.SCORING,r.CLASSIFY,r.INTRODUCE,r.TIME,rt.RTAG
+        FROM resource r
+        INNER JOIN resourcetag rt ON rt.RID=r.RID
+        WHERE r.RID=#{rid}
+    </select>
+    <resultMap id="LoadResource" type="Resource">
+        <id property="rid" column="rid"></id>
+        <result property="uid" column="uid"></result>
+        <result property="name" column="name"></result>
+        <result property="path" column="path"></result>
+        <result property="scoring" column="scoring"></result>
+        <result property="classify" column="classify"></result>
+        <result property="introduce" column="introduce"></result>
+        <result property="time" column="time"></result>
+        <collection property="resourceTags" ofType="ResourceTag">
+            <id property="id" column="id"></id>
+            <result property="rid" column="rid"></result>
+            <result property="rtag" column="rtag"></result>
+        </collection>
+    </resultMap>
+    <update id="changeScore">
+        UPDATE user SET SCORE=#{1} WHERE UID=#{0}
+    </update>
 </mapper>

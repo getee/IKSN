@@ -3,8 +3,6 @@ package group.first.iksn.model.dao;
 import group.first.iksn.model.bean.CollectResource;
 import group.first.iksn.model.bean.ReportResource;
 import group.first.iksn.model.bean.Resource;
-import group.first.iksn.model.bean.ReportResource;
-import org.apache.ibatis.session.SqlSession;
 import group.first.iksn.model.bean.ResourceComments;
 import org.springframework.stereotype.Component;
 
@@ -38,6 +36,12 @@ public class ResourceDAOImp extends BaseDAOImp implements ResourceDAO {
         System.out.println(rid);
        int num=getSqlSession().getMapper(ResourceDAO.class).downnum(rid);
        return  num;
+    }
+
+    @Override
+    public Resource getResource(int rid) {
+        Resource r=getSqlSession().getMapper(ResourceDAO.class).getResource(rid);
+        return r;
     }
 
     public Resource checkFile(String MD5,String SHA){
@@ -122,7 +126,11 @@ public class ResourceDAOImp extends BaseDAOImp implements ResourceDAO {
         return allReportResource;
     }
 
-
+    //更改积分
+    @Override
+    public boolean changeScore(int uid, int scoring) {
+        return getSqlSession().getMapper(ResourceDAO.class).changeScore(uid, scoring);
+    }
 
     /**
      * 举报的资源保存到表中
