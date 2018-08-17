@@ -5,11 +5,13 @@ import group.first.iksn.model.bean.*;
 import group.first.iksn.service.BlogService;
 import group.first.iksn.service.UserService;
 import group.first.iksn.util.EncodingTool;
+import org.apache.ibatis.annotations.Param;
 import group.first.iksn.util.Responser;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import group.first.iksn.util.Responser;
+import group.first.iksn.util.LocalTime;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,17 +20,15 @@ import org.apache.ibatis.jdbc.Null;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.json.Json;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @Controller
@@ -115,7 +115,6 @@ public class BlogControl {
     System.out.println(blog);
     System.out.println(userToBlog.getUid());
     boolean result = blogService.addBlogService(blog);
-
     //因为的多张表关联，要首先把主表的数据插入完成在进行其他副表的数据插入
     if (result == true) {
         System.out.println(time);
@@ -143,17 +142,69 @@ public class BlogControl {
     public String selectBlogByID(@PathVariable("uid") int uid,Model model){
         System.out.println("222222");
         List<Blog> blogs=blogService.scanBlogService(uid);
+        List<Blog> reportedblogs=blogService.scanReportedBlogService(uid);
+        List<Blog> simiblogs=blogService.scanSimiBlogService(uid);
+        List<Blog> draftblogs=blogService.scanDraftBlogService(uid);
         model.addAttribute("blogs",blogs);
+        model.addAttribute("reportedblogs",reportedblogs);
+        model.addAttribute("simiblogs",simiblogs);
+        model.addAttribute("draftblogs",draftblogs);
         System.out.println(blogs);
              return "writingCenter";
     }
+    //根据bid用户ID来查询博客的相应数据
+    @RequestMapping("/scanBlog/{bid}")
+    public String scanBlog(@PathVariable("bid") int bid,Model model){
+        System.out.println("222222");
+        Blog blogs=blogService.listBlogService(bid);
+        model.addAttribute("scanblog",blogs);
+        System.out.println(blogs);
+        return "alterBlog";
+    }
+    //根据bid用户ID来删除博客
+    @RequestMapping("/deleteBlog")
+    @ResponseBody
+    public String deleteBlog(@Param("bid") int bid) {
+        System.out.println("222222");
+       boolean result1=blogService.deleteBlogOther(bid);
+        System.out.println(result1);
+        if(result1){
+            return "success";
+        }else {
+            return "error";
+        }
+    }
+
+    //修改博客
+    @RequestMapping("/updateBlog/{bid}")
+    public String  updateBlog(@PathVariable("bid") int bid,@ModelAttribute ("blog")  Blog blog,@ModelAttribute ("blogTag") BlogTag blogTag,@ModelAttribute ("userToBlog") UserToBlog userToBlog,Model model){
+        System.out.println("33333修改");
+        Date d = new Date();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String time=df.format(d);
+        blog.setTime(time);
+        boolean result=blogService.updateBlogService(blog);
+        boolean result1=blogService.updateBlogTagService(blogTag);
+        boolean result2=blogService.updateUserToBlogService(userToBlog);
+        System.out.println("修改博客");
+        if(result==true&&result1==true&&result2==true){
+            Blog blogs=blogService.listBlogService(bid);
+            model.addAttribute("listblog",blogs);
+            System.out.println(blogs);
+            return "blogDetail";
+        }
+        else {
+            return "alterBlog";
+        }
+    }
 
     //根据bid博客ID来查询博客的相应数据
-    @RequestMapping("/listBlogByBid")
-    public ModelAndView listBlogByID(@RequestParam(value = "bid",defaultValue = "8") int bid){
+    @RequestMapping("/listBlogByBid/{bid}")
+    public String  listBlogByID(@PathVariable("bid") int bid,Model model){
         Blog listblog=blogService.listBlogService(bid);
+        model.addAttribute("listblog",listblog);
         System.out.println(listblog);
-        return new ModelAndView("userArticle","listblog",listblog);
+        return "blogDetail";
     }
 
     /**
@@ -228,6 +279,7 @@ public class BlogControl {
     @RequestMapping("/discuss")
     public String discuss(@ModelAttribute("discuss")BlogComments blogComments){
         System.out.println(blogComments);
+        blogComments.setTime(LocalTime.getNowTime());
         boolean result=blogService.discuss(blogComments);
         if(!result)
         {
@@ -268,7 +320,6 @@ public class BlogControl {
 
         return mav;
     }
-
     /**
      * 管理员查看被举报的博客，进行审核
      * @param id
@@ -287,10 +338,17 @@ public class BlogControl {
 //        model.addAttribute("report_id",id);
         return "userArticle";
     }
+
+    /**
+     * 获取博客评论楼层
+     * @param bid
+     * @param request
+     * @param response
+     */
     @RequestMapping(value="/getFloor",method = RequestMethod.POST)
     public void getFloor( @RequestParam("bid") Integer bid , HttpServletRequest request, HttpServletResponse response) {
-        System.out.println(bid);
-        String resMsg = ""+blogService.getFloor(bid);//已存在相同资源
+        System.out.println("getfloor"+bid);
+        String resMsg =blogService.getFloor(bid);
        // request.setAttribute("Foor",99);
         System.out.println("DDD"+bid+resMsg);
         try {
@@ -542,7 +600,43 @@ public class BlogControl {
         out.flush();
         out.close();
     }
-
+    /**
+     *
+     * @param bid
+     * @param request
+     * @param response
+     */
+    @ResponseBody
+    @RequestMapping(value="/getComments",method = RequestMethod.POST)
+    public void getComments( @RequestParam("bid") Integer bid , HttpServletRequest request, HttpServletResponse response) {
+        ArrayList<BlogComments> getBlogcomments=(ArrayList<BlogComments>)blogService.getComments(bid);
+        Collections.sort(getBlogcomments );
+        System.out.println(getBlogcomments);
+        JSONArray jsonArray=new JSONArray();
+        JSONObject jsonObject;
+        for (int i=0;i<getBlogcomments.size();i++){
+            jsonObject=new JSONObject();
+            jsonObject.put("nickname",getBlogcomments.get(i).getUser().getNickname());
+            jsonObject.put("floor",getBlogcomments.get(i).getFloor());
+            jsonObject.put("time",getBlogcomments.get(i).getTime());
+            jsonObject.put("content",getBlogcomments.get(i).getContent());
+            jsonObject.put("commentid",getBlogcomments.get(i).getCommentid());
+            jsonObject.put("id",getBlogcomments.get(i).getId());
+            jsonObject.put("uid",getBlogcomments.get(i).getUid());
+            jsonObject.put("bid",getBlogcomments.get(i).getBid());
+            jsonArray.put(jsonObject);
+        }
+        System.out.println(getBlogcomments);
+        response.setContentType("text/json;charset=UTF-8");
+        try {
+            PrintWriter out=response.getWriter();
+            out.write(jsonArray.toString());
+            out.flush();
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 }

@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 import java.rmi.server.UID;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -108,16 +109,45 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
     }
 
     @Override
+    public List<Blog> processScanReportedBlog(int uid) {
+        return getSqlSession().getMapper(BlogDAO.class).processScanReportedBlog(uid);
+    }
+
+    @Override
+    public List<Blog> processScanSimiBlog(int uid) {
+        return getSqlSession().getMapper(BlogDAO.class).processScanSimiBlog(uid);
+    }
+
+    @Override
+    public List<Blog> processScanDraftBlog(int uid) {
+        return getSqlSession().getMapper(BlogDAO.class).processScanDraftBlog(uid);
+    }
+
+    @Override
     public Blog processListBlog(int bid) {
         Blog blog= getSqlSession().getMapper(BlogDAO.class).processListBlog(bid);
         return blog;
     }
 
 
-
     @Override
     public int selectBid(String time) {
         return getSqlSession().getMapper(BlogDAO.class).selectBid(time);
+    }
+
+    @Override
+    public boolean processUpdateBlog(Blog blog) {
+        return getSqlSession().getMapper(BlogDAO.class).processUpdateBlog(blog);
+    }
+
+    @Override
+    public boolean processUpdateBlogtag(BlogTag blogTag) {
+        return getSqlSession().getMapper(BlogDAO.class).processUpdateBlogtag(blogTag);
+    }
+
+    @Override
+    public boolean processUpdateUserToBlog(UserToBlog userToBlog) {
+        return getSqlSession().getMapper(BlogDAO.class).processUpdateUserToBlog(userToBlog);
     }
 
 
@@ -150,10 +180,15 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
         System.out.println(blogComments);
         return getSqlSession().getMapper(BlogDAO.class).answerDiscuss(blogComments);
     }
-
+//获取楼层
     @Override
     public String selectFloor(Integer bid) {
         return getSqlSession().getMapper(BlogDAO.class).selectFloor(bid);
+    }
+//获取评论
+    @Override
+    public ArrayList<BlogComments> getComments(Integer bid) {
+        return getSqlSession().getMapper(BlogDAO.class).getComments(bid);
     }
 
     @Override
@@ -234,6 +269,11 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
             e.printStackTrace();
         }
         return isOK;
+    }
+
+    @Override
+    public boolean deleteBlogOther(int bid) {
+        return getSqlSession().getMapper(BlogDAO.class).deleteBlogOther(bid);
     }
 
     @Override

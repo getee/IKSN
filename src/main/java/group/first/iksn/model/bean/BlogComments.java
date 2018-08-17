@@ -1,9 +1,11 @@
 package group.first.iksn.model.bean;
 
+import java.util.Objects;
+
 /**
  * 记录评论的bean
  */
-public class BlogComments {
+public class BlogComments implements Comparable {
     private  int id;//单条评论id
     private  int uid;//用户id
     private  int bid;//博客id
@@ -11,19 +13,14 @@ public class BlogComments {
     private  String time;//评论时间
     private  String content;//评论内容
     private  int floor;//层数
-
+    private User user;
 
     public BlogComments() {
-        super();
     }
 
-    public BlogComments(int id, int uid, int bid, int commentid, String time, String content, int floor) {
+    public BlogComments(int id, String time, int floor) {
         this.id = id;
-        this.uid = uid;
-        this.bid = bid;
-        this.commentid = commentid;
         this.time = time;
-        this.content = content;
         this.floor = floor;
     }
 
@@ -37,15 +34,8 @@ public class BlogComments {
                 ", time='" + time + '\'' +
                 ", content='" + content + '\'' +
                 ", floor=" + floor +
+                ", user=" + user +
                 '}';
-    }
-
-    public int getFloor() {
-        return floor;
-    }
-
-    public void setFloor(int floor) {
-        this.floor = floor;
     }
 
     public int getId() {
@@ -96,5 +86,45 @@ public class BlogComments {
         this.content = content;
     }
 
+    public int getFloor() {
+        return floor;
+    }
 
+    public void setFloor(int floor) {
+        this.floor = floor;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BlogComments that = (BlogComments) o;
+        return Objects.equals(time, that.time);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(time);
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        BlogComments b=(BlogComments)o;
+        int i = 0;
+        i = floor - b.floor; // 使用字符串的比较
+        if(i == 0) { // 如果time一样,比较id, 返回比较年龄结果
+            return time.compareTo(b.time);
+        } else {
+            return i; // 名字不一样, 返回比较名字的结果.
+        }
+    }
 }

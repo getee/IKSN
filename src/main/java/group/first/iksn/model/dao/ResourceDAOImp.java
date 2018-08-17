@@ -132,6 +132,26 @@ public class ResourceDAOImp extends BaseDAOImp implements ResourceDAO {
     public Resource selectUidByRid(int rid) {
         return getSqlSession().getMapper(ResourceDAO.class).selectUidByRid(rid);
     }
+    /**
+     * 查询上传的资源
+     * @param uid
+     * @return
+     */
+    @Override
+    public List<Resource> getUploadResource(int uid) {
+        List<Resource> resources=getSqlSession().getMapper(ResourceDAO.class).getUploadResource(uid);
+        return resources;
+    }
+    //下载资源
+    @Override
+    public List<Resource> downloadResource(int uid) {
+        return getSqlSession().getMapper(ResourceDAO.class).downloadResource(uid);
+    }
+    //我收藏的资源
+    @Override
+    public List<Resource> myCollectResource(int uid) {
+        return getSqlSession().getMapper(ResourceDAO.class).myCollectResource(uid);
+    }
 
     //更改积分
     @Override

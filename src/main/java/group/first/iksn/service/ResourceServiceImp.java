@@ -184,6 +184,12 @@ public class ResourceServiceImp  implements ResourceService{
     public int reportResourceNum() {
         return resourceDAO.reportResourceNum();
     }
+    //查询上传的资源
+    @Override
+    public List<Resource> getUploadResource(int uid) {
+        List<Resource> resources=resourceDAO.getUploadResource(uid);
+        return resources;
+    }
 
     @Override
     public boolean downLoadResource(int pushId, int downId, int rid,int scoring) {
@@ -199,6 +205,17 @@ public class ResourceServiceImp  implements ResourceService{
             return false;
         }
         return true;
+    }
+     //下载资源
+    @Override
+    public List<Resource> downloadResource(int uid) {
+        return resourceDAO.downloadResource(uid);
+    }
+
+    //我收藏的资源
+    @Override
+    public List<Resource> myCollectResource(int uid) {
+        return resourceDAO.myCollectResource(uid);
     }
 
     @Override

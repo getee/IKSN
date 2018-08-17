@@ -22,13 +22,33 @@
 	<script src="js/depend.js"></script>
 	<script>
 		$(document).ready(function(){
-			$('#myTabs a').click(function (e) {
-			  e.preventDefault()
-			  $(this).tab('show')
-			})
+            //标签页选项卡
+            $('#myTabs1 a').click(function (e) {
+                e.preventDefault()
+                $(this).tab('show')
+            });
+            $('#myTabs2 a').click(function (e) {
+                e.preventDefault()
+                $(this).tab('show')
+            });
+            $('#myTabs3 a').click(function (e) {
+                e.preventDefault()
+                $(this).tab('show')
+            });
+            $('#myTabs4 a').click(function (e) {
+                e.preventDefault()
+                $(this).tab('show')
+            });
+            $('#myTabs5 a').click(function (e) {
+                e.preventDefault()
+                $(this).tab('show')
+            });
+
+
 
 		});
 	</script>
+
 </head>
 
 <body  style="background-color:#EBEBEB">
@@ -70,93 +90,71 @@
 				  		<div>
 
 						  <!-- Nav tabs -->
-						  <ul class="nav nav-tabs" role="tablist">
-							<li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">全部&nbsp;(2)</a></li>
-							<li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">已发表&nbsp;(2)</a></li>
-							<li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">私密&nbsp;(0)</a></li>
-							<li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">草稿箱</a></li>
-							<li role="presentation"><a href="#settings" aria-controls="delete" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-trash"></span>回收站</a></li>
-						  </ul>
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li id="myTabs1" role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">全部</a></li>
+                                <li id="myTabs2" role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">已发表</a></li>
+                                <li id="myTabs3" role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">私密</a></li>
+                                <li id="myTabs4" role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">草稿箱</a></li>
+                            </ul>
 
 						  <!-- Tab panes -->
 						  <div class="tab-content">
 <!--						  全部  标签页-->
 							<div role="tabpanel" class="tab-pane active" id="home">
-								<div class="row" style="margin-top: 10px; padding: 15px;background-color: #F4EEEE">
-								  <div class="col-xs-6 col-md-1" style="padding-right: 0;padding-left: 5px">
-								  		<h5>发布时间</h5>
-								  </div>
-								  <div class="col-xs-6 col-md-2" style="">
 
-								  		<div class="form-group" style="margin-top: 7px">
-										<select style="width: 90%;height: 30px;border: none;border-radius: 4px">
-											<option>不限</option>
-											<option>B</option>
-											<option>C</option>
-										</select>
-										</div>
-
-								  </div>
-								  <div class="col-xs-6 col-md-2">
-
-								  		<div class="form-group" style="margin-top: 7px">
-										<select style="width: 90%;height: 30px;border: none;border-radius: 4px">
-											<option>不限</option>
-											<option>B</option>
-											<option>C</option>
-										</select>
-										</div>
-
-								  </div>
-								  <div class="col-xs-6 col-md-2">
-
-								  		<div class="form-group" style="margin-top: 7px">
-										<select style="width: 90%;height: 30px;border: none;border-radius: 4px">
-											<option>不限类型</option>
-											<option>原创</option>
-											<option>转载</option>
-											<option>翻译</option>
-										</select>
-										</div>
-
-								  </div>
-								  <div class="col-xs-6 col-md-5">
-								  		<form class="navbar-form navbar-left" style="padding-left: 0">
-											<div class="form-group">
-											  <input id="star" type="text" class="form-control" placeholder="Fuck you">
-											</div>
-											<button type="submit" class="btn btn-default">搜索</button>
-										</form>
-								  </div>
-								</div>
-
-<!--								发表的博客-->
-								<div class="row">
+<!--				发表的博客-->
+                            <div class="row" >
 								<div class="span12" style="padding-left: 25px;padding-right: 25px">
-									<ul>
 
-					<c:forEach var="b" items="${requestScope.blogs}">
+									<ul>
+										<script>
+                                            function delet(bid) {
+                                                var ajaxUrl = "/blog/deleteBlog?bid="+bid;
+                                                //alert(ajaxUrl);
+                                                $.post(ajaxUrl,function (data) {
+                                                    if(data=="success"){
+                                                        $("div").remove("#blogdiv"+bid+" div");
+                                                        $("#bloghr"+bid+"").remove();
+                                                        alert("删除成功")
+                                                    }
+                                                    else {
+                                                        alert("删除失败")
+                                                    }
+                                                })
+                                            }
+                                            function setHot(t){
+                                                var bar = 'showAndHide_box';
+                                                var obj = $(t).parents('.'+bar).clone(true);
+                                                $(t).parents('.'+bar).remove();
+                                                $(".span12 ").prepend(obj);
+                                            }
+										</script>
+										<c:forEach var="b" items="${requestScope.blogs}">
+                                    <div id="blogdiv${b.bid}">
 										<li>
-											<div style="padding-bottom: 3px;overflow: hidden">
-												<a><h3>${b.title}</h3></a>
+											<div  style="padding-bottom: 3px;overflow: hidden" class="showAndHide_box">
+												<a href="/blog/listBlogByBid/${b.bid}" style="cursor: pointer"><h3>${b.title}</h3></a>
 												<h5 id="type" style="color:#928F8F;float: left">
 														${b.userToBlog.blogtype==1 ?  "原创" : "转载"}
 												&nbsp;&nbsp;</h5>
-
+                                                <h5 style="color:#928F8F;float: left">${b.userToBlog.isdraft ==0 ? "草稿": "已发表"}
+                                                    &nbsp;&nbsp;</h5>
 												<h5 style="color:#928F8F;float: left">${b.time}&nbsp;&nbsp;</h5>
 <!--												被阅读数-->
 												<span style="color:#928F8F;margin-left: 10px"><span class="glyphicon glyphicon-eye-open" style="margin-top: 7px"></span>&nbsp;${b.points}</span>
-<!--												被评论数-->
-												<span style="color:#928F8F;margin-left: 10px"><span class="glyphicon glyphicon-comment" style="margin-top: 7px"></span>&nbsp;0</span>
 <!--												博客设置-->
 												<div style="float: right">
-													<a href="#">查看&nbsp;&nbsp;|</a><a href="#">禁止评论&nbsp;&nbsp;|</a><a href="#">置顶</a>
+													<a href="/blog/listBlogByBid/${b.bid}">查看&nbsp;&nbsp;|</a><a href="#">禁止评论&nbsp;&nbsp;|</a>
+													<a class="operation" id="blogzd${b.bid}" onClick="setHot(this)" style="cursor: pointer">置顶&nbsp;&nbsp;|</a>
+													<a style="color: red;cursor: pointer"onclick="delet(${b.bid})" >删除</a>
 												</div>
 											</div>
 
 										</li>
-										<hr />
+										<hr id="bloghr${b.bid}"/>
+                                    </div>
 						</c:forEach>
+
 									</ul>
 								</div>
 								</div>
@@ -169,50 +167,97 @@
 								<div class="row">
 								<div class="span12" style="padding-left: 25px;padding-right: 25px">
 									<ul>
-										<li>
-											<div style="padding-bottom: 3px;overflow: hidden">
-												<a><h3>第一个博客</h3></a>
-												<h5 style="color:#928F8F;float: left">原创&nbsp;&nbsp;</h5>
-												<h5 style="color:#928F8F;float: left">2018年8月2日16：05：25&nbsp;&nbsp;</h5>
-<!--												被阅读数-->
-												<span style="color:#928F8F;margin-left: 10px"><span class="glyphicon glyphicon-eye-open" style="margin-top: 7px"></span>&nbsp;0</span>
-<!--												被评论数-->
-												<span style="color:#928F8F;margin-left: 10px"><span class="glyphicon glyphicon-comment" style="margin-top: 7px"></span>&nbsp;0</span>
-<!--												博客设置-->
-												<div style="float: right">
-													<a href="#">查看&nbsp;&nbsp;|</a><a href="#">&nbsp;&nbsp;禁止评论&nbsp;&nbsp;|</a><a href="#">&nbsp;&nbsp;置顶&nbsp;&nbsp;|</a><a href="#" style="color:#901919">&nbsp;&nbsp;删除</a>
-												</div>
-											</div>
+                                        <c:forEach var="b" items="${requestScope.reportedblogs}">
+                                            <div id="blogdiv${b.bid}">
+                                            <li>
+                                                <div style="padding-bottom: 3px;overflow: hidden">
+                                                    <a href="/blog/listBlogByBid/${b.bid}" style="cursor: pointer"><h3>${b.title}</h3></a>
+                                                    <h5 id="type2" style="color:#928F8F;float: left">
+                                                            ${b.userToBlog.blogtype==1 ?  "原创" : "转载"}
+                                                        &nbsp;&nbsp;</h5>
+                                                    <h5 style="color:#928F8F;float: left">${b.time}&nbsp;&nbsp;</h5>
+                                                    <!--												被阅读数-->
+                                                    <span style="color:#928F8F;margin-left: 10px"><span class="glyphicon glyphicon-eye-open" style="margin-top: 7px"></span>&nbsp;${b.points}</span>
+                                                    <!--												博客设置-->
+                                                    <div style="float: right">
+                                                        <a href="/blog/listBlogByBid/${b.bid}">查看&nbsp;&nbsp;|</a><a href="#">禁止评论&nbsp;&nbsp;|</a>
+                                                        <a style="color: red;cursor: pointer"onclick="delet(${b.bid})" >删除</a>
+                                                    </div>
+                                                </div>
 
-										</li>
-										<hr />
-
-										<li>
-											<div style="padding-bottom: 3px;overflow: hidden">
-												<a><h3>第二个博客</h3></a>
-												<h5 style="color:#928F8F;float: left">原创&nbsp;&nbsp;</h5>
-												<h5 style="color:#928F8F;float: left">2018年8月2日16：05：25&nbsp;&nbsp;</h5>
-<!--												被阅读数-->
-												<span style="color:#928F8F;margin-left: 10px"><span class="glyphicon glyphicon-eye-open" style="margin-top: 7px"></span>&nbsp;0</span>
-<!--												被评论数-->
-												<span style="color:#928F8F;margin-left: 10px"><span class="glyphicon glyphicon-comment" style="margin-top: 7px"></span>&nbsp;0</span>
-<!--												博客设置-->
-												<div style="float: right">
-													<a href="#">查看&nbsp;&nbsp;|</a><a href="#">&nbsp;&nbsp;禁止评论&nbsp;&nbsp;|</a><a href="#">&nbsp;&nbsp;置顶&nbsp;&nbsp;|</a><a href="#" style="color:#901919">&nbsp;&nbsp;删除</a>
-												</div>
-											</div>
-
-										</li>
-										<hr />
-
+                                            </li>
+                                                <hr id="bloghr${b.bid}"/>
+                                        </div>
+                                        </c:forEach>
 									</ul>
 								</div>
 								</div>
 
 							</div>
-							<div role="tabpanel" class="tab-pane" id="messages">...</div>
-							<div role="tabpanel" class="tab-pane" id="settings">...</div>
-							<div role="tabpanel" class="tab-pane" id="delete">...</div>
+
+							<div role="tabpanel" class="tab-pane" id="messages">
+                                <div class="row">
+                                    <div class="span12" style="padding-left: 25px;padding-right: 25px">
+                                        <ul>
+
+                                            <c:forEach var="b" items="${requestScope.simiblogs}">
+                                                <div id="blogdiv${b.bid}">
+                                                <li>
+                                                    <div style="padding-bottom: 3px;overflow: hidden">
+                                                        <a href="/blog/listBlogByBid/${b.bid}" style="cursor: pointer"><h3>${b.title}</h3></a>
+                                                        <h5 id="type3" style="color:#928F8F;float: left">
+                                                                ${b.userToBlog.blogtype==1 ?  "原创" : "转载"}
+                                                            &nbsp;&nbsp;</h5>
+                                                        <h5 style="color:#928F8F;float: left">${b.time}&nbsp;&nbsp;</h5>
+                                                        <!--												被阅读数-->
+                                                        <span style="color:#928F8F;margin-left: 10px"><span class="glyphicon glyphicon-eye-open" style="margin-top: 7px"></span>&nbsp;${b.points}</span>
+                                                        <!--												博客设置-->
+                                                        <div style="float: right">
+                                                            <a href="/blog/listBlogByBid/${b.bid}">查看&nbsp;&nbsp;|</a><a href="#">禁止评论&nbsp;&nbsp;|</a>
+                                                            <a style="color: red;cursor: pointer"onclick="delet(${b.bid})" >删除</a>
+                                                        </div>
+                                                    </div>
+
+                                                </li>
+                                                    <hr id="bloghr${b.bid}"/>
+                                            </div>
+                                            </c:forEach>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+							<div role="tabpanel" class="tab-pane" id="settings">
+                                <div class="row">
+                                    <div class="span12" style="padding-left: 25px;padding-right: 25px">
+                                        <ul>
+                                            <c:forEach var="b" items="${requestScope.draftblogs}">
+                                            <div id="blogdiv${b.bid}">
+                                                <li>
+                                                    <div style="padding-bottom: 3px;overflow: hidden" >
+                                                        <a href="/blog/listBlogByBid/${b.bid}" style="cursor: pointer"><h3>${b.title}</h3></a>
+                                                        <h5 id="type4" style="color:#928F8F;float: left">
+                                                                ${b.userToBlog.blogtype==1 ?  "原创" : "转载"}
+                                                            &nbsp;&nbsp;</h5>
+                                                        <h5 style="color:#928F8F;float: left">${b.time}&nbsp;&nbsp;</h5>
+                                                        <!--												被阅读数-->
+                                                        <span style="color:#928F8F;margin-left: 10px"><span class="glyphicon glyphicon-eye-open" style="margin-top: 7px"></span>&nbsp;${b.points}</span>
+                                                        <!--												博客设置-->
+                                                        <div style="float: right">
+                                                            <a href="/blog/listBlogByBid/${b.bid}">查看&nbsp;&nbsp;|</a><a href="#">禁止评论&nbsp;&nbsp;|</a>
+                                                            <a style="color: red;cursor: pointer"onclick="delet(${b.bid})" >删除</a>
+                                                        </div>
+                                                    </div>
+
+                                                </li>
+                                                <hr id="bloghr${b.bid}"/>
+                                            </div>
+                                            </c:forEach>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
 						  </div>
 
 						</div>
@@ -221,9 +266,8 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-xs-6 col-md-1"></div>
   	</div>
-
-	</div>
+</div>
 </body>
+
 </html>

@@ -138,4 +138,16 @@ select * from user where NICKNAME=#{nickname} and  UID in (select ATTENID from a
     <select id="myFans" resultType="User">
         select * from user where uid in(select selfid from attention where attenid=#{uid})
     </select>
+    <!--被禁言的用户-->
+    <select id="getUserBySpeak" resultType="User" >
+        select * from user where ISSPEAK=1 limit #{pages},5
+    </select>
+    <!--解除用户禁言-->
+    <update id="isSpeaktoTrue" parameterType="integer">
+        update user set ISSPEAK=0 where UID=#{uid}
+    </update>
+    <!--获取被禁言用户的数量-->
+    <select id="getIsspeakNum" resultType="integer">
+        select count(*) from user where ISSPEAK = 1
+    </select>
 </mapper>

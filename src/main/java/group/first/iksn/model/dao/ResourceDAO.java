@@ -49,6 +49,12 @@ public interface ResourceDAO {
     //更改积分数（更改者，更改后积分）
     boolean changeScore(int uid, int scoring);
 
+    //上传的资源查询
+    List<Resource> getUploadResource(int uid);
+    //下载资源
+    List<Resource> downloadResource(int uid);
+    //我收藏的资源
+    List<Resource> myCollectResource(int uid);
     //添加下载表
     boolean addDownResource(int downId, int rid, String nowTime);
 

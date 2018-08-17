@@ -7,10 +7,7 @@ import group.first.iksn.model.bean.Notice;
 import group.first.iksn.model.bean.Scoring;
 import group.first.iksn.model.bean.User;
 import group.first.iksn.service.UserService;
-import group.first.iksn.util.EncodingTool;
-import group.first.iksn.util.HttpUtil;
-import group.first.iksn.util.IndustrySMS;
-import group.first.iksn.util.MD5;
+import group.first.iksn.util.*;
 import org.apache.ibatis.jdbc.Null;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -458,11 +455,31 @@ public class UserControl {
     }
     //用户积分明细
     @RequestMapping("/getScoring")
-    public ModelAndView getScoring(@RequestParam("uid") int uid){
+    public void getScoring(@RequestParam("uid") int uid,HttpServletResponse response) throws IOException {
         List<Scoring> scorings=userService.getScoring(uid);
-        ModelAndView mav=new ModelAndView("myscore");
-        mav.addObject("scorings",scorings);
-        return mav;
+        JSONArray jsonArray=new JSONArray();
+        JSONObject jsonObject;
+        for (int i=0;i<scorings.size();i++){
+            jsonObject=new JSONObject();
+            try{
+                jsonObject.put("state",scorings.get(i).getState());
+                jsonObject.put("number",scorings.get(i).getNumber());
+                jsonObject.put("operation",scorings.get(i).getOperation());
+                jsonObject.put("time",scorings.get(i).getTime());
+                jsonArray.put(jsonObject);
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+        }
+
+        System.out.println("积分明细："+scorings);
+        //悄悄把数据会给他
+        //用response（响应）对象中的输出流将处理好的结果输出给ajax请求对象
+        response.setContentType("textml;charset=UTF-8");//  textml     ,text/xml    ,text/json
+        PrintWriter  out=response.getWriter();//获取响应对象中的输出流
+        out.write(jsonArray.toString());
+        out.flush();
+        out.close();
     }
     //积分消费记录
     @RequestMapping("/costScoring")
@@ -580,6 +597,57 @@ public class UserControl {
         out.write(jsonArray.toString());
         out.flush();
         out.close();
+    }
 
+    /**
+     * 获取被禁言的用户
+     * wenbin
+     * @param response
+     * @param request
+     */
+    @RequestMapping("/UserByIsSpeak/{page}")
+    @ResponseBody
+    public void UserByIsSpeak(@PathVariable int page,HttpServletResponse response,HttpServletRequest request){
+        List<User> speakUsers=userService.getUserBySpeak(page);
+       for (User u:speakUsers){
+           System.out.println(u);
+       }
+       int num=userService.getIsspeakNum();
+        JSONArray jsonArray=new JSONArray();
+       for (User u:speakUsers){
+           JSONObject j=new JSONObject();
+           j.put("uid",u.getUid());
+           j.put("nickName",u.getNickname());
+           j.put("sex",u.getSex());
+           j.put("email",u.getEmail());
+           j.put("phone",u.getPhone());
+           j.put("time",u.getTimeofban());
+           jsonArray.put(j);
+       }
+        JSONObject jsonObjectTwo=new JSONObject();
+       jsonObjectTwo.put("num",num);
+       jsonArray.put(jsonObjectTwo);
+        try {
+            Responser.responseToJson(response,request,jsonArray.toString());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 解除禁言
+     * wenbin
+     * @param uid
+     * @return
+     */
+    @RequestMapping("/isSpeaktoTrue/{uid}")
+    @ResponseBody
+    public String isSpeaktoTrue(@PathVariable int uid){
+        boolean result=userService.isSpeaktoTrue(uid);
+        if(result==true){
+            return "success";
+        }else {
+            return "error";
+        }
     }
 }
