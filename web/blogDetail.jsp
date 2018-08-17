@@ -489,10 +489,10 @@
 			<div class="modal-body">
 				<!--								文本域-->
 				<form action="/blog/reportBlog" method="post">
-					博客ID：<input name="bid" type="text" value="2" readonly="readonly"/>
-					举报人ID：<input name="uid" type="text" value="2" readonly="readonly"/>
+					<input type="hidden" name="bid" type="text" value="${listblog.bid}" readonly="readonly"/>
+					<input type="hidden" name="uid" type="text" value="${sessionScope.loginresult.uid}" readonly="readonly"/>
 					<textarea name="reason" class="form-control" rows="3"></textarea><br/>
-					<input  type="submit" value="提交" onclick="report(${result})" />
+					<input style="float: right;"  type="submit" value="提交" onclick="report(${result})" />
 				</form>
 				<!--								-->
 

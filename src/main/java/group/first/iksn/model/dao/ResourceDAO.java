@@ -55,4 +55,8 @@ public interface ResourceDAO {
     List<Resource> downloadResource(int uid);
     //我收藏的资源
     List<Resource> myCollectResource(int uid);
+    //添加下载表
+    boolean addDownResource(int downId, int rid, String nowTime);
+
+    String getDownedTime(int rid, int uid);
 }
