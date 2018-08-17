@@ -80,4 +80,10 @@ public interface UserService {
     List<User> myAttention(int uid);
     //我的粉丝
     List<User> myFans(int uid);
+    //禁言的用户
+    List<User> getUserBySpeak(int page);
+    //解除禁言
+    boolean isSpeaktoTrue(int uid);
+    //禁言的数量
+    int getIsspeakNum();
 }

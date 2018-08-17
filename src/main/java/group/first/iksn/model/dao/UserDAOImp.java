@@ -443,8 +443,38 @@ public class UserDAOImp extends BaseDAOImp implements UserDAO {
         return users;
     }
 
+    @Override
+    public List<User> getUserBySpeak(int page) {
+        List<User> isSpeakUser=null;
+        try {
+            isSpeakUser=getSqlSession().getMapper(UserDAO.class).getUserBySpeak((page-1)*5);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return isSpeakUser;
+    }
 
+    @Override
+    public boolean isSpeaktoTrue(int uid) {
+        boolean isOk=false;
+        try {
+            isOk=getSqlSession().getMapper(UserDAO.class).isSpeaktoTrue(uid);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return isOk;
+    }
 
+    @Override
+    public int getIsspeakNum() {
+        int num=0;
+        try {
+            num=getSqlSession().getMapper(UserDAO.class).getIsspeakNum();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return num;
+    }
 
 
 }
