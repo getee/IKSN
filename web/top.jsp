@@ -189,7 +189,7 @@
         //接收到消息的回调方法
         websocket.onmessage = function (event) {
             oneNOtFriendNum+=1;
-            allNotReadNum+=oneNOtFriendNum;
+            allNotReadNum+=1;
             var str =$.parseJSON(event.data);
              webFromid=str.fromid;
              webToid=str.toid;

@@ -15,12 +15,18 @@
 	  <base href="<%=basePath%>">
     <!-- Bootstrap -->
     <link href="bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-
+	  <link rel="stylesheet" href="css/amazeui.min.css">
+	  <link rel="stylesheet" href="css/amazeui.cropper.css">
+	  <link rel="stylesheet" href="css/custom_up_img.css">
+	  <link rel="stylesheet" type="text/css" href="css/font-awesome.4.6.0.css">
     <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
     <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
     <!--[if lt IE 9]>
       <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+	  <script src="js/amazeui_2.7.2_js_amazeui.min.js" charset="utf-8"></script>
+	  <script src="js/cropper.min.js" charset="utf-8"></script>
+	  <script src="js/custom_up_img.js" charset="utf-8"></script>
     <![endif]-->
   </head>
   <body style="background-color: #E9E9E9">
@@ -60,6 +66,8 @@
 			});
 
 
+
+
 			//标签页选项卡
 			$('#myTabs1 a').click(function (e) {
 					  e.preventDefault()
@@ -81,8 +89,10 @@
 					  e.preventDefault()
 					  $(this).tab('show')
 					});
-		});  
-	 
+		});
+
+
+
 	</script>
     
 	<div id="fluid_Div" class="container-fluid">
@@ -100,7 +110,7 @@
 	  	<td style="cursor: pointer"><a class="text-muted" href="/blog/mGetAllReportBlog"><h4>我的博客</h4></a></td>
 	  	<td style="cursor: pointer"><a class="text-muted" href="#"><h4>我的下载</h4></a></td>
 		  <c:if test="${sessionScope.loginresult.isadmin eq '1'}">
-			  <td style="cursor: pointer"><a href="/blog/mGetAllReportBlog"><h4>举报管理</h4></a></td>
+			  <td style="cursor: pointer"><a class="text-muted" href="/blog/mGetAllReportBlog"><h4>举报管理</h4></a></td>
 		  </c:if>
 	  </tr>
 	</table>
@@ -109,7 +119,14 @@
 <div class="row well" style="margin-top: 2%; margin-left: 15%;margin-right: 15%">
 <!--用户头像-->
 	<div class="col-md-2 " >
-		<img src=${sessionScope.loginresult.picturepath} class="img-responsive img-rounded" alt="Responsive image">
+
+		<div class="up-img-cover" id="up-img-touch">
+			<img class="am-circle" alt="点击图片上传" src="${sessionScope.loginresult.picturepath}" data-am-popover="{content: &#39;点击上传&#39;, trigger: &#39;hover focus&#39;}">
+		</div>
+
+		<%--<img id="userImg"  src="${sessionScope.loginresult.picturepath}" class="img-responsive img-rounded" alt="Responsive image" style="cursor: pointer">--%>
+		<%--<span id="imgSpan" style="position: absolute; bottom: 0; left:23%;display: none">双击修改头像</span>--%>
+
 	</div>
 <!--	用户信息-->
 	<div class="col-md-10">
