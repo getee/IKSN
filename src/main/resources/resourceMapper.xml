@@ -137,10 +137,10 @@
     </select>
     <!--下载资源-->
     <select id="downloadResource" resultType="Resource">
-        SELECT name,scoring,time FROM  resource WHERE  rid IN (SELECT  rid FROM  downresources WHERE uid=uid)
+        SELECT name,scoring,time FROM  resource WHERE  rid IN (SELECT  rid FROM  downresources WHERE uid=#{uid})
     </select>
     <!--我收藏的资源-->
     <select id="myCollectResource" resultType="Resource">
-        SELECT name,scoring,time FROM  resource WHERE  rid IN (SELECT  rid FROM  collectresource WHERE uid=uid)
+        SELECT name,scoring,time FROM  resource WHERE  rid IN (SELECT  rid FROM  collectresource WHERE uid=#{uid})
     </select>
 </mapper>
