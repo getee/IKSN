@@ -96,4 +96,8 @@ public interface BlogDAO {
     UserToBlog selectUidByBid(int bid);
 
     ArrayList<BlogComments> getComments(Integer bid);
+    //根据bid查询link
+    Blog selectLinkByBid(int bid);
+    //对blog.link加一
+    boolean updateLink(String numLink,int bid);
 }

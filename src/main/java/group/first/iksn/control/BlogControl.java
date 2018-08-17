@@ -327,15 +327,20 @@ public class BlogControl {
      * @return
      */
     @RequestMapping("/mCheckReportblog/{id}")
-    public String mCheckReportblog(@PathVariable int id,Model model){
+    public String mCheckReportblog(@PathVariable int id,Model model,HttpSession session){
         ReportBlog reportBlog=blogService.selectReportBlog(id);
         System.out.println(reportBlog);
+        int bid=reportBlog.getBid();
         model.addAttribute("reportBlog",reportBlog);
-//        EncodingTool.encodeStr(reason);
-//        System.out.println(blog_id+reason);
-//        model.addAttribute("blog_id",blog_id);
-//        model.addAttribute("reportReason",reason);
-//        model.addAttribute("report_id",id);
+
+        Map<String,Object> map=blogService.getBlogAndUser(bid);
+        model.addAttribute("boke",map.get("boke"));
+        model.addAttribute("yonghu",map.get("yonghu"));
+        model.addAttribute("original",map.get("original"));
+        model.addAttribute("fans",map.get("fans"));
+        model.addAttribute("attention",map.get("attention"));
+
+
         return "userArticle";
     }
 

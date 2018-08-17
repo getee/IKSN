@@ -187,6 +187,12 @@ public class ResourceServiceImp  implements ResourceService{
     public int reportResourceNum() {
         return resourceDAO.reportResourceNum();
     }
+
+    @Override
+    public boolean downLoadResource(int pushId, int downId, int scoring) {
+        return false;
+    }
+
     //查询上传的资源
     @Override
     public List<Resource> getUploadResource(int uid) {
