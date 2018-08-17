@@ -102,8 +102,12 @@
                 <form id="upFileForm" action="resource/upLoadFile" method="post">
                     <legend contenteditable="true">上传资源</legend>
                     <label>
-                        <%--${sessionScope.loginresult.uid}--%>
-                        <input type="hidden" name="uid" value="2" />
+                        <c:if test="${sessionScope.loginresult eq null}">
+                            <input type="hidden" name="uid" value="2" />
+                        </c:if>
+                        <c:if test="${sessionScope.loginresult != null}">
+                            <input type="hidden" name="uid" value="${sessionScope.loginresult.uid}" />
+                        </c:if>
                         <div id="upimg" style="background:url('img/upload.png'); width:141px; height:116px;">
                             <input style="position:absolute;opacity:0;" type="file" name="file" id="choosefile" onchange="upload()" />
                         </div>
@@ -114,7 +118,13 @@
 
                     <%--用js注入文件路径--%>
                     <input type="hidden" id="filepath" name="path" value="0" />
-                    <input type="hidden" name="uid" value="2" />
+
+                    <c:if test="${sessionScope.loginresult eq null}">
+                        <input type="hidden" name="uid" value="2" />
+                    </c:if>
+                    <c:if test="${sessionScope.loginresult != null}">
+                        <input type="hidden" name="uid" value="${sessionScope.loginresult.uid}" />
+                    </c:if>
 
                     <span class="help-block" contenteditable="true">您可以上传小于220MB的文件</span> <br />
                     <label contenteditable="true">资源名称: </label>

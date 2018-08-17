@@ -5,7 +5,7 @@
 
 
 <mapper namespace="group.first.iksn.model.dao.BlogDAO">
-
+    <!--定义的一个reaultmap结果集合来存储关联查询到的详细的博客，类型是自定义类型-->
     <resultMap id="searchBlog" type="Blog">
 
         <id property="bid" column="bid"></id>
@@ -45,8 +45,29 @@
         inner join blogtag as t on t.bid=b.bid
         where b.bid=#{bid}
     </select>
+    <!--根据博客ID来准确查出已经发表博客信息-->
+    <select id="processScanReportedBlog" resultMap="searchBlog">
+        select b.* ,u.*,t.* from blog as b
+        inner join usertoblog as u on u.bid=b.bid
+        inner join blogtag as t on t.bid=b.bid
+        where u.uid=#{uid} and isdraft=1
+    </select>
+    <!--根据博客ID来准确查出私密博客信息-->
+    <select id="processScanSimiBlog" resultMap="searchBlog">
+        select b.* ,u.*,t.* from blog as b
+        inner join usertoblog as u on u.bid=b.bid
+        inner join blogtag as t on t.bid=b.bid
+        where u.uid=#{uid} and ispublic=1
+    </select>
+    <!--根据博客ID来准确查出草稿博客信息-->
+    <select id="processScanDraftBlog" resultMap="searchBlog">
+        select b.* ,u.*,t.* from blog as b
+        inner join usertoblog as u on u.bid=b.bid
+        inner join blogtag as t on t.bid=b.bid
+        where u.uid=#{uid} and isdraft=0
+    </select>
 
-<!--博客添加相关操作-->
+    <!--博客添加相关操作-->
     <insert id="processAddBlog" parameterType="Blog" useGeneratedKeys="true" keyColumn="bid">
         insert into blog(title,content,time,classify) values (#{title},#{content},#{time},#{classify})
     </insert>
@@ -59,8 +80,16 @@
     <insert id="processAddUserToBlog" parameterType="UserToBlog" useGeneratedKeys="true" keyColumn="id">
         insert into usertoblog(uid,bid,ISDRAFT,ISPUBLIC,BLOGTYPE) values (#{uid},#{bid},#{isdraft},#{ispublic},#{blogtype})
     </insert>
-    <!--博客修改相关操作-->
-
+    <!--博客修改相关操作 -->
+     <update id="processUpdateBlog">
+         UPDATE blog  SET  title=#{title},content=#{content},classify=#{classify} WHERE  bid=#{bid}
+     </update>
+     <update id="processUpdateBlogtag">
+         UPDATE blogtag  SET  btag=#{btag} WHERE  bid=#{bid}
+     </update>
+     <update id="processUpdateUserToBlog">
+         UPDATE usertoblog  SET  isdraft=#{isdraft},ispublic=#{ispublic},blogtype=#{blogtype} WHERE  bid=#{bid}
+     </update>
 
     <!--向illegalblog表中插入违规博客信息-->
     <insert id="addIllegalblog" parameterType="IllegalBlog">
@@ -69,11 +98,11 @@
 
     <!--从reportBlog表中根据id删除一个选中行-->
     <delete id="deleteBlogFromReport" parameterType="ReportBlog">
-      delete from reportblog where id = #{report_id}
+        delete from reportblog where id = #{report_id}
     </delete>
     <!--从blog表中根据id删除一个博客信息-->
     <delete id="deleteBlog" parameterType="Blog">
-      delete from blog where BID = #{bid}
+        delete from blog where BID = #{bid}
     </delete>
     <!--删除与blog表相关的信息，illegalblog，blogtag，blogbrowsed，blogcomments，collectblog，usertoblog，reportblog-->
     <delete id="deleteBlogOthers" parameterType="Blog">
@@ -87,14 +116,18 @@
       WHERE r.BID=#{bid}
     </delete>
 
-
+    <delete id="deleteBlogOther" parameterType="Blog">
+        DELETE b,utb FROM usertoblog utb
+        INNER JOIN blogtag b  ON b.BID = utb.BID
+        WHERE utb.BID=#{bid}
+    </delete>
     <!--设置博客为不公开-->
     <update id="blogIsPublic" parameterType="UserToBlog">
         update usertoblog set ISPUBLIC=1 where BID=#{bid};
     </update>
 
 
-    <!--结果集合用来存储查询ReportBlog表级联查询blog表-->
+    <!--分页。。结果集合用来存储查询ReportBlog表级联查询blog表-->
     <resultMap id="getBlogBy_Reportbid" type="ReportBlog">
         <id column="id" property="id"/>
         <result column="uid" property="uid"/>
@@ -107,8 +140,8 @@
         </association>
     </resultMap>
     <select id="getAllReportBlog" resultMap="getBlogBy_Reportbid">
-		select  i.ID,i.BID,i.REASON,b.TITLE  from reportblog as i
-		inner join blog as b on   i.BID=b.BID ORDER BY i.ID asc limit 0,6;
+		select  i.ID,i.BID,i.REASON,b.TITLE,b.TIME  from reportblog as i
+		inner join blog as b on   i.BID=b.BID ORDER BY i.ID asc limit #{page},5;
 	</select>
 
     <!-- 博客评论 -->
@@ -119,12 +152,29 @@
     <insert id="answerDiscuss" parameterType="BlogComments">
         insert into blogcomments(uid,bid,time,content,COMMENTID,floor) value (#{uid},#{bid},#{time},#{content},#{commentid},#{floor})
     </insert>
-
-
+    <!--博客评论楼层-->
     <select id="selectFloor" resultType="String">
-        select count(*) from blogcomments where BID=(#{bid}) and COMMENTID is null
+        select count(*)+1 from blogcomments where BID=(#{bid}) and COMMENTID is null
     </select>
 
+    <!--此Map写错位置，无人调用，可删除。。。结果集合用来存储查询ReportResource表级联查询Resource表-->
+    <!--获取评论-->
+    <select id="getComments" resultMap="getCommmentsMap">
+      select * from blogcomments inner join user u on blogcomments.UID = u.UID where BID=(#{bid})
+    </select>
+    <resultMap id="getCommmentsMap" type="BlogComments">
+        <id property="id" column="id"/>
+        <result column="uid" property="uid"/>
+        <result property="bid" column="bid"/>
+        <result column="time" property="time"/>
+        <result column="content" property="content"/>
+        <result column="floor" property="floor"/>
+        <result column="commentid" property="commentid"/>
+        <association property="user" javaType="User">
+            <id column="uid" property="uid"/>
+            <result column="nickname" property="nickname"/>
+        </association>
+    </resultMap>
     <!--结果集合用来存储查询ReportResource表级联查询Resource表-->
     <resultMap id="getResourceBy_Reportrid" type="ReportResource">
         <id column="id" property="id"/>
@@ -139,17 +189,17 @@
     </resultMap>
     <select id="getAllReportResource" resultMap="getResourceBy_Reportrid">
 		select  rr.ID,rr.RID,rr.REASON,r.NAME  from reportresource as rr
-		inner join resource as r on   rr.RID=r.RID ORDER BY rr.ID asc limit 0,6;
+		inner join resource as r on   rr.RID=r.RID ORDER BY rr.ID asc limit 0,3;
 	</select>
 
     <!--举报博客-->
     <insert id="reportBlog" parameterType="ReportBlog">
         insert into reportblog (uid,bid,reason) values (#{uid},#{bid},#{reason})
     </insert>
-
-
-
-
+    <!--获取举报博客-->
+    <select id="selectReportBlog" resultType="ReportBlog">
+        select * from reportblog where ID=#{id}
+    </select>
     <!--这是有关blog搜索的查询-->
     <!--定义的一个reaultmap结果集合来存储关联查询到的详细的博客，类型是自定义类型-->
     <resultMap id="searchResultMap"  type="Blog">
@@ -188,6 +238,14 @@
     <select id="blogClassify" resultType="Blog">
         select * from blog as b where b.CLASSIFY like '%' #{s} '%'
     </select>
+    <select id="reportBlogNum" resultType="Integer">
+        select count(*) from reportblog
+    </select>
+
+   <!-- <select id="sUser" resultMap="sUser">
+        select u.*,ub.* from usertoblog as ub
+        inner join user as u on u.uid=ub.uid
+    </select>-->
     <!--博客按title搜索-->
     <select id="blogTitle" resultType="Blog">
         select * from blog as b where b.TITLE like '%'#{s}'%'
@@ -214,7 +272,6 @@
             <result property="bid" column="bid"></result>
         </association>
     </resultMap>
-
     <select id="detailedBlogPush" resultMap="blogsPush">
         select s.*,b.*,u.NICKNAME from blogbrowsed as s
            inner join blog as b on b.bid=s.bid
@@ -242,6 +299,111 @@
     <select id="ajaxBlogPush" resultType="Blog" >
         select * from blog order by points desc limit #{page},5
     </select>
+    <!--点击博客链接使用-->
+    <resultMap id="getUidByBid" type="UserToBlog">
+        <id property="id" column="id"></id>
+        <result property="uid" column="uid"></result>
+        <result property="bid" column="bid"></result>
+        <result property="isdraft" column="isdraft"></result>
+        <result property="ispublic" column="ispublic"></result>
+        <result property="blogtype" column="blogtype"></result>
+        <association property="blog" column="bid" javaType="Blog">
+            <id property="bid" column="bid"></id>
+        </association>
+    </resultMap>
+    <select id="getBlogAndUser" resultMap="getUidByBid">
+        SELECT  uid,BLOGTYPE from usertoblog INNER JOIN blog b ON usertoblog.BID = b.BID
+        WHERE b.BID=#{bid}
+    </select>
+    <!--根据id查找博客-->
+    <select id="getbokeByid" resultType="Blog">
+        SELECT * from blog WHERE  BID = #{bid}
+    </select>
+    <!--查询用户有多少原创博客-->
+    <select id="getOriginalBlog" resultType="java.lang.Integer">
+        SELECT count(BID) from usertoblog WHERE BLOGTYPE=1 and uid=#{uid} GROUP BY UID
+    </select>
+    <!--查询用户的粉丝数以及关注数-->
+    <select id="getFans" resultType="java.lang.Integer">
+      SELECT count(SELFID) FROM  attention WHERE ATTENID=#{uid} GROUP BY ATTENID
+    </select>
+    <select id="getAttention" resultType="java.lang.Integer">
+      SELECT  count(ATTENID) FROM  attention WHERE  SELFID =#{uid} GROUP BY  SELFID
+    </select>
+    <!--将浏览记录路插入到-浏览记录表-->
+    <insert id="insertBlogBrowse" parameterType="BlogBrowsed">
+        INSERT INTO blogbrowsed(UID,BID,BROWSETIME) VALUES (#{param1},#{param2},#{param3})
+    </insert>
+    <!--点击博客结束-->
 
 
+     <!--点赞-->
+    <update id="addBlogPoints" parameterType="Blog">
+        UPDATE  blog set POINTS=POINTS+1 WHERE BID=#{bid}
+    </update>
+    <insert id="collectBlog" parameterType="CollectBlog">
+        INSERT INTO collectblog(UID,BID) VALUES (#{param1},#{param2})
+    </insert>
+    <insert id="addAttention" parameterType="Attention">
+        INSERT  into attention (SELFID, ATTENID) VALUES (#{param1},#{param2})
+    </insert>
+    <delete id="deleteAttention" parameterType="Attention">
+        DELETE FROM attention WHERE SELFID=#{0} AND  ATTENID=#{1}
+    </delete>
+    <select id="checkIsAttention" resultType="Attention">
+        SELECT * FROM attention WHERE  SELFID=#{0} AND  ATTENID=#{1}
+    </select>
+    <resultMap id="getTwoBlogBYUid" type="Blog">
+        <id property="bid" column="bid"></id>
+        <result property="title" column="title"></result>
+        <result property="content" column="content"></result>
+        <result property="classify" column="classify"></result>
+        <result property="link" column="link"></result>
+        <result property="points" column="points"></result>
+        <result property="time" column="time"></result>
+
+        <association property="userToBlog"  javaType="UserToBlog">
+            <id property="id" column="id"></id>
+            <result property="bid" column="bid"></result>
+            <result property="uid" column="uid"></result>
+        </association>
+
+    </resultMap>
+    <select id="selectTwoBlogByUser" resultMap="getTwoBlogBYUid">
+       SELECT * from blog INNER JOIN usertoblog u ON blog.BID = u.BID WHERE u.uid=#{uid} ORDER BY blog.BID DESC LIMIT 0,2
+    </select>
+
+    <!--结果集合通过usertoblog查user是否禁言-->
+    <resultMap id="getUserIsSpeakMap" type="UserToBlog">
+        <id column="id" property="id"/>
+        <result column="uid" property="uid"/>
+
+        <association property="user" column="uid" javaType="User">
+            <id column="uid" property="uid"/>
+            <result column="isspeak" property="isspeak"/>
+        </association>
+    </resultMap>
+    <select id="getUserIsSpeak" resultMap="getUserIsSpeakMap">
+		select  ub.ID,ub.UID,u.ISSPEAK
+          from usertoblog ub
+          LEFT OUTER JOIN user u ON u.UID = ub.UID
+          where ub.BID=#{bid}
+	</select>
+
+    <update id="shutUptoUser" parameterType="Blog">
+        update user set ISSPEAK=1,TIMEOFBAN=#{timeofban} where UID=#{uid}
+    </update>
+
+    <!--我收藏的博客-->
+       <select id="myCollectBlog" resultType="Blog">
+        SELECT title, time FROM blog WHERE  BID IN ( SELECT BID FROM  collectblog WHERE UID=#{uid})
+    </select>
+    <!--我发布的博客-->
+    <select id="myBlog" resultType="Blog">
+      SELECT title, time FROM blog WHERE  BID IN ( SELECT BID FROM  usertoblog WHERE UID=#{uid})
+    </select>
+    <!--根据bid查uid-->
+    <select id="selectUidByBid" parameterType="Integer" resultType="UserToBlog">
+        select UID from usertoblog where BID=#{bid}
+    </select>
 </mapper>

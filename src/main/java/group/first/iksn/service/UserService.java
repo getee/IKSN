@@ -15,11 +15,15 @@ public interface UserService {
     //查询该用户所有的通知
     List receiveNotice(int uid,int nowPage);
     //查询未读通知数量
+    int listNotReadMessageNum(int uid);
+    //查询未读私信数量
     int listNotReadNoticeNum(int uid);
+    //查询所有私信数量
+    int listAllMessageNum(int uid);
     //查询所有通知数量
     int listAllNoticeNum(int uid);
-    //查询该用户所有的私信
-    List receiveMessage(int uid);
+    //查询该用户第一页的私信
+    List receiveMessage(int uid,int nowPage);
     //查询发送私信方的用户信息
     List listSendMessageUser(int uid);
 ;    //检查邮箱是否重复
@@ -32,9 +36,13 @@ public interface UserService {
     public boolean isUserExist(int uid);
     //修改用户密码
     public void updatePassword(int uid,String newpassword);
+
+    //修改用户邮箱
+    public void updateEmail(int uid,String newemail );
+
     //获取用户id
-    public String getId(int uid);
-     //用户等级
+    public User getId(int uid);
+    //用户等级
     int userGrade(int uid);
 
     //更改通知是否已读的状态
@@ -54,6 +62,8 @@ public interface UserService {
     List FindAllFriendsOfThisUser(int selfid);
     //列出该用户的所有关注的人(不分页)
     List<User> listAllFriends(int uid,int nowPage);
+    //列出该用户的所有粉丝
+    List listAllFans(int uid);
     int friendNum(int uid);
     //根据登录方法
     User login(String emailorphone,String password);
@@ -65,4 +75,16 @@ public interface UserService {
     List<Scoring> costScoring(int uid);
     //用户积分充值记录
     List<Scoring> rechargeScoring(int uid);
+
+
+    //我的关注列表
+    List<User> myAttention(int uid);
+    //我的粉丝
+    List<User> myFans(int uid);
+    //禁言的用户
+    List<User> getUserBySpeak(int page);
+    //解除禁言
+    boolean isSpeaktoTrue(int uid);
+    //禁言的数量
+    int getIsspeakNum();
 }

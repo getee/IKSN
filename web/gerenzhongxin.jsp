@@ -81,9 +81,6 @@
 					  e.preventDefault()
 					  $(this).tab('show')
 					});
-
-		
-			
 		});  
 	 
 	</script>
@@ -101,7 +98,7 @@
 	  	<td style="cursor: pointer"><a class="text-muted" href="/user/listAllFriends/${sessionScope.loginresult.uid}/1"><h4>我的消息</h4></a></td>
 	  	<td style="cursor: pointer"><a class="text-muted" href="jifenzhongxin.jsp"><h4>积分</h4></a></td>
 	  	<td style="cursor: pointer"><a class="text-muted" href="/blog/mGetAllReportBlog"><h4>我的博客</h4></a></td>
-	  	<td style="cursor: pointer"><a class="text-muted" href="#"><h4>我的下载</h4></a></td>
+	  	<td style="cursor: pointer"><a class="text-muted" href="wodexiazai.jsp"><h4>我的下载</h4></a></td>
 		  <c:if test="${sessionScope.loginresult.isadmin eq '1'}">
 			  <td style="cursor: pointer"><a href="/blog/mGetAllReportBlog"><h4>举报管理</h4></a></td>
 		  </c:if>
@@ -112,19 +109,21 @@
 <div class="row well" style="margin-top: 2%; margin-left: 15%;margin-right: 15%">
 <!--用户头像-->
 	<div class="col-md-2 " >
-		<img src="img/adminIcon.jpg" class="img-responsive img-rounded" alt="Responsive image">
+		<img src=${sessionScope.loginresult.picturepath} class="img-responsive img-rounded" alt="Responsive image">
 	</div>
 <!--	用户信息-->
 	<div class="col-md-10">
 		<div class="row">
 			<div class="col-md-6">
-			<h3>NickName</h3>
-				<h3 ><span class="label label-info ">等级<span class="badge">${user.grade}</span></span></h3>
+			<h3>${sessionScope.loginresult.nickname}</h3>
+				<h3 ><span class="label label-info ">等级<span class="badge" name="grade">
+				${sessionScope.loginresult.grade}
+				</span></span></h3>
 			</div>
 			<div class="col-md-6">
 										<!-- Button trigger modal -->
 				<button type="button" class="btn btn-info btn-sm glyphicon glyphicon-edit" data-toggle="modal" data-target="#myModal" style="margin-left: 60%">
-					修改个人资料iksn
+					修改个人资料
 				</button>
 				<button  type="button"  color="#FFFFFF" class="btn btn-info btn-sm glyphicon glyphicon-edit" data-toggle="modal" style="margin-left: 60%; margin-top:2%">
 					<a href="zhanghao.jsp" ><font color="#FFFFFF">个人账号设置</font></a>
@@ -142,8 +141,9 @@
 							<!--修改表单-->
 								  <form action="/user/updateuser" method="post">
 									  <div class="form-group">
+										  <input type="hidden" name="uid" value="${sessionScope.loginresult.uid}"/>
 										  <label for="exampleInputEmail1">昵称</label>
-										  <input type="text" class="form-control" name="nickname" id="" placeholder="NickName">
+										  <input type="text" class="form-control" name="nickname" id="" placeholder="NickName" value="${sessionScope.loginresult.nickname}">
 									  </div>
 
 									  <div class="form-group">
@@ -158,9 +158,9 @@
 									  <div class="form-group">
 										  <label for="exampleInputEmail1">邮箱</label>
 										  <div class="input-group">
-											  <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email1"  disabled>
+											  <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email1"  disabled value="${sessionScope.loginresult.email}">
 											  <span class="input-group-btn">
-                                          <button class="btn btn-default" type="button">修改</button>
+                                          <button class="btn btn-default" type="button"><a href="zhanghao.jsp"> 修改</a></button>
                                         </span>
 										  </div>
 									  </div>
@@ -168,16 +168,16 @@
 									  <div class="form-group">
 										  <illegalresourcelabel for="exampleInputPassword1">手机号码</illegalresourcelabel>
 										  <div class="input-group">
-											  <input type="number" class="form-control" id="exampleInputPassword1" placeholder="Phone"  disabled>
+											  <input type="number" class="form-control" id="exampleInputPassword1" placeholder="Phone"  disabled value="${sessionScope.loginresult.phone}">
 											  <span class="input-group-btn">
-                                        <button class="btn btn-default" type="button">修改</button>
+                                        <button class="btn btn-default" type="button"><a href="zhanghao.jsp"> 修改</a></button>
                                       </span>
 										  </div>
 									  </div>
 
 									  <div class="form-group">
 										  <label for="exampleInputEmail1">自我简介</label>
-										  <textarea placeholder="自我简介" name="introduce" style=" width:100%;height: 100px;"></textarea>
+										  <textarea placeholder="自我简介" name="introduce" style=" width:100%;height: 100px;" value="${sessionScope.loginresult.introduce}"></textarea>
 									  </div>
 									  <div class="modal-footer">
 										  <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -194,136 +194,46 @@
 		</div>
 	</div>
 </div>
+
+
 <!--面板-->
 <div class="row well" style="margin-left: 15%;margin-right: 15%">
 	<div style="margin-top: -1%">
 
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
-    <li id="myTabs1" role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">我的博客</a></li>
-    <li id="myTabs2" role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">我的收藏</a></li>
-    <li id="myTabs3" role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">我的关注</a></li>
-    <li id="myTabs4" role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">我的粉丝</a></li>
+    <li id="myTabs1" role="presentation" class="active"><a id="blog" href="#home" aria-controls="home" role="tab" data-toggle="tab">我的博客</a></li>
+    <li id="myTabs2" role="presentation"><a id="collect" href="#profile" aria-controls="profile" role="tab" data-toggle="tab">我的收藏</a></li>
+    <li id="myTabs3" role="presentation"><a id="attention" href="#messages" aria-controls="messages" role="tab" data-toggle="tab">我的关注</a></li>
+    <li id="myTabs4" role="presentation"><a id="fans" href="#settings" aria-controls="settings" role="tab" data-toggle="tab">我的粉丝</a></li>
+
     <li id="myTabs5" role="presentation"><a href="#jubao" aria-controls="jubao" role="tab" data-toggle="tab">举报管理</a></li>
   </ul>
 
 
   <!-- Tab panes -->
   <div class="tab-content">
+
+	   <!--    	文章内容-->
     <div role="tabpanel" class="tab-pane active" id="home">
-    	<div class="row " style="margin: auto">
-    		<h4 class="text-primary" style="margin-left: 93%;"><a class="text-muted" href="#">文章管理</a></h4>
-    	</div>
-<!--    	文章内容-->
-   		<div class="row" style="margin:auto;border-bottom-style:solid;border-bottom-width:2px;border-bottom-color:#E9E9E9"><h4><a class="text-muted" href="#">博客内容</a><small style="margin-left: 80% ">2017-8-2</small><small style="margin-left:3%;cursor: pointer" class="glyphicon glyphicon-trash"></small></h4>
-   		</div>
-   		<div class="row" style="margin:auto;border-bottom-style:solid;border-bottom-width:2px;border-bottom-color:#E9E9E9"><h4><a class="text-muted" href="#">博客内容</a><small style="margin-left: 80% ">2017-8-2</small><small style="margin-left:3%;cursor: pointer" class="glyphicon glyphicon-trash"></small></h4>
-   		</div>
-   		<div class="row" style="margin:auto;border-bottom-style:solid;border-bottom-width:2px;border-bottom-color:#E9E9E9"><h4><a class="text-muted" href="#">博客内容</a><small style="margin-left: 80% ">2017-8-2</small><small style="margin-left:3%;cursor: pointer" class="glyphicon glyphicon-trash"></small></h4>
-   		</div>
+
     </div>
-    
+
+	  <!--    	收藏内容-->
     <div role="tabpanel" class="tab-pane" id="profile">
-    	<div class="row " style="margin: auto">
-    		<h4 class="text-primary" style="margin-left: 93%;"><a class="text-muted" href="#">文章管理</a></h4>
-    	</div>
-<!--    	收藏内容-->
-   		<div class="row" style="margin:auto;border-bottom-style:solid;border-bottom-width:2px;border-bottom-color:#E9E9E9"><h4><a class="text-muted" href="#">收藏内容</a><small style="margin-left: 80% ">2017-8-2</small><small style="margin-left:3%;cursor: pointer" class="glyphicon glyphicon-trash"></small></h4>
-   		</div>
-   		<div class="row" style="margin:auto;border-bottom-style:solid;border-bottom-width:2px;border-bottom-color:#E9E9E9"><h4><a class="text-muted" href="#">收藏内容</a><small style="margin-left: 80% ">2017-8-2</small><small style="margin-left:3%;cursor: pointer" class="glyphicon glyphicon-trash"></small></h4>
-   		</div>
-   		<div class="row" style="margin:auto;border-bottom-style:solid;border-bottom-width:2px;border-bottom-color:#E9E9E9"><h4><a class="text-muted" href="#">收藏内容</a><small style="margin-left: 80% ">2017-8-2</small><small style="margin-left:3%;cursor: pointer" class="glyphicon glyphicon-trash"></small></h4>
-   		</div>
-   		
-   		
-   		
+
     </div>
+
+
 <!--    我的关注列表-->
     <div role="tabpanel" class="tab-pane" id="messages">
-    	<div class="row" style="margin-top: 1%;margin-left: 1%;margin-right: 1%">
-    		<div class="col-md-3 well">
-    			<div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
-    			<div class="col-md-8 "><h4>Friend Name</h4></div>
-    		</div>
-       		<div class="col-md-3 well">
-    			<div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
-    			<div class="col-md-8 "><h4>Friend Name</h4></div>
-    		</div>
-			<div class="col-md-3 well">
-    			<div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
-    			<div class="col-md-8 "><h4>Friend Name</h4></div>
-    		</div>
-			<div class="col-md-3 well">
-    			<div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
-    			<div class="col-md-8 "><h4>Friend Name</h4></div>
-    		</div>
-			
-    		
-    	</div>
-    	
-    	<div class="row" style="margin-top: 1%;margin-left: 1%;margin-right: 1%">
-    		<div class="col-md-3 well">
-    			<div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
-    			<div class="col-md-8 "><h4>Friend Name</h4></div>
-    		</div>
-       		<div class="col-md-3 well">
-    			<div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
-    			<div class="col-md-8 "><h4>Friend Name</h4></div>
-    		</div>
-			<div class="col-md-3 well">
-    			<div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
-    			<div class="col-md-8 "><h4>Friend Name</h4></div>
-    		</div>
-			<div class="col-md-3 well">
-    			<div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
-    			<div class="col-md-8 "><h4>Friend Name</h4></div>
-    		</div>
-			
-    		
-    	</div>
+		<div id="area" class="row" style="margin-top: 1%;margin-left: 1%;margin-right: 1%">
+      </div>
     </div>
 <!--    粉丝列表-->
     <div role="tabpanel" class="tab-pane" id="settings">
-    	    	<div class="row" style="margin-top: 1%;margin-left: 1%;margin-right: 1%">
-    		<div class="col-md-3 well">
-    			<div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
-    			<div class="col-md-8 "><h4>Fans Name</h4></div>
-    		</div>
-       		<div class="col-md-3 well">
-    			<div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
-    			<div class="col-md-8 "><h4>Fans Name</h4></div>
-    		</div>
-			<div class="col-md-3 well">
-    			<div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
-    			<div class="col-md-8 "><h4>Fans Name</h4></div>
-    		</div>
-			<div class="col-md-3 well">
-    			<div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
-    			<div class="col-md-8 "><h4>Fans Name</h4></div>
-    		</div>
-			
-    		
-    	</div>
-    	
-    	<div class="row" style="margin-top: 1%;margin-left: 1%;margin-right: 1%">
-    		<div class="col-md-3 well">
-    			<div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
-    			<div class="col-md-8 "><h4>Fans Name</h4></div>
-    		</div>
-       		<div class="col-md-3 well">
-    			<div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
-    			<div class="col-md-8 "><h4>Fans Name</h4></div>
-    		</div>
-			<div class="col-md-3 well">
-    			<div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
-    			<div class="col-md-8 "><h4>Fans Name</h4></div>
-    		</div>
-			<div class="col-md-3 well">
-    			<div class="col-md-4 "><img class="img-responsive img-rounded" src="img/adminIcon.jpg"></div>
-    			<div class="col-md-8 "><h4>Fans Name</h4></div>
-    		</div>
-			
-    		
+    	<div id="fansArea" class="row" style="margin-top: 1%;margin-left: 1%;margin-right: 1%">
+
     	</div>
     </div>
 
@@ -385,4 +295,82 @@
 <!--底部信息-结束-->
 	</div>
   </body>
+  <!--我的博客-->
+  <script>
+      $(document).ready(function () {
+          var a=1;
+          $("#blog").ready(function () {
+              $.getJSON("/blog/myBlog?uid=${sessionScope.loginresult.uid}",function (data) {
+                  var html="";
+                  for(var i=0;i<data.length;i++){
+                      html+='<div class="col-md-12 well"><div class="col-md-8 "><h4>'+data[i].title+'</h4></div><div class="col-md-4"><h4>' + data[i].time + '</h4></div></div>';
+                  }
+                  if (a==1){
+                      $("#home").append(html);a++;
+                  }
+              })
+          })
+      })
+  </script>
+
+
+  <!--收藏内容-->
+  <script>
+      $(document).ready(function () {
+         var a=1;
+          $("#collect").click(function () {
+              $.getJSON("/blog/myCollectBlog?uid=${sessionScope.loginresult.uid}",function (data) {
+                  var html="";
+                  for(var i=0;i<data.length;i++){
+                      html+='<div class="col-md-12 well"><div class="col-md-8 "><h4>'+data[i].title+'</h4></div><div class="col-md-4"><h4>' + data[i].time + '</h4></div></div>';
+                  }
+                  if (a==1){
+                      $("#profile").append(html);a++;
+                  }
+              })
+          })
+      })
+  </script>
+
+
+
+
+
+
+<script>
+    $(document).ready(function (){
+        var a=1;
+        //我的关注
+        $("#attention").click(function (){
+            $.getJSON("/user/myAttention?uid=${sessionScope.loginresult.uid}",function (data) {
+                var html="";
+                for(var i=0;i<data.length;i++){
+                    html+='<div class="col-md-12 well"><div style="height: 50px;" class="col-md-4 "><img style="height: 50px;" class="img-responsive img-rounded" src="'+data[i].picturepath+'"></div><div class="col-md-8 "><h4>' + data[i].nickname + '</h4></div></div>';
+                }
+                if(a==1){
+                    $("#area").append(html);a++;
+				}
+
+            });
+
+        });
+
+    });
+    $(document).ready(function () {
+		var a=1;
+        //我的粉丝
+        $("#fans").click(function (){
+            $.getJSON("/user/myFans?uid=${sessionScope.loginresult.uid}",function (data) {
+                var html="";
+                for(var i=0;i<data.length;i++){
+                    html+='<div class="col-md-12 well"><div style="height: 50px;" class="col-md-4 "><img style="height: 50px;" class="img-responsive img-rounded" src="'+data[i].picturepath+'"></div><div class="col-md-8 "><h4>' + data[i].nickname + '</h4></div></div>';
+                }
+                if(a==1){
+                    $("#fansArea").append(html);a++;
+                }
+            });
+
+        });
+    })
+</script>
 </html>

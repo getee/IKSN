@@ -336,9 +336,10 @@
                                    <c:forEach items="${resource}" var="r">
                                     <div style="height:85px; width:90%; margin-left:20px;">
                                         <div style="height:48px; width:5%; float:left; margin-top:15px ">
-                                            <a href="xq.jsp"> <img src="img/2.svg"></a>
+                                            <a href="/resource/loadResource?rid=${r.rid}"> <img src="img/2.svg"></a>
                                         </div>
                                         <div style="height:20px; width:66%; float:left; margin-top:15px; margin-left:40px;  font-size:20px ; color:#000000;">
+                                            <a href="/resource/loadResource?rid=${r.rid}"> ${r.name}</a>
                                             <a href="xq.jsp?rid=${r.rid}"> ${r.name}</a>
                                         </div>
                                         <div style="height:30px; width:82%; float:left;margin-top:12px; margin-left:40px;font-size:14px;">

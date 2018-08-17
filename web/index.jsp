@@ -29,7 +29,25 @@
 
 	}
 </style>
+<script>
+	$(document).ready(function(){
+		$(document).scroll(function () {
+		   // alert($('#leftDaohang').offset().top )
+            if($(document).scrollTop()>=$("#leftDaohang").height()){
 
+                $("#leftDaohang").css({
+					"position":"fixed",
+					"top":"0px",
+					"left":"2%",
+					"width":"14%"
+				})
+            }else{
+                $("#leftDaohang").removeAttr("style")
+			}
+        })
+
+	})
+</script>
 
 </head>
 
@@ -47,14 +65,14 @@
 
 </div>
 		  <!--		  导航结束-->
-  <div class="row" style="background-color:#EBEBEB">
+  <div class="row" style="background-color:#EBEBEB;margin-right: 0px">
 <!--	  左边导航栏-->
 	  <div class="col-xs-12 col-md-2">
 	  	
 		<div class="container-fluid">
 		  <div class="row">
 			  <div class="col-md-1"></div>
-			  <div class="col-md-10">
+			  <div id="leftDaohang" class="col-md-10">
 			  	<ul class="nav nav-pills nav-stacked">
 				  <li class="active"><a href="#">推荐</a></li>
 				  <li><a href="#">最新文章</a></li>
@@ -137,7 +155,7 @@
 					<%--<c:forEach var="t" items="${BlogsPush}" >
 						<div class="span12" style="border-radius: 10px;background-color:#FFFFFF;margin-top: 30px">
 							<h2>
-								<a href="userArticle.jsp?bid=${t.bid}">${t.title}</a>
+								<a href="/blog/getBlogAndUser?blogid=${t.bid}">${t.title}</a>
 							</h2>
 							<p>
 								${fn:substring(t.content,0,150)}.........
@@ -445,7 +463,7 @@
 				  </script>
 			  	<!--			  登陆结束-->
 <!--			  	今日推荐开始-->
-				  <div class="span12" style="margin-top: 30px; background-color:#FFFFFF">
+				  <div id="jinrituijian" class="span12" style="margin-top: 30px; background-color:#FFFFFF">
 				  	<span>今日推荐</span>
 				  	
 				  	<div class="thumbnail">
@@ -540,33 +558,34 @@
 <!--返回顶部按钮，向下翻150px显示-->
 <a href="javascript:void(0)" id="toTop" style="border-radius: 20px"> </a>
 
-<script> $.get("/blog/ajaxPush?page=1",function(data){
+<script>
 
-    for(var n=0;n<5;n++)
-    {
-        var newblog="<div class=\"span12\" style=\"border-radius: 10px;background-color:#FFFFFF;margin-top: 30px\">\n" +
-            "\t\t\t\t\t\t\t<h2>\n" +
-            "\t\t\t\t\t\t\t\t<a href=\"userArticle.jsp?bid="+data[n].bid+"\">"+data[n].title+"</a>\n" +
-            "\t\t\t\t\t\t\t</h2>\n" +
-            "\t\t\t\t\t\t\t<p>\n" +
-            "\t\t\t\t\t\t\t\t"+data[n].content+".........\n" +
-            "\t\t\t\t\t\t\t</p>\n" +
-            "\t\t\t\t\t\t\t<h5 style=\"color:#928F8F;float: right\">\n" +
-            "                                类型: "+data[n].classify+" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n" +
-            "                                时间: "+data[n].time+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n" +
-            "                                阅读数: "+data[n].bid+"</h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n" +
-            "\t\t\t\t\t\t\t<p>\n" +
-            "\t\t\t\t\t\t\t\t<a class=\"btn\" href=\"userArticle.jsp?bid="+data[n].bid+"\">查看更多 »</a>\n" +
-            "\t\t\t\t\t\t\t</p>\n" +
-            "\t\t\t\t\t\t</div>";
 
-        $("#allBlogs").append(newblog);
-    }
-
-});
     nowPage=1;
     $(document).ready(function(){
+        $.get("/blog/ajaxPush?page=1",function(data){
 
+            for(var n=0;n<5;n++)
+            {
+                var newblog="<div class=\"span12\" style=\"border-radius: 10px;background-color:#FFFFFF;margin-top: 30px\">\n" +
+                    "\t\t\t\t\t\t\t<h2>\n" +
+                    "\t\t\t\t\t\t\t\t<a href=\"userArticle.jsp?bid="+data[n].bid+"\">"+data[n].title+"</a>\n" +
+                    "\t\t\t\t\t\t\t</h2>\n" +
+                    "\t\t\t\t\t\t\t<p>\n" +
+                    "\t\t\t\t\t\t\t\t"+data[n].content+".........\n" +
+                    "\t\t\t\t\t\t\t</p>\n" +
+                    "\t\t\t\t\t\t\t<h5 style=\"color:#928F8F;float: right\">\n" +
+                    "                                类型: "+data[n].classify+" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n" +
+                    "                                时间: "+data[n].time+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n" +
+                    "                                阅读数: "+data[n].bid+"</h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n" +
+                    "\t\t\t\t\t\t\t<p>\n" +
+                    "\t\t\t\t\t\t\t\t<a class=\"btn\" href=\"userArticle.jsp?bid="+data[n].bid+"\">查看更多 »</a>\n" +
+                    "\t\t\t\t\t\t\t</p>\n" +
+                    "\t\t\t\t\t\t</div>";
+
+                $("#allBlogs").append(newblog);
+            }
+        });
         $(window).scroll(function(){
             var scrollTop = $(this).scrollTop();
             var scrollHeight = $(document).height();

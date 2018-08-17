@@ -31,6 +31,8 @@
 <script src="bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
 <script>
     $(document).ready(function(){
+        //启用所有的工具提示插件
+        $(function () { $("[data-toggle='tooltip']").tooltip(); });
         //所有li元素的点击事件
         $("li").click(function(){
             if($(this).click){
@@ -116,6 +118,23 @@
         });
 
     }
+    //分页
+    function shangyiye(nowPage){
+        if(nowPage-1>0){
+           // $.get("",function(data){});
+
+            window.location="/user/receiveMessage/${sessionScope.loginresult.uid}/"+(nowPage-1);
+        }
+
+    }
+
+    function xiayiye(nowPage,AllNoticeNum){
+        var maxPage;
+        AllNoticeNum%5==0?AllNoticeNum=(friendNums/5):maxPage=(AllNoticeNum/5+1);
+        if((nowPage*1+1)<=maxPage){
+            window.location="/user/receiveMessage/${sessionScope.loginresult.uid}/"+(nowPage*1+1);
+        }
+    }
 </script>
 <!--	特效-->
 
@@ -143,7 +162,7 @@
                 <ul class="nav nav-tabs">
                     <li role="presentation"><a href="/user/receiveNotice/${sessionScope.loginresult.uid}/1">通知</a></li>
                     <li role="presentation"><a href="/user/listAllFriends/${sessionScope.loginresult.uid}/1">私信</a></li>
-                    <li role="presentation"><a href="/user/receiveMessage/${sessionScope.loginresult.uid}">@我</a></li>
+                    <li role="presentation"><a href="/user/receiveMessage/${sessionScope.loginresult.uid}/1">@我</a></li>
                 </ul>
             </nav>
         </div>
@@ -159,16 +178,16 @@
         </div>
         <!--	通知-->
         <div class="row well" style="margin: auto;height: 700px;">
-            <div class="col-md-8">
+
                 <c:forEach var="message" items="${allMessages}">
                     <c:forEach var="user" items="${allSendMessageUsers}">
                         <c:if test="${user.uid eq message.fromid}">
                             <c:choose>
                                 <c:when test="${message.isread==0}">
-                                    <div class="row well noticeContext" style="background-color: black"><a href=""><h4>${user.nickname}(${user.email}):${message.content}</h4></a></div>
+                                    <div class="row well noticeContext" style="background-color: black"><a class="tooltip_a" href="/user/listAllFriends/${sessionScope.loginresult.uid}/1?sendback=${user.uid}" data-toggle="tooltip" title="点击回Ta"><h4>${user.nickname}(${user.email}):${message.content}</h4></a><small>${message.time}</small></div>
                                 </c:when>
                                 <c:otherwise>
-                                    <div class="row well noticeContext"><a href=""><h4>${user.nickname}(${user.email}):${message.content}</h4></a></div>
+                                    <div class="row well noticeContext"><a class="tooltip_a" href="/user/listAllFriends/${sessionScope.loginresult.uid}/1?sendback=${user.uid}" data-toggle="tooltip" title="点击回Ta"><h4>${user.nickname}(${user.email}):${message.content}</h4></a><small>${message.time}</small></div>
                                 </c:otherwise>
                             </c:choose>
                         </c:if>
@@ -176,8 +195,8 @@
 
                 </c:forEach>
 
-            </div>
-            <div class="col-md-4">
+
+            <%--<div class="col-md-4">
                 <c:forEach var="message" items="${allMessages}">
                     <c:forEach var="user" items="${allSendMessageUsers}">
                         <c:if test="${user.uid eq message.fromid}">
@@ -194,7 +213,19 @@
 
                 </c:forEach>
 
-            </div>
+            </div>--%>
+        </div>
+        <%--通知结束--%>
+        <!--	分页-->
+        <div class="row ">
+
+            <nav aria-label="...">
+                <ul class="pager">
+                    <li><a href="javascript:shangyiye(${nowMessagePage})">上一页</a></li>
+                    <li><a href="javascript:xiayiye('${nowMessagePage}','${allMessageNum}')">下一页</a></li>
+                </ul>
+            </nav>
+
         </div>
         <%--通知结束--%>
 

@@ -1,17 +1,16 @@
 package group.first.iksn.control;
 
-import com.sun.org.glassfish.gmbal.ParameterNames;
+import group.first.iksn.model.bean.Blog;
 import group.first.iksn.model.bean.Message;
 import com.sun.deploy.net.HttpResponse;
 import group.first.iksn.model.bean.Notice;
 import group.first.iksn.model.bean.Scoring;
 import group.first.iksn.model.bean.User;
 import group.first.iksn.service.UserService;
-import group.first.iksn.util.EncodingTool;
-import group.first.iksn.util.HttpUtil;
-import group.first.iksn.util.IndustrySMS;
+import group.first.iksn.util.*;
 import org.apache.ibatis.jdbc.Null;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
@@ -24,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.jws.soap.SOAPBinding;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,6 +36,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 
 import java.io.UnsupportedEncodingException;
+import java.rmi.server.UID;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -69,9 +70,18 @@ public class UserControl {
         Cookie passwordCookie=new Cookie("passwordCookie",password);
         System.out.println(iscollect);
         if (user!=null){
-            List<User> allFriendOfThisUser=userService.FindAllFriendsOfThisUser(user.getUid());
             session.setAttribute("loginresult",user);
+            List<User> allFriendOfThisUser=userService.FindAllFriendsOfThisUser(user.getUid());
+            List<User> allFansOfThisUser=userService.listAllFans(user.getUid());
+
+            //遍历筛选出我没有关注的粉丝
+//          使用Collection的removeAll方法删除两个集合中相同元素，泛型中的User必须重写HashCode
+            Collection notAttenedFans=new ArrayList<User>(allFansOfThisUser);
+            notAttenedFans.removeAll(allFriendOfThisUser);
+            System.out.println("未关注的粉丝"+notAttenedFans);
             session.setAttribute("allFriendOfThisUser",allFriendOfThisUser);
+            session.setAttribute("notAttenedFans",notAttenedFans);
+
             model.addAttribute("logmes",true);
             System.out.println(model);
             if(iscollect!=null){
@@ -96,6 +106,18 @@ public class UserControl {
         session.removeAttribute("loginresult");
         return "index";
     }
+    //登录后就开始查询该用户的好友
+    @RequestMapping("/FindAllFriendsOfThisUser/{uid}")
+    @ResponseBody
+    public void FindAllFriendsOfThisUser(@PathVariable("uid") int uid,HttpSession session){
+        List<User> allFriendOfThisUser=userService.FindAllFriendsOfThisUser(uid);
+        List<User> allFansOfThisUser=userService.listAllFans(uid);
+        Collection notAttenedFans=new ArrayList<User>(allFansOfThisUser);
+        notAttenedFans.removeAll(allFriendOfThisUser);
+        System.out.println("未关注的粉丝"+notAttenedFans);
+        session.setAttribute("allFriendOfThisUser",allFriendOfThisUser);
+        session.setAttribute("notAttenedFans",notAttenedFans);
+    }
 
     /**
      * 查询收到的通知消息
@@ -110,7 +132,7 @@ public class UserControl {
         model.addAttribute("nowNoticePage",nowPage);
         model.addAttribute("AllNoticeNum",AllNoticeNum);
         model.addAttribute("notReadNum",notReadNoticeNum);//返回未读的消息数量
-        model.addAttribute("allNotices",allNotices);//返回所有的消息
+        model.addAttribute("allNotices",allNotices);//返回第一页所有的消息
         return "tongzhi";
     }
     /**
@@ -139,14 +161,9 @@ public class UserControl {
     public String changeMessageIsRead(@PathVariable("isRead") int isRead,@PathVariable("uid") int uid){
         boolean result=userService.changeMessageIsRead(isRead,uid);//isRead 为前台传入的参数0或者1，表示已读或者未读
         if(result){
-            int index=0;//定义一个计数器来记录未读的通知数量
-            List<Message> allMessage=userService.receiveMessage(uid);//遍历出所有的通知
-            for (Message message:allMessage) {
-                if(message.getIsread()==0){
-                    index+=1;
-                }
-            }
-            return String.valueOf(index);//ajax返回未读数量，进行实时更新
+            int notReadMessageNum=userService.listNotReadMessageNum(uid);//遍历出所有的通知
+
+            return String.valueOf(notReadMessageNum);//ajax返回未读数量，进行实时更新
         }else{
             return null;
         }
@@ -179,14 +196,18 @@ public class UserControl {
      * @return
      */
     @RequestMapping("/sendMessage/{fromid}")
-    public String  sendMessage(HttpServletRequest request,@PathVariable("fromid") int fromid,Model model){
+    @ResponseBody
+    public String   sendMessage(HttpServletRequest request,@PathVariable("fromid") int fromid,Model model){
 
+
+        System.out.println("toid:"+request.getParameter("toid"));
+        System.out.println("content:"+EncodingTool.encodeStr(request.getParameter("content")));
         String[] everyToId=request.getParameter("toid").split(",");
         for (int i=0;i<everyToId.length;i++){
             Message message=new Message();
             message.setFromid(fromid);
             message.setToid(Integer.parseInt(everyToId[i]));
-            message.setContent(request.getParameter("content"));
+            message.setContent(EncodingTool.encodeStr(request.getParameter("content")));
             Date d = new Date();
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             message.setTime(df.format(d));
@@ -195,15 +216,16 @@ public class UserControl {
           // message.setTime(new Date().toLocaleString());
             boolean result=userService.sendMessage(message);
             if(result){
-                model.addAttribute("sendResult","sendSuccess");
+               // model.addAttribute("sendResult","sendSuccess");
 
             }else{
-                model.addAttribute("sendResult","sendError");
-
+                //model.addAttribute("sendResult","sendError");
+                return "error";
             }
         }
 
-        return "wodexiaoxi";
+        return "success";
+
     }
 
     /**
@@ -259,19 +281,17 @@ public class UserControl {
      * @author BruceLee
      * @return
      */
-    @RequestMapping("/receiveMessage/{uid}")
-    public String receiveMessage(@PathVariable("uid") int uid,Model model){
-        int index=0;//定义一个计数器来记录未读的通知数量
+    @RequestMapping("/receiveMessage/{uid}/{nowPage}")
+    public String receiveMessage(@PathVariable("uid") int uid,@PathVariable("nowPage") int nowPage,Model model){
         List<User> allSendMessageUsers=userService.listSendMessageUser(uid);
-        List<Message> allMessages=userService.receiveMessage(uid);//遍历该用户所有的私信
-        for (Message message:allMessages) {
-            if(message.getIsread()==0){
-                index+=1;
-            }
-        }
-        model.addAttribute("notReadMessageNum",index);//返回未读的消息数量
-        model.addAttribute("allMessages",allMessages);//返回所有的消息
+        List<Message> allMessages=userService.receiveMessage(uid,nowPage);//遍历该用户第一页的私信
+        int allMessageNum=userService.listAllMessageNum(uid);
+        int notReadMessageNum=userService.listNotReadMessageNum(uid);
+        model.addAttribute("nowMessagePage",nowPage);
+        model.addAttribute("notReadMessageNum",notReadMessageNum);//返回未读的消息数量
+        model.addAttribute("allMessages",allMessages);//返回所有第一页的私信
         model.addAttribute("allSendMessageUsers",allSendMessageUsers);
+        model.addAttribute("allMessageNum",allMessageNum);
         return "shouxiaoxi";
     }
 
@@ -283,8 +303,22 @@ public class UserControl {
     @RequestMapping("/timingReceivingNotice/{uid}")
     @ResponseBody
     public String timingReceivingNotice(@PathVariable("uid") int uid){
-        int nowNoticeNum=userService.listAllNoticeNum(uid);
-        return String.valueOf(nowNoticeNum);
+        //int nowNoticeNum=userService.listAllNoticeNum(uid);
+        int notReadNoticeNum=userService.listNotReadNoticeNum(uid);
+        return String.valueOf(notReadNoticeNum);
+    }
+
+    /**
+     * 定时刷新新的私信及时提示用户
+     * @author BruceLee
+     * @return
+     */
+    @RequestMapping("/timingReceivingMessage/{uid}")
+    @ResponseBody
+    public String timingReceivingMessage(@PathVariable("uid") int uid){
+        //int nowNoticeNum=userService.listAllNoticeNum(uid);
+        int notReadMessageNum=userService.listNotReadMessageNum(uid);
+        return String.valueOf(notReadMessageNum);
     }
 
     /**
@@ -364,7 +398,6 @@ public class UserControl {
     }
 
 
-
     //修改用户密码
     @RequestMapping(value = "/updatePassword")
     public String updatePassword(@RequestParam("uid") int uid,
@@ -374,25 +407,46 @@ public class UserControl {
         System.out.println(uid);
         System.out.println(password);
         System.out.println(newpassword);
-        if (!userService.isUserExist(uid)) {
-            model.addAttribute("msg", "用户名不存在！");
-        } else {
-            if (password.equals(userService.getId(uid))) {
-                if (!newpassword.equals(equelspassword)) {
-                    model.addAttribute("msg", "密码不一致");
-                } else {
+            System.out.println(userService.getId(uid));
+            System.out.println(MD5.MD5(password));
+            String str=userService.getId(uid).getPassword();
+            System.out.println(str);
+            if (MD5.MD5(password).equals(str)) {
+
+                    System.out.println("jinru");
                     userService.updatePassword(uid, newpassword);
                     model.addAttribute("msg", "修改密码成功！");
+                    System.out.println("修改成功");
+            } else {
+                model.addAttribute("msg", "密码错误！");
+            }
+        return "zhanghao";
+    }
+
+    //修改用户邮箱
+    @RequestMapping(value = "/updateEmail")
+    public String updateEmail(@RequestParam("uid") int uid,
+                                 @RequestParam("email") String email,
+                                 @RequestParam("newemail") String newemail,
+                                 @RequestParam("equelsemail") String equelsemail, ModelMap model) {
+        System.out.println(uid);
+        System.out.println(email);
+        System.out.println(newemail);
+            if (email.equals(userService.getId(uid).getEmail())) {
+                if (!newemail.equals(equelsemail)) {
+                    model.addAttribute("msg", "密码不一致");
+                } else {
+                    userService.updateEmail(uid, newemail);
+                    model.addAttribute("msg", "修改邮箱成功！");
                     System.out.println("修改成功");
                 }
             } else {
                 model.addAttribute("msg", "密码错误！");
             }
-        }
         return "zhanghao";
     }
 
-
+    //用户等级
     @RequestMapping(value = "userGrade")
     public int  userGrade(@RequestParam("uid") int uid, Model model) {
          int grade=userService.userGrade(uid);
@@ -401,11 +455,31 @@ public class UserControl {
     }
     //用户积分明细
     @RequestMapping("/getScoring")
-    public ModelAndView getScoring(@RequestParam("uid") int uid){
+    public void getScoring(@RequestParam("uid") int uid,HttpServletResponse response) throws IOException {
         List<Scoring> scorings=userService.getScoring(uid);
-        ModelAndView mav=new ModelAndView("myscore");
-        mav.addObject("scorings",scorings);
-        return mav;
+        JSONArray jsonArray=new JSONArray();
+        JSONObject jsonObject;
+        for (int i=0;i<scorings.size();i++){
+            jsonObject=new JSONObject();
+            try{
+                jsonObject.put("state",scorings.get(i).getState());
+                jsonObject.put("number",scorings.get(i).getNumber());
+                jsonObject.put("operation",scorings.get(i).getOperation());
+                jsonObject.put("time",scorings.get(i).getTime());
+                jsonArray.put(jsonObject);
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+        }
+
+        System.out.println("积分明细："+scorings);
+        //悄悄把数据会给他
+        //用response（响应）对象中的输出流将处理好的结果输出给ajax请求对象
+        response.setContentType("textml;charset=UTF-8");//  textml     ,text/xml    ,text/json
+        PrintWriter  out=response.getWriter();//获取响应对象中的输出流
+        out.write(jsonArray.toString());
+        out.flush();
+        out.close();
     }
     //积分消费记录
     @RequestMapping("/costScoring")
@@ -422,5 +496,158 @@ public class UserControl {
         List<Scoring> scorings=userService.rechargeScoring(uid);
         mad.addObject("recharge",scorings);
         return mad;
+    }
+
+//查询用户密码
+    @RequestMapping(value="/checkPassword", method = RequestMethod.POST)
+    public void checkPassword(
+                              HttpServletRequest request, HttpServletResponse response) throws IOException {
+        System.out.println("jinruXXXX");
+        boolean result=false;
+        String uid=request.getParameter("uid").trim();
+        String password=request.getParameter("password").trim();
+        System.out.println(password+uid);
+        System.out.println(userService.getId(Integer.parseInt(uid)).getPassword());
+       if (MD5.MD5(password).equals(userService.getId(Integer.parseInt(uid)).getPassword())){
+           System.out.println("ok");
+                  result=true;
+       }else {
+           System.out.println("error");
+             result=false;
+       }
+        response.getWriter().write(""+result);
+    }
+
+    //查询用户密码
+    @RequestMapping(value="/checkEmail", method = RequestMethod.POST)
+    public void checkEmail(
+            HttpServletRequest request, HttpServletResponse response) throws IOException {
+        System.out.println("jinru111");
+        boolean result=false;
+        String uid=request.getParameter("uid").trim();
+        String email=request.getParameter("email").trim();
+        System.out.println(email+uid);
+        System.out.println(userService.getId(Integer.parseInt(uid)).getEmail());
+        if (email.equals(userService.getId(Integer.parseInt(uid)).getEmail())){
+            System.out.println("ok");
+            result=true;
+        }else {
+            System.out.println("error");
+            result=false;
+        }
+        response.getWriter().write(""+result);
+    }
+
+    //我的关注列表
+    @RequestMapping("/myAttention")
+    public void myAttention( HttpSession session,Model model,HttpServletResponse response) throws IOException {
+        User u= (User) session.getAttribute("loginresult");
+        int uid=u.getUid();
+        ArrayList<User> users= (ArrayList<User>) userService.myAttention(uid);
+
+        JSONArray jsonArray=new JSONArray();
+        JSONObject jsonObject;
+        for (int i=0;i<users.size();i++){
+           jsonObject=new JSONObject();
+           try{
+               jsonObject.put("picturepath",users.get(i).getPicturepath());
+               jsonObject.put("nickname",users.get(i).getNickname());
+               jsonArray.put(jsonObject);
+           }catch (JSONException e){
+               e.printStackTrace();
+           }
+        }
+
+        System.out.println(users);
+        //悄悄把数据会给他
+        //用response（响应）对象中的输出流将处理好的结果输出给ajax请求对象
+        response.setContentType("textml;charset=UTF-8");//  textml     ,text/xml    ,text/json
+        PrintWriter  out=response.getWriter();//获取响应对象中的输出流
+        out.write(jsonArray.toString());
+        out.flush();
+        out.close();
+
+    }
+
+    //我的粉丝
+    @RequestMapping("/myFans")
+    public void myFans( HttpSession session,Model model,HttpServletResponse response) throws IOException {
+        User u= (User) session.getAttribute("loginresult");
+        int uid=u.getUid();
+        ArrayList<User> users= (ArrayList<User>) userService.myFans(uid);
+
+        JSONArray jsonArray=new JSONArray();
+        JSONObject jsonObject;
+        for (int i=0;i<users.size();i++){
+            jsonObject=new JSONObject();
+            try{
+                jsonObject.put("picturepath",users.get(i).getPicturepath());
+                jsonObject.put("nickname",users.get(i).getNickname());
+                jsonArray.put(jsonObject);
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+        }
+
+        System.out.println(users);
+        //悄悄把数据会给他
+        //用response（响应）对象中的输出流将处理好的结果输出给ajax请求对象
+        response.setContentType("textml;charset=UTF-8");//  textml     ,text/xml    ,text/json
+        PrintWriter  out=response.getWriter();//获取响应对象中的输出流
+        out.write(jsonArray.toString());
+        out.flush();
+        out.close();
+    }
+
+    /**
+     * 获取被禁言的用户
+     * wenbin
+     * @param response
+     * @param request
+     */
+    @RequestMapping("/UserByIsSpeak/{page}")
+    @ResponseBody
+    public void UserByIsSpeak(@PathVariable int page,HttpServletResponse response,HttpServletRequest request){
+        List<User> speakUsers=userService.getUserBySpeak(page);
+       for (User u:speakUsers){
+           System.out.println(u);
+       }
+       int num=userService.getIsspeakNum();
+        JSONArray jsonArray=new JSONArray();
+       for (User u:speakUsers){
+           JSONObject j=new JSONObject();
+           j.put("uid",u.getUid());
+           j.put("nickName",u.getNickname());
+           j.put("sex",u.getSex());
+           j.put("email",u.getEmail());
+           j.put("phone",u.getPhone());
+           j.put("time",u.getTimeofban());
+           jsonArray.put(j);
+       }
+        JSONObject jsonObjectTwo=new JSONObject();
+       jsonObjectTwo.put("num",num);
+       jsonArray.put(jsonObjectTwo);
+        try {
+            Responser.responseToJson(response,request,jsonArray.toString());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 解除禁言
+     * wenbin
+     * @param uid
+     * @return
+     */
+    @RequestMapping("/isSpeaktoTrue/{uid}")
+    @ResponseBody
+    public String isSpeaktoTrue(@PathVariable int uid){
+        boolean result=userService.isSpeaktoTrue(uid);
+        if(result==true){
+            return "success";
+        }else {
+            return "error";
+        }
     }
 }

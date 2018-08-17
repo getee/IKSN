@@ -29,11 +29,19 @@
     <select id="listAllNoticeNum" resultType="Integer">
         select count(*)  from notice where UID=#{uid};
     </select>
+    <!--查询私信的总数量，用于求最大页数-->
+    <select id="listAllMessageNum" resultType="Integer">
+        select count(*)  from message where TOID=#{toid};
+    </select>
     <select id="listNotReadNoticeNum" resultType="Integer">
         select count(*)  from notice where UID=#{uid} and ISREAD=0;
     </select>
+    <select id="listNotReadMessageNum" resultType="Integer">
+        select count(*)  from message where TOID=#{uid} and ISREAD=0;
+    </select>
+
     <select id="receiveMessage" resultType="Message">
-    select  * from message where TOID=#{toid};
+    select  * from message where TOID=#{toid} order by ID desc limit #{nowPage},5;
     </select>
     <!--查询到发送消息人的信息-->
     <select id="listSendMessageUser" resultType="User">
@@ -46,7 +54,7 @@
         update message set ISREAD=#{isRead} where TOID=#{uid};
     </update>
     <insert id="addNotice" parameterType="Notice">
-        insert into notice(UID,CONTENT,TIME,ISREAD,TYPE) values (#{uid},#{content},#{time},#{inread},#{type});
+        insert into notice(UID,CONTENT,TIME,ISREAD,TYPE) values (#{uid},#{content},#{time},#{isread},#{type});
     </insert>
     <delete id="deleteNotice" parameterType="Notice">
         delete from notice where UID=#{uid};
@@ -66,11 +74,17 @@
     <select id="checkIsAttention" resultType="Attention">
         select * from attention where SELFID=#{selfid} and ATTENID=#{attenid}
     </select>
+    <!--分页查询关注的用户-->
     <select id="listAllFriends" resultType="User">
         select * from user  where UID in (select ATTENID from attention where SELFID=#{selfid}) order by UID asc limit #{nowPage},5;
     </select>
+    <!--查询所有关注的用户-->
     <select id="FindAllFriendsOfThisUser" resultType="User">
         select * from user  where UID in (select ATTENID from attention where SELFID=#{selfid});
+    </select>
+    <!--查询所有关注我的粉丝，并不知道我有没有关注他-->
+    <select id="listAllFans" resultType="User">
+        select * from user where UID in (select SELFID from attention where ATTENID=#{attenid} and SELFID!=#{attenid});
     </select>
 
     <select id="searchFriend" resultType="User">
@@ -83,19 +97,27 @@ select * from user where NICKNAME=#{nickname} and  UID in (select ATTENID from a
          delete from attention where SELFID=#{selfid} and ATTENID=#{attenid};
     </delete>
 
-
+    <!--修改用户资料-->
     <update id="updateUser" parameterType="User">
         UPDATE  user set  nickname=#{nickname},sex=#{sex},introduce=#{introduce} WHERE uid=#{uid}
     </update>
+    <!--修改用户密码-->
     <update id="updatePassword" parameterType="User">
         update user set password=#{password} where UID=#{uid}
     </update>
+    <!--获取用户id-->
     <select id="getId" resultType="User">
        select * from user where UID=#{uid}
     </select>
+    <!--用户等级-->
     <select id="userGrade" parameterType="User">
         SELECT score FROM USER WHERE UID=#{uid}
     </select>
+    <!--修改用户邮箱-->
+    <update id="updateEmail" parameterType="User">
+        update user set email=#{email} where UID=#{uid}
+    </update>
+
     <!--获取积分明细-->
     <select id="getScoring" resultType="Scoring">
         select * from scoring where uid=#{uid}
@@ -107,5 +129,25 @@ select * from user where NICKNAME=#{nickname} and  UID in (select ATTENID from a
     <!--积分的充值记录-->
     <select id="rechargeScoring" resultType="Scoring">
         select * from scoring where uid=#{uid} and operation='充值'
+    </select>
+    <!--我关注的用户-->
+    <select id="myAttention" resultType="User">
+        select * from user where uid in (select attenid from attention where selfid=#{uid})
+    </select>
+    <!--关注我的用户，即我的粉丝-->
+    <select id="myFans" resultType="User">
+        select * from user where uid in(select selfid from attention where attenid=#{uid})
+    </select>
+    <!--被禁言的用户-->
+    <select id="getUserBySpeak" resultType="User" >
+        select * from user where ISSPEAK=1 limit #{pages},5
+    </select>
+    <!--解除用户禁言-->
+    <update id="isSpeaktoTrue" parameterType="integer">
+        update user set ISSPEAK=0 where UID=#{uid}
+    </update>
+    <!--获取被禁言用户的数量-->
+    <select id="getIsspeakNum" resultType="integer">
+        select count(*) from user where ISSPEAK = 1
     </select>
 </mapper>
