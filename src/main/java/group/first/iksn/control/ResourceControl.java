@@ -339,12 +339,12 @@ public class ResourceControl {
     }
 
     //下载资源
-    @RequestMapping(value = "/downloadResource" )
-    public void  downloadResource(HttpServletResponse response, HttpSession session, Model model) throws IOException {
+    @RequestMapping(value = "/getdownloadResource" )
+    public void  getdownloadResource(HttpServletResponse response, HttpSession session, Model model) throws IOException {
         System.out.println("downloadResource");
         User u= (User) session.getAttribute("loginresult");
         System.out.println(u);
-        List<Resource> resource=resourceService.downloadResource(u.getUid());
+        List<Resource> resource=resourceService.getdownloadResource(u.getUid());
         System.out.println(resource);
         //session.setAttribute("collectblog",collectblog);
         JSONArray jsonArray=new JSONArray();

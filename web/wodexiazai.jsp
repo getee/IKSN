@@ -155,7 +155,7 @@
     $(document).ready(function () {
         var a=1;
         $("#xiazai").ready(function () {
-            $.getJSON("/resource/downloadResource?uid=${sessionScope.loginresult.uid}",function (data) {
+            $.getJSON("/resource/getdownloadResource?uid=${sessionScope.loginresult.uid}",function (data) {
                 var html="";
                 for(var i=0;i<data.length;i++){
                     html+='<div class="col-md-12 well">';

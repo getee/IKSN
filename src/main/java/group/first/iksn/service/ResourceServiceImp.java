@@ -184,6 +184,8 @@ public class ResourceServiceImp  implements ResourceService{
     public int reportResourceNum() {
         return resourceDAO.reportResourceNum();
     }
+
+
     //查询上传的资源
     @Override
     public List<Resource> getUploadResource(int uid) {
@@ -208,7 +210,7 @@ public class ResourceServiceImp  implements ResourceService{
     }
      //下载资源
     @Override
-    public List<Resource> downloadResource(int uid) {
+    public List<Resource> getdownloadResource(int uid) {
         return resourceDAO.downloadResource(uid);
     }
 

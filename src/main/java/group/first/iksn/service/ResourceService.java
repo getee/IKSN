@@ -42,14 +42,13 @@ public interface ResourceService {
     //获取被举报资源的数量
     int reportResourceNum();
 
-    //上传者，下载者，积分数
-    boolean downLoadResource(int pushId, int downId, int scoring);
     //查询上传的资源
     List<Resource> getUploadResource(int uid);
     //下载资源
-    List<Resource> downloadResource(int uid);
+    List<Resource> getdownloadResource(int uid);
     //我收藏的资源
     List<Resource> myCollectResource(int uid);
+    //上传者，下载者，积分数
     boolean downLoadResource(int pushId, int downId,int rid, int scoring);
 
     //获取上次资源下载时间判断是否下载过且不满足一小时true,false扣积分
