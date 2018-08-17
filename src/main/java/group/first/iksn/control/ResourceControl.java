@@ -2,6 +2,11 @@ package group.first.iksn.control;
 
 import group.first.iksn.model.bean.*;
 import group.first.iksn.service.ResourceService;
+import group.first.iksn.service.UserService;
+import group.first.iksn.util.Responser;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.ui.Model;
@@ -12,18 +17,29 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.io.IOException;
-
+import java.util.List;
 
 import org.springframework.web.bind.annotation.RequestParam;
 import java.io.UnsupportedEncodingException;
-import java.util.List;
+import java.util.Date;
 
 @Controller
 @RequestMapping("/resource")
 public class ResourceControl {
     private ResourceService resourceService;
+    private UserService userService;
+
+    public UserService getUserService() {
+        return userService;
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
     public ResourceService getResourceService() {
         return resourceService;
@@ -62,7 +78,7 @@ public class ResourceControl {
         boolean result=resourceService.houseResource(collectResource);
         if (!result)
         {
-            return "shoucang";
+            return "success";
         }else
         {
             return "xq";
@@ -90,12 +106,14 @@ public class ResourceControl {
         try {
 
             System.out.println("fileName：" + file.getOriginalFilename()+"XX"+uid);
+            String filename=file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));//取扩展名
+            filename=""+new Date().getTime()+filename;
             //String path="/resource/files/"+new Date().getTime()+file.getOriginalFilename();
 
             //获取项目输出路径
             String rootPath = request.getSession().getServletContext().getRealPath("/");
             rootPath = rootPath.substring(0, rootPath.lastIndexOf('\\'));
-            String filepath = rootPath.substring(0, rootPath.lastIndexOf('\\')) + "/resourcefile/" +uid+"/"+ file.getOriginalFilename();
+            String filepath = rootPath.substring(0, rootPath.lastIndexOf('\\')) + "/resourcefile/" +uid+"/"+ filename;
             //System.out.println("rootPath:" + rootPath);//D:\AppSCM\IKSN\out\artifacts\IKSN_war_exploded
             System.out.println("path:" + filepath);//D:\AppSCM\IKSN\out\artifacts/resourcefile/
             //String quotePath="resourcefile/" +uid+"/"+ file.getOriginalFilename();//资源引用路径
@@ -120,10 +138,57 @@ public class ResourceControl {
       */
         @RequestMapping("/downResource")
         public String downResource(@RequestParam("rid") Integer rid,HttpServletRequest request){
-            System.out.println(rid);
-            int c=resourceService.downResource(rid);
-            request.setAttribute("num",c);
+//            System.out.println(rid);
+//            int c=resourceService.downResource(rid);
+//            request.setAttribute("num",c);
             return  "xq";
+        }
+        /**
+         * 资源下载================================================
+         */
+        @RequestMapping("/downLoadResource")
+        public String downLoadResource(@RequestParam("rid") Integer rid,
+                                       @RequestParam("downUserid") Integer downUserid,//下载者
+                                       HttpServletRequest request, HttpSession session){
+            Resource r=resourceService.loadResource(rid);//获取资源信息
+
+            boolean isDowned=resourceService.downHour(rid,downUserid);//判断该用户是否下载过（一小时内）
+            if(!isDowned) {
+                boolean isDown = resourceService.downLoadResource(r.getUid(), downUserid, rid, r.getScoring());//上传者，下载者，积分数
+                //更新session用户积分值
+                User u = (User) session.getAttribute("loginresult");
+                u.setScore(u.getScore() - r.getScoring());
+                session.setAttribute("loginresult", u);
+            }
+            String path=r.getPath();
+            request.setAttribute("downloapath",path);
+            request.setAttribute("resouce",r);
+            return  "xq";
+        }
+        /*
+        加载资源界面获取资源数据=====================================================
+         */
+        @RequestMapping("/loadResource")
+        public String loadResource(@RequestParam("rid") Integer rid,HttpSession session,HttpServletRequest request){
+            System.out.println("r"+rid);
+            Resource r=resourceService.loadResource(rid);//查询语句缺少标签表信息已修复
+            User pushUser=userService.getId(r.getUid());
+            User downUser= (User) session.getAttribute("loginresult");
+            if(downUser!=null){
+                boolean isDowned=resourceService.downHour(rid,downUser.getUid());//判断该用户是否下载过（一小时内）
+                if(isDowned){
+                    request.setAttribute("isDowned","(已下载过，一小时内下载不扣积分)");
+                }
+            }
+
+
+            request.setAttribute("resouce",r);
+            request.setAttribute("pushUser",pushUser);
+
+            //下载次数参数初始化
+            int num=resourceService.downResource(rid);
+            request.setAttribute("downNum",num);
+            return "xq";
         }
 
     /**
@@ -144,7 +209,7 @@ public class ResourceControl {
     }
 
     /**
-     * 管理员查看被举报的资源详情
+     * 管理员查看被举报的资源详情(此方法需要返回准确的resource bean)
      * wenbin
      * @param resourceid
      * @param id
@@ -153,12 +218,12 @@ public class ResourceControl {
      * @return
      */
     @RequestMapping("/mCheckReportResource/{resourceid}/{id}")
-    public String mCheckReportResource(@PathVariable int resourceid, @PathVariable int id,String reason, Model model){
-        System.out.println(reason);
+    public String mCheckReportResource(@PathVariable int resourceid, @PathVariable int id,@RequestParam("reason") String reason, Model model){
+        String reportReason=EncodingTool.encodeStr(reason);
 
         model.addAttribute("resourceid",resourceid);
         model.addAttribute("reportRid",id);
-        model.addAttribute("reportRReason",reason);
+        model.addAttribute("reportRReason",reportReason);
 
         return "xq";
     }
@@ -192,21 +257,6 @@ public class ResourceControl {
        return  mv;
     }
 
-    /**
-     *资源分类搜索
-     * @param
-     * @return
-     * @throws UnsupportedEncodingException
-     */
-    @RequestMapping("/keywordSearch")
-    public String keySearch(@RequestParam("keyword") String keyword,Model m){
-        System.out.println(keyword);
-        List<Resource> list=resourceService.ResourcekeywordSearch(keyword);
-        System.out.println(list);
-        m.addAttribute("keywordSearch",list);
-        return "xiazai";
-    }
-
     //资源举报
     @RequestMapping("/reportResource")
     public ModelAndView reportResource(@ModelAttribute("reportResource")ReportResource reportResource) throws UnsupportedEncodingException {
@@ -216,7 +266,139 @@ public class ResourceControl {
         System.out.println(reportResource);
        boolean result=resourceService.reportResource(reportResource);
         mav.getModel().put("result",result);
-        System.out.println(result);
+        System.out.println("SSDD"+result);
          return mav;
     }
+
+    /**
+     * 分页
+     * @param page
+     * @param response
+     * @param request
+     */
+    @RequestMapping("mGetReportResource/{page}")
+    @ResponseBody
+    public void mGetReportResource(@PathVariable int page,HttpServletResponse response, HttpServletRequest request){
+        //int count=1;
+        System.out.println("进入分页");
+        List<ReportResource> reportResourceList= resourceService.getAllReportResource(page);
+        System.out.println(reportResourceList+"ssssssssss");
+        for (ReportResource r:reportResourceList){
+            System.out.println(r.getResource());
+        }
+        int num=resourceService.reportResourceNum();//获取被举报数量
+        JSONArray jsonArray=new JSONArray();
+        for (ReportResource rr:reportResourceList) {
+            JSONObject jsonObject=new JSONObject();
+            jsonObject.put("id",rr.getId());
+            jsonObject.put("reason",rr.getReason());
+            jsonObject.put("name",rr.getResource().getName());
+            jsonObject.put("rid",rr.getRid());
+            jsonArray.put(jsonObject);
+        }
+        JSONObject jsonObjectTwo=new JSONObject();
+        jsonObjectTwo.put("reportReNum",num);
+        jsonArray.put(jsonObjectTwo);
+        try {
+            Responser.responseToJson(response, request, jsonArray.toString());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    //查询上传的资源
+    @RequestMapping("/getUploadResource")
+    public void getUploadResource(HttpSession session, Model model, HttpServletResponse response) throws IOException {
+        User u= (User) session.getAttribute("loginresult");
+        int uid=u.getUid();
+        ArrayList<Resource> resources= (ArrayList<Resource>) resourceService.getUploadResource(uid);
+
+        JSONArray jsonArray=new JSONArray();
+        JSONObject jsonObject;
+        for (int i=0;i<resources.size();i++){
+            jsonObject=new JSONObject();
+            try{
+                jsonObject.put("name",resources.get(i).getName());
+                jsonObject.put("introduce",resources.get(i).getIntroduce());
+                jsonObject.put("time",resources.get(i).getTime());
+                jsonObject.put("scoring",resources.get(i).getScoring());
+                jsonArray.put(jsonObject);
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+        }
+        //悄悄把数据会给他
+        //用response（响应）对象中的输出流将处理好的结果输出给ajax请求对象
+        response.setContentType("textml;charset=UTF-8");//  textml     ,text/xml    ,text/json
+        PrintWriter out=response.getWriter();//获取响应对象中的输出流
+        out.write(jsonArray.toString());
+        out.flush();
+        out.close();
+
+    }
+
+    //下载资源
+    @RequestMapping(value = "/downloadResource" )
+    public void  downloadResource(HttpServletResponse response, HttpSession session, Model model) throws IOException {
+        System.out.println("downloadResource");
+        User u= (User) session.getAttribute("loginresult");
+        System.out.println(u);
+        List<Resource> resource=resourceService.downloadResource(u.getUid());
+        System.out.println(resource);
+        //session.setAttribute("collectblog",collectblog);
+        JSONArray jsonArray=new JSONArray();
+        JSONObject jsonObject=null;
+        for (int i=0;i<resource.size();i++){
+            jsonObject=new JSONObject();
+            try{
+                jsonObject.put("title",resource.get(i).getName());
+                jsonObject.put("scoring",resource.get(i).getScoring());
+                jsonObject.put("time",resource.get(i).getTime());
+                jsonArray.put(jsonObject);
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+        }
+        System.out.println(jsonArray);
+        //悄悄把数据会给他
+        //用response（响应）对象中的输出流将处理好的结果输出给ajax请求对象
+        response.setContentType("textml;charset=UTF-8");//  textml     ,text/xml    ,text/json
+        PrintWriter out=response.getWriter();//获取响应对象中的输出流
+        out.write(jsonArray.toString());
+        out.flush();
+        out.close();
+    }
+
+    //我收藏的资源
+    @RequestMapping(value = "/myCollectResource" )
+    public void  collectResource(HttpServletResponse response, HttpSession session, Model model) throws IOException {
+        System.out.println("myCollectResource");
+        User u= (User) session.getAttribute("loginresult");
+        System.out.println(u);
+        List<Resource> collect=resourceService.myCollectResource(u.getUid());
+        System.out.println(collect);
+        //session.setAttribute("collectblog",collectblog);
+        JSONArray jsonArray=new JSONArray();
+        JSONObject jsonObject=null;
+        for (int i=0;i<collect.size();i++){
+            jsonObject=new JSONObject();
+            try{
+                jsonObject.put("title",collect.get(i).getName());
+                jsonObject.put("scoring",collect.get(i).getScoring());
+                jsonObject.put("time",collect.get(i).getTime());
+                jsonArray.put(jsonObject);
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+        }
+        System.out.println(jsonArray);
+        //悄悄把数据会给他
+        //用response（响应）对象中的输出流将处理好的结果输出给ajax请求对象
+        response.setContentType("textml;charset=UTF-8");//  textml     ,text/xml    ,text/json
+        PrintWriter out=response.getWriter();//获取响应对象中的输出流
+        out.write(jsonArray.toString());
+        out.flush();
+        out.close();
+    }
+
 }

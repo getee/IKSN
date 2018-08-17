@@ -1,12 +1,15 @@
 package group.first.iksn.service;
 
 import group.first.iksn.model.bean.CollectResource;
+import group.first.iksn.model.bean.ReportResource;
 import group.first.iksn.model.bean.Resource;
 import group.first.iksn.model.bean.ReportResource;
 import group.first.iksn.model.bean.ResourceComments;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import java.util.List;
 
 public interface ResourceService {
@@ -20,6 +23,8 @@ public interface ResourceService {
     List<Resource> ResourcekeywordSearch(String key);
     int downResource(Integer rid);
 
+    //资源详情界面加载
+    Resource loadResource(int rid);
 
     //查询下载次数
     //举报资源
@@ -34,4 +39,21 @@ public interface ResourceService {
     //从reportResource表删除一行，处理违规资源的安置
     boolean Reject_oneReportResource(int report_id);
     boolean deleteIllegalResource(int resourceid);
+    //添加mGetAllReportResource的服务层
+    List<ReportResource> getAllReportResource(int page);
+    //获取被举报资源的数量
+    int reportResourceNum();
+
+    //上传者，下载者，积分数
+    boolean downLoadResource(int pushId, int downId, int scoring);
+    //查询上传的资源
+    List<Resource> getUploadResource(int uid);
+    //下载资源
+    List<Resource> downloadResource(int uid);
+    //我收藏的资源
+    List<Resource> myCollectResource(int uid);
+    boolean downLoadResource(int pushId, int downId,int rid, int scoring);
+
+    //获取上次资源下载时间判断是否下载过且不满足一小时true,false扣积分
+    boolean downHour(int rid,int uid);
 }

@@ -16,7 +16,7 @@
         <typeAlias type="group.first.iksn.model.bean.Resource" alias="Resource"></typeAlias>
         <typeAlias type="group.first.iksn.model.bean.ResourceTag" alias="ResourceTag"></typeAlias>
         <typeAlias type="group.first.iksn.model.bean.BlogBrowsed" alias="BlogBrowsed"></typeAlias>
-
+        <typeAlias type="group.first.iksn.model.bean.CollectBlog" alias="CollectBlog"></typeAlias>
         <typeAlias type="group.first.iksn.model.bean.DownResources" alias="DownResources"></typeAlias>
         <typeAlias type="group.first.iksn.model.bean.Message" alias="Message"></typeAlias>
         <typeAlias type="group.first.iksn.model.bean.Attention" alias="Attention"></typeAlias>
@@ -24,7 +24,6 @@
         <typeAlias type="group.first.iksn.model.bean.BlogComments" alias="BlogComments"></typeAlias>
 
         <typeAlias type="group.first.iksn.model.bean.ReportResource" alias="ReportResource"></typeAlias>
-        <typeAlias type="group.first.iksn.model.bean.Resource" alias="Resource" ></typeAlias>
         <typeAlias type="group.first.iksn.model.bean.Scoring" alias="Scoring"></typeAlias>
 
     </typeAliases>

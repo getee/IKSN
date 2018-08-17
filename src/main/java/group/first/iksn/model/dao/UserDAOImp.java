@@ -52,6 +52,22 @@ public class UserDAOImp extends BaseDAOImp implements UserDAO {
         }
     }
     /**
+     * 收到未读私信的数量
+     * @auther BruceLee
+     * @return
+     */
+    @Override
+    public int listNotReadMessageNum(int uid) {
+        try {
+            int notReadMessageNum=getSqlSession().getMapper(UserDAO.class).listNotReadMessageNum(uid);
+            return notReadMessageNum;
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+    /**
      * 收到所有通知的数量
      * @auther BruceLee
      * @return
@@ -69,9 +85,21 @@ public class UserDAOImp extends BaseDAOImp implements UserDAO {
     }
 
     @Override
-    public List<Message> receiveMessage(int uid) {
+    public int listAllMessageNum(int uid) {
         try {
-            List<Message> allMessages=getSqlSession().getMapper(UserDAO.class).receiveMessage(uid);
+            int allMessageNum=getSqlSession().getMapper(UserDAO.class).listAllMessageNum(uid);
+            return allMessageNum;
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    @Override
+    public List<Message> receiveMessage(int uid,int nowPage) {
+        try {
+            List<Message> allMessages=getSqlSession().getMapper(UserDAO.class).receiveMessage(uid,(nowPage-1)*5);
             System.out.println("查询到的私信："+allMessages);
             return allMessages;
 
@@ -301,6 +329,18 @@ public class UserDAOImp extends BaseDAOImp implements UserDAO {
         }
     }
 
+    @Override
+    public List listAllFans(int uid) {
+        try{
+            List allFans=getSqlSession().getMapper(UserDAO.class).listAllFans(uid);
+            return allFans;
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     /**
      * 查询该用户好友的数量用来做分页限制
      * @author BruceLee
@@ -343,6 +383,13 @@ public class UserDAOImp extends BaseDAOImp implements UserDAO {
         boolean b=getSqlSession().getMapper(UserDAO.class).updatePassword(user);
         return b;
     }
+    //修改用户邮箱
+    @Override
+    public boolean updateEmail(User user) {
+        boolean b=getSqlSession().getMapper(UserDAO.class).updateEmail(user);
+        return b;
+    }
+
     //用户等级
     @Override
     public int  userGrade(int uid) {
@@ -372,6 +419,61 @@ public class UserDAOImp extends BaseDAOImp implements UserDAO {
     public List<Scoring> rechargeScoring(int uid) {
         List<Scoring> scorings=getSqlSession().getMapper(UserDAO.class).rechargeScoring(uid);
         return scorings;
+    }
+
+    /**
+     * 我的关注列表
+     * @param uid
+     * @return
+     */
+    @Override
+    public List<User> myAttention(int uid) {
+        List<User> users=getSqlSession().getMapper(UserDAO.class).myAttention(uid);
+        return users;
+    }
+
+    /**
+     * 我的粉丝
+     * @param uid
+     * @return
+     */
+    @Override
+    public List<User> myFans(int uid) {
+        List<User> users=getSqlSession().getMapper(UserDAO.class).myFans(uid);
+        return users;
+    }
+
+    @Override
+    public List<User> getUserBySpeak(int page) {
+        List<User> isSpeakUser=null;
+        try {
+            isSpeakUser=getSqlSession().getMapper(UserDAO.class).getUserBySpeak((page-1)*5);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return isSpeakUser;
+    }
+
+    @Override
+    public boolean isSpeaktoTrue(int uid) {
+        boolean isOk=false;
+        try {
+            isOk=getSqlSession().getMapper(UserDAO.class).isSpeaktoTrue(uid);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return isOk;
+    }
+
+    @Override
+    public int getIsspeakNum() {
+        int num=0;
+        try {
+            num=getSqlSession().getMapper(UserDAO.class).getIsspeakNum();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return num;
     }
 
 
