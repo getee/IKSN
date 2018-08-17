@@ -51,4 +51,6 @@ public interface BlogDAO {
     public boolean reportBlog(ReportBlog reportBlog);
 
     String selectFloor(Integer bid);
+
+    ArrayList<BlogComments> getComments(Integer bid);
 }

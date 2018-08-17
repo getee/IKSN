@@ -4,6 +4,9 @@ package group.first.iksn.control;
 import group.first.iksn.model.bean.*;
 import group.first.iksn.service.BlogService;
 import group.first.iksn.util.EncodingTool;
+import group.first.iksn.util.LocalTime;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,13 +14,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.json.Json;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @Controller
@@ -208,6 +212,7 @@ public class BlogControl {
     @RequestMapping("/discuss")
     public String discuss(@ModelAttribute("discuss")BlogComments blogComments){
         System.out.println(blogComments);
+        blogComments.setTime(LocalTime.getNowTime());
         boolean result=blogService.discuss(blogComments);
         if(!result)
         {
@@ -224,6 +229,7 @@ public class BlogControl {
     @RequestMapping("/answerComment")
     public String answerComment(@ModelAttribute("answerComment")BlogComments blogComments){
         System.out.println(blogComments);
+        blogComments.setTime(LocalTime.getNowTime());
         boolean result=blogService.answerComment(blogComments);
         if(!result)
         {
@@ -264,10 +270,17 @@ public class BlogControl {
         model.addAttribute("report_id",id);
         return "userArticle";
     }
+
+    /**
+     * 获取博客评论楼层
+     * @param bid
+     * @param request
+     * @param response
+     */
     @RequestMapping(value="/getFloor",method = RequestMethod.POST)
     public void getFloor( @RequestParam("bid") Integer bid , HttpServletRequest request, HttpServletResponse response) {
-        System.out.println(bid);
-        String resMsg = ""+blogService.getFloor(bid);//已存在相同资源
+        System.out.println("getfloor"+bid);
+        String resMsg =blogService.getFloor(bid);
        // request.setAttribute("Foor",99);
         System.out.println("DDD"+bid+resMsg);
         try {
@@ -278,5 +291,44 @@ public class BlogControl {
         }
         return;
     }
+
+    /**
+     *
+     * @param bid
+     * @param request
+     * @param response
+     */
+    @ResponseBody
+    @RequestMapping(value="/getComments",method = RequestMethod.POST)
+    public void getComments( @RequestParam("bid") Integer bid , HttpServletRequest request, HttpServletResponse response) {
+        ArrayList<BlogComments> getBlogcomments=(ArrayList<BlogComments>)blogService.getComments(bid);
+        Collections.sort(getBlogcomments );
+        System.out.println(getBlogcomments);
+        JSONArray jsonArray=new JSONArray();
+        JSONObject jsonObject;
+        for (int i=0;i<getBlogcomments.size();i++){
+            jsonObject=new JSONObject();
+            jsonObject.put("nickname",getBlogcomments.get(i).getUser().getNickname());
+            jsonObject.put("floor",getBlogcomments.get(i).getFloor());
+            jsonObject.put("time",getBlogcomments.get(i).getTime());
+            jsonObject.put("content",getBlogcomments.get(i).getContent());
+            jsonObject.put("commentid",getBlogcomments.get(i).getCommentid());
+            jsonObject.put("id",getBlogcomments.get(i).getId());
+            jsonObject.put("uid",getBlogcomments.get(i).getUid());
+            jsonObject.put("bid",getBlogcomments.get(i).getBid());
+            jsonArray.put(jsonObject);
+        }
+        System.out.println(getBlogcomments);
+        response.setContentType("text/json;charset=UTF-8");
+        try {
+            PrintWriter out=response.getWriter();
+            out.write(jsonArray.toString());
+            out.flush();
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }

@@ -3,6 +3,7 @@ package group.first.iksn.service;
 
 import group.first.iksn.model.bean.*;
 import group.first.iksn.model.dao.BlogDAO;
+import group.first.iksn.model.dao.UserDAO;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 @Component("blogService")
 public class BlogServiceImp implements BlogService {
     private BlogDAO blogDAO;
+    private UserDAO userDAO;
 
     public BlogDAO getBlogDAO() {
         return blogDAO;
@@ -156,6 +158,13 @@ public class BlogServiceImp implements BlogService {
     @Override
     public String getFloor(Integer bid) {
         return blogDAO.selectFloor(bid);
+    }
+
+    @Override
+    public ArrayList<BlogComments> getComments(Integer bid) {
+        ArrayList<BlogComments> keys=blogDAO.getComments(bid);
+        System.out.println("KKKK"+keys);
+        return keys;
     }
 
 

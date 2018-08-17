@@ -3,6 +3,7 @@ package group.first.iksn.model.dao;
 import group.first.iksn.model.bean.*;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -148,10 +149,15 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
         System.out.println(blogComments);
         return getSqlSession().getMapper(BlogDAO.class).answerDiscuss(blogComments);
     }
-
+//获取楼层
     @Override
     public String selectFloor(Integer bid) {
         return getSqlSession().getMapper(BlogDAO.class).selectFloor(bid);
+    }
+//获取评论
+    @Override
+    public ArrayList<BlogComments> getComments(Integer bid) {
+        return getSqlSession().getMapper(BlogDAO.class).getComments(bid);
     }
 
     /**

@@ -46,4 +46,6 @@ public interface BlogService {
     public boolean reportBlog(ReportBlog reportBlog);
 
     String getFloor(Integer bid);
+
+    ArrayList<BlogComments> getComments(Integer bid);
 }
