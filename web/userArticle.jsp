@@ -506,7 +506,7 @@
 			</li>
 		</div>
 		<li class="li-left">
-			<a href="#" class="glyphicon glyphicon-warning-sign" style="color: black;width: 25px;height: 25px"></a>
+			<a data-toggle="modal" data-target="#modal-container-830220"  class="glyphicon glyphicon-warning-sign" style="color: black;width: 25px;height: 25px"></a>
 			<p style="font-size: 2px">举报</p>
 		</li>
 	</ul>
@@ -523,10 +523,10 @@
             <div class="modal-body">
                 <!--								文本域-->
                 <form action="/blog/reportBlog" method="post">
-                    博客ID：<input name="bid" type="text" value="2" readonly="readonly"/>
-                    举报人ID：<input name="uid" type="text" value="${sessionScope.loginresult.uid}" readonly="readonly"/>
+                    <input type="hidden" name="bid" type="text" value="${boke.bid}" readonly="readonly"/>
+                    <input type="hidden" name="uid" type="text" value="${sessionScope.loginresult.uid}" readonly="readonly"/>
                     <textarea name="reason" class="form-control" rows="3"></textarea><br/>
-                    <input  type="submit" value="提交" onclick="report(${result})" />
+                    <input style="float: right;"  type="submit" value="提交" onclick="report(${result})" />
                 </form>
                 <!--								-->
 

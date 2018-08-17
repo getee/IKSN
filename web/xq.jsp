@@ -162,11 +162,11 @@
                                         </div>
                                         <div class="modal-body">
                                             <!--								文本域-->
-                                            <form id="addForm" action="/resource/reportResource" method="post">
+                                            <form action="/resource/reportResource" method="post">
                                                 <input name="rid" type="hidden" value="${requestScope.resouce.rid}" readonly="readonly"/>
                                                 <input name="uid" type="hidden" value="${sessionScope.loginresult.uid}" readonly="readonly"/>
                                                 <textarea name="reason" class="form-control" rows="3"></textarea><br/>
-                                                <input  type="submit" value="提交" onclick="report()"/>
+                                                <input style="margin-left: 92%;"  type="submit" value="提交" onclick="report(${result})" />
                                             </form>
                                             <!--								-->
 
@@ -339,7 +339,7 @@
     {
         alert("已收藏！")
     }
-   function report() {
+   function report(result) {
        alert("举报成功！")
    }
 
