@@ -257,6 +257,11 @@ public class UserServiceImp implements UserService {
            return user;
     }
 
+    @Override
+    public boolean updateUserImg(String picturepath, int uid) {
+        return userDAO.updateUserImg(picturepath, uid);
+    }
+
     //修改用户密码
     @Override
     public void updatePassword(int uid,String newpassword) {

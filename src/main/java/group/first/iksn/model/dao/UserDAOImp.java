@@ -377,6 +377,11 @@ public class UserDAOImp extends BaseDAOImp implements UserDAO {
         return b;
     }
 
+    @Override
+    public boolean updateUserImg(String picturepath, int uid) {
+        return getSqlSession().getMapper(UserDAO.class).updateUserImg(picturepath,uid);
+    }
+
     //修改用户密码
     @Override
     public boolean updatePassword(User user) {

@@ -463,7 +463,7 @@
                         $("[data-toggle='popover']").popover({
                             title:"提示",
                             html:true,//为true时可以解析html标签
-                            content:"<a href='/user/receiveMessage/${sessionScope.loginresult.uid}'>有未读私信</a>"
+                            content:"<a href='/user/receiveMessage/${sessionScope.loginresult.uid}/1'>有未读私信</a>"
                         });
                         $("[data-toggle='popover']").popover('show')
                     }

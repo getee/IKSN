@@ -32,7 +32,7 @@ public interface UserService {
 
     //修改用户资料
     User updateUser(User user);
-
+    boolean updateUserImg(String picturepath, int uid);
     //修改用户密码
     public void updatePassword(int uid,String newpassword);
 

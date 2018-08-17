@@ -24,9 +24,7 @@
     <!--[if lt IE 9]>
       <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
-	  <script src="js/amazeui_2.7.2_js_amazeui.min.js" charset="utf-8"></script>
-	  <script src="js/cropper.min.js" charset="utf-8"></script>
-	  <script src="js/custom_up_img.js" charset="utf-8"></script>
+
     <![endif]-->
   </head>
   <body style="background-color: #E9E9E9">
@@ -34,7 +32,7 @@
 	<audio id="penquan" src="caidan/media/penquan.wav"></audio>
    	<audio id="xuanzhuan" src="caidan/media/579888piCnbB.mp3"></audio>
 <div id="canvas" style="position: fixed;z-index: 10; display: none;width:100%;height: 100%">
-	<iframe src="caidan/html/penquan.html" style="width:100%;height: 100%"></iframe>
+	<%--<iframe src="caidan/html/penquan.html" style="width:100%;height: 100%"></iframe>--%>
 </div>
 	<div id="texiao" style="position: fixed;z-index: 10;width: 100%;height: 100%;margin: 0px; display: none">
 		<iframe style="width: 100%;height: 100%" src="caidan/html/shandian.html"></iframe>
@@ -43,6 +41,9 @@
     <script src="js/jquery-3.3.1.js"></script>
     <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
     <script src="bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
+   <script src="js/amazeui_2.7.2_js_amazeui.min.js" charset="utf-8"></script>
+   <script src="js/cropper.min.js" charset="utf-8"></script>
+   <script src="js/custom_up_img.js" charset="utf-8"></script>
     <script>
 		$(document).ready(function(){
 
@@ -124,6 +125,67 @@
 			<img class="am-circle" alt="点击图片上传" src="${sessionScope.loginresult.picturepath}" data-am-popover="{content: &#39;点击上传&#39;, trigger: &#39;hover focus&#39;}">
 		</div>
 
+		<!--弹出框开始-->
+		<div class="am-modal am-modal-no-btn up-modal-frame" tabindex="-1" id="up-modal-frame">
+			<div class="am-modal-dialog up-frame-parent up-frame-radius">
+				<div class="am-modal-hd up-frame-header">
+					<label>修改头像</label>
+					<a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close="">×</a>
+				</div>
+				<div class="am-modal-bd  up-frame-body">
+					<div class="am-g am-fl">
+						<form method="post" enctype="multipart/form-data">
+						<div class="am-form-group am-form-file">
+							<div class="am-fl">
+								<button type="button" class="am-btn am-btn-default am-btn-sm">
+									<i class="am-icon-cloud-upload"></i> 选择要上传的文件</button>
+							</div>
+							<input type="file" name="file" class="up-img-file">
+						</div>
+						</form>
+					</div>
+					<div class="am-g am-fl">
+						<div class="up-pre-before up-frame-radius">
+							<img alt="" src="" class="up-img-show" id="up-img-show">
+						</div>
+						<div class="up-pre-after up-frame-radius">
+						</div>
+					</div>
+					<div class="am-g am-fl">
+						<div class="up-control-btns">
+							<span class="am-icon-rotate-left" id="up-btn-left"></span>
+							<span class="am-icon-rotate-right" id="up-btn-right"></span>
+							<%--提交按钮--%>
+							<span class="am-icon-check up-btn-ok" url="/user/uploadImg/${sessionScope.loginresult.uid}" parameter="{width:&#39;100&#39;,height:&#39;100&#39;}">
+</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="am-modal am-modal-loading am-modal-no-btn" tabindex="-1" id="up-modal-loading">
+			<div class="am-modal-dialog">
+				<div class="am-modal-hd">正在上传...</div>
+				<div class="am-modal-bd">
+					<span class="am-icon-spinner am-icon-spin"></span>
+				</div>
+			</div>
+		</div>
+
+		<div class="am-modal am-modal-alert" tabindex="-1" id="up-modal-alert">
+			<div class="am-modal-dialog">
+				<div class="am-modal-hd">信息</div>
+				<div class="am-modal-bd" id="alert_content">
+					成功了
+				</div>
+				<div class="am-modal-footer">
+					<span class="am-modal-btn">确定</span>
+				</div>
+			</div>
+		</div>
+		<!--弹出框结束-->
+		<div class="am-popover am-popover-bottom" id="am-popover-rzdre" style="display: none; top: 110px; left: 9px;"><div class="am-popover-inner">点击上传</div><div class="am-popover-caret"></div></div>
 		<%--<img id="userImg"  src="${sessionScope.loginresult.picturepath}" class="img-responsive img-rounded" alt="Responsive image" style="cursor: pointer">--%>
 		<%--<span id="imgSpan" style="position: absolute; bottom: 0; left:23%;display: none">双击修改头像</span>--%>
 
