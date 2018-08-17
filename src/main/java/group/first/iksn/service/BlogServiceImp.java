@@ -5,6 +5,7 @@ import group.first.iksn.model.bean.*;
 import group.first.iksn.model.dao.BlogDAO;
 import group.first.iksn.model.dao.UserDAO;
 import group.first.iksn.util.LocalTime;
+import group.first.iksn.model.dao.UserDAO;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -359,6 +360,13 @@ public class BlogServiceImp implements BlogService {
     public boolean collectBlog(int uid, int bid) {
         return blogDAO.collectBlog(uid,bid);
     }
+    @Override
+    public ArrayList<BlogComments> getComments(Integer bid) {
+        ArrayList<BlogComments> keys=blogDAO.getComments(bid);
+        System.out.println("KKKK"+keys);
+        return keys;
+    }
+
 
     @Override
     public boolean addAttention(int selfid, int attenid) {

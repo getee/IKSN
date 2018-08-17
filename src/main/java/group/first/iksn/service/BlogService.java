@@ -95,4 +95,5 @@ public interface BlogService {
     //我发布的博客
     List<Blog> myBlog(int uid);
 
+    ArrayList<BlogComments> getComments(Integer bid);
 }
