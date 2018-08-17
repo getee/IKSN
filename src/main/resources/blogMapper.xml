@@ -5,7 +5,7 @@
 
 
 <mapper namespace="group.first.iksn.model.dao.BlogDAO">
-    <!--定义的一个reaultmap结果集合来存储关联查询到的详细的博客，类型是自定义类型-->
+
     <resultMap id="searchBlog" type="Blog">
 
         <id property="bid" column="bid"></id>
@@ -147,6 +147,9 @@
         insert into reportblog (uid,bid,reason) values (#{uid},#{bid},#{reason})
     </insert>
 
+
+
+
     <!--这是有关blog搜索的查询-->
     <!--定义的一个reaultmap结果集合来存储关联查询到的详细的博客，类型是自定义类型-->
     <resultMap id="searchResultMap"  type="Blog">
@@ -158,12 +161,12 @@
         <result property="points" column="points"></result>
         <result property="time" column="time"></result>
 
-        <association property="userToBlog" javaType="UserToBlog" >
+      <!--<association property="userToBlog" javaType="UserToBlog" >
             <id property="id" column="id"></id>
             <result property="bid" column="bid"></result>
-            <!--userToBlog关联user的resultMap结果集-->
-           <!-- <association property="uid" column="uid" select="sUser"></association>-->
-        </association>
+            &lt;!&ndash;userToBlog关联user的resultMap结果集&ndash;&gt;
+           &lt;!&ndash; <association property="uid" column="uid" select="sUser"></association>&ndash;&gt;
+        </association>-->
 
     <!-- 对博客标签来说，一条博客对应多条标签-->
         <collection property="blogTags" ofType="BlogTag">
@@ -177,50 +180,68 @@
        select b.* ,ub.*,t.* from blog as b
         inner join usertoblog as ub on ub.bid=b.bid
         inner join blogtag as t on t.bid=b.bid
-       where  b.TITLE like '%' #{s} '%'
-    </select>
+       where  ub.ispublic=0
+       and t.BTAG like '%'#{s}'%'
 
-
-   <!-- <select id="sUser" resultMap="sUser">
-        select u.*,ub.* from usertoblog as ub
-        inner join user as u on u.uid=ub.uid
     </select>
-    <resultMap id="sUser" type="User">
-         <id property="uid" column="uid"></id>
-         <result property="nickname" column="nickname"></result>
-    </resultMap>-->
+   <!--博客按分类classify搜索-->
+    <select id="blogClassify" resultType="Blog">
+        select * from blog as b where b.CLASSIFY like '%' #{s} '%'
+    </select>
+    <!--博客按title搜索-->
+    <select id="blogTitle" resultType="Blog">
+        select * from blog as b where b.TITLE like '%'#{s}'%'
+    </select>
+    <!--博客搜索框关键字匹配-->
+    <select id="ajaxBlogMohuSearch" resultType="java.lang.String">
+      select title from blog
+    </select>
 
 
 
     <!--关于blog首页推送的查询-->
- <!--   <resultMap id="blogsPush" type="BlogBrowsed">
-        <id property="id" column="id"></id>
-        <result property="browsetime" column="browsetime"></result>
+  <!--  <resultMap id="blogsPush" type="Blog">
+        <id property="bid" column="bid"></id>
+        <result property="title" column="title"></result>
+        <result property="content" column="content"></result>
+        <result property="classify" column="classify"></result>
+        <result property="link" column="link"></result>
+        <result property="points" column="points"></result>
+        <result property="time" column="time"></result>
 
-        <association property="blog" javaType="Blog">
-            <id property="bid" column="bid"></id>
-            <result property="title" column="title"></result>
-            <result property="content" column="content"></result>
-            <result property="classify" column="classify"></result>
-            <result property="link" column="link"></result>
-            <result property="points" column="points"></result>
-            <result property="time" column="time"></result>
-        </association>
-
-        <association property="user" javaType="User">
-            <id property="uid" column="uid"></id>
-            <result property="nickanme" column="nickname"></result>
+        <association property="blogBrowsed" javaType="BlogBrowsed">
+            <id property="id" column="id"></id>
+            <result property="bid" column="bid"></result>
         </association>
     </resultMap>
+
     <select id="detailedBlogPush" resultMap="blogsPush">
         select s.*,b.*,u.NICKNAME from blogbrowsed as s
            inner join blog as b on b.bid=s.bid
            inner join user as u on u.uid=s.uid
-          order by b.POINTS desc limit 0,5
+           order by b.POINTS desc limit 0,5
 
-    </select>-->
-    <select id="detailedBlogPush" resultType="Blog">
-        select * from blog order by points desc
     </select>
+
+    &lt;!&ndash;首页浏览记录推送&ndash;&gt;
+    <select id="pointsPush" resultMap="blogsPush">
+        select distinct b.CLASSIFY from blog as b/*排除重复的分类列*/
+        inner join blogbrowsed as bb on b.bid=bb.bid
+    </select>
+
+    <select id="browsedPush" resultType="Blog">
+        select * from blog as b where b.CLASSIFY=#{classify}
+    </select>
+-->
+    <!--首页推送-->
+    <select id="detailedBlogPush" resultType="Blog" parameterType="int">
+        select * from blog order by points desc limit #{0},5
+    </select>
+
+    <!--首页ajax推送-->
+    <select id="ajaxBlogPush" resultType="Blog" >
+        select * from blog order by points desc limit #{page},5
+    </select>
+
 
 </mapper>

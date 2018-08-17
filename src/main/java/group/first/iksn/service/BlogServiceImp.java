@@ -85,7 +85,7 @@ public class BlogServiceImp implements BlogService {
 
     /**
      * 搜索资源的方法
-     * @param s
+     * @param
      * @return
      */
     public List<Blog> detailedBlogSearchResultMap(String s){
@@ -93,16 +93,44 @@ public class BlogServiceImp implements BlogService {
         return  blogDAO.detailedBlogSearchResultMap(s);
     }
 
+    @Override
+    public List<Blog> blogClassify(String s) {
+        return  blogDAO.blogClassify(s);
+    }
+
+    @Override
+    public List<Blog> blogTitle(String s) {
+        /*String[] keyword=s.split("\\s+");*/
+
+        return  blogDAO.blogTitle(s);
+    }
+
+    @Override
+    public  List<String> ajaxBlogMohuSearch() {
+        return blogDAO.ajaxBlogMohuSearch() ;
+    }
+
     /**
      * 首页推送的方法
      * @return
      */
     @Override
-    public List<Blog> detailedBlogPush() {
-        return blogDAO.detailedBlogPush();
+    public List<Blog> detailedBlogPush(int page) {
+        return blogDAO.detailedBlogPush(page);
+    }
+    public List<Blog> pointsPush(){ return blogDAO.pointsPush();}
+
+    @Override
+    public List<Blog> browsedPush(int classify) {
+        return blogDAO.browsedPush(classify);
     }
 
-
+    /**
+     *
+     * @param
+     * @return
+     */
+   public List<Blog> ajaxBlogPush(int page){return blogDAO.ajaxBlogPush(page);}
 
     @Override
     public boolean addBlogService(Blog blog) {

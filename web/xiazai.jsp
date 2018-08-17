@@ -85,32 +85,54 @@
 
             <!--左边第一块div开始-->
             <div style="background-color:#FFFFFF">
-
+<%--<script>
+    $("#b2").click(function () {
+        $get("/resource/keywordSearch?keyword=2",function (data) {
+            var newR="";
+            for(var n=0;n<data.length;n++){
+                newR+='<div style="height:85px; width:90%; margin-left:20px;">';
+                newR+='  <div style="height:48px; width:5%; float:left; margin-top:15px ">';
+                newR+=' <a href="xq.jsp"> <img src="img/2.svg"></a></div>';
+                newR+='<div style="height:20px; width:66%; float:left; margin-top:15px; margin-left:40px;  font-size:20px ; color:#000000;">';
+                newR+=' <a href="xq.jsp?rid='+data[n].rid+'">'+data[n].name+'</a></div>';
+                newR+=' <div style="height:30px; width:82%; float:left;margin-top:12px; margin-left:40px;font-size:14px;">';
+                newR+='<div style="width:250px; height:30px;  float:left">';
+                newR+=' <span> 上传者:'+data[n].user.nickname+'  </span>&nbsp;&nbsp;&nbsp;&nbsp;';
+                newR+='  <span> 上传时间:'data[n].time' </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                newR+='<span> 分类:'data[n].classify'  </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                newR+=' <div style="height:23px;width:60px;float:left;margin-left:30px;border:1px solid;;border-radius: 10px; border-color:#F75D47; color:#F75D47;text-align:center;">';
+                newR+='    <a href=" '+data[n].path+'">下载</a></div><span> 下载积分:'+data[n].scoring+'  </span> </div></div>';
+            }
+            $("#resources").append(newR);
+        })
+    })
+</script>--%>
                 <div class="row-fluid">
                     <div class="span12">
                         <ul class="nav nav-pills">
                             <li role="presentation"><a >技术领域：</a></li>
                             <div class="tabbable" id="tabs-457756">
                                 <ul class="nav nav-tabs">
-                                    <li  id="b1"><a href="#a1" data-toggle="tab">全部</a></li>
-                                    <li id="b2"><a href="#a2" data-toggle="tab">移动开发</a></li>
-                                    <li id="b3"><a href="#a3" data-toggle="tab">开发技术</a></li>
-                                    <li id="b4"><a href="#a4" data-toggle="tab">课程资源</a></li>
-                                    <li id="b5"><a href="#a5" data-toggle="tab">网络技术</a></li>
-                                    <li id="b6"><a href="#a6" data-toggle="tab">操作系统</a></li>
-                                    <li id="b7"><a href="#a7" data-toggle="tab">安全技术</a></li>
-                                    <li id="b8"><a href="#a8" data-toggle="tab">数据库</a></li>
-                                    <li id="b9"><a href="#a9" data-toggle="tab">行业</a></li>
-                                    <li id="b10"><a href="#a10" data-toggle="tab">服务器应用</a></li>
-                                    <li id="b11"><a href="#a11" data-toggle="tab">存储</a></li>
-                                    <li id="b12"><a href="#a12" data-toggle="tab">信息化</a></li>
-                                    <li id="b14"><a href="#a14" data-toggle="tab">云计算</a></li>
-                                    <li id="b15"><a href="#a15" data-toggle="tab">大数据</a></li>
-                                    <li id="b16"><a href="#a16" data-toggle="tab">人工智能</a></li>
-                                    <li id="b17"><a href="#a17" data-toggle="tab">区块链</a></li>
-                                    <li id="b18"><a href="#a18" data-toggle="tab">音视频</a></li>
-                                    <li id="b19"><a href="#a19" data-toggle="tab">游戏开发</a></li>
-                                    <li id="b20"><a href="#a20" data-toggle="tab">跨平台</a></li>
+                                    <li ><a href="/resource/keywordSearch?keyword=1" >全部</a></li>
+                                    <li ><a href="/resource/keywordSearch?keyword=2" >移动开发</a></li>
+                                    <li ><a href="/resource/keywordSearch?keyword=3" >开发技术</a></li>
+                                    <li ><a href="/resource/keywordSearch?keyword=4" >课程资源</a></li>
+                                    <li ><a href="/resource/keywordSearch?keyword=5" >网络技术</a></li>
+                                    <li ><a href="/resource/keywordSearch?keyword=6" >操作系统</a></li>
+                                    <li ><a href="/resource/keywordSearch?keyword=7" >安全技术</a></li>
+
+                                    <li id="b8"><a href="/resource/keywordSearch?keyword=8" >数据库</a></li>
+                                    <li id="b9"><a href="/resource/keywordSearch?keyword=9">行业</a></li>
+                                    <li id="b10"><a href="/resource/keywordSearch?keyword=10">服务器应用</a></li>
+                                    <li id="b11"><a href="/resource/keywordSearch?keyword=11" >存储</a></li>
+                                    <li id="b12"><a href="/resource/keywordSearch?keyword=12" >信息化</a></li>
+                                    <li id="b14"><a href="/resource/keywordSearch?keyword=13" >云计算</a></li>
+                                    <li id="b15"><a href="/resource/keywordSearch?keyword=14" >大数据</a></li>
+                                    <li id="b16"><a href="/resource/keywordSearch?keyword=15" >人工智能</a></li>
+                                    <li id="b17"><a href="/resource/keywordSearch?keyword=16" >区块链</a></li>
+                                    <li id="b18"><a href="/resource/keywordSearch?keyword=17" >音视频</a></li>
+                                    <li id="b19"><a href="/resource/keywordSearch?keyword=18" >游戏开发</a></li>
+                                    <li id="b20"><a href="/resource/keywordSearch?keyword=19" >跨平台</a></li>
                                 </ul>
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="a1"></div>
@@ -310,25 +332,57 @@
                                 <div class="tab-pane active" id="00">
                                     <p>
                                         <!--资源详情部分-->
+                                    <div id="resources">
                                    <c:forEach items="${resource}" var="r">
                                     <div style="height:85px; width:90%; margin-left:20px;">
                                         <div style="height:48px; width:5%; float:left; margin-top:15px ">
                                             <a href="xq.jsp"> <img src="img/2.svg"></a>
                                         </div>
                                         <div style="height:20px; width:66%; float:left; margin-top:15px; margin-left:40px;  font-size:20px ; color:#000000;">
-                                            <a href="xq.jsp"> ${r.name}</a>
+                                            <a href="xq.jsp?rid=${r.rid}"> ${r.name}</a>
                                         </div>
                                         <div style="height:30px; width:82%; float:left;margin-top:12px; margin-left:40px;font-size:14px;">
                                             <div style="width:250px; height:30px;  float:left">
-                                                <span> ${r.user.nickname}  上传</span>
+                                                <span> 上传者: ${r.user.nickname}  </span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <span> 上传时间:${r.time}  </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <span> 分类:${r.classify}  </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                 <%--<span>&nbsp;&nbsp;&nbsp;&nbsp;大小：<em>308KB</em></span>--%>
                                             </div>
                                             <div style="height:23px;width:60px;float:left;margin-left:30px;border:1px solid;;border-radius:                                           10px; border-color:#F75D47; color:#F75D47;text-align:center;">
-                                                <a href=" ${r.path}"> ${r.path}</a>
+
+                                                <a href=" ${r.path}">下载</a>
+
                                             </div>
+                                           <%-- <span> 下载积分:${r.scoring}  </span>--%>
                                         </div>
                                     </div>
                                     </c:forEach>
+
+                                    <c:forEach items="${keywordSearch}" var="r">
+                                        <div style="height:85px; width:90%; margin-left:20px;">
+                                            <div style="height:48px; width:5%; float:left; margin-top:15px ">
+                                                <a href="xq.jsp"> <img src="img/2.svg"></a>
+                                            </div>
+                                            <div style="height:20px; width:66%; float:left; margin-top:15px; margin-left:40px;  font-size:20px ; color:#000000;">
+                                                <a href="xq.jsp?rid=${r.rid}"> ${r.name}</a>
+                                            </div>
+                                            <div style="height:30px; width:82%; float:left;margin-top:12px; margin-left:40px;font-size:14px;">
+                                                <div style="width:250px; height:30px;  float:left">
+                                                    <span> 上传者: ${r.user.nickname}  </span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <span> 上传时间:${r.time}  </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <span> 分类:${r.classify}  </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                        <%--<span>&nbsp;&nbsp;&nbsp;&nbsp;大小：<em>308KB</em></span>--%>
+                                                </div>
+                                                <div style="height:23px;width:60px;float:left;margin-left:30px;border:1px solid;;border-radius:                                           10px; border-color:#F75D47; color:#F75D47;text-align:center;">
+
+                                                    <a href=" ${r.path}">下载</a>
+
+                                                </div>
+                                                    <%-- <span> 下载积分:${r.scoring}  </span>--%>
+                                            </div>
+                                        </div>
+                                    </c:forEach>
+                                      </div>
                                     <!--资源详情部分-->
 
 

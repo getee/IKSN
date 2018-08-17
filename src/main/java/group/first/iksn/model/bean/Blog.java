@@ -11,8 +11,9 @@ public class Blog {
     private  int points;//博客点赞数
     private int classify;//博客分类
     private Set<BlogTag> blogTags;
-    private BlogTag blogTag;
+    private BlogBrowsed blogBrowsed;
     private  UserToBlog userToBlog;
+
 
 
     public void setBlogTags(Set<BlogTag> blogTags) {
@@ -32,14 +33,13 @@ public class Blog {
     }
 
 
-    public BlogTag getBlogTag() {
-        return blogTag;
+    public BlogBrowsed getBlogBrowsed() {
+        return blogBrowsed;
     }
 
-    public void setBlogTag(BlogTag blogTag) {
-        this.blogTag = blogTag;
+    public void setBlogBrowsed(BlogBrowsed blogBrowsed) {
+        this.blogBrowsed = blogBrowsed;
     }
-
 
     public int getBid() {
         return bid;
@@ -108,7 +108,7 @@ public class Blog {
         this.link = link;
         this.points = points;
         this.classify = classify;
-        this.blogTag = blogTag;
+
         this.userToBlog = userToBlog;
     }
 
@@ -117,7 +117,7 @@ public class Blog {
         return "Blog{" +
                 "bid=" + bid +
                 ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
+
                 ", time='" + time + '\'' +
                 ", link='" + link + '\'' +
                 ", points=" + points +

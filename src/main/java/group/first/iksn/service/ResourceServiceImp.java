@@ -42,10 +42,25 @@ public class ResourceServiceImp  implements ResourceService{
         return resourceDAO.collectResource(h);
     }
 
+    /**
+     * 资源搜索
+     * @param s
+     * @return
+     */
     @Override
-    public ArrayList<Resource> searchResource(String s) {
-        System.out.println("servince层"+s);
+    public List<Resource> searchResource(String s) {
+
         return resourceDAO.searchResource(s);
+    }
+
+    /**
+     * 资源分类搜索
+     * @param key
+     * @return
+     */
+    @Override
+    public List<Resource> ResourcekeywordSearch(String key) {
+        return resourceDAO.ResourcekeywordSearch(key);
     }
 
     @Override

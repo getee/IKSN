@@ -101,7 +101,7 @@
                             <img src="img/2.svg">
                         </div>
                         <div style="height:20px; width:420px; float:left; margin-top:15px; margin-left:40px;  font-size:20px ; color:#000000;">
-                            <a> 仿安居客地图找房源码</a>
+                            <a>${resource.}</a>
                         </div>
                         <div style="height:30px; width:700px; float:left;margin-top:12px; margin-left:40px;font-size:14px;">
                             <div style="width:250px; height:30px;  float:left">

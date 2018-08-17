@@ -13,6 +13,12 @@
 <link href="../js/searchMeme.css" rel="stylesheet" type="text/css" />
 <script src="../js/jquery-3.3.1.js" type="text/javascript"></script>
 <script src="../js/jquery.searchMeme.js" type="text/javascript"></script>--%>
+<script type="text/javascript" src="js/quickQuery-packer.js"></script>
+<link rel="stylesheet" type="text/css" href="css/quickQuery.css">
+<script src="js/select2.js"></script>
+<script src="js/pinyin.js"></script>
+<script src="js/chinese2pinyin.js"></script>
+
 <c:if test="${not empty sessionScope.loginresult}">
 
     <%--聊天窗口--%>
@@ -506,8 +512,8 @@
                 <form class="navbar-form navbar-left" method="post" action="/blog/blogSearch">
                     <div class="form-group">
 
-                        <input id="q1" type="text" class="quickQuery$focus" placeholder="Search" name="content"/>
-                       <%-- <input class="quickQuery$focus" id="" style="border: 3px solid #ccc;" />--%>
+                       <%-- <input id="q1" type="text" &lt;%&ndash;class="quickQuery$focus"&ndash;%&gt; placeholder="Search" name="content"/>--%>
+                        <input  id="q1" class="quickQuery$focus" style="border: 3px solid #ccc;" name="content"/>
                         <div class="quickQuery$focus"></div>
                     </div> <button id="bSearch" type="submit"  class="btn btn-default" >搜索</button>
 
@@ -532,6 +538,7 @@
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav>
+
 </div>
 <script>
     $("li[name='tx']").click(function () {
@@ -575,16 +582,11 @@
         }
     });
 </script>
-<script>
-    $(document).ready(function () {
-       $("#bSearch").click
-    });
 
-</script>
 <!--	导航栏结束-->
 
-<script>
 
+<script>
     var keywordArray = new Array("","","")
     keywordArray[0] = new Array("0", "移动开发", "YIDONGKAIFA");
     keywordArray[1] = new Array("1", "开发技术", "KAIFAJISHU");
@@ -598,8 +600,21 @@
     keywordArray[9] = new Array("9", "信息化", "XINXIHUA");
 
     window.onload = function(){
-       // $quickQuery(keywordArray);
+        $.get("/blog/ajaxBlogSearch",function (data) {
+            var json=eval(data);
+            $.each(json,function (index,iteam) {
+                keywordArray[10+index]= new Array("10"+index, json[index].word,chineseToPinYin(json[index].word) );
+            })
+
+        for(var i=0;i<=keywordArray.length;i++){
+            alert(keywordArray);
+        }
+
+        })
+
+       $quickQuery(keywordArray);
     }
+
 </script>
 
 

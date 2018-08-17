@@ -89,11 +89,27 @@ public class ResourceDAOImp extends BaseDAOImp implements ResourceDAO {
         return isOK;
     }
 
+    /**
+     * 资源搜索
+     * @param s
+     * @return
+     */
     @Override
-    public ArrayList<Resource> searchResource(String s) {
-        ArrayList<Resource> re=getSqlSession().getMapper(ResourceDAO.class).searchResource(s);
+    public List<Resource> searchResource(String s) {
+        List<Resource> re=getSqlSession().getMapper(ResourceDAO.class).searchResource(s);
         System.out.println("resourceDAOImp:"+re);
         return re;
+    }
+
+    /**
+     * 博客分类搜索
+     * @param key
+     * @return
+     */
+    @Override
+    public List<Resource> ResourcekeywordSearch(String key) {
+        List<Resource> list=getSqlSession().getMapper(ResourceDAO.class).ResourcekeywordSearch(key);
+        return list;
     }
 
 

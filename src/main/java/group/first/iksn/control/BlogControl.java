@@ -3,21 +3,26 @@ package group.first.iksn.control;
 
 import group.first.iksn.model.bean.*;
 import group.first.iksn.service.BlogService;
-import group.first.iksn.util.EncodingTool;
+
+import group.first.iksn.util.Responser;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
+
 
 
 @Controller
@@ -39,12 +44,64 @@ public class BlogControl {
      * @return
      */
     @RequestMapping("/blogPush")
-    public String blogPush(Model m){
-        System.out.println("asfasd");
-        List<Blog> al=blogService.detailedBlogPush();
+    public String blogPush(@RequestParam("page") String pp, Model m){
+        int p=Integer.parseInt(pp);
+        System.out.println("page:"+p);
+        int page=p*5-5;
+
+        List<Blog> al=blogService.detailedBlogPush(page);
+
         System.out.println(al);
         m.addAttribute("BlogsPush",al);
+
         return "index";
+    }
+    /**
+     * 首页浏览记录推送
+     */
+    @RequestMapping("/browsedPush")
+    public String browsedPush(Model m){
+        List<Blog> li=blogService.pointsPush();
+
+        for(Blog b:li){
+           /* ArrayList<Blog> list =blogService.browsedPush(b.getClassify());*/
+        }
+        return "index";
+    }
+
+    /**
+     * 这是首页ajax推送的方法
+     * @param pp
+     * @param response
+     * @param request
+     * @return
+     */
+    @RequestMapping("/ajaxPush")
+    public String ajaxPush(@RequestParam("page") String pp,HttpServletResponse response, HttpServletRequest request){
+        int p=Integer.parseInt(pp);
+        System.out.println("page:"+p);
+        int page=p*5-5;
+        System.out.println(page);
+        List<Blog> al=blogService.ajaxBlogPush(page);
+        System.out.println(al);
+
+        JSONArray ja=new JSONArray();
+        for(Blog bl:al){
+            JSONObject jo=new JSONObject();
+            jo.put("bid",bl.getBid());
+            jo.put("title",bl.getTitle());
+            jo.put("content",bl.getContent().substring(0,2));
+            jo.put("points",bl.getPoints());
+            jo.put("time",bl.getTime());
+            jo.put("classify",bl.getClassify());
+            ja.put(jo) ;
+        }
+        try {
+            Responser.responseToJson( response,request,ja.toString());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return  "index";
     }
 
 
@@ -56,15 +113,49 @@ public class BlogControl {
     @RequestMapping(value = "/blogSearch")
     public ModelAndView blogSearch(@RequestParam("content") String textcontent ){
        // textcontent=EncodingTool.encodeStr(textcontent);//先将中文码ISO-8859-1转成UTF-8
-        System.out.println("controller层:"+textcontent);
+        System.out.println("搜索的关键字:"+textcontent);
         ModelAndView mv=new ModelAndView();
-        List<Blog> b= blogService.detailedBlogSearchResultMap(textcontent);
-        System.out.println(b);
+
+      //  List<Blog> b= blogService.detailedBlogSearchResultMap(textcontent);
+       // System.out.println("标签:"+b);
+        //添加blog分List<Blog>类和标题搜索
+        List<Blog>  b=blogService.blogTitle(textcontent);
+       //  b.addAll(blogService.blogClassify(textcontent));
+        System.out.println("类型:"+b);
+       // b=blogService.blogClassify(textcontent);
+         b.addAll(blogService.blogTitle(textcontent));
+        System.out.println("标题:"+b);
         mv.addObject("blogSearch",b);
         mv.addObject("keyWord",textcontent);
         mv.setViewName("sousuo");
         return  mv;
     }
+
+
+/**
+ * 搜索框检索title匹配
+ */
+@RequestMapping("/ajaxBlogSearch")
+public String ajaxBlogSearch(HttpServletResponse response, HttpServletRequest request ){
+
+    List<String> a=getBlogService().ajaxBlogMohuSearch();
+    System.out.println(a);
+    JSONArray ja=new JSONArray();
+    for(String st:a){
+
+        JSONObject jo=new JSONObject();
+        jo.put("word",  st.substring(0,7));//截取八位字符
+        ja.put(jo);
+    }
+
+    try {
+        Responser.responseToJson( response,request,ja.toString());
+    }catch (Exception e){
+        e.printStackTrace();
+    }
+    return  "top";
+}
+
 
     /**
      * 管理员删除被用户举报且不合法的博客
@@ -248,6 +339,7 @@ public class BlogControl {
 
         return mav;
     }
+
     /**
      * 管理员查看被举报的博客，进行审核
      * wenbin

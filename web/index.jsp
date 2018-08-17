@@ -22,11 +22,11 @@
 	<script src="/bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
 	<script src="/js/depend.js"></script>
 
-	
+
 <style>
 	#toTop {display: none;text-decoration: none;position: fixed;bottom: 10px;right: 10px;overflow: hidden;width: 40px;height: 40px;border: none;text-indent: 100%; background-image: url(img/goTop.jpg);background-size: 100% 100%;text-align: center;}
 	#contact-us{
-		
+
 	}
 </style>
 
@@ -35,9 +35,7 @@
 
 <body>
 
-<C:if test="${requestScope.BlogsPush eq null}">
-	<c:redirect url="/blog/blogPush"></c:redirect>
-</C:if>
+
 
 <div id="fluid_Div" class="container-fluid" style="background-color:#F4EEEE;">
 
@@ -80,7 +78,7 @@
 	  
 <!--	  下面一行分为714列-->
 		  <div class="row">
-				<div class="col-xs-6 col-md-8" >
+				<div  class="col-xs-6 col-md-8" >
 <!--				推送正文-->
 					
 <!--					图片轮播-->
@@ -132,22 +130,31 @@
 					</div>
 <!--					轮播结束-->
 <!--					博主发表的文章-->
+                    <input type="hidden"  id="nowPage" value="1"/>
 
+                    <div id="allBlogs" >
 
-					<c:forEach var="t" items="${BlogsPush}" >
+					<%--<c:forEach var="t" items="${BlogsPush}" >
 						<div class="span12" style="border-radius: 10px;background-color:#FFFFFF;margin-top: 30px">
 							<h2>
-								<a href="userArticle.jsp">${t.title}</a>
+								<a href="userArticle.jsp?bid=${t.bid}">${t.title}</a>
 							</h2>
 							<p>
 								${fn:substring(t.content,0,150)}.........
 							</p>
-							<h5 style="color:#928F8F;float: right">阅读数：${t.points}</h5>
+							<h5 style="color:#928F8F;float: right">
+                                类型: ${t.classify}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                时间: ${t.time}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                阅读数: ${t.points}</h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<a class="btn" href="userArticle.jsp?bid=${t.bid}">查看更多 »</a>
 							<p>
-								<a class="btn" href="userArticle.jsp">查看更多 »</a>
+
 							</p>
 						</div>
-					</c:forEach>
+					</c:forEach>--%>
+                    </div>
+                    <div style="margin: auto;display: none;position: fixed;bottom: 0%" id="loading"><img src="img/loading.gif"
+                       style="width: 40px;height: 40px;"/>正在拼命加载中.........</div>
 
 
 					<%--<div class="span12" style="border-radius: 10px;background-color:#D2D4D5;margin-top: 10px">
@@ -162,9 +169,8 @@
 							<a class="btn" href="#">查看更多 »</a>
 						</p>
 					</div>--%>
-
-					
 				</div>
+
 <!--			  <div class="col-xs-6 col-md-1" style="background-color:#F10609"></div>-->
 			  <div class="col-xs-6 col-md-3">
 <!--			  	登陆开始-->
@@ -531,11 +537,79 @@
 </div>
 
 
-
-
-
 <!--返回顶部按钮，向下翻150px显示-->
 <a href="javascript:void(0)" id="toTop" style="border-radius: 20px"> </a>
+
+<script> $.get("/blog/ajaxPush?page=1",function(data){
+
+    for(var n=0;n<5;n++)
+    {
+        var newblog="<div class=\"span12\" style=\"border-radius: 10px;background-color:#FFFFFF;margin-top: 30px\">\n" +
+            "\t\t\t\t\t\t\t<h2>\n" +
+            "\t\t\t\t\t\t\t\t<a href=\"userArticle.jsp?bid="+data[n].bid+"\">"+data[n].title+"</a>\n" +
+            "\t\t\t\t\t\t\t</h2>\n" +
+            "\t\t\t\t\t\t\t<p>\n" +
+            "\t\t\t\t\t\t\t\t"+data[n].content+".........\n" +
+            "\t\t\t\t\t\t\t</p>\n" +
+            "\t\t\t\t\t\t\t<h5 style=\"color:#928F8F;float: right\">\n" +
+            "                                类型: "+data[n].classify+" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n" +
+            "                                时间: "+data[n].time+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n" +
+            "                                阅读数: "+data[n].bid+"</h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n" +
+            "\t\t\t\t\t\t\t<p>\n" +
+            "\t\t\t\t\t\t\t\t<a class=\"btn\" href=\"userArticle.jsp?bid="+data[n].bid+"\">查看更多 »</a>\n" +
+            "\t\t\t\t\t\t\t</p>\n" +
+            "\t\t\t\t\t\t</div>";
+
+        $("#allBlogs").append(newblog);
+    }
+
+});
+    nowPage=1;
+    $(document).ready(function(){
+
+        $(window).scroll(function(){
+            var scrollTop = $(this).scrollTop();
+            var scrollHeight = $(document).height();
+            var windowHeight = $(this).height();
+            if(Math.round(scrollTop) + windowHeight >= scrollHeight){
+
+                $("#loading").css("display","block");
+                setTimeout(function(){
+                    //1.当滚动到网页地步当时候应该发起ajax请求下一页当数据
+
+
+                    $.get("/blog/ajaxPush?page="+(nowPage+1),function(data){
+
+                        for(var n=0;n<5;n++)
+                        {
+                            var newblog="<div class=\"span12\" style=\"border-radius: 10px;background-color:#FFFFFF;margin-top: 30px\">\n" +
+                                "\t\t\t\t\t\t\t<h2>\n" +
+                                "\t\t\t\t\t\t\t\t<a href=\"userArticle.jsp?bid="+data[n].bid+"\">"+data[n].title+"</a>\n" +
+                                "\t\t\t\t\t\t\t</h2>\n" +
+                                "\t\t\t\t\t\t\t<p>\n" +
+                                "\t\t\t\t\t\t\t\t"+data[n].content+".........\n" +
+                                "\t\t\t\t\t\t\t</p>\n" +
+                                "\t\t\t\t\t\t\t<h5 style=\"color:#928F8F;float: right\">\n" +
+                                "                                类型: "+data[n].classify+" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n" +
+                                "                                时间: "+data[n].time+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n" +
+                                "                                阅读数: "+data[n].bid+"</h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n" +
+                                "\t\t\t\t\t\t\t<p>\n" +
+                                "\t\t\t\t\t\t\t\t<a class=\"btn\" href=\"userArticle.jsp?bid="+data[n].bid+"\">查看更多 »</a>\n" +
+                                "\t\t\t\t\t\t\t</p>\n" +
+                                "\t\t\t\t\t\t</div>";
+
+                            $("#allBlogs").append(newblog);
+                        }
+                        nowPage+=1;
+                    });
+                    $("#loading").css("display","none");
+                }, 2000);
+
+            }
+        })
+    })
+
+</script>
 </body>
 </html>
 

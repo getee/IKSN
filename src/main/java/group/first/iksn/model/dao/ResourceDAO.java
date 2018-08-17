@@ -37,5 +37,6 @@ public interface ResourceDAO {
     boolean reportResource(ReportResource reportResource);
 
     //搜索资源
-    ArrayList<Resource> searchResource(String s);
+    List<Resource> searchResource(String s);
+    List<Resource> ResourcekeywordSearch(String key);
 }

@@ -18,6 +18,7 @@ import java.io.IOException;
 
 import org.springframework.web.bind.annotation.RequestParam;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 @Controller
 @RequestMapping("/resource")
@@ -176,18 +177,34 @@ public class ResourceControl {
 
 
     /**
-     * 搜索资源的方法
+     * 搜索资源
      * @param content
      * @return
      */
     @RequestMapping("/resourceSearch")
     public ModelAndView resourceSearch(@RequestParam("content") String content){
        ModelAndView mv=new ModelAndView();
-       ArrayList<Resource> re=getResourceService().searchResource(content);
+        System.out.println("keyeord:"+content);
+        List<Resource> re=resourceService.searchResource(content);
        System.out.println(re);
        mv.addObject("resource",re);
        mv.setViewName("xiazai");
        return  mv;
+    }
+
+    /**
+     *资源分类搜索
+     * @param
+     * @return
+     * @throws UnsupportedEncodingException
+     */
+    @RequestMapping("/keywordSearch")
+    public String keySearch(@RequestParam("keyword") String keyword,Model m){
+        System.out.println(keyword);
+        List<Resource> list=resourceService.ResourcekeywordSearch(keyword);
+        System.out.println(list);
+        m.addAttribute("keywordSearch",list);
+        return "xiazai";
     }
 
     //资源举报
