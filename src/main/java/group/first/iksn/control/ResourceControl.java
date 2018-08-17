@@ -150,7 +150,7 @@ public class ResourceControl {
     }
 
     /**
-     * 管理员查看被举报的资源详情
+     * 管理员查看被举报的资源详情(此方法需要返回准确的resource bean)
      * wenbin
      * @param resourceid
      * @param id

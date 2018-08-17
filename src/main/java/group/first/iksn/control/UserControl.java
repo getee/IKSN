@@ -7,10 +7,7 @@ import group.first.iksn.model.bean.Notice;
 import group.first.iksn.model.bean.Scoring;
 import group.first.iksn.model.bean.User;
 import group.first.iksn.service.UserService;
-import group.first.iksn.util.EncodingTool;
-import group.first.iksn.util.HttpUtil;
-import group.first.iksn.util.IndustrySMS;
-import group.first.iksn.util.MD5;
+import group.first.iksn.util.*;
 import org.apache.ibatis.jdbc.Null;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -580,6 +577,57 @@ public class UserControl {
         out.write(jsonArray.toString());
         out.flush();
         out.close();
+    }
 
+    /**
+     * 获取被禁言的用户
+     * wenbin
+     * @param response
+     * @param request
+     */
+    @RequestMapping("/UserByIsSpeak/{page}")
+    @ResponseBody
+    public void UserByIsSpeak(@PathVariable int page,HttpServletResponse response,HttpServletRequest request){
+        List<User> speakUsers=userService.getUserBySpeak(page);
+       for (User u:speakUsers){
+           System.out.println(u);
+       }
+       int num=userService.getIsspeakNum();
+        JSONArray jsonArray=new JSONArray();
+       for (User u:speakUsers){
+           JSONObject j=new JSONObject();
+           j.put("uid",u.getUid());
+           j.put("nickName",u.getNickname());
+           j.put("sex",u.getSex());
+           j.put("email",u.getEmail());
+           j.put("phone",u.getPhone());
+           j.put("time",u.getTimeofban());
+           jsonArray.put(j);
+       }
+        JSONObject jsonObjectTwo=new JSONObject();
+       jsonObjectTwo.put("num",num);
+       jsonArray.put(jsonObjectTwo);
+        try {
+            Responser.responseToJson(response,request,jsonArray.toString());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 解除禁言
+     * wenbin
+     * @param uid
+     * @return
+     */
+    @RequestMapping("/isSpeaktoTrue/{uid}")
+    @ResponseBody
+    public String isSpeaktoTrue(@PathVariable int uid){
+        boolean result=userService.isSpeaktoTrue(uid);
+        if(result==true){
+            return "success";
+        }else {
+            return "error";
+        }
     }
 }
