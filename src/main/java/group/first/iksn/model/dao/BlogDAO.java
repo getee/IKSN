@@ -94,4 +94,6 @@ public interface BlogDAO {
     List<Blog> selectTwoBlogByUser(int uid);
     //根据bid查uid
     UserToBlog selectUidByBid(int bid);
+
+    ArrayList<BlogComments> getComments(Integer bid);
 }

@@ -152,13 +152,30 @@
     <insert id="answerDiscuss" parameterType="BlogComments">
         insert into blogcomments(uid,bid,time,content,COMMENTID,floor) value (#{uid},#{bid},#{time},#{content},#{commentid},#{floor})
     </insert>
-
-
+    <!--博客评论楼层-->
     <select id="selectFloor" resultType="String">
-        select count(*) from blogcomments where BID=(#{bid}) and COMMENTID is null
+        select count(*)+1 from blogcomments where BID=(#{bid}) and COMMENTID is null
     </select>
 
     <!--此Map写错位置，无人调用，可删除。。。结果集合用来存储查询ReportResource表级联查询Resource表-->
+    <!--获取评论-->
+    <select id="getComments" resultMap="getCommmentsMap">
+      select * from blogcomments inner join user u on blogcomments.UID = u.UID where BID=(#{bid})
+    </select>
+    <resultMap id="getCommmentsMap" type="BlogComments">
+        <id property="id" column="id"/>
+        <result column="uid" property="uid"/>
+        <result property="bid" column="bid"/>
+        <result column="time" property="time"/>
+        <result column="content" property="content"/>
+        <result column="floor" property="floor"/>
+        <result column="commentid" property="commentid"/>
+        <association property="user" javaType="User">
+            <id column="uid" property="uid"/>
+            <result column="nickname" property="nickname"/>
+        </association>
+    </resultMap>
+    <!--结果集合用来存储查询ReportResource表级联查询Resource表-->
     <resultMap id="getResourceBy_Reportrid" type="ReportResource">
         <id column="id" property="id"/>
         <result column="uid" property="uid"/>

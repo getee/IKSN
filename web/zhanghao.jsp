@@ -203,71 +203,22 @@
                             <input type="submit" class="form-control" id="submit" value="确认修改" style="width:12%; margin:2% 22%;background-color:#F4132F; color:#FFFFFF" onclick="click()">
                         </form>
                 </div>
-
-
                 <!--    	修改密码结束   -->
 
 
                 <!--    	修改手机号-->
                 <div role="tabpanel" class="tab-pane" id="profile">
-                    <form id="password_protect" role="form" class="form-horizontal hide">
-                            <div class="step-verify-code_pp step"  style="display:none;">
-                                <input type="hidden" name="type" value="valid">
-                                <div style="display: none" class="alert alert-danger"></div>
-                                <div class="form-group">
-                                    <p class="tips"><span class="icon-warning"></span>系统已经向您的手机********0973发送了验证码，请于5分钟内完成验证</p>
-                                    <div class="col-xs-7"> </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="verify_code" class="col-xs-2 control-label">验证码：</label>
-                                    <div class="col-xs-3">
-                                        <input id="verify_code" type="text" maxlength="6" name="sms_code" class="form-control" >
-                                    </div>
-                                    <div class="col-xs-7" style="display: none" >
-                                        <div class="timeout">验证码已发送，<b>60</b>秒后可以再次发送。</div><a href="javascript:void 0" style="display: none" class="send-verify-code">再次发送</a>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-xs-offset-2 col-xs-9">
-                                        <button type="button" class="btn btn-default btn-lg" onclick="window.location='/my/account/secureqa'" >返回</button>
-                                        <button class="btn btn-primary btn-lg  check_sms_code" type="button">确认</button>
-                                    </div>
-                                </div>
-                            </div>
-                    </form>
-
-                    <form id="bind-phone" role="form" class="form-horizontal" style="margin-top:3%">
-                    <div class="step-phone-number">
-                        <input type="hidden" name="type" value="chgmob">
-                        <div class="alert alert-danger hide js_alert_message"></div>
-                        <div class="form-group form-process step">
-                            <div class="row">
-                                <label for="phone_old_number" class="col-xs-2 control-label"></label>
-                                <div class="col-xs-5"><span class="text-infos js_text_infos">请输入原始手机号验证你的身份：</span></div>
-                            </div>
-                            <div class="row js_validate_step">
-                                <label for="phone_number" class="col-xs-2 control-label"></label>
-                                <div class="col-xs-3">
-                                    <input id="phone_number" type="text" class="form-control js_phone_number" placeholder = "请输入旧手机号">
-                                </div>
-                                <div class="col-xs-7 col-xs-no">
-                                    <span class="phone-code js_get_code">获取验证码</span>
-                                    <span class="code-message hide js_code_message">短信验证码已发送，请查收手机</span>
-                                </div>
-                            </div>
-                            <div class="row js_validate_step">
-                                <div class="col-xs-2"></div>
-                                <div class="col-xs-3"><input type="text" class="form-text form-control js_validate_code" placeholder="短信验证码"></div>
-                            </div>
-                        </div>
-                        <div class="form-group form-process step">
-                            <div class="col-xs-offset-2 col-xs-9">
-                                <button class="btn btn-primary btn-lg btn-primary-set js_bind_subimit" type="submit" style="background-color:#F13B3E; border:hidden">下一步</button>
-                                <p class="text-warin">如果验证身份出现问题，请联系客服</p>
-                            </div>
-                        </div>
+               <form >
+                    <div>
+                        <input type="text" class="form-control" placeholder="请输入旧手机号" style="width:30%;margin:2% 15%; float:left">
+                        <input type="button" class="form-control" value="获取验证码" style="width:12%;margin:2% -13%; float:left; background-color:#F4132F; color:#FFFFFF">
                     </div>
-                    </form>
+                    <div  style=" width:30%; margin:2% 15%">
+                        <input type="text" class="form-control" placeholder="短信验证码" >
+                    </div>
+                    <input type="submit" class="form-control"  value="下一步" style="width:10%; margin:2% 22%; background-color:#F4132F; color:#FFFFFF">
+
+               </form>
                 </div>
 
                 <!--    修改邮箱-->
@@ -303,9 +254,8 @@
                     </form>
 
                 </div>
-
-
                 <!--    修改邮箱结束  -->
+
 
                 <!--    登录日志-->
                 <div role="tabpanel" class="tab-pane" id="settings">
@@ -415,6 +365,7 @@
         }
     }
 </script>
+
 <!--修改用户邮箱-->
 <script >
 
@@ -457,334 +408,3 @@
     }
 </script>
 
-<!--修改手机号-->
-<script>
-    /*
-   * @Author: TimLie.yaoleixia
-   * @Date: 2018-05-31 15:40:28
-   * @LastEditors: TimLie.yaoleixia
-   * @LastEditTime: 2018-06-27 9:34
-   * @Description: 手机号码变更修改操作
-   * @Email: yaolx@csdn.net
-   * @Company: CSDN
-   * @GitHub: https://github.com/TimYao
-   * @version:1.0.0
-   */
-
-    jQuery(function($) {
-        var jsBtnResetphone,
-            jsBindStep,
-            jsPhoneNumber,
-            validateRules,
-            jsAlertMessage,
-            jsGetGode,
-            jsValidateCode,
-            jsTextInfos,
-            jsValidateStep;
-        jsBtnResetphone = $('.js_btn_resetphone');
-        jsBindStep = $('.js_bind_subimit');
-        jsPhoneNumber = $('.js_phone_number');
-        jsAlertMessage = $('.js_alert_message');
-        jsGetGode = $('.js_get_code');
-        jsValidateCode = $('.js_validate_code');
-        jsTextInfos = $('.js_text_infos'),
-            jsValidateStep = $('.js_validate_step');
-
-        validateRules = {
-            isStatus: false,  // 是否提交
-            isCode: false,    // 控制是否开启code
-            codetT: null,
-            step: 1,
-            ajaxUrl:{
-                codePhoneUrl: '/my/account/check_mobile_send_code', // 验证手机或验证码
-                sendCodeUrl: '/my/account/check_code_bind_mobile'  // 下一步或者绑定
-            },
-            getObj: function(obj){
-                var _this;
-                if(!obj){
-                    console.log('obj is null!');
-                    return false;
-                }
-                _this = obj.get ? obj.get(0) : obj;
-                return _this;
-            },
-            messageInfo: function(tag){
-                var message = { error:0},
-                    tipMessage = {
-                        phoneEmpty: '手机号不能为空',
-                        phone: '手机号格式不正确',
-                        codeEmpty: '验证码不能为空',
-                        code: '验证码格式不正确'
-                    };
-                tipMessage[tag] && (message.msg = tipMessage[tag],message.error = -1);
-                return message;
-            },
-            regRules: {
-                phone: /^1[\d]{10}$/,  //手机号为11位
-                code: /^\d{6}$/   //验证码为六位
-            },
-            empty: function(obj, tag){
-                var _value, _this, _message = {error: 0};
-                _this = this.getObj(obj);
-                _value = $.trim(_this.value);
-                if(_value === ''){
-                    _message = this.messageInfo(tag);
-                }
-                return _message;
-            },
-            validateReg: function(obj, tag){
-                var _value, _this, reg, _message = {error: 0};
-                _this = this.getObj(obj);
-                _value = $.trim(_this.value);
-                reg = this.regRules[tag];
-                if(!reg.test(_value)){
-                    _message = this.messageInfo(tag);
-                }
-                return _message;
-            },
-            phoneRight: function(obj, callback){
-                var _value, _this, _message = {error: 0}, datas = {};
-                _this = this.getObj(obj);
-                _value = $.trim(_this.value);
-                if(validateRules.step === 1){
-                    datas['old_mobile'] = _value;
-                }else if(validateRules.step === 2){
-                    datas['new_mobile'] = _value;
-                }
-                $.ajax({
-                    url: validateRules.ajaxUrl.codePhoneUrl,
-                    type: 'post',
-                    dataType: 'json',
-                    data: datas,
-                    success: function(reponse){
-                        callback(reponse);
-                    },
-                    error: function(error){
-                        console.log(error);
-                    }
-                });
-            },
-            alertMessage: function(message){
-                if(message.error === -1){
-                    jsAlertMessage.html(message.msg || '').removeClass('hide');
-                }else{
-                    jsAlertMessage.addClass('hide').html('');
-                }
-                this.isStatus = message.error === -1 ? true : false;
-            },
-            getCodeTime: function(flg){
-                var m = n = 60, fun;
-                if(flg){
-                    clearTimeout(validateRules.codetT);
-                    validateRules.codetT = null;
-                    validateRules.isCode = false;
-                    jsGetGode.next('.js_code_message').addClass('hide').end().removeClass('code-gray').text('获取验证码');
-                    return false;
-                }
-                fun = function(){
-                    validateRules.codetT = setTimeout(function(){
-                        if(m === 0){
-                            m = n;
-                            jsGetGode.next('.js_code_message').addClass('hide').end().removeClass('code-gray').text('获取验证码');
-                            validateRules.isCode = false;
-                            clearTimeout(validateRules.codetT);
-                            validateRules.codetT = null;
-                            return false;
-                        }
-                        m--;
-                        jsGetGode.next('.js_code_message').removeClass('hide').end().addClass('code-gray').text(m+'s');
-                        fun();
-                    }, 1000)
-                };
-                fun();
-            },
-            validate: function(obj, rules){
-                var _this,code, message = {error : 0};
-                _this = obj;
-                if(rules.empty && validateRules.empty(_this, rules.empty).error === -1){
-                    message.error = -1;
-                    message.msg = validateRules.empty(_this, rules.empty).msg;
-                }else if(rules.reg && validateRules.validateReg(_this, rules.reg).error === -1){
-                    message.error = -1;
-                    message.msg = validateRules.validateReg(_this, rules.reg).msg;
-                }else{
-                    message.error = 0;
-                    message.msg = '';
-                }
-
-                validateRules.alertMessage(message);
-                if(message.error === -1){
-                    return false;
-                }
-            },
-            sendEdit: function(options,callback){
-                var opts = {
-                    url: validateRules.ajaxUrl.sendCodeUrl,
-                    type: 'post',
-                    dataType: 'json',
-                    error: function(err){
-                        console.log('发送失败，错误',err);
-                    }
-                };
-                opts = $.extend(opts, options);
-                opts.success = callback;
-                $.ajax(opts)
-            }
-        }
-
-        // 初始化
-        jsBtnResetphone.on('click', function(){
-            $(this).closest('.step-init').addClass('hide');
-            $(this).closest('form').find('.form-process').removeClass('step');
-        })
-
-        // 禁止否认提交
-        jsBindStep.on('click',function(){
-            return false;
-        })
-        // 下一步、确定
-        jsBindStep.on('mousedown', function(){
-            var phoneValue, codeValue, data = {}, step;
-            validateRules.curBtn = jsBindStep;
-            // 完成跳转
-            if(validateRules.step === 3){
-                window.location.href = 'https://www.csdn.net';
-                return false;
-            }
-            step = Number($(this).attr('data-step'), 10);
-            if(step === 2){
-                validateRules.step = 2;
-            }
-
-            jsPhoneNumber.blur();
-            if(validateRules.isStatus){
-                jsPhoneNumber.focus();
-                return false;
-            }
-
-            validateRules.validate(jsValidateCode,{
-                empty: 'codeEmpty',
-                reg: 'code'
-            });
-
-            if(validateRules.isStatus){
-                jsValidateCode.focus();
-                return false;
-            }
-
-            // 下一步切换页面
-            phoneValue = $.trim(jsPhoneNumber.val());
-            codeValue = $.trim(jsValidateCode.val());
-
-
-            // 控制发送值
-            if(validateRules.step === 1){
-                data['old_mobile'] = phoneValue;
-                data['code'] = codeValue;
-            }else if(validateRules.step === 2){
-                data['new_mobile'] = phoneValue;
-                data['code'] = codeValue;
-            }
-
-            validateRules.sendEdit({
-                type: 'get',
-                data: data,
-                error: function(err){
-                    console.log('发送失败！', err);
-                }
-            },function(reponse){
-                // send code success
-                //reponse.status = 0;
-                if(Number(reponse.status,10) === 0){
-                    if(validateRules.step === 1){
-                        validateRules.getCodeTime(true);
-                        jsTextInfos.text('请输入新手机号：');
-                        jsBindStep.text('确认修改');
-                        jsPhoneNumber.val('');
-                        jsValidateCode.val('');
-                        jsPhoneNumber.focus();
-                        jsPhoneNumber.attr('placeholder', '请输入新手机号')
-                        validateRules.step = 2;
-                        delete validateRules.mobile;
-                        data = {};
-                    }else if(validateRules.step === 2){
-                        validateRules.getCodeTime(true);
-                        validateRules.step = 3;
-                        jsValidateStep.addClass('hide');
-                        jsPhoneNumber.val('');
-                        jsValidateCode.val('');
-                        jsBindStep.text('完成');
-                        jsPhoneNumber.attr('placeholder', '请输入旧手机号');
-                        validateRules.mobile = data['new_mobile'];
-                        data = {};
-                        jsTextInfos.addClass('text-success').html('修改成功！<br/>你的新手机号是 ' + validateRules.mobile);
-                    }
-                }else{
-                    // 返回失败信息
-                    validateRules.alertMessage({error: -1, msg: reponse.msg});
-                    validateRules.getCodeTime(true);
-                }
-            });
-            return false;
-        })
-
-        // 手机号验证
-        jsPhoneNumber.on('blur', function(){
-            validateRules.validate(jsPhoneNumber,{
-                empty: 'phoneEmpty',
-                reg: 'phone'
-            });
-        })
-
-        // 验证码失焦点
-        jsValidateCode.on('blur', function(){
-            validateRules.alertMessage({error: 0, msg: ''});
-        })
-
-        // 获取验证码
-        jsGetGode.on('mousedown', function(){
-            validateRules.curBtn = jsGetGode;
-            if(validateRules.isCode){
-                return false;
-            }
-            validateRules.validate(jsPhoneNumber,{
-                empty: 'phoneEmpty',
-                reg: 'phone'
-            });
-            if(validateRules.isStatus){
-                if(jsValidateCode.get(0).flg === undefined){
-                    jsPhoneNumber.focus();
-                }
-                return false;
-            }
-            // 验证旧手机是否正确
-            validateRules.phoneRight(jsPhoneNumber, function(reponse){
-                var message = {};
-                message.msg = reponse.msg ? reponse.msg : '';
-                // 状态码不同标识验证成功还是发送码
-                // 手机号错误
-                if(reponse.status < 0){
-                    message.error = -1;
-                }
-                if(reponse.status === -4 || reponse.status === -3){
-                    jsPhoneNumber.focus();
-                }else{
-                    if($.trim(jsValidateCode.val()) === ''){
-                        jsValidateCode.focus();
-                    }
-                }
-
-                validateRules.alertMessage(message);
-                if(validateRules.isStatus === true){
-                    return false;
-                }
-
-                // 正确并发送码
-                validateRules.getCodeTime();
-                validateRules.isCode = true;
-            });
-            return false;
-        });
-
-    });
-</script>
