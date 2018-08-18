@@ -132,8 +132,9 @@
 			<button class="btn btn-primary" type="submit" value="1">
 				订阅 <span class="badge">+</span>
 			</button>
-			<c:if test="${sessionScope.loginresult.isadmin eq '1'}">
-				<button id="comeback-button" type="button" class="btn btn-primary" style="">返回举报页</button>
+			<%--<c:if test="${sessionScope.loginresult.isadmin eq '1'}">--%>
+			<c:if test="${not empty reportBlog.id && !(reportBlog.id eq null)}">
+				<button id="comeback-button" type="button" class="btn btn-primary" disabled style="">返回举报页</button>
 				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#delete" style="">删除</button>
 				<button id="sendBack-button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#sendBack" style="">下架并禁言</button>
 				<h5 style="color: white">举报原因：${requestScope.reportBlog.reason}</h5>
@@ -203,7 +204,8 @@
                         $("#sendBack-ok-innerHtml").text("已下架");
                         $(this).prop("disabled","disabled");
                         $("#sendBack-button").prop("disabled","disabled");
-					}else {
+                        $("#comeback-button").removeAttr("disabled");
+                    }else {
                         $("#sendBack-ok-innerHtml").text("按钮睡着了，请再点一次吧");
                         $("#sendBack-ok-innerHtml").text("确定下架至用户草稿吗？");
 					}
@@ -511,7 +513,7 @@
        $.post("/blog/twotui?uid=${yonghu.uid}",function (data) {
             var json=eval(data);
             $.each(json,function (index,item) {
-                var title=json[index].title.substring(0,17);
+                var title=json[index].title.substring(0,12);
                 var id=json[index].bid;
                // alert(title+id);
                 var ts="<div class=\"thumbnail\">\n" +
@@ -642,7 +644,7 @@
             });
         }
         else{
-            alert("您还没有登录哦！");
+            $("#tsdl").css("display","block");
         }
     });
     //关注
@@ -684,7 +686,7 @@
             }
         }
         else{
-            alert("您还没有登录哦！");
+            $("#tsdl").css("display","block");
         }
     })
 </script>

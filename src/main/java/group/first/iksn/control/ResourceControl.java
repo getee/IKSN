@@ -305,13 +305,12 @@ public class ResourceControl {
     @RequestMapping("/mDeleteResourceForReport/{resourceid}")
     @ResponseBody
     public String mDeleteResourceForReport(@PathVariable int resourceid){
-//        boolean delResult= resourceService.deleteIllegalResource(resourceid);
-//        if(delResult){
-//            return "success";
-//        }else {
-//            return "error";
-//        }
-        return "success";
+        boolean delResult= resourceService.deleteIllegalResource(resourceid);
+        if(delResult){
+            return "success";
+        }else {
+            return "error";
+        }
     }
 
 
