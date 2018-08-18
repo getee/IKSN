@@ -337,7 +337,7 @@
 									</thead>
 									<tbody>
 									<tr>
-										<td colspan="3"><h3><a href="tarenzhongxin.jsp">${yonghu.nickname}</a><small></small></h3></td>
+										<td colspan="3"><h3><a href="/user/getUserInfo?uid=${yonghu.uid}">${yonghu.nickname}</a><small></small></h3></td>
 
 									</tr>
 									<tr>
@@ -408,6 +408,10 @@
 
 			</li>
 		</div>
+		<li class="li-left">
+			<a data-toggle="modal" data-target="#modal-container-830220"  class="glyphicon glyphicon-warning-sign" style="color: black;width: 25px;height: 25px"></a>
+			<p style="font-size: 2px">举报</p>
+		</li>
 	</ul>
 </div>
 <!--点赞结束-->

@@ -416,4 +416,8 @@
     <update id="updateLink" >
         update blog set LINK=#{0} where BID=#{1}
     </update>
+    <!--他人发布所有的博客-->
+    <select id="allPublishedBlog" resultType="Blog">
+        select * from blog where bid in (select bid from usertoblog where uid=#{uid})
+    </select>
 </mapper>

@@ -458,6 +458,13 @@ public class BlogServiceImp implements BlogService {
         System.out.println("KKKK"+keys);
         return keys;
     }
+    /*
+    查询他人发布的所有博客
+     */
+    @Override
+    public List<Blog> allPublishedBlog(int uid) {
+        return blogDAO.allPublishedBlog(uid);
+    }
 
 
     @Override

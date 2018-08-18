@@ -760,4 +760,14 @@ public class UserControl {
             return "error";
         }
     }
+
+    /*
+    点击博客页面昵称通过ID获取他人的信息到他人中心页面
+     */
+    @RequestMapping("/getUserInfo")
+    public String getUserInfo(int uid,Model model){
+        User user=userService.getUserInfo(uid);
+        model.addAttribute("user",user);
+        return "tarenzhongxin";
+    }
 }

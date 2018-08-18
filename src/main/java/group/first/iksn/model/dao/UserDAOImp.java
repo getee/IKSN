@@ -481,5 +481,10 @@ public class UserDAOImp extends BaseDAOImp implements UserDAO {
         return num;
     }
 
+    @Override
+    public User getUserInfo(int uid) {
+        return getSqlSession().getMapper(UserDAO.class).getUserInfo(uid);
+    }
+
 
 }
