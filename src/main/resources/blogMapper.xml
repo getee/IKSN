@@ -328,44 +328,6 @@
     <select id="ajaxBlogPush" resultType="Blog" >
         select * from blog order by points desc limit #{page},5
     </select>
-    <!--点击博客链接使用-->
-    <resultMap id="getUidByBid" type="UserToBlog">
-        <id property="id" column="id"></id>
-        <result property="uid" column="uid"></result>
-        <result property="bid" column="bid"></result>
-        <result property="isdraft" column="isdraft"></result>
-        <result property="ispublic" column="ispublic"></result>
-        <result property="blogtype" column="blogtype"></result>
-        <association property="blog" column="bid" javaType="Blog">
-            <id property="bid" column="bid"></id>
-        </association>
-    </resultMap>
-    <select id="getBlogAndUser" resultMap="getUidByBid">
-        SELECT  uid,BLOGTYPE from usertoblog INNER JOIN blog b ON usertoblog.BID = b.BID
-        WHERE b.BID=#{bid}
-    </select>
-    <!--根据id查找博客-->
-    <select id="getbokeByid" resultType="Blog">
-        SELECT * from blog WHERE  BID = #{bid}
-    </select>
-    <!--查询用户有多少原创博客-->
-    <select id="getOriginalBlog" resultType="java.lang.Integer">
-        SELECT count(BID) from usertoblog WHERE BLOGTYPE=1 and uid=#{uid} GROUP BY UID
-    </select>
-    <!--查询用户的粉丝数以及关注数-->
-    <select id="getFans" resultType="java.lang.Integer">
-      SELECT count(SELFID) FROM  attention WHERE ATTENID=#{uid} GROUP BY ATTENID
-    </select>
-    <select id="getAttention" resultType="java.lang.Integer">
-      SELECT  count(ATTENID) FROM  attention WHERE  SELFID =#{uid} GROUP BY  SELFID
-    </select>
-    <!--将浏览记录路插入到-浏览记录表-->
-    <insert id="insertBlogBrowse" parameterType="BlogBrowsed">
-        INSERT INTO blogbrowsed(UID,BID,BROWSETIME) VALUES (#{param1},#{param2},#{param3})
-    </insert>
-    <!--点击博客结束-->
-
-
 
      <!--点赞-->
     <update id="addBlogPoints" parameterType="Blog">

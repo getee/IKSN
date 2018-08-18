@@ -329,11 +329,6 @@ public class BlogServiceImp implements BlogService {
         }
     }
 
-    //获取被举报的博客
-    @Override
-    public ReportBlog selectReportBlog(int id) {
-        return blogDAO.selectReportBlog(id);
-    }
 
     @Override
     public String getFloor(Integer bid) {
