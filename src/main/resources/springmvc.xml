@@ -55,7 +55,7 @@
           class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
         <property name="url"
-                  value="jdbc:mysql://rm-wz97w0rps07c1wrg0ao.mysql.rds.aliyuncs.com:3306/iksn?characterEncoding=UTF-8&amp;allowMultiQueries=true"/>
+                  value="jdbc:mysql://rm-wz97w0rps07c1wrg0ao.mysql.rds.aliyuncs.com:3306/iksn?characterEncoding=UTF-8&amp;allowMultiQueries=true&amp;useSSL=true"/>
         <property name="username" value="admin"/>
         <property name="password" value="admin"/>
     </bean>

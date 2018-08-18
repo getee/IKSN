@@ -275,9 +275,14 @@ public String ajaxBlogSearch(HttpServletResponse response, HttpServletRequest re
         boolean result2=blogService.updateUserToBlogService(userToBlog);
         System.out.println("修改博客");
         if(result==true&&result1==true&&result2==true){
-            Blog blogs=blogService.listBlogService(bid);
-            model.addAttribute("listblog",blogs);
-            System.out.println(blogs);
+            Map<String,Object> map=blogService.getBlogAndUser(bid);
+            Blog listblog=blogService.listBlogService(bid);
+            model.addAttribute("listblog",listblog);
+            model.addAttribute("boke",map.get("boke"));
+            model.addAttribute("yonghu",map.get("yonghu"));
+            model.addAttribute("original",map.get("original"));
+            model.addAttribute("fans",map.get("fans"));
+            model.addAttribute("attention",map.get("attention"));
             return "blogDetail";
         }
         else {
@@ -290,6 +295,12 @@ public String ajaxBlogSearch(HttpServletResponse response, HttpServletRequest re
     public String  listBlogByID(@PathVariable("bid") int bid,Model model){
         Blog listblog=blogService.listBlogService(bid);
         model.addAttribute("listblog",listblog);
+        Map<String,Object> map=blogService.getBlogAndUser(bid);
+        model.addAttribute("boke",map.get("boke"));
+        model.addAttribute("yonghu",map.get("yonghu"));
+        model.addAttribute("original",map.get("original"));
+        model.addAttribute("fans",map.get("fans"));
+        model.addAttribute("attention",map.get("attention"));
         System.out.println(listblog);
         return "blogDetail";
     }
@@ -383,6 +394,7 @@ public String ajaxBlogSearch(HttpServletResponse response, HttpServletRequest re
     @RequestMapping("/answerComment")
     public String answerComment(@ModelAttribute("answerComment")BlogComments blogComments){
         System.out.println(blogComments);
+        blogComments.setTime(LocalTime.getNowTime());
         boolean result=blogService.answerComment(blogComments);
         if(!result)
         {

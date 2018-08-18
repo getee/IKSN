@@ -574,7 +574,7 @@
                     <li><a href="../xiazai.jsp">下载</a></li>
                     <li><a href="#">GitChat</a></li>
                     <li><a href="#">TinyMind</a></li>
-                    <li><a href="#">问答</a></li>
+                    <li><a href="wenda.jsp">问答</a></li>
                     <li><a href="#">VIP</a></li>
                 </ul>
                 <form class="navbar-form navbar-left" method="post" action="/blog/blogSearch">
