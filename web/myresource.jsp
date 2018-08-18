@@ -1,5 +1,4 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <c:if test="${empty sessionScope.loginresult}">
     <c:redirect url="index.jsp"></c:redirect>
@@ -36,10 +35,10 @@
  
                     <ul class="nav nav-tabs"  style="margin-left:15%;" >
                       <li ><a href="xiazai.jsp">下载首页</a></li>
-                      <li id="a1"><a  href="#panel-717300">我的资源</a></li>
+                      <li id="a1"><a href="#panel-717300">我的资源</a></li>
                       <li ><a href="upload.jsp">上传资源赚积分</a></li>
-                      <li id="a3"><a  href="#panel-622342">已下载</a></li>
-                      <li id="a4"><a  href="#panel-622343">我的收藏</a></li>
+                      <li id="a3"><a id="downloads" href="#panel-622342">已下载</a></li>
+                      <li id="a4"><a id="collects" href="#panel-622343">我的收藏</a></li>
                     </ul>
 
              </div>
@@ -54,14 +53,26 @@
                       		<div style="margin-left:14.7%; margin-top:-9%;">qq_41581629</div>
                             <div style="margin-left:14.7%; padding-top:1%;">
                             	<span class="label" contenteditable="true" style="background-color:#9DC75F;">下载
-                                <span class="badge" contenteditable="true" style="background-color:#2D5315;">1</span></span> 上传权限：<span>220MB</span>
+                                <span id="tag" class="badge" contenteditable="true" style="background-color:#2D5315;"></span></span> 上传权限：<span>220MB</span>
                              </div>
                       </div>
                       <div style=" margin-left:5%; margin-top:8%;">
                       	
-                        <span style="float:left;">积分<div style="color:#36F;font-weight:bolder"></div></span>
-                        <span style="margin-left:8%;float:left">上传资源<div style="color:#36F;font-weight:bolder">0</div> </span>
-                        <span style="margin-left:8%;float:left">下载资源<div style="color:#36F;font-weight:bolder">0</div></span>
+                        <span style="float:left;">积分<div id="jifencount" style="color:#36F;font-weight:bolder">
+
+                            <%--<c:set var="total" value="0"></c:set>
+                            <c:forEach items="${requestScope.scorings}" var="s">
+                                <c:if  test="${s.state=='0'}">
+                                    <c:set var="number" value="-${s.number}" />
+                                </c:if>
+                                <c:if  test="${s.state=='1'}">
+                                    <c:set var="number" value="${s.number}" />
+                                </c:if>
+                                <c:set var="total" value="${total +(number) }" />
+                            </c:forEach>${total}--%>
+                        </div></span>
+                        <span style="margin-left:8%;float:left">上传资源<div id="uploadcount" style="color:#36F;font-weight:bolder"></div> </span>
+                        <span style="margin-left:8%;float:left">下载资源<div id="downloadcount" style="color:#36F;font-weight:bolder"></div></span>
                            
                       </div>
   				</div >
@@ -81,7 +92,7 @@
 
                       </ul>
                       <div class="tab-content">
-                            <div id="uploadresource" class="tab-pane active" id="panel-717300" contenteditable="true">
+                            <div class="tab-pane active" id="panel-717300" contenteditable="true">
 
                             </div>
 
@@ -92,20 +103,11 @@
                                         <tr>
                                             <th>分数</th>
                                             <th>时间</th>
-                                            <th>下载资源</th>
+                                            <th>操作内容</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <c:forEach items="${requestScope.scorings}" var="s">
-                                            <tr>
-                                                <th><c:if  test="${s.state=='1'}">+</c:if>
-                                                    <c:if  test="${s.state=='0'}">-</c:if>
-                                                        ${s.number}
-                                                </th>
-                                                <th>${s.time}</th>
-                                                <th>${s.operation}</th>
-                                            </tr>
-                                        </c:forEach>
+                                    <tbody id="biaoge">
+
                                     </tbody>
                                 </table>
                                 </p>
@@ -224,8 +226,32 @@
 
 
     $(document).ready(function (){
-        $("#jifen").click(function (){
-            window.location.href = '/user/getScoring?uid=${sessionScope.loginresult.uid}';
+        var a=1;
+        $("#jifen").ready(function (){
+            $.getJSON("/user/getScoring?uid=${sessionScope.loginresult.uid}",function (data) {
+                var html="";
+                var count=0;
+                for(var i=0;i< data.length;i++){
+                    var state="";
+                    if(data[i].state==0){
+                        state="-";
+                        number=-data[i].number;
+                    }else {
+                        state="+";
+                        number=data[i].number;}
+                    count=count+number;
+                    html+='<tr>' ;
+                    html+='<th>'+state+data[i].number+'</th>';
+                    html+='<th>'+data[i].time+'</th>';
+                    html+='<th>'+data[i].operation+'</th>';
+                    html+='</tr>';
+                }
+                if(a==1){
+                    $("#biaoge").append(html);
+                    $("#jifencount").append(count);a++;
+                }
+            })
+            //window.location.href = '/user/getScoring?uid=${sessionScope.loginresult.uid}';
         });
     });
     //查询上传的资源
@@ -235,15 +261,19 @@
             $.getJSON("/resource/getUploadResource?uid=${sessionScope.loginresult.uid}",function (data) {
                 var html="";
                 for(var i=0;i< data.length;i++){
-                    html+='<p><div style="height:100px; width:90%; margin-left:20px;">' ;
-                    html+='<div style="height:48px; width:5%; float:left; margin-top:15px "><a href="xq.jsp"><img src="img/2.svg"></a></div>' ;
-                    html+='<div style="height:20px; width:66%; float:left; margin-top:15px; margin-left:40px;  font-size:20px ; color:#000000;"><a href="xq.jsp">'+data[i].name+'</a></div>';
-                    html+=' <div style="height:30px; width:82%; float:left;margin-top:12px; margin-left:40px;font-size:14px;"><div style="width:250px; height:30px;"><span>'+data[i].introduce+'</span></div>' ;
-                    html+='<div style="float:left;margin-left:30px;text-align:center;"><span>上传时间：'+data[i].time+'</span><span style="margin-left: 30px;">所需积分：'+data[i].scoring+'</span></div>' ;
-                    html+='</div></p>';
+                    html+='<div class="col-md-12 well">';
+                    html+='<div class="col-md-2 "><a href="xq.jsp"><img src="img/2.svg"></a></div>';
+                    html+='<div class="col-md-10"><div style=" font-size:20px ; color:#000000;height: 40px;">'+data[i].name+'</div>';
+                    html+='<div>';
+                    html+='<div style=" float: left"><a>所需积分:&nbsp;&nbsp;&nbsp;</a>'+data[i].scoring+'</div>';
+                    html+='<div style="float: left; margin-left: 50%">'+data[i].time+'</div>';
+                    html+='</div>';
+                    html+='</div>';
+                    html+='</div>';
                 }
                 if(a==1){
-                    $("#uploadresource").append(html);a++;
+                    $("#panel-717300").append(html);
+                    $("#uploadcount").append(data.length);a++;
                 }
 
             });
@@ -258,22 +288,26 @@
 <script>
     $(document).ready(function () {
         var a=1;
-        $("#download").click(function () {
-            $.getJSON("/resource/downloadResource?uid=${sessionScope.loginresult.uid}",function (data) {
+        $("#download,#downloads").ready(function () {
+            $.getJSON("/resource/getdownloadResource?uid=${sessionScope.loginresult.uid}",function (data) {
                 var html="";
+
                 for(var i=0;i<data.length;i++){
               html+='<div class="col-md-12 well">';
               html+='<div class="col-md-2 "><a href="xq.jsp"><img src="img/2.svg"></a></div>';
               html+='<div class="col-md-10"><div style="height: 40px;">'+data[i].title+'</div>';
               html+='<div>';
-              html+='<div style=" float: left"><a>积&nbsp;分:&nbsp;&nbsp;&nbsp;</a>'+data[i].scoring+'</div>';
+              html+='<div style=" float: left"><a>所需积分:&nbsp;&nbsp;&nbsp;</a>'+data[i].scoring+'</div>';
               html+='<div style="float: left; margin-left: 50%">'+data[i].time+'</div>';
               html+='</div>';
               html+='</div>';
               html+='</div>';
                 }
                 if (a==1){
-                    $("#panel-622342").append(html);a++;
+                    $("#panel-622342").append(html);
+                    $("#downloadcount").append(data.length);
+                    $("#tag").append(data.length);
+                    a++;
                 }
             })
         })
@@ -284,7 +318,7 @@
 <script>
     $(document).ready(function () {
         var a=1;
-        $("#collect").click(function () {
+        $("#collect,#collects").click(function () {
             $.getJSON("/resource/myCollectResource?uid=${sessionScope.loginresult.uid}",function (data) {
                 var html="";
                 for(var i=0;i<data.length;i++){
@@ -292,7 +326,7 @@
                     html+='<div class="col-md-2 "><a href="xq.jsp"><img src="img/2.svg"></a></div>';
                     html+='<div class="col-md-10"><div style="height: 40px;">'+data[i].title+'</div>';
                     html+='<div>';
-                    html+='<div style=" float: left"><a>积&nbsp;分:&nbsp;&nbsp;&nbsp;</a>'+data[i].scoring+'</div>';
+                    html+='<div style=" float: left"><a>所需积分:&nbsp;&nbsp;&nbsp;</a>'+data[i].scoring+'</div>';
                     html+='<div style="float: left; margin-left: 50%">'+data[i].time+'</div>';
                     html+='</div>';
                     html+='</div>';

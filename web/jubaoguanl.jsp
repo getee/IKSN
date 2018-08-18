@@ -107,7 +107,7 @@
                         e.preventDefault()
                         $(this).tab('show')
             });
-		
+
 		});  
 	 
 	</script>
@@ -158,7 +158,7 @@
         <c:forEach var="item" items="${ReportBlogList}">
             <div id="1${item.id}" class="row" style="margin:auto;border-bottom-style:solid;border-bottom-width:5px;border-bottom-color:#E9E9E9">
                 <div class="col-xs-12 col-md-8"><h4><a class="text-muted" target="_blank" href="javascript:clickTitle('${item.id}')">${item.blog.title}</a></h4><small style="margin-left: 2% ">举报原因：${item.reason}</small></div>
-                <div class="col-xs-6 col-md-4"><small style="margin-right: 20% ">2017-8-2</small>
+                <div class="col-xs-6 col-md-4"><small style="margin-right: 20% ">${item.blog.time}</small>
                     <a href="javascript:delete_oneReportBlog(${item.id})">
                         <small id="del_oneReportBlog" data-toggle="modal" style="margin-right:3%;cursor: pointer" class="glyphicon glyphicon-trash"></small>
                     </a>
@@ -300,8 +300,8 @@
             for(var i=0;i<data.length-1;i++){
                 htm+="<div id=\"1"+data[i].id+"\" class=\"row\" style=\"margin:auto;border-bottom-style:solid;border-bottom-width:5px;border-bottom-color:#E9E9E9\">\n" +
                     "                <div class=\"col-xs-12 col-md-8\"><h4><a class=\"text-muted\" target=\"_blank\" href=\"javascript:clickName('"+data[i].bid+"')\">"+data[i].title+"</a></h4><small style=\"margin-left: 2% \">举报原因："+data[i].reason+"</small></div>\n" +
-                    "                <div class=\"col-xs-6 col-md-4\"><small style=\"margin-right: 20% \">2017-8-2</small>\n" +
-                    "                    <a href=\"javascript:delete_oneReportResource("+data[i].id+")\">\n" +
+                    "                <div class=\"col-xs-6 col-md-4\"><small style=\"margin-right: 20% \">"+data[i].time+"</small>\n" +
+                    "                    <a href=\"javascript:delete_oneReportBlog("+data[i].id+")\">\n" +
                     "                        <small id=\"del_oneReportResource\" data-toggle=\"modal\" style=\"margin-right:3%;cursor: pointer\" class=\"glyphicon glyphicon-trash\"></small>\n" +
                     "                    </a>\n" +
                     "                </div>\n" +
@@ -360,7 +360,7 @@
                     "                    <div><a href=\"xq.jsp\"><img src=\"img/2.svg\"></a></div>\n" +
                     "                </div>\n" +
                     "                <div class=\"col-xs-12 col-md-8\"><h4><a class=\"text-muted\" target=\"_blank\" href=\"javascript:clickName('"+data[i].rid+"','"+data[i].id+"','"+data[i].reason+"')\">"+data[i].name+"</a></h4><small style=\"margin-left: 2% \">举报原因："+data[i].reason+"</small></div>\n" +
-                    "                <div class=\"col-xs-6 col-md-3\"><small style=\"margin-right: 20% \">2017-8-2</small>\n" +
+                    "                <div class=\"col-xs-6 col-md-3\"><small style=\"margin-right: 20% \">"+data[i].time+"</small>\n" +
                     "                    <a href=\"javascript:delete_oneReportResource("+data[i].id+")\">\n" +
                     "                        <small id=\"del_oneReportResource\" data-toggle=\"modal\" style=\"margin-right:3%;cursor: pointer\" class=\"glyphicon glyphicon-trash\"></small>\n" +
                     "                    </a>\n" +
@@ -378,14 +378,14 @@
 
     function clickTitle(reportid) {
         var a="/blog/mCheckReportblog/"+reportid;
-        location.href=a;
-        //window.open(a);
+        //location.href=a;
+        window.open(a);
     }
     function clickName(resourceid,reportid,reason) {
         //alert(resourceid+reason+reportid)
         var a="/resource/mCheckReportResource/"+resourceid+"/"+reportid+"?reason="+reason;
-        location.href=a;
-        //window.open(a);
+        //location.href=a;
+        window.open(a);
     }
     function delete_oneReportBlog(url){
         var  userChoice=window.confirm("您确认要去除这个博客吗?");
@@ -446,8 +446,11 @@
             unum=data[data.length-1].num;
             var htm = "";
             for (var i = 0; i < data.length-1; i++) {
+                var sex=data[i].sex;
+                if(sex==0){sex="男";}else {sex="女";}
+
                 htm+="<div id=\"3"+data[i].uid+"\" class=\"row\" style=\"margin:auto;border-bottom-style:solid;border-bottom-width:5px;border-bottom-color:#E9E9E9\">\n" +
-                    "                  <div class=\"col-xs-12 col-md-8\"><h4><a class=\"text-muted\" style=\" \" target=\"_blank\" href=\"gerenzhongxin.jsp\">"+data[i].nickName+"</a></h4><small style=\"margin-left: 2% \">sex:"+data[i].sex+"</small><small style=\"margin-left: 2% \">EMAIL:"+data[i].email+"</small></div>\n" +
+                    "                  <div class=\"col-xs-12 col-md-8\"><h4><a class=\"text-muted\" style=\" \" target=\"_blank\" href=\"gerenzhongxin.jsp\">"+data[i].nickName+"</a></h4><small style=\"margin-left: 2% \">sex:"+sex+"</small><small style=\"margin-left: 2% \">EMAIL:"+data[i].email+"</small></div>\n" +
                     "                  <div class=\"col-xs-6 col-md-4\"><small style=\"margin-right: 20% \">截禁时间："+data[i].time+"</small>\n" +
                     "                      <h4><a href=\"javascript:update_isspeakUser("+data[i].uid+")\">\n" +
                     "                          解除禁言\n" +

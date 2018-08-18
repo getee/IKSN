@@ -123,7 +123,7 @@
 	  	<td style="cursor: pointer"><a class="text-muted" href="/user/listAllFriends/${sessionScope.loginresult.uid}/1"><h4>我的消息</h4></a></td>
 	  	<td style="cursor: pointer"><a class="text-muted" href="jifenzhongxin.jsp"><h4>积分</h4></a></td>
 	  	<td style="cursor: pointer"><a class="text-muted" href="writingCenter.jsp"><h4>我的博客</h4></a></td>
-	  	<td style="cursor: pointer"><a class="text-muted" href="#"><h4>我的下载</h4></a></td>
+	  	<td style="cursor: pointer"><a class="text-muted" href="wodexiazai.jsp"><h4>我的下载</h4></a></td>
           <c:if test="${sessionScope.loginresult.isadmin eq '1'}">
               <td style="cursor: pointer"><a href="/blog/mGetAllReportBlog"><h4>举报管理</h4></a></td>
           </c:if>
@@ -142,7 +142,6 @@
 	<table class="table table-hover table-striped" style="margin-top:-1%;">
   		<tr>
   			<td>积分</td>
-  			<td>来源</td>
   			<td>原因</td>
   			<td>日期</td>
   		</tr>
@@ -150,7 +149,6 @@
 		<c:forEach items="${requestScope.cost}" var="c">
 			<tr>
 				<td>-${c.number}</td>
-				<td>0</td>
 				<td>${c.operation}</td>
 				<td>${c.time}</td>
 			</tr>
@@ -158,7 +156,6 @@
 		<c:forEach items="${requestScope.recharge}" var="c">
 			<tr>
 				<td>+${c.number}</td>
-				<td>0</td>
 				<td>${c.operation}</td>
 				<td>${c.time}</td>
 			</tr>

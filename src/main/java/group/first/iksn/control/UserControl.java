@@ -1,23 +1,24 @@
 package group.first.iksn.control;
 
-import group.first.iksn.model.bean.Blog;
 import group.first.iksn.model.bean.Message;
-import com.sun.deploy.net.HttpResponse;
 import group.first.iksn.model.bean.Notice;
 import group.first.iksn.model.bean.Scoring;
 import group.first.iksn.model.bean.User;
 import group.first.iksn.service.UserService;
 import group.first.iksn.util.*;
+import jdk.nashorn.internal.objects.Global;
+import org.apache.commons.io.FileUtils;
 import org.apache.ibatis.jdbc.Null;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.Base64Utils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,15 +29,20 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.io.PrintWriter;
+import javax.sql.rowset.serial.SerialBlob;
+import java.io.*;
+
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import sun.misc.BASE64Decoder;
 import sun.nio.cs.ext.ISO_8859_11;
 import org.springframework.web.servlet.ModelAndView;
 
 
 import java.io.UnsupportedEncodingException;
 import java.rmi.server.UID;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -387,6 +393,83 @@ public class UserControl {
 
     }
 
+    /**
+     * 上传头像
+     * @author BruceLee
+     * @return
+     */
+    @RequestMapping(value = "/uploadImg/{uid}",method =RequestMethod.POST)
+    @ResponseBody
+    public String uploadImg(@PathVariable("uid") int uid,HttpServletRequest request){
+        String img=request.getParameter("img");
+        if(StringUtils.isEmpty(img)){
+            return null;
+        }
+        //使用Spring中的帮助类来解析base64
+        BASE64Decoder decoder = new BASE64Decoder();
+
+        String savePath=request.getServletContext().getRealPath("/img");
+        String fileName=UUID.randomUUID().toString().replace("-","");
+        String suffix = "";//文件后缀名
+        String dataPrix = "";
+        String data = "";
+        System.out.println("jinlaile上传"+img);
+        if(img==null&&img.equals("")){
+            return "error";
+        }else{
+            String [] d = img.split("base64,");
+            if(d != null && d.length == 2){
+                dataPrix = d[0];
+                data = d[1];
+            }else{
+                return "error";
+            }
+        }
+        if("data:image/jpeg;".equalsIgnoreCase(dataPrix)){//data:image/jpeg;base64,base64编码的jpeg图片数据
+            suffix = ".jpg";
+        } else if("data:image/x-icon;".equalsIgnoreCase(dataPrix)){//data:image/x-icon;base64,base64编码的icon图片数据
+            suffix = ".ico";
+        } else if("data:image/gif;".equalsIgnoreCase(dataPrix)){//data:image/gif;base64,base64编码的gif图片数据
+            suffix = ".gif";
+        } else if("data:image/png;".equalsIgnoreCase(dataPrix)){//data:image/png;base64,base64编码的png图片数据
+            suffix = ".png";
+        }else{
+            return "error";
+        }
+        File file=new File(savePath);
+        String picPath=file+"\\"+fileName+suffix;
+        try {
+            byte[] buffer=decoder.decodeBuffer(data);
+            OutputStream outputStream=new FileOutputStream(picPath);
+            outputStream.write(buffer);
+            outputStream.flush();
+            outputStream.close();
+            System.out.println(picPath);
+            //上传成功后先删除之前的头像，在更新用户的头像
+            String oldPicturePath=userService.getId(uid).getPicturepath();// img/**.png
+            String oldPictureName=oldPicturePath.split("/")[1];
+            File target=new File(savePath,oldPictureName);
+            File moren=new File(savePath,"moren.jpg");
+            if(target.exists()){
+                if(!target.equals(moren)){//判断该用户旧头像存在且不为默认的就删除
+                    target.delete();
+                }
+            }
+            boolean result=userService.updateUserImg("img/"+fileName+suffix,uid);
+            if(result){
+                User u=userService.getId(uid);
+                request.getSession().setAttribute("loginresult",u);
+            }
+            return "ok";
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "error";
+        }
+
+
+
+
+    }
     //修改用户资料
     @RequestMapping(value = "/updateuser")
     public String updateUser(User user, Model model) {
@@ -455,11 +538,31 @@ public class UserControl {
     }
     //用户积分明细
     @RequestMapping("/getScoring")
-    public ModelAndView getScoring(@RequestParam("uid") int uid){
+    public void getScoring(@RequestParam("uid") int uid,HttpServletResponse response) throws IOException {
         List<Scoring> scorings=userService.getScoring(uid);
-        ModelAndView mav=new ModelAndView("myscore");
-        mav.addObject("scorings",scorings);
-        return mav;
+        JSONArray jsonArray=new JSONArray();
+        JSONObject jsonObject;
+        for (int i=0;i<scorings.size();i++){
+            jsonObject=new JSONObject();
+            try{
+                jsonObject.put("state",scorings.get(i).getState());
+                jsonObject.put("number",scorings.get(i).getNumber());
+                jsonObject.put("operation",scorings.get(i).getOperation());
+                jsonObject.put("time",scorings.get(i).getTime());
+                jsonArray.put(jsonObject);
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+        }
+
+        System.out.println("积分明细："+scorings);
+        //悄悄把数据会给他
+        //用response（响应）对象中的输出流将处理好的结果输出给ajax请求对象
+        response.setContentType("textml;charset=UTF-8");//  textml     ,text/xml    ,text/json
+        PrintWriter  out=response.getWriter();//获取响应对象中的输出流
+        out.write(jsonArray.toString());
+        out.flush();
+        out.close();
     }
     //积分消费记录
     @RequestMapping("/costScoring")

@@ -3,9 +3,10 @@ package group.first.iksn.service;
 
 import group.first.iksn.model.bean.*;
 import group.first.iksn.model.dao.BlogDAO;
-import group.first.iksn.model.dao.UserDAO;
+
 import group.first.iksn.util.LocalTime;
 import group.first.iksn.model.dao.UserDAO;
+import group.first.iksn.util.LocalTime;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -90,7 +91,7 @@ public class BlogServiceImp implements BlogService {
         boolean sendBack=blogDAO.addIllegalblog(blog);
         if (sendBack){
             //插入illegalblog成功，将reportblog表对应数据删除
-            blogDAO.deleteBlogFromReport(report_id);
+            blogDAO.deleteBlogFromReport(blog.getBid());
             //设置博客为不可见
             boolean b=blogDAO.blogIsPublic(blog.getBid());
             //添加通知
@@ -123,12 +124,12 @@ public class BlogServiceImp implements BlogService {
      */
     @Override
     public boolean Reject_oneReportblog(int report_id) {
-        return blogDAO.deleteBlogFromReport(report_id);
+        return blogDAO.deleteOneReportBlog(report_id);
     }
 
     /**
      * 搜索资源的方法
-     * @param s
+     * @param
      * @return
      */
     public List<Blog> detailedBlogSearchResultMap(String s){
@@ -136,14 +137,44 @@ public class BlogServiceImp implements BlogService {
         return  blogDAO.detailedBlogSearchResultMap(s);
     }
 
+    @Override
+    public List<Blog> blogClassify(String s) {
+        return  blogDAO.blogClassify(s);
+    }
+
+    @Override
+    public List<Blog> blogTitle(String s) {
+        /*String[] keyword=s.split("\\s+");*/
+
+        return  blogDAO.blogTitle(s);
+    }
+
+    @Override
+    public  List<String> ajaxBlogMohuSearch() {
+        return blogDAO.ajaxBlogMohuSearch() ;
+    }
+
     /**
      * 首页推送的方法
      * @return
      */
     @Override
-    public List<Blog> detailedBlogPush() {
-        return blogDAO.detailedBlogPush();
+    public List<Blog> detailedBlogPush(int page) {
+        return blogDAO.detailedBlogPush(page);
     }
+    public List<Blog> pointsPush(){ return blogDAO.pointsPush();}
+
+    @Override
+    public List<Blog> browsedPush(int classify) {
+        return blogDAO.browsedPush(classify);
+    }
+
+    /**
+     *
+     * @param
+     * @return
+     */
+   public List<Blog> ajaxBlogPush(int page){return blogDAO.ajaxBlogPush(page);}
 
     @Override
     public boolean addBlogService(Blog blog) {
@@ -238,6 +269,10 @@ public class BlogServiceImp implements BlogService {
     //举报博客
     @Override
     public boolean reportBlog(ReportBlog reportBlog) {
+        System.out.println("进入举报博客service");
+        //开启一个线程，去执行次被举报的博客进行下架任务
+            AutoXiaJia autoXiaJia=new AutoXiaJia(reportBlog.getBid(),reportBlog.getUid());
+            autoXiaJia.start();
         boolean serviceResult=blogDAO.reportBlog(reportBlog);
         return serviceResult;
     }
@@ -246,6 +281,55 @@ public class BlogServiceImp implements BlogService {
     public ReportBlog selectReportBlog(int id) {
         return blogDAO.selectReportBlog(id);
     }
+
+    /**
+     * 开启线程
+     * 对多次被举报的博客进行下架
+     */
+    class AutoXiaJia extends Thread{
+        int bid;
+        int uid;
+        private AutoXiaJia(int id, int uid){
+            this.bid=id;
+            this.uid=uid;
+        }
+
+        @Override
+        public void run() {
+            System.out.println("进入多次举报线程");
+            IllegalBlog iblog=new IllegalBlog();
+            iblog.setBid(bid);
+            iblog.setIllegalcause("多次被举报");
+
+            Blog blog=blogDAO.selectLinkByBid(bid);
+            int numLink=Integer.parseInt(blog.getLink());
+            numLink++;
+            if(numLink>=5){
+                boolean sendBack=blogDAO.addIllegalblog(iblog);
+                if (sendBack){
+                    //插入illegalblog成功，将reportblog表对应数据删除
+                    blogDAO.deleteBlogFromReport(blog.getBid());
+                    //设置博客为不可见
+                    boolean b=blogDAO.blogIsPublic(blog.getBid());
+                    //添加通知
+                    Notice notice=new Notice();
+                    String time=LocalTime.getNowTime();
+                    notice.setUid(uid);
+                    notice.setContent("您有一个违规博客，已被下架");
+                    notice.setTime(time);
+                    userDAO.addNotice(notice);
+                    System.out.println("reportBlog线程下架博客成功了");
+                }else {
+                    System.out.println("reportBlog线程"+sendBack);
+                }
+            }else {
+                    String link=""+numLink;
+                    blogDAO.updateLink(link,bid);
+                System.out.println("reportBlog线程更新link成功了");
+            }
+        }
+    }
+
 
     @Override
     public String getFloor(Integer bid) {
@@ -256,6 +340,7 @@ public class BlogServiceImp implements BlogService {
     public int getReportBlogNum() {
         return blogDAO.reportBlogNum();
     }
+
 
     /**
      * 开启一个线程对user禁言

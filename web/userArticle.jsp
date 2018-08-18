@@ -108,9 +108,7 @@
 		#div-left{
 			position: fixed;top: 30%;left: 2%;
 		}
-		#toTop {display: none;text-decoration: none;position: fixed;bottom: 10px;right: 10px;overflow: hidden;width: 40px;height: 40px;border: none;text-indent: 100%; background-image: url(image/goTop.jpg);background-size: 100% 100%;text-align: center;}
-			display:block;width: 30px;height: 30px;border: none;background-size: 100% 100%;text-align: center;border-radius: 20px
-		}
+		#toTop {display: none;text-decoration: none;position: fixed;bottom: 3%;right: 6%;overflow: hidden;width: 40px;height: 40px;border: none;text-indent: 100%; background-image: url(img/goTop.jpg);background-size: 100% 100%;text-align: center;}
 	</style>
 
 </head>

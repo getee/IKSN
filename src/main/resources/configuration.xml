@@ -25,6 +25,7 @@
 
         <typeAlias type="group.first.iksn.model.bean.ReportResource" alias="ReportResource"></typeAlias>
         <typeAlias type="group.first.iksn.model.bean.Scoring" alias="Scoring"></typeAlias>
+
     </typeAliases>
 
 

@@ -40,6 +40,7 @@ public class ResourceDAOImp extends BaseDAOImp implements ResourceDAO {
        return  num;
     }
 
+
     @Override
     public Resource getResource(int rid) {
         Resource r=getSqlSession().getMapper(ResourceDAO.class).getResource(rid);
@@ -96,9 +97,14 @@ public class ResourceDAOImp extends BaseDAOImp implements ResourceDAO {
         return isOK;
     }
 
+    /**
+     * 资源搜索
+     * @param s
+     * @return
+     */
     @Override
-    public ArrayList<Resource> searchResource(String s) {
-        ArrayList<Resource> re=getSqlSession().getMapper(ResourceDAO.class).searchResource(s);
+    public List<Resource> searchResource(String s) {
+        List<Resource> re=getSqlSession().getMapper(ResourceDAO.class).searchResource(s);
         System.out.println("resourceDAOImp:"+re);
         return re;
     }
@@ -126,6 +132,17 @@ public class ResourceDAOImp extends BaseDAOImp implements ResourceDAO {
         }
         System.out.println("查到数据");
         return allReportResource;
+    }
+
+    /**
+     * 博客分类搜索
+     * @param key
+     * @return
+     */
+    @Override
+    public List<Resource> ResourcekeywordSearch(String key) {
+        List<Resource> list=getSqlSession().getMapper(ResourceDAO.class).ResourcekeywordSearch(key);
+        return list;
     }
 
     @Override
@@ -164,6 +181,17 @@ public class ResourceDAOImp extends BaseDAOImp implements ResourceDAO {
     @Override
     public boolean changeScore(int uid, int scoring) {
         return getSqlSession().getMapper(ResourceDAO.class).changeScore(uid, scoring);
+    }
+
+    @Override
+    public boolean addDownResource(int downId, int rid, String nowTime) {
+
+        return getSqlSession().getMapper(ResourceDAO.class).addDownResource(downId,rid,nowTime);
+    }
+
+    @Override
+    public String getDownedTime(int rid, int uid) {
+        return getSqlSession().getMapper(ResourceDAO.class).getDownedTime(rid,uid);
     }
 
     /**
