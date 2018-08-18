@@ -394,18 +394,24 @@ public String ajaxBlogSearch(HttpServletResponse response, HttpServletRequest re
     }
     /**
      * 举报博客
-     * @param reportBlog
-     * @return
+     *
      */
     @RequestMapping("/reportBlog")
-    public ModelAndView reportBlog(@ModelAttribute("reportBlog")ReportBlog reportBlog) throws UnsupportedEncodingException {
-        ModelAndView mav=new ModelAndView("userArticle");
-        System.out.println(reportBlog);
+    public void reportBlog(HttpServletResponse response,
+    int bid,int uid,String reason) throws IOException {
+        ReportBlog reportBlog=new ReportBlog();
+        String r=new String(reason.getBytes("ISO-8859-1"),"UTF-8");
+        reportBlog.setBid(bid);
+        reportBlog.setUid(uid);
+        reportBlog.setReason(r);
+        System.out.println("举报博客："+reportBlog);
         boolean result=blogService.reportBlog(reportBlog);
-        mav.getModel().put("result",result);
         System.out.println(result);
-
-        return mav;
+        response.setContentType("textml;charset=UTF-8");//  textml     ,text/xml    ,text/json
+        PrintWriter out=response.getWriter();//获取响应对象中的输出流
+        out.write(result+"");
+        out.flush();
+        out.close();
     }
     /**
      * 管理员查看被举报的博客，进行审核

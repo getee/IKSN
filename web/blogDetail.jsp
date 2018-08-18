@@ -488,11 +488,11 @@
 			</div>
 			<div class="modal-body">
 				<!--								文本域-->
-				<form action="/blog/reportBlog" method="post">
+				<form >
 					<input type="hidden" name="bid" type="text" value="${listblog.bid}" readonly="readonly"/>
 					<input type="hidden" name="uid" type="text" value="${sessionScope.loginresult.uid}" readonly="readonly"/>
-					<textarea name="reason" class="form-control" rows="3"></textarea><br/>
-					<input style="float: right;"  type="submit" value="提交" onclick="report(${result})" />
+					<textarea id="reason" name="reason" class="form-control" rows="3"></textarea><br/>
+					<input id="reportBlog" style="float: right;"  type="button" value="提交" />
 				</form>
 				<!--								-->
 
@@ -510,9 +510,14 @@
 <a href="javascript:void(0)" id="toTop" style="border-radius: 20px"> </a>
 </body>
 <script>
-function report(result) {
-	alert("举报成功")
-}
+    $(document).ready(function () {
+        $("#reportBlog").click(function () {
+            $.get("/blog/reportBlog?bid=${listblog.bid}&uid=${sessionScope.loginresult.uid}&reason="+$('#reason').val(),function (data,status) {
+                $("#modal-container-830220").modal('hide');
+                alert("举报成功");
+            })
+        })
+    })
 
 </script>
 </html>
