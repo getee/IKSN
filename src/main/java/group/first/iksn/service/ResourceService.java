@@ -1,12 +1,15 @@
 package group.first.iksn.service;
 
 import group.first.iksn.model.bean.CollectResource;
+import group.first.iksn.model.bean.ReportResource;
 import group.first.iksn.model.bean.Resource;
 import group.first.iksn.model.bean.ReportResource;
 import group.first.iksn.model.bean.ResourceComments;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import java.util.List;
 
 public interface ResourceService {

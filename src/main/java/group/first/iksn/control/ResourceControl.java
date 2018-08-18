@@ -290,14 +290,15 @@ public class ResourceControl {
 
     //资源举报
     @RequestMapping("/reportResource")
-    public ModelAndView reportResource(@ModelAttribute("reportResource")ReportResource reportResource) throws UnsupportedEncodingException {
+    public ModelAndView reportResource(ReportResource reportResource) {
+        System.out.println(reportResource);
         ModelAndView mav=new ModelAndView("xq");
         //String reason=new String(reportResource.getReason().getBytes("ISO-8859-1"),"UTF-8");
         //reportResource.setReason(reason);
         System.out.println(reportResource);
        boolean result=resourceService.reportResource(reportResource);
         mav.getModel().put("result",result);
-        System.out.println(result);
+        System.out.println("SSDD"+result);
          return mav;
     }
 
@@ -376,7 +377,7 @@ public class ResourceControl {
         User u= (User) session.getAttribute("loginresult");
         System.out.println(u);
         List<Resource> resource=resourceService.getdownloadResource(u.getUid());
-        System.out.println(resource);
+
         //session.setAttribute("collectblog",collectblog);
         JSONArray jsonArray=new JSONArray();
         JSONObject jsonObject=null;

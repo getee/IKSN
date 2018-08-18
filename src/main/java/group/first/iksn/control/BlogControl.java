@@ -13,9 +13,6 @@ import org.json.JSONObject;
 import group.first.iksn.util.Responser;
 import group.first.iksn.util.LocalTime;
 
-import group.first.iksn.util.Responser;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -27,14 +24,11 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.json.Json;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
-
-
 import java.util.*;
 
 
@@ -420,15 +414,19 @@ public String ajaxBlogSearch(HttpServletResponse response, HttpServletRequest re
      * @return
      */
     @RequestMapping("/mCheckReportblog/{id}")
-    public String mCheckReportblog(@PathVariable int id,Model model){
+    public String mCheckReportblog(@PathVariable int id,Model model,HttpSession session){
         ReportBlog reportBlog=blogService.selectReportBlog(id);
         System.out.println(reportBlog);
+        int bid=reportBlog.getBid();
         model.addAttribute("reportBlog",reportBlog);
-//        EncodingTool.encodeStr(reason);
-//        System.out.println(blog_id+reason);
-//        model.addAttribute("blog_id",blog_id);
-//        model.addAttribute("reportReason",reason);
-//        model.addAttribute("report_id",id);
+
+        Map<String,Object> map=blogService.getBlogAndUser(bid);
+        model.addAttribute("boke",map.get("boke"));
+        model.addAttribute("yonghu",map.get("yonghu"));
+        model.addAttribute("original",map.get("original"));
+        model.addAttribute("fans",map.get("fans"));
+        model.addAttribute("attention",map.get("attention"));
+
         return "userArticle";
     }
 
@@ -476,6 +474,7 @@ public String ajaxBlogSearch(HttpServletResponse response, HttpServletRequest re
             jsonObject.put("id",rb.getId());
             jsonObject.put("reason",rb.getReason());
             jsonObject.put("title",rb.getBlog().getTitle());
+            jsonObject.put("time",rb.getBlog().getTime());
             jsonObject.put("bid",rb.getBid());
             jsonArray.put(jsonObject);
         }

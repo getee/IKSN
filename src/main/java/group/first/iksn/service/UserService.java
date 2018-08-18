@@ -1,5 +1,6 @@
 package group.first.iksn.service;
 
+import group.first.iksn.model.bean.Blog;
 import group.first.iksn.model.bean.Message;
 import group.first.iksn.model.bean.Notice;
 import group.first.iksn.model.bean.Scoring;
@@ -32,8 +33,6 @@ public interface UserService {
     //修改用户资料
     User updateUser(User user);
 
-    //判断用户是否存在
-    public boolean isUserExist(int uid);
     //修改用户密码
     public void updatePassword(int uid,String newpassword);
 

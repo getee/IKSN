@@ -272,16 +272,6 @@ public class UserServiceImp implements UserService {
            return user;
     }
 
-
-    //判断用户是否存在
-    @Override
-    public boolean isUserExist(int uid) {
-            if (userDAO.getId(uid) == null) {
-                return false;
-            } else {
-                return true;
-            }
-        }
     //修改用户密码
     @Override
     public void updatePassword(int uid,String newpassword) {

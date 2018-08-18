@@ -2,7 +2,6 @@ package group.first.iksn.service;
 
 import group.first.iksn.model.bean.*;
 import group.first.iksn.model.bean.ReportResource;
-import group.first.iksn.model.bean.ResourceComments;
 import group.first.iksn.model.dao.ResourceDAO;
 import group.first.iksn.model.dao.UserDAO;
 import group.first.iksn.util.Inspect;
