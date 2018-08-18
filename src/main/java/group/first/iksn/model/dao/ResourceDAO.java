@@ -39,7 +39,8 @@ public interface ResourceDAO {
     boolean reportResource(ReportResource reportResource);
 
     //搜索资源
-    ArrayList<Resource> searchResource(String s);
+    List<Resource> searchResource(String s);
+
     //被举报资源的数量
     int reportResourceNum();
     //获取所有被举报资源
@@ -48,6 +49,8 @@ public interface ResourceDAO {
     Resource selectUidByRid(int rid);
     //更改积分数（更改者，更改后积分）
     boolean changeScore(int uid, int scoring);
+
+    List<Resource> ResourcekeywordSearch(String key);
 
     //上传的资源查询
     List<Resource> getUploadResource(int uid);

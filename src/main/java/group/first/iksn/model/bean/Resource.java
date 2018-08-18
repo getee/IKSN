@@ -30,8 +30,6 @@ public class Resource {
                 ", classify=" + classify +
                 ", introduce='" + introduce + '\'' +
                 ", time='" + time + '\'' +
-                ", user=" + user +
-                ", resourceTags=" + resourceTags +
                 '}';
     }
 

@@ -83,7 +83,8 @@
                        </p>
 
                         <h5 style="color:#928F8F;float: right">
-                            博客类型:<%--${t.blogTags.btag}--%><c:forEach var="tag" items="${t.blogTags}">${tag.btag}</c:forEach>
+                            博客分类:${t.classify}
+                            <%--博客类型:&lt;%&ndash;${t.blogTags.btag}&ndash;%&gt;<c:forEach var="tag" items="${t.blogTags}">${tag.btag}</c:forEach>--%>
                             &nbsp&nbsp&nbsp&nbsp阅读数：${t.points}</h5>
                        <p>
                            <a class="btn" href="userArticle.jsp?searchB=${t.bid}">查看更多 »</a>

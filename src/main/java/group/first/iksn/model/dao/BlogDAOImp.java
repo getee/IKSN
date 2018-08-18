@@ -11,10 +11,32 @@ import java.util.Map;
 
 @Component("blogDAO")
 public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
-
+    /**
+     * 博客搜索
+     * @param s
+     * @return
+     */
     public List<Blog> detailedBlogSearchResultMap(String s) {
         List<Blog> b=getSqlSession().getMapper(BlogDAO.class).detailedBlogSearchResultMap(s);
         return b;
+    }
+
+    @Override
+    public List<Blog> blogClassify(String s) {
+        List<Blog> b=getSqlSession().getMapper(BlogDAO.class).blogClassify(s);
+        return b;
+    }
+
+    @Override
+    public List<Blog> blogTitle(String s) {
+        List<Blog> b=getSqlSession().getMapper(BlogDAO.class).blogTitle(s);
+        return b;
+    }
+
+    @Override
+    public  List<String> ajaxBlogMohuSearch() {
+        List<String> a=getSqlSession().getMapper(BlogDAO.class).ajaxBlogMohuSearch();
+        return a ;
     }
 
 
@@ -23,8 +45,31 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
      * @return
      */
     @Override
-    public List<Blog> detailedBlogPush() {
-        List<Blog> b=getSqlSession().getMapper(BlogDAO.class).detailedBlogPush();
+    public List<Blog> detailedBlogPush(int page) {
+        List<Blog> b=getSqlSession().getMapper(BlogDAO.class).detailedBlogPush(page);
+        return b;
+    }
+
+    public List<Blog> pointsPush(){
+        List<Blog> b=getSqlSession().getMapper(BlogDAO.class).pointsPush();
+        return b;
+
+    }
+
+    @Override
+    public List<Blog> browsedPush(int classify) {
+        List<Blog> b=getSqlSession().getMapper(BlogDAO.class).browsedPush(classify);
+        return b;
+    }
+
+    /**
+     * 首页ajax推送
+     * @param page
+     * @return
+     */
+    @Override
+    public List<Blog> ajaxBlogPush(int page) {
+        List<Blog> b=getSqlSession().getMapper(BlogDAO.class).ajaxBlogPush(page);
         return b;
     }
 
@@ -205,6 +250,7 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
     }
 
     @Override
+
     public Blog selectLinkByBid(int bid) {
         Blog blog=null;
         try {

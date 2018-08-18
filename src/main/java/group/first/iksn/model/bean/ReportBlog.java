@@ -8,6 +8,7 @@ public class ReportBlog {
 
     private Blog blog;
 
+
     public Blog getBlog() {
         return blog;
     }

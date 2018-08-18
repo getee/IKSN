@@ -39,6 +39,7 @@ public interface UserDAO {
 
     //修改用户
     public boolean updateUser( User user);
+    public boolean updateUserImg(@Param("picturepath") String picturepath,@Param("uid") int uid);
     public User getId(int uid);
      //修改用户密码
     boolean updatePassword(User user);
