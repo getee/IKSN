@@ -92,6 +92,7 @@
         <association property="resource" column="rid" javaType="Resource">
             <id column="rid" property="rid"/>
             <result column="name" property="name"/>
+            <result column="time" property="time"/>
         </association>
     </resultMap>
     <select id="getAllReportResource" resultMap="getResourceBy_Reportrid">
