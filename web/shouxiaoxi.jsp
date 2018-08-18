@@ -184,7 +184,7 @@
                         <c:if test="${user.uid eq message.fromid}">
                             <c:choose>
                                 <c:when test="${message.isread==0}">
-                                    <div class="row well noticeContext" style="background-color: black"><a class="tooltip_a" href="/user/listAllFriends/${sessionScope.loginresult.uid}/1?sendback=${user.uid}" data-toggle="tooltip" title="点击回Ta"><h4>${user.nickname}(${user.email}):${message.content}</h4></a><small>${message.time}</small></div>
+                                    <div class="row well noticeContext" style="background-color: black"><a class="tooltip_a" href="/user/listAllFriends/${sessionScope.loginresult.uid}/1?sendback=${user.uid}&sendName=${user.nickname}" data-toggle="tooltip" title="点击回Ta"><h4>${user.nickname}(${user.email}):${message.content}</h4></a><small>${message.time}</small></div>
                                 </c:when>
                                 <c:otherwise>
                                     <div class="row well noticeContext"><a class="tooltip_a" href="/user/listAllFriends/${sessionScope.loginresult.uid}/1?sendback=${user.uid}" data-toggle="tooltip" title="点击回Ta"><h4>${user.nickname}(${user.email}):${message.content}</h4></a><small>${message.time}</small></div>
