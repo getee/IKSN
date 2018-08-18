@@ -16,7 +16,7 @@
     <script src="js/jquery-3.3.1.js"></script>
     <script src="bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="ueditor.config.js"></script>
-    <script type="text/javascript" charset="utf-8" src="ueditor.all.min.js"> </script>
+    <script type="text/javascript" charset="utf-8" src="ueditor.all.js"> </script>
     <script type="text/javascript" charset="utf-8" src="lang/zh-cn/zh-cn.js"></script>
     <link rel="stylesheet" href="bootstrap-3.3.7/dist/css/bootstrap-theme.min.css" crossorigin="anonymous">
 
