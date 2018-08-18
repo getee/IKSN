@@ -285,7 +285,20 @@
         //进聊天页面
         $(".chat-list-people").each(function () {
             $(this).click(function () {
+                allNotReadNum-=oneNOtFriendNum;
                 oneNOtFriendNum=0;
+                if(allNotReadNum==0){
+                    $("#allNotReadNum").html("");
+                }else{
+                    $("#allNotReadNum").html(allNotReadNum);
+                }
+                if(oneNOtFriendNum==0){
+                    $("#messagenum"+webFromid).html("");
+                }else{
+                    $("#messagenum"+webFromid).html(oneNOtFriendNum);
+
+                }
+
                 toid=$(this).attr("id");
                 var n = $(this).index();
                 $(".chatBox-head-one").toggle();

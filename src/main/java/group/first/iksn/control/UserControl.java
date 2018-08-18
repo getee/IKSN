@@ -455,6 +455,10 @@ public class UserControl {
                 }
             }
             boolean result=userService.updateUserImg("img/"+fileName+suffix,uid);
+            if(result){
+                User u=userService.getId(uid);
+                request.getSession().setAttribute("loginresult",u);
+            }
             return "ok";
         } catch (IOException e) {
             e.printStackTrace();
