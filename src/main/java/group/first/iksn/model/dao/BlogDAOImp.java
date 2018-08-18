@@ -5,15 +5,38 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 import java.rmi.server.UID;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 @Component("blogDAO")
 public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
-
+    /**
+     * 博客搜索
+     * @param s
+     * @return
+     */
     public List<Blog> detailedBlogSearchResultMap(String s) {
         List<Blog> b=getSqlSession().getMapper(BlogDAO.class).detailedBlogSearchResultMap(s);
         return b;
+    }
+
+    @Override
+    public List<Blog> blogClassify(String s) {
+        List<Blog> b=getSqlSession().getMapper(BlogDAO.class).blogClassify(s);
+        return b;
+    }
+
+    @Override
+    public List<Blog> blogTitle(String s) {
+        List<Blog> b=getSqlSession().getMapper(BlogDAO.class).blogTitle(s);
+        return b;
+    }
+
+    @Override
+    public  List<String> ajaxBlogMohuSearch() {
+        List<String> a=getSqlSession().getMapper(BlogDAO.class).ajaxBlogMohuSearch();
+        return a ;
     }
 
 
@@ -22,8 +45,31 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
      * @return
      */
     @Override
-    public List<Blog> detailedBlogPush() {
-        List<Blog> b=getSqlSession().getMapper(BlogDAO.class).detailedBlogPush();
+    public List<Blog> detailedBlogPush(int page) {
+        List<Blog> b=getSqlSession().getMapper(BlogDAO.class).detailedBlogPush(page);
+        return b;
+    }
+
+    public List<Blog> pointsPush(){
+        List<Blog> b=getSqlSession().getMapper(BlogDAO.class).pointsPush();
+        return b;
+
+    }
+
+    @Override
+    public List<Blog> browsedPush(int classify) {
+        List<Blog> b=getSqlSession().getMapper(BlogDAO.class).browsedPush(classify);
+        return b;
+    }
+
+    /**
+     * 首页ajax推送
+     * @param page
+     * @return
+     */
+    @Override
+    public List<Blog> ajaxBlogPush(int page) {
+        List<Blog> b=getSqlSession().getMapper(BlogDAO.class).ajaxBlogPush(page);
         return b;
     }
 
@@ -153,14 +199,14 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
     /**
      * 从reportBlog表中删除一个选中行
      * wenbin
-     * @param report_id
+     * @param bid
      * @return
      */
     @Override
-    public boolean deleteBlogFromReport(int report_id) {
+    public boolean deleteBlogFromReport(int bid) {
         boolean isOK=false;
         try{
-            isOK=getSqlSession().getMapper(BlogDAO.class).deleteBlogFromReport(report_id);
+            isOK=getSqlSession().getMapper(BlogDAO.class).deleteBlogFromReport(bid);
         }catch (Exception e){
             System.out.println("这是添加违规博客出错了");
             e.printStackTrace();
@@ -179,10 +225,34 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
         System.out.println(blogComments);
         return getSqlSession().getMapper(BlogDAO.class).answerDiscuss(blogComments);
     }
-
+//获取楼层
     @Override
     public String selectFloor(Integer bid) {
         return getSqlSession().getMapper(BlogDAO.class).selectFloor(bid);
+    }
+//获取评论
+    @Override
+    public ArrayList<BlogComments> getComments(Integer bid) {
+        return getSqlSession().getMapper(BlogDAO.class).getComments(bid);
+    }
+
+    @Override
+
+    public Blog selectLinkByBid(int bid) {
+        Blog blog=null;
+        try {
+            blog=getSqlSession().getMapper(BlogDAO.class).selectLinkByBid(bid);
+        }catch (Exception e){ e.printStackTrace(); }
+        return blog;
+    }
+
+    @Override
+    public boolean updateLink(String numLink, int bid) {
+        boolean isOk=false;
+        try {
+            isOk=getSqlSession().getMapper(BlogDAO.class).updateLink(numLink,bid);
+        }catch (Exception e){e.printStackTrace();}
+        return isOk;
     }
 
     @Override

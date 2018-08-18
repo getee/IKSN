@@ -13,6 +13,12 @@
 <link href="../js/searchMeme.css" rel="stylesheet" type="text/css" />
 <script src="../js/jquery-3.3.1.js" type="text/javascript"></script>
 <script src="../js/jquery.searchMeme.js" type="text/javascript"></script>--%>
+<script type="text/javascript" src="js/quickQuery-packer.js"></script>
+<link rel="stylesheet" type="text/css" href="css/quickQuery.css">
+<script src="js/select2.js"></script>
+<script src="js/pinyin.js"></script>
+<script src="js/chinese2pinyin.js"></script>
+
 <c:if test="${not empty sessionScope.loginresult}">
     <script>
         //当登录不为空时，用ajax请求后台该用户的好友列表
@@ -470,6 +476,7 @@
                         });
                         $("[data-toggle='popover']").popover('show')
                     }
+
                 });
                 $.get("/user/timingReceivingMessage/${sessionScope.loginresult.uid}",function(data){
                     if(data>0){
@@ -572,9 +579,7 @@
                 </ul>
                 <form class="navbar-form navbar-left" method="post" action="/blog/blogSearch">
                     <div class="form-group">
-
-                        <input id="q1" type="text" class="quickQuery$focus form-control" placeholder="Search" name="content"/>
-                       <%-- <input class="quickQuery$focus" id="" style="border: 3px solid #ccc;" />--%>
+                        <input  id="q1" class="quickQuery$focus" type="text" style="border: 3px solid #ccc;" name="content"/>
                         <div class="quickQuery$focus"></div>
                     </div> <button id="bSearch" type="submit"  class="btn btn-default" >搜索</button>
 
@@ -605,6 +610,7 @@
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav>
+
 </div>
 <script>
     $("li[name='tx']").click(function () {
@@ -648,13 +654,9 @@
         }
     });
 </script>
-<script>
-    $(document).ready(function () {
-       $("#bSearch").click
-    });
 
-</script>
 <!--	导航栏结束-->
+
 
 <script>
 
@@ -671,8 +673,21 @@
     keywordArray[9] = new Array("9", "信息化", "XINXIHUA");
 
     window.onload = function(){
-       // $quickQuery(keywordArray);
+        $.get("/blog/ajaxBlogSearch",function (data) {
+            var json=eval(data);
+            $.each(json,function (index,iteam) {
+                keywordArray[10+index]= new Array("10"+index, json[index].word,chineseToPinYin(json[index].word) );
+            });
+
+        for(var i=0;i<=keywordArray.length;i++){
+            alert(keywordArray);
+        }
+
+        })
+
+       $quickQuery(keywordArray);
     }
+
 </script>
 
 

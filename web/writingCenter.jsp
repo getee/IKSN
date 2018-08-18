@@ -53,7 +53,7 @@
 
 <body  style="background-color:#EBEBEB">
 	<c:if test="${requestScope.blogs eq null}">
-		<c:redirect url='listBlogByUid/${sessionScope.loginresult.uid}'></c:redirect>
+		<c:redirect url='/listBlogByUid/${sessionScope.loginresult.uid}'></c:redirect>
 	</c:if>
 	<div class="container-fluid">
 
@@ -267,6 +267,7 @@
 			</div>
 		</div>
   	</div>
+
 </div>
 </body>
 

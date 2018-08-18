@@ -40,6 +40,7 @@ public class ResourceDAOImp extends BaseDAOImp implements ResourceDAO {
        return  num;
     }
 
+
     @Override
     public Resource getResource(int rid) {
         Resource r=getSqlSession().getMapper(ResourceDAO.class).getResource(rid);
@@ -96,9 +97,14 @@ public class ResourceDAOImp extends BaseDAOImp implements ResourceDAO {
         return isOK;
     }
 
+    /**
+     * 资源搜索
+     * @param s
+     * @return
+     */
     @Override
-    public ArrayList<Resource> searchResource(String s) {
-        ArrayList<Resource> re=getSqlSession().getMapper(ResourceDAO.class).searchResource(s);
+    public List<Resource> searchResource(String s) {
+        List<Resource> re=getSqlSession().getMapper(ResourceDAO.class).searchResource(s);
         System.out.println("resourceDAOImp:"+re);
         return re;
     }
@@ -128,15 +134,57 @@ public class ResourceDAOImp extends BaseDAOImp implements ResourceDAO {
         return allReportResource;
     }
 
+    /**
+     * 博客分类搜索
+     * @param key
+     * @return
+     */
+    @Override
+    public List<Resource> ResourcekeywordSearch(String key) {
+        List<Resource> list=getSqlSession().getMapper(ResourceDAO.class).ResourcekeywordSearch(key);
+        return list;
+    }
+
     @Override
     public Resource selectUidByRid(int rid) {
         return getSqlSession().getMapper(ResourceDAO.class).selectUidByRid(rid);
+    }
+    /**
+     * 查询上传的资源
+     * @param uid
+     * @return
+     */
+    @Override
+    public List<Resource> getUploadResource(int uid) {
+        List<Resource> resources=getSqlSession().getMapper(ResourceDAO.class).getUploadResource(uid);
+        return resources;
+    }
+    //下载资源
+    @Override
+    public List<Resource> downloadResource(int uid) {
+        return getSqlSession().getMapper(ResourceDAO.class).downloadResource(uid);
+    }
+    //我收藏的资源
+    @Override
+    public List<Resource> myCollectResource(int uid) {
+        return getSqlSession().getMapper(ResourceDAO.class).myCollectResource(uid);
     }
 
     //更改积分
     @Override
     public boolean changeScore(int uid, int scoring) {
         return getSqlSession().getMapper(ResourceDAO.class).changeScore(uid, scoring);
+    }
+
+    @Override
+    public boolean addDownResource(int downId, int rid, String nowTime) {
+
+        return getSqlSession().getMapper(ResourceDAO.class).addDownResource(downId,rid,nowTime);
+    }
+
+    @Override
+    public String getDownedTime(int rid, int uid) {
+        return getSqlSession().getMapper(ResourceDAO.class).getDownedTime(rid,uid);
     }
 
     /**

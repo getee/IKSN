@@ -24,8 +24,20 @@ public interface BlogService {
     //添加Blog的服务层
     public boolean addBlogService(Blog blog);
 
+
+    //搜索博客
     List<Blog> detailedBlogSearchResultMap(String s);
-    List<Blog> detailedBlogPush();
+    List<Blog> blogClassify(String s);
+    List<Blog> blogTitle(String s);
+    List<String> ajaxBlogMohuSearch();
+    //首页博客推送
+    List<Blog> detailedBlogPush(int page);
+    List<Blog> pointsPush();
+    List<Blog> browsedPush(int classify);
+    //ajax分页推送
+    List<Blog> ajaxBlogPush(int page);
+
+
     //添加BlogTag的服务层
     public boolean addBlogTagService(BlogTag blogTag);
     //添加UserToBlog的服务层
@@ -95,4 +107,5 @@ public interface BlogService {
     //我发布的博客
     List<Blog> myBlog(int uid);
 
+    ArrayList<BlogComments> getComments(Integer bid);
 }

@@ -78,7 +78,7 @@
             <li ><a href="myresource.jsp">我的收藏</a></li>
             <c:if test="${sessionScope.loginresult.isadmin eq '1'}">
                 <li style="margin-left: 5%"><a href="/blog/mGetAllReportBlog">返回举报页</a></li>
-                <li><a href="javascript:deleteResource(${requestScope.resouce.path})">删除</a></li>
+                <li><a href="javascript:deleteResource('${requestScope.resouce.path}')">删除</a></li>
                 <li><a style="cursor: default">举报原因：${reportRReason}</a></li>
             </c:if>
         </ul>
@@ -88,9 +88,18 @@
 <script>
     function deleteResource(url) {
         var userChoice=window.confirm("您确认要去除这个资源吗？");
-        var a="/"+url;
+        var a="/resource/mDeleteResourceForReport/${resourceid}";
         if(userChoice){
-             location.href=a;
+            $("loadGif").show();
+            $.get(a,function (data) {
+                $("loadGif").hide();
+                if(data=="success"){
+                    location.href="/blog/mGetAllReportBlog";
+                }else {
+                    alert("未知错误，请再试一次！！")
+                }
+            })
+
         }
     }
 </script>
@@ -112,6 +121,7 @@
                         </div>
                         <div style="height:20px; width:420px; float:left; margin-top:15px; margin-left:40px;  font-size:20px ; color:#000000;">
                             <a>${requestScope.resouce.name}</a>
+
                         </div>
                         <div style="height:30px; width:700px; float:left;margin-top:12px; margin-left:40px;font-size:14px;">
                             <div style="width:250px; height:30px;  float:left">
@@ -162,11 +172,11 @@
                                         </div>
                                         <div class="modal-body">
                                             <!--								文本域-->
-                                            <form id="addForm" action="/resource/reportResource" method="post">
+                                            <form action="/resource/reportResource" method="post">
                                                 <input name="rid" type="hidden" value="${requestScope.resouce.rid}" readonly="readonly"/>
                                                 <input name="uid" type="hidden" value="${sessionScope.loginresult.uid}" readonly="readonly"/>
                                                 <textarea name="reason" class="form-control" rows="3"></textarea><br/>
-                                                <input  type="submit" value="提交" onclick="report()"/>
+                                                <input style="margin-left: 92%;"  type="submit" value="提交" onclick="report(${result})" />
                                             </form>
                                             <!--								-->
 
@@ -227,6 +237,7 @@
                         </div>
                         <div class="modal-body">
                             本次下载将扣取${requestScope.resouce.scoring}积分,你现有${sessionScope.loginresult.score}积分
+                            <br/><font color="red">${requestScope.isDowned}</font>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
@@ -333,13 +344,16 @@
     </div>
 </div>
 </div>
+<div id="loadGif"  style="display: none;margin: auto;width: 50px;height: auto;position: fixed;left: 45%;top: 35%;z-index: 10;border-radius: 25px">
+    <img alt="加载。。。" src="img/Rload.gif" style="width: 100%;height: auto;border-radius: 25px">
+</div>
 </body>
 <script type="text/javascript">
     function shoucang()
     {
         alert("已收藏！")
     }
-   function report() {
+   function report(result) {
        alert("举报成功！")
    }
 

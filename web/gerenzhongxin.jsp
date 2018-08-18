@@ -109,7 +109,7 @@
 	  	<td style="cursor: pointer"><a class="text-muted" href="/user/listAllFriends/${sessionScope.loginresult.uid}/1"><h4>我的消息</h4></a></td>
 	  	<td style="cursor: pointer"><a class="text-muted" href="jifenzhongxin.jsp"><h4>积分</h4></a></td>
 	  	<td style="cursor: pointer"><a class="text-muted" href="/blog/mGetAllReportBlog"><h4>我的博客</h4></a></td>
-	  	<td style="cursor: pointer"><a class="text-muted" href="#"><h4>我的下载</h4></a></td>
+	  	<td style="cursor: pointer"><a class="text-muted" href="wodexiazai.jsp"><h4>我的下载</h4></a></td>
 		  <c:if test="${sessionScope.loginresult.isadmin eq '1'}">
 			  <td style="cursor: pointer"><a class="text-muted" href="/blog/mGetAllReportBlog"><h4>举报管理</h4></a></td>
 		  </c:if>
@@ -202,7 +202,7 @@
 			<div class="col-md-6">
 										<!-- Button trigger modal -->
 				<button type="button" class="btn btn-info btn-sm glyphicon glyphicon-edit" data-toggle="modal" data-target="#myModal" style="margin-left: 60%">
-					修改个人资料iksn
+					修改个人资料
 				</button>
 				<button  type="button"  color="#FFFFFF" class="btn btn-info btn-sm glyphicon glyphicon-edit" data-toggle="modal" style="margin-left: 60%; margin-top:2%">
 					<a href="zhanghao.jsp" ><font color="#FFFFFF">个人账号设置</font></a>
@@ -222,7 +222,7 @@
 									  <div class="form-group">
 										  <input type="hidden" name="uid" value="${sessionScope.loginresult.uid}"/>
 										  <label for="exampleInputEmail1">昵称</label>
-										  <input type="text" class="form-control" name="nickname" id="" placeholder="NickName">
+										  <input type="text" class="form-control" name="nickname" id="" placeholder="NickName" value="${sessionScope.loginresult.nickname}">
 									  </div>
 
 									  <div class="form-group">
@@ -237,9 +237,9 @@
 									  <div class="form-group">
 										  <label for="exampleInputEmail1">邮箱</label>
 										  <div class="input-group">
-											  <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email1"  disabled>
+											  <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email1"  disabled value="${sessionScope.loginresult.email}">
 											  <span class="input-group-btn">
-                                          <button class="btn btn-default" type="button">修改</button>
+                                          <button class="btn btn-default" type="button"><a href="zhanghao.jsp"> 修改</a></button>
                                         </span>
 										  </div>
 									  </div>
@@ -247,16 +247,16 @@
 									  <div class="form-group">
 										  <illegalresourcelabel for="exampleInputPassword1">手机号码</illegalresourcelabel>
 										  <div class="input-group">
-											  <input type="number" class="form-control" id="exampleInputPassword1" placeholder="Phone"  disabled>
+											  <input type="number" class="form-control" id="exampleInputPassword1" placeholder="Phone"  disabled value="${sessionScope.loginresult.phone}">
 											  <span class="input-group-btn">
-                                        <button class="btn btn-default" type="button">修改</button>
+                                        <button class="btn btn-default" type="button"><a href="zhanghao.jsp"> 修改</a></button>
                                       </span>
 										  </div>
 									  </div>
 
 									  <div class="form-group">
 										  <label for="exampleInputEmail1">自我简介</label>
-										  <textarea placeholder="自我简介" name="introduce" style=" width:100%;height: 100px;"></textarea>
+										  <textarea placeholder="自我简介" name="introduce" style=" width:100%;height: 100px;" value="${sessionScope.loginresult.introduce}"></textarea>
 									  </div>
 									  <div class="modal-footer">
 										  <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>

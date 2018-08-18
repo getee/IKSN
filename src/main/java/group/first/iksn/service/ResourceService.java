@@ -8,6 +8,7 @@ import group.first.iksn.model.bean.ResourceComments;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import java.util.List;
 
@@ -17,8 +18,9 @@ public interface ResourceService {
     //收藏资源
     boolean houseResource(CollectResource h);
 
-    ArrayList<Resource> searchResource(String s);
-
+    List<Resource> searchResource(String s);
+   //资源分类搜索
+    List<Resource> ResourcekeywordSearch(String key);
     int downResource(Integer rid);
 
     //资源详情界面加载
@@ -34,6 +36,8 @@ public interface ResourceService {
     //资源表和资源标签表操作，resource.path
     boolean upLoadResourc(Resource resource,String[] rTag);
 
+
+
     //从reportResource表删除一行，处理违规资源的安置
     boolean Reject_oneReportResource(int report_id);
     boolean deleteIllegalResource(int resourceid);
@@ -42,6 +46,15 @@ public interface ResourceService {
     //获取被举报资源的数量
     int reportResourceNum();
 
+    //查询上传的资源
+    List<Resource> getUploadResource(int uid);
+    //下载资源
+    List<Resource> getdownloadResource(int uid);
+    //我收藏的资源
+    List<Resource> myCollectResource(int uid);
     //上传者，下载者，积分数
-    boolean downLoadResource(int pushId, int downId, int scoring);
+    boolean downLoadResource(int pushId, int downId,int rid, int scoring);
+
+    //获取上次资源下载时间判断是否下载过且不满足一小时true,false扣积分
+    boolean downHour(int rid,int uid);
 }

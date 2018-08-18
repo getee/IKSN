@@ -248,6 +248,21 @@ public class UserServiceImp implements UserService {
         return users;
     }
 
+    @Override
+    public List<User> getUserBySpeak(int page) {
+        return userDAO.getUserBySpeak(page);
+    }
+
+    @Override
+    public boolean isSpeaktoTrue(int uid) {
+        return userDAO.isSpeaktoTrue(uid);
+    }
+
+    @Override
+    public int getIsspeakNum() {
+        return userDAO.getIsspeakNum();
+    }
+
     //修改用户资料
     @Override
     public User updateUser(User user) {

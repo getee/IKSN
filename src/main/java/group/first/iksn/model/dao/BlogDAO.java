@@ -9,9 +9,19 @@ import java.util.ArrayList;
 
 
 public interface BlogDAO {
+    //搜索博客
     public List<Blog> detailedBlogSearchResultMap(String s);
+    List<Blog> blogClassify(String s);
+    List<Blog> blogTitle(String s);
+    List<String> ajaxBlogMohuSearch();
 
-    List<Blog> detailedBlogPush();
+    //博客首页推送
+    List<Blog> detailedBlogPush(int page);
+    List<Blog> pointsPush();
+    List<Blog> browsedPush(int classify);
+    //ajax分页推送
+    List<Blog> ajaxBlogPush(int page);
+
 
 
 
@@ -94,4 +104,11 @@ public interface BlogDAO {
     List<Blog> selectTwoBlogByUser(int uid);
     //根据bid查uid
     UserToBlog selectUidByBid(int bid);
+
+    ArrayList<BlogComments> getComments(Integer bid);
+
+    //根据bid查询link
+    Blog selectLinkByBid(int bid);
+    //对blog.link加一
+    boolean updateLink(String numLink,int bid);
 }
