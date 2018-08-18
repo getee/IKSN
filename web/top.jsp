@@ -642,7 +642,7 @@
 
 </div>
 <%--提示登录框--%>
-<div id="tsdl" class="alert alert-info alert-dismissible" role="alert" style="width:20%;position:fixed;top: 0%;left:35%;display: none">
+<div id="tsdl" class="alert alert-info alert-dismissible" role="alert" style="z-index: 99; width:20%;position:fixed;top: 0%;left:35%;display: none">
     <button type="button" class="close" id="guanbianniu"><span aria-hidden="true">&times;</span></button>
     <strong>提示!</strong>用户还未登录<p></p>
     <a class="btn btn-info" style="float: right" id="qdl">去登陆</a>.
