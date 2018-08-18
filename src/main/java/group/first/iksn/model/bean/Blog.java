@@ -136,7 +136,7 @@ public class Blog {
     public Blog() {
     }
 
-    public Blog(int bid, String title, String content, String time, String link, int points, int classify, BlogTag blogTag, UserToBlog userToBlog) {
+    public Blog(int bid, String title, String content, String time, String link, int points, int classify, Set<BlogTag> blogTags, BlogTag blogTag, UserToBlog userToBlog, BlogBrowsed blogBrowsed, BlogComments blogComments, CollectBlog collectBlog, ReportBlog reportBlog) {
         this.bid = bid;
         this.title = title;
         this.content = content;
@@ -144,8 +144,13 @@ public class Blog {
         this.link = link;
         this.points = points;
         this.classify = classify;
+        this.blogTags = blogTags;
         this.blogTag = blogTag;
         this.userToBlog = userToBlog;
+        this.blogBrowsed = blogBrowsed;
+        this.blogComments = blogComments;
+        this.collectBlog = collectBlog;
+        this.reportBlog = reportBlog;
     }
 
     @Override
@@ -158,8 +163,8 @@ public class Blog {
                 ", link='" + link + '\'' +
                 ", points=" + points +
                 ", classify=" + classify +
+                ", blogTag=" + blogTag +
+                ", userToBlog=" + userToBlog +
                 '}';
     }
-
-
 }

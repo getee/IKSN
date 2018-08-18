@@ -40,6 +40,8 @@ public class ResourceDAOImp extends BaseDAOImp implements ResourceDAO {
        return  num;
     }
 
+
+    @Override
     public Resource getResource(int rid) {
         Resource r=getSqlSession().getMapper(ResourceDAO.class).getResource(rid);
         return r;

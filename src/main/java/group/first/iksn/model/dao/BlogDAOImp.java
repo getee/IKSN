@@ -199,14 +199,14 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
     /**
      * 从reportBlog表中删除一个选中行
      * wenbin
-     * @param report_id
+     * @param bid
      * @return
      */
     @Override
-    public boolean deleteBlogFromReport(int report_id) {
+    public boolean deleteBlogFromReport(int bid) {
         boolean isOK=false;
         try{
-            isOK=getSqlSession().getMapper(BlogDAO.class).deleteBlogFromReport(report_id);
+            isOK=getSqlSession().getMapper(BlogDAO.class).deleteBlogFromReport(bid);
         }catch (Exception e){
             System.out.println("这是添加违规博客出错了");
             e.printStackTrace();
@@ -234,6 +234,25 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
     @Override
     public ArrayList<BlogComments> getComments(Integer bid) {
         return getSqlSession().getMapper(BlogDAO.class).getComments(bid);
+    }
+
+    @Override
+
+    public Blog selectLinkByBid(int bid) {
+        Blog blog=null;
+        try {
+            blog=getSqlSession().getMapper(BlogDAO.class).selectLinkByBid(bid);
+        }catch (Exception e){ e.printStackTrace(); }
+        return blog;
+    }
+
+    @Override
+    public boolean updateLink(String numLink, int bid) {
+        boolean isOk=false;
+        try {
+            isOk=getSqlSession().getMapper(BlogDAO.class).updateLink(numLink,bid);
+        }catch (Exception e){e.printStackTrace();}
+        return isOk;
     }
 
     @Override

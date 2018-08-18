@@ -98,7 +98,7 @@
 
     <!--从reportBlog表中根据id删除一个选中行-->
     <delete id="deleteBlogFromReport" parameterType="ReportBlog">
-        delete from reportblog where id = #{report_id}
+        delete from reportblog where BID = #{bid}
     </delete>
     <!--从blog表中根据id删除一个博客信息-->
     <delete id="deleteBlog" parameterType="Blog">
@@ -232,11 +232,11 @@
         inner join blogtag as t on t.bid=b.bid
        where  ub.ispublic=0
        and t.BTAG like '%'#{s}'%'
-
     </select>
    <!--博客按分类classify搜索-->
     <select id="blogClassify" resultType="Blog">
         select * from blog as b where b.CLASSIFY like '%' #{s} '%'
+    </select>
     <select id="reportBlogNum" resultType="Integer">
         select count(*) from reportblog
     </select>
@@ -244,7 +244,7 @@
    <!-- <select id="sUser" resultMap="sUser">
         select u.*,ub.* from usertoblog as ub
         inner join user as u on u.uid=ub.uid
-    </select>
+    </select>-->
     <!--博客按title搜索-->
     <select id="blogTitle" resultType="Blog">
         select * from blog as b where b.TITLE like '%'#{s}'%'
@@ -271,33 +271,7 @@
             <result property="bid" column="bid"></result>
         </association>
     </resultMap>
-    <select id="detailedBlogPush" resultMap="blogsPush">
-        select s.*,b.*,u.NICKNAME from blogbrowsed as s
-           inner join blog as b on b.bid=s.bid
-           inner join user as u on u.uid=s.uid
-           order by b.POINTS desc limit 0,5
-
-    </select>
-
-    &lt;!&ndash;首页浏览记录推送&ndash;&gt;
-    <select id="pointsPush" resultMap="blogsPush">
-        select distinct b.CLASSIFY from blog as b/*排除重复的分类列*/
-        inner join blogbrowsed as bb on b.bid=bb.bid
-    </select>
-
-    <select id="browsedPush" resultType="Blog">
-        select * from blog as b where b.CLASSIFY=#{classify}
-    </select>
--->
-    <!--首页推送-->
-    <select id="detailedBlogPush" resultType="Blog" parameterType="int">
-        select * from blog order by points desc limit #{0},5
-    </select>
-
-    <!--首页ajax推送-->
-    <select id="ajaxBlogPush" resultType="Blog" >
-        select * from blog order by points desc limit #{page},5
-    </select>
+   -->
     <!--点击博客链接使用-->
     <resultMap id="getUidByBid" type="UserToBlog">
         <id property="id" column="id"></id>
@@ -335,6 +309,25 @@
     </insert>
     <!--点击博客结束-->
 
+    <!-- 首页浏览记录推送
+    <select id="pointsPush" resultMap="blogsPush">
+        select distinct b.CLASSIFY from blog as b/*排除重复的分类列*/
+        inner join blogbrowsed as bb on b.bid=bb.bid
+    </select>
+
+    <select id="browsedPush" resultType="Blog">
+        select * from blog as b where b.CLASSIFY=#{classify}
+    </select>
+-->
+    <!--首页推送-->
+    <select id="detailedBlogPush" resultType="Blog" parameterType="int">
+        select * from blog order by points desc limit #{0},5
+    </select>
+
+    <!--首页ajax推送-->
+    <select id="ajaxBlogPush" resultType="Blog" >
+        select * from blog order by points desc limit #{page},5
+    </select>
 
      <!--点赞-->
     <update id="addBlogPoints" parameterType="Blog">
@@ -405,4 +398,13 @@
     <select id="selectUidByBid" parameterType="Integer" resultType="UserToBlog">
         select UID from usertoblog where BID=#{bid}
     </select>
+
+    <!--根据bid查询link-->
+    <select id="selectLinkByBid" parameterType="Integer" resultType="Blog">
+        select LINK from blog where BID=#{bid}
+    </select>
+    <!--对link进行加一-->
+    <update id="updateLink" parameterType="Integer">
+        update blog set LINK=#{numLink} where BID=#{bid}
+    </update>
 </mapper>

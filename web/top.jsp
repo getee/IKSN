@@ -463,6 +463,7 @@
                         });
                         $("[data-toggle='popover']").popover('show')
                     }
+
                 });
                 $.get("/user/timingReceivingMessage/${sessionScope.loginresult.uid}",function(data){
                     if(data>0){
@@ -565,11 +566,7 @@
                 </ul>
                 <form class="navbar-form navbar-left" method="post" action="/blog/blogSearch">
                     <div class="form-group">
-
-                        <input id="q1" type="text" class="quickQuery$focus form-control" placeholder="Search" name="content"/>
-                       <%-- <input class="quickQuery$focus" id="" style="border: 3px solid #ccc;" />--%>
-                       <%-- <input id="q1" type="text" &lt;%&ndash;class="quickQuery$focus"&ndash;%&gt; placeholder="Search" name="content"/>--%>
-                        <input  id="q1" class="quickQuery$focus" style="border: 3px solid #ccc;" name="content"/>
+                        <input  id="q1" class="quickQuery$focus" type="text" style="border: 3px solid #ccc;" name="content"/>
                         <div class="quickQuery$focus"></div>
                     </div> <button id="bSearch" type="submit"  class="btn btn-default" >搜索</button>
 
@@ -667,7 +664,7 @@
             var json=eval(data);
             $.each(json,function (index,iteam) {
                 keywordArray[10+index]= new Array("10"+index, json[index].word,chineseToPinYin(json[index].word) );
-            })
+            });
 
         for(var i=0;i<=keywordArray.length;i++){
             alert(keywordArray);

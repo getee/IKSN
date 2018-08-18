@@ -361,7 +361,7 @@ public class ResourceControl {
         User u= (User) session.getAttribute("loginresult");
         System.out.println(u);
         List<Resource> resource=resourceService.getdownloadResource(u.getUid());
-        System.out.println(resource);
+
         //session.setAttribute("collectblog",collectblog);
         JSONArray jsonArray=new JSONArray();
         JSONObject jsonObject=null;

@@ -36,6 +36,8 @@ public interface ResourceService {
     //资源表和资源标签表操作，resource.path
     boolean upLoadResourc(Resource resource,String[] rTag);
 
+
+
     //从reportResource表删除一行，处理违规资源的安置
     boolean Reject_oneReportResource(int report_id);
     boolean deleteIllegalResource(int resourceid);
