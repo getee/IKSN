@@ -77,13 +77,15 @@
                            <a href="userArticle.jsp?searchB=${t.bid}"> ${t.title}</a>
                        </h2>
                        <p>
-                               ${fn:substring(t.content, 0, 150)}.........
+                               ${fn:substring(t.content, 0, 100)}.........
                        </p>
 
                         <h5 style="color:#928F8F;float: right">
-                            博客分类:${t.classify}
-                            <%--博客类型:&lt;%&ndash;${t.blogTags.btag}&ndash;%&gt;<c:forEach var="tag" items="${t.blogTags}">${tag.btag}</c:forEach>--%>
-                            &nbsp&nbsp&nbsp&nbsp阅读数：${t.points}</h5>
+                            类型:${t.classify} &nbsp&nbsp&nbsp&nbsp
+                            时间:${t.time}&nbsp&nbsp&nbsp&nbsp
+                            阅读数：${t.points}
+                            </h5>
+
                        <p>
                            <a class="btn" href="userArticle.jsp?searchB=${t.bid}">查看更多 »</a>
                        </p>

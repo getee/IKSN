@@ -135,7 +135,7 @@
 			<%--<c:if test="${sessionScope.loginresult.isadmin eq '1'}">--%>
 			<c:if test="${sessionScope.loginresult.isadmin eq '1' && not empty reportBlog.id && !(reportBlog.id eq null)}">
 				<button id="comeback-button" type="button" class="btn btn-primary" disabled style="">返回举报页</button>
-				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#delete" style="">删除</button>
+				<button id="delete-button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#delete" style="">删除</button>
 				<button id="sendBack-button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#sendBack" style="">下架并禁言</button>
 				<h5 style="color: white">举报原因：${requestScope.reportBlog.reason}</h5>
 			</c:if>
@@ -204,6 +204,7 @@
                         $("#sendBack-ok-innerHtml").text("已下架");
                         $(this).prop("disabled","disabled");
                         $("#sendBack-button").prop("disabled","disabled");
+                        $("#delete-button").prop("disabled","disabled");
                         $("#comeback-button").removeAttr("disabled");
                     }else {
                         $("#sendBack-ok-innerHtml").text("按钮睡着了，请再点一次吧");
@@ -343,10 +344,10 @@
                                       <%--  该功能需要隐藏标签，以及传入登录用户信息--%>
 
 										<form action="/blog/answerComment" method="post">
-											<div class="form-group" >
+											<div class="form-group" style="display: none">
 												uid:<input id="" type="text" name="uid" value="${sessionScope.loginresult.uid}"><br>
 											</div>
-											<div class="form-group">
+											<div class="form-group"style="display: none">
 												bid:<input id="hfbid" type="text" name="bid"><br>
 											</div>
 											<div class="modal-body">
@@ -354,10 +355,10 @@
 												<textarea class="form-control" rows="3" name="content"></textarea>
 												<!---->
 											</div>
-											<div class="form-group">
+											<div class="form-group"style="display: none">
 												commentid:<input id="hfid" type="text" name="commentid"><br>
 											</div>
-											<div class="form-group">
+											<div class="form-group"style="display: none">
 												floor:<input id="hffoor" type="text" name="floor"><br>
 											</div>
 											<div class="modal-footer">
@@ -489,15 +490,6 @@
 
                             </div>
 
-							<%--<div class="thumbnail">--%>
-								<%--<div style="float: left;width: 60px;height: 80px"><img style="width: 60px;height: 80px" src="../img/timg.jpg" alt="..." ></div>--%>
-								<%--<div style="background-color:#C2CBC8">--%>
-									<%--<a href="#">--%>
-										<%--<h3 id="tui">Thumbnail label</h3>--%>
-										<%--<p>...</p>--%>
-									<%--</a>--%>
-								<%--</div>--%>
-							<%--</div>--%>
 
 						</div>
 						<!--博主专栏结束-->
@@ -520,10 +512,10 @@
                 var title=json[index].title.substring(0,12);
                 var id=json[index].bid;
                // alert(title+id);
-                var ts="<div class=\"thumbnail\">\n" +
+                var ts="<div class=\"thumbnail\" style='height:100px;'>\n" +
                     "\t\t\t\t\t\t\t\t<div style=\"float: left;width: 60px;height: 80px\"><img style=\"width: 60px;height: 80px\" src=\"../img/blogmoren.jpg\"></div>\n" +
                     "\t\t\t\t\t\t\t\t<div>\n" +
-                    "\t\t\t\t\t\t\t\t\t<a href=\"#\">\n" +
+                    "\t\t\t\t\t\t\t\t<a href=\"/blog/getBlogAndUser?blogid="+id+"\">\n" +
                     "\t\t\t\t\t\t\t\t\t\t<h3>"+title+"..."+"</h3>\n" +
                     "\t\t\t\t\t\t\t\t\t</a>\n" +
                     "\t\t\t\t\t\t\t\t</div>\n" +
@@ -700,7 +692,6 @@
     $("#qqzone").click(function () {
        window._bd_share_config.common.bdText="${boke.title}---IKSN";
         window._bd_share_config.common.bdUrl="localhost:8080/blog/getBlogAndUser?blogid=${boke.bid}";
-        alert( window._bd_share_config.common.bdUrl);
     });
     window._bd_share_config = {
         common : {

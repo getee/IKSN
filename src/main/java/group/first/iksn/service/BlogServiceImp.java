@@ -182,6 +182,11 @@ public class BlogServiceImp implements BlogService {
    public List<Blog> ajaxBlogPush(int page){return blogDAO.ajaxBlogPush(page);}
 
     @Override
+    public List<Blog> newBlogPush() {
+        return blogDAO.newBlogPush();
+    }
+
+    @Override
     public boolean addBlogService(Blog blog) {
         return blogDAO.processAddBlog(blog);
     }
