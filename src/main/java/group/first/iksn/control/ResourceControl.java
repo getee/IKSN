@@ -148,16 +148,21 @@ public class ResourceControl {
     /**
  * 对资源进行收藏
  */
-    @RequestMapping("/houseResource")
-    public String houseResource(@ModelAttribute("houseResource")CollectResource collectResource){
-        System.out.println(collectResource);
-        boolean result=resourceService.houseResource(collectResource);
-        if (!result)
-        {
-            return "success";
-        }else
-        {
-            return "xq";
+    @RequestMapping(value="/houseResource",method = RequestMethod.POST)
+    public void houseResource(CollectResource collectResource,HttpServletResponse response){
+        String msg="";
+        try {
+            boolean result = resourceService.houseResource(collectResource);
+            msg="收藏成功！";
+            response.getWriter().write(msg);
+        }catch (Exception e){
+            e.printStackTrace();
+            msg="收藏失败！";
+            try {
+                response.getWriter().write(msg);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
         }
     }
 
