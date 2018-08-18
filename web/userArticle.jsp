@@ -25,7 +25,7 @@
             /*
                         var bokeid="2";
             */
-            var ajaxUrl="/blog/getFloor?bid="+"2";
+            var ajaxUrl="/blog/getFloor?bid="+"${boke.bid}";
             $.ajax({
                 type:"post",
                 url:ajaxUrl,
@@ -52,7 +52,7 @@
 	</script>
     <script type="text/javascript">
         $(document).ready(function(){
-            var ajaxUrl="/blog/getComments?bid="+"2";
+            var ajaxUrl="/blog/getComments?bid="+"${boke.bid}";
             $.ajax({
                 type:"post",
                 url:ajaxUrl,
@@ -302,8 +302,8 @@
                                         <%--  该功能需要隐藏标签，以及传入登录用户信息--%>
 
                                         <form action="/blog/discuss" method="post">
-											<div class="form-group" style="display: none">
-												uid:<input type="text" name="uid"><br>
+											<div class="form-group" >
+												uid:<input type="text" name="uid"value="${sessionScope.loginresult.uid}"><br>
 											</div>
 											<div class="form-group" style="display: none">
 												bid:<input type="text" name="bid" value="${boke.bid}"><br>
@@ -340,8 +340,8 @@
                                       <%--  该功能需要隐藏标签，以及传入登录用户信息--%>
 
 										<form action="/blog/answerComment" method="post">
-											<div class="form-group">
-												uid:<input id="" type="text" name="uid"><br>
+											<div class="form-group" >
+												uid:<input id="" type="text" name="uid" value="${sessionScope.loginresult.uid}"><br>
 											</div>
 											<div class="form-group">
 												bid:<input id="hfbid" type="text" name="bid"><br>
