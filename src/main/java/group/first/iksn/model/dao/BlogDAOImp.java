@@ -208,12 +208,25 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
         try{
             isOK=getSqlSession().getMapper(BlogDAO.class).deleteBlogFromReport(bid);
         }catch (Exception e){
-            System.out.println("这是添加违规博客出错了");
+            System.out.println("这是删除多个无效举报出错了");
             e.printStackTrace();
         }
         return isOK;
     }
-//博客评论
+
+    @Override
+    public boolean deleteOneReportBlog(int report_id) {
+        boolean isOK=false;
+        try{
+            isOK=getSqlSession().getMapper(BlogDAO.class).deleteOneReportBlog(report_id);
+        }catch (Exception e){
+            System.out.println("这是删除一个无效举报出错了");
+            e.printStackTrace();
+        }
+        return isOK;
+    }
+
+    //博客评论
     @Override
     public boolean commentBlog(BlogComments blogComments) {
         System.out.println(blogComments);
@@ -247,10 +260,10 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
     }
 
     @Override
-    public boolean updateLink(String numLink, int bid) {
+    public boolean updateLink(@Param("link") String link,@Param("bid") int bid) {
         boolean isOk=false;
         try {
-            isOk=getSqlSession().getMapper(BlogDAO.class).updateLink(numLink,bid);
+            isOk=getSqlSession().getMapper(BlogDAO.class).updateLink(link,bid);
         }catch (Exception e){e.printStackTrace();}
         return isOk;
     }
@@ -351,6 +364,7 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
         }
         return isOK;
     }
+
 
     /**
      * 把前台举报的博客保存到数据库中

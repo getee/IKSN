@@ -170,6 +170,13 @@ public class ResourceDAOImp extends BaseDAOImp implements ResourceDAO {
         return getSqlSession().getMapper(ResourceDAO.class).myCollectResource(uid);
     }
 
+/*
+    @Override
+    public ArrayList<ResourceComments> getresourceComments(Integer rid) {
+        return getSqlSession().getMapper(ResourceDAO.class).getresourceComments(rid);
+    }
+*/
+
     //更改积分
     @Override
     public boolean changeScore(int uid, int scoring) {

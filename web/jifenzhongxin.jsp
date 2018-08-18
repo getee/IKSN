@@ -142,7 +142,6 @@
 	<table class="table table-hover table-striped" style="margin-top:-1%;">
   		<tr>
   			<td>积分</td>
-  			<td>来源</td>
   			<td>原因</td>
   			<td>日期</td>
   		</tr>
@@ -150,7 +149,6 @@
 		<c:forEach items="${requestScope.cost}" var="c">
 			<tr>
 				<td>-${c.number}</td>
-				<td>0</td>
 				<td>${c.operation}</td>
 				<td>${c.time}</td>
 			</tr>
@@ -158,7 +156,6 @@
 		<c:forEach items="${requestScope.recharge}" var="c">
 			<tr>
 				<td>+${c.number}</td>
-				<td>0</td>
 				<td>${c.operation}</td>
 				<td>${c.time}</td>
 			</tr>

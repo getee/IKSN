@@ -16,10 +16,10 @@
     <script src="js/jquery-3.3.1.js"></script>
     <script src="bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="ueditor.config.js"></script>
-    <script type="text/javascript" charset="utf-8" src="ueditor.all.min.js"> </script>
+    <script type="text/javascript" charset="utf-8" src="ueditor.all.js"> </script>
     <script type="text/javascript" charset="utf-8" src="lang/zh-cn/zh-cn.js"></script>
     <link rel="stylesheet" href="bootstrap-3.3.7/dist/css/bootstrap-theme.min.css" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="themes/iframe.css" crossorigin="anonymous">
     <script src="js/depend.js"></script>
 </head>
 <body  style="background-color:#EBEBEB">
@@ -123,7 +123,7 @@
                         <br>
                         <!---->
                         <label class="control-label" for="notification1">是否设为私密</label>
-                        <input id="notification1" type="checkbox"  value="0" name="ispublic" onclick="this.value=(this.value==0)?1:0"/>
+                        <input id="notification1" type="checkbox"  value="1" name="ispublic" onclick="this.value=(this.value==1)?1:0"/>
 
                     </div>
                 </div>

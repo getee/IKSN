@@ -124,7 +124,7 @@ public class BlogServiceImp implements BlogService {
      */
     @Override
     public boolean Reject_oneReportblog(int report_id) {
-        return blogDAO.deleteBlogFromReport(report_id);
+        return blogDAO.deleteOneReportBlog(report_id);
     }
 
     /**
@@ -254,6 +254,7 @@ public class BlogServiceImp implements BlogService {
         return blogDAO.deleteBlog(bid);
     }
 
+
     @Override
     public boolean discuss(BlogComments blogComments) {
         System.out.println(blogComments);
@@ -299,6 +300,7 @@ public class BlogServiceImp implements BlogService {
             System.out.println("进入多次举报线程");
             IllegalBlog iblog=new IllegalBlog();
             iblog.setBid(bid);
+            iblog.setIllegalcause("多次被举报");
 
             Blog blog=blogDAO.selectLinkByBid(bid);
             int numLink=Integer.parseInt(blog.getLink());
@@ -444,6 +446,7 @@ public class BlogServiceImp implements BlogService {
     public boolean collectBlog(int uid, int bid) {
         return blogDAO.collectBlog(uid,bid);
     }
+    //博客评论
     @Override
     public ArrayList<BlogComments> getComments(Integer bid) {
         ArrayList<BlogComments> keys=blogDAO.getComments(bid);

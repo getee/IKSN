@@ -24528,6 +24528,9 @@ UE.plugin.register('simpleupload', function (){
                             loader.setAttribute('_src', link);
                             loader.setAttribute('title', json.title || '');
                             loader.setAttribute('alt', json.original || '');
+
+                            loader.setAttribute('style','max-width:300px');//这里就是哥加入的代码
+                            loader.setAttribute('style','max-height:200px');//这里就是哥加入的代码
                             loader.removeAttribute('id');
                             domUtils.removeClasses(loader, 'loadingclass');
                         } else {

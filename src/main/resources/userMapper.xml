@@ -101,6 +101,10 @@ select * from user where NICKNAME=#{nickname} and  UID in (select ATTENID from a
     <update id="updateUser" parameterType="User">
         UPDATE  user set  nickname=#{nickname},sex=#{sex},introduce=#{introduce} WHERE uid=#{uid}
     </update>
+    <!--修改用户头像-->
+    <update id="updateUserImg" parameterType="User">
+        update user set picturepath=#{picturepath} where UID=#{uid};
+    </update>
     <!--修改用户密码-->
     <update id="updatePassword" parameterType="User">
         update user set password=#{password} where UID=#{uid}

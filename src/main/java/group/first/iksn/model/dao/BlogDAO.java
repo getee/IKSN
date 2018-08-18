@@ -22,9 +22,6 @@ public interface BlogDAO {
     //ajax分页推送
     List<Blog> ajaxBlogPush(int page);
 
-
-
-
     //处理添加博客dao
     public  boolean processAddBlog(Blog blog);
     //处理添加博客标签dao
@@ -60,8 +57,10 @@ public interface BlogDAO {
     boolean commentBlog(BlogComments blogComments);
     //获取所有被举报资源
     List<ReportResource> getAllReportResource();
-    //删除Reportblog表数据
-    boolean deleteBlogFromReport(int report_id);
+    //删除Reportblog多个表数据
+    boolean deleteBlogFromReport(int bid);
+    //删除Reportblog一个表数据
+    boolean deleteOneReportBlog(int report_id);
     //删除博客
     boolean deleteBlog(int bid);
     //删除与博客相关的表信息
@@ -69,7 +68,6 @@ public interface BlogDAO {
     boolean deleteBlogOther(int bid);
     //设置博客为不公开
     boolean blogIsPublic(int bid);
-
     boolean answerDiscuss(BlogComments blogComments);
 
     //举报博客
@@ -111,4 +109,5 @@ public interface BlogDAO {
     Blog selectLinkByBid(int bid);
     //对blog.link加一
     boolean updateLink(String numLink,int bid);
+
 }
