@@ -60,7 +60,6 @@
         }
 
         function sess() {
-            alert("XXDD"+$("#filepath").attr("value"));
             if($("#filepath").attr("value")=='0'){
                 alert("文件上传失败，请重新选择！");
             }else {
@@ -73,10 +72,12 @@
     </script>
 </head>
 <body style="background-color:#F7F8F9">
+<c:if test="${requestScope.resouce eq null}">
+    <c:redirect url="/index.jsp"></c:redirect>
+</c:if>
 <!--  导航栏-->
 <%@ include file="top.jsp"%>
 <!--  导航栏结束-->
-
 
 <!--二级导航开始-->
 <div class="row"  style="margin-top: -1.2%; font-size:16px;background-color:#EAEBEC; min-width:1024px;" >

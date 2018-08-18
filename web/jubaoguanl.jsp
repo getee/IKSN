@@ -390,7 +390,7 @@
         window.open(a);
     }
     function delete_oneReportBlog(url){
-        var  userChoice=window.confirm("您确认要去除这个博客吗?");
+        var  userChoice=window.confirm("您确认要去除这个举报吗?");
         var a="blog/mReject_oneReportblog/"+url;
         if(userChoice)
         {
@@ -402,7 +402,7 @@
         }
     }
     function delete_oneReportResource(url) {
-        var userChoice=window.confirm("您确认要去除这个资源吗？");
+        var userChoice=window.confirm("您确认要去除这个举报吗？");
         var a="/resource/mReject_oneReportResource/"+url;
         if(userChoice){
             $.get(a,function (data) {

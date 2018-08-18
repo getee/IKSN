@@ -145,7 +145,7 @@
     </resultMap>
     <select id="getAllReportBlog" resultMap="getBlogBy_Reportbid">
 		select  i.ID,i.BID,i.REASON,b.TITLE,b.TIME  from reportblog as i
-		inner join blog as b on   i.BID=b.BID ORDER BY i.ID asc limit #{page},5;
+		inner join blog as b on   i.BID=b.BID ORDER BY i.ID desc limit #{page},5;
 	</select>
 
     <!-- 博客评论 -->
@@ -215,12 +215,12 @@
         <result property="points" column="points"></result>
         <result property="time" column="time"></result>
 
-      <!--<association property="userToBlog" javaType="UserToBlog" >
+      <association property="userToBlog" javaType="UserToBlog" >
             <id property="id" column="id"></id>
             <result property="bid" column="bid"></result>
-            &lt;!&ndash;userToBlog关联user的resultMap结果集&ndash;&gt;
-           &lt;!&ndash; <association property="uid" column="uid" select="sUser"></association>&ndash;&gt;
-        </association>-->
+            <!--userToBlog关联user的resultMap结果集-->
+           <!-- <association property="uid" column="uid" select="sUser"></association>-->
+        </association>
 
     <!-- 对博客标签来说，一条博客对应多条标签-->
         <collection property="blogTags" ofType="BlogTag">
@@ -241,6 +241,7 @@
     <select id="blogClassify" resultType="Blog">
         select * from blog as b where b.CLASSIFY like '%' #{s} '%'
     </select>
+
     <select id="reportBlogNum" resultType="Integer">
         select count(*) from reportblog
     </select>
@@ -326,14 +327,31 @@
         select * from blog as b where b.CLASSIFY=#{classify}
     </select>
 -->
+    <resultMap id="qqqqq" type="Blog">
+        <id property="bid" column="bid"></id>
+        <result property="title" column="title"></result>
+        <result property="content" column="content"></result>
+        <result property="classify" column="classify"></result>
+        <result property="link" column="link"></result>
+        <result property="points" column="points"></result>
+        <result property="time" column="time"></result>
+        <association property="userToBlog" javaType="UserToBlog" >
+            <id property="id" column="id"></id>
+            <result property="bid" column="bid"></result>
+            <result property="ispublic" column="ispublic"></result>
+        </association>
+    </resultMap>
     <!--首页推送-->
     <select id="detailedBlogPush" resultType="Blog" parameterType="int">
         select * from blog order by points desc limit #{0},5
     </select>
 
     <!--首页ajax推送-->
-    <select id="ajaxBlogPush" resultType="Blog" >
-        select * from blog order by points desc limit #{page},5
+    <select id="ajaxBlogPush" resultMap="qqqqq" >
+        select * from blog as b
+        inner join usertoblog as ub on ub.BID = b.BID
+        where ub.ISPUBLIC=0
+        order by points desc limit #{page},5
     </select>
 
     <!--首页分类推送-->
@@ -416,7 +434,7 @@
         select LINK from blog where BID=#{bid}
     </select>
     <!--对link进行加一-->
-    <update id="updateLink" >
-        update blog set LINK=#{0} where BID=#{1}
+    <update id="updateLink" parameterType="Integer">
+        update blog set LINK=#{numLink} where BID=#{bid}
     </update>
 </mapper>

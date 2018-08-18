@@ -32,7 +32,7 @@
             <input type="hidden" name="uid" value="${sessionScope.loginresult.uid}"/>
             <input type="hidden" name="isdraft" value="0" id="panduan">
             <div class="input-group input-group-lg" style="width: 1024px;height:15px; margin: auto;">
-                <input type="text" class="form-control" id="biaoti"name="title" placeholder="请输入文章标题" >
+                <input type="text" class="form-control" id="biaoti"name="title" placeholder="请输入文章标题(15字内)" >
             </div>
             <div style="width:1024px;height:430px;margin:auto;margin-top: 10px;">
                 <textarea id="editor" type="text/plain" name="content"></textarea>

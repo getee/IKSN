@@ -24,7 +24,7 @@
             /*
                         var bokeid="2";
             */
-            var ajaxUrl="/blog/getFloor?bid="+"2";
+            var ajaxUrl="/blog/getFloor?bid="+"${boke.bid}";
             $.ajax({
                 type:"post",
                 url:ajaxUrl,
@@ -51,7 +51,7 @@
 	</script>
 	<script type="text/javascript">
         $(document).ready(function(){
-            var ajaxUrl="/blog/getComments?bid="+"2";
+            var ajaxUrl="/blog/getComments?bid="+"${boke.bid}";
             $.ajax({
                 type:"post",
                 url:ajaxUrl,
@@ -178,9 +178,17 @@
 						<div class="span12" style="background-color:#A29E9E;padding: 25px">
 							<!-- Button trigger modal -->
 							有疑问？就说一说
-							<button type="button" onmouseover="getFoor()" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-								我要评论
-							</button>
+							<c:if test="${sessionScope.loginresult eq null}">
+								<button type="button" onclick="tishilogin()" class="btn btn-primary btn-lg" >
+									我要评论
+								</button>
+							</c:if>
+							<c:if test="${sessionScope.loginresult != null}">
+								<button type="button" onmouseover="getFoor()" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+									我要评论
+								</button>
+							</c:if>
+
 
 							<!-- Modal -->
 							<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="margin-top: 20%">
@@ -192,13 +200,9 @@
 										</div>
 										<%--  该功能需要隐藏标签，以及传入登录用户信息--%>
 
-										<form action="/blog/discuss" method="post">
-											<div class="form-group" style="display: none">
-												uid:<input type="text" name="uid"><br>
-											</div>
-											<div class="form-group" style="display: none">
-												bid:<input type="text" name="bid" value="${boke.bid}"><br>
-											</div>
+										<form action="/blog/personaldiscuss/${boke.bid}" method="post">
+											<input type="hidden" name="uid"value="${sessionScope.loginresult.uid}"><br>
+											<input type="hidden" name="bid" value="${boke.bid}"><br>
 											<div class="modal-body">
 												<!--文本域-->
 												<textarea class="form-control" rows="3" name="content"></textarea>
@@ -230,11 +234,11 @@
 										</div>
 										<%--  该功能需要隐藏标签，以及传入登录用户信息--%>
 
-										<form action="/blog/answerComment" method="post">
-											<div class="form-group">
-												uid:<input id="" type="text" name="uid"><br>
+										<form action="/blog/answerPersonalComment/${boke.bid}" method="post">
+											<div class="form-group" style="display: none">
+												uid:<input id="" type="text" name="uid" value="${sessionScope.loginresult.uid}"><br>
 											</div>
-											<div class="form-group">
+											<div class="form-group"style="display: none">
 												bid:<input id="hfbid" type="text" name="bid"><br>
 											</div>
 											<div class="modal-body">
@@ -242,10 +246,10 @@
 												<textarea class="form-control" rows="3" name="content"></textarea>
 												<!---->
 											</div>
-											<div class="form-group">
+											<div class="form-group"style="display: none">
 												commentid:<input id="hfid" type="text" name="commentid"><br>
 											</div>
-											<div class="form-group">
+											<div class="form-group"style="display: none">
 												floor:<input id="hffoor" type="text" name="floor"><br>
 											</div>
 											<div class="modal-footer">
@@ -259,67 +263,6 @@
 						</div>
 
 						<div class="span12" style="background-color:#FFFFFF;padding-left: 25px;padding-right: 25px" id="getcommrnts">
-							<%--<ul>
-                                <hr>
-                                <li id="getpl">
-                                    <div style="">
-                                        <div style="float: left"><a class="icon-observer" href="#" style="background-image: url(image/3_qq.jpg)"></a></div>
-                                        <div style="margin-top: 5px">
-                                            <a href="#">用户名</a>
-                                            <h5 style="color:#928F8F;float: right">2018年8月2日16：05：25</h5>&nbsp;
-                                            <h5 style="color:#928F8F;float: right">#1楼</h5>
-                                        </div>
-                                    </div>
-                                    <h5 style="margin: 25px 10px 10px 50px">作者写的666</h5>
-                                </li>
-                                <hr>
-                                <div class="span12" style="background-color:white;padding: 25px"align="right">
-                                    <!-- Button trigger modal -->
-                                    有疑问？就说一说
-                                    <button type="button"  class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModa">
-                                        我要回复
-                                    </button>
-                                    <!-- Modal -->
-                                    <div class="modal fade" id="myModa" tabindex="-1" role="dialog" aria-labelledby="myModalLabe" style="margin-top: 20%">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                    <h4 class="modal-title" id="myModalLabe">我的回复</h4>
-                                                </div>
-                                                <form action="/blog/answerComment" method="post">
-                                                    <div class="form-group">
-                                                        uid:<input type="text" name="uid"><br>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        bid:<input type="text" name="bid"><br>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        time:<input type="text" name="time"id="timer"><br>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <!--文本域-->
-                                                        <textarea class="form-control" rows="3" name="content"></textarea>
-                                                        <!---->
-                                                    </div>
-                                                    <div class="form-group">
-                                                        commentid:<input type="text" name="commentid"><br>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        floor:<input type="text" name="floor"><br>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                                                        <button type="submit" class="btn btn-primary"value="discuss">回复</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                            </ul>--%>
 						</div>
 						<!--					评论结束-->
 
@@ -391,7 +334,7 @@
 		<div class="bdsharebuttonbox" data-tag="share_1">
 			<li class="li-left">
 				<a href="#" id="qqzone" style="margin-left:8px;width: 25px;height: 25px;background-image: url('img/qq.jpg')" data-cmd="qzone"  title="分享到QQ空间">
-					<%--<svg id="csdnc-qq" viewBox="0 0 1024 1024" width="50%" height="50%"><path d="M995.225278 683.917766c-22.357318-124.75725-116.394589-206.44964-116.394589-206.44964 13.454213-113.237258-35.811532-133.347467-35.811532-133.347467C832.665386-6.257774 518.616173-0.142222 511.982933 0.028444 505.389516-0.142222 191.283414-6.257774 180.986532 344.120659c0 0-49.237301 20.110209-35.811532 133.347467 0 0-94.008826 81.69239-116.394589 206.44964 0 0-11.918214 210.750437 107.434595 25.804783 0 0 26.851538 70.257731 76.088838 133.347467 0 0-88.035497 28.700425-80.554613 103.253264 0 0-3.015109 83.086167 187.960764 77.397282 0 0 134.286133-10.012438 174.563439-64.511957H529.737944c40.305751 54.499519 174.563439 64.511957 174.563439 64.511957 190.918984 5.688885 187.983519-77.397282 187.983519-77.397282 7.423995-74.552839-80.554613-103.253264-80.554613-103.253264 49.208856-63.089736 76.060394-133.347467 76.060394-133.347467 119.324365 184.945654 107.434595-25.804783 107.434595-25.804783"></path></svg>--%>
+
 				</a>
 				<%--<p style="font-size: 2px">QQ</p>--%>
 			</li>
@@ -444,7 +387,32 @@
 	})
 })
 </script>
-
+<!-- Modal -->
+<div class="modal fade" id="modal-container-830220" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="margin-top: 20%">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">举报原因</h4>
+			</div>
+			<div class="modal-body">
+				<!--								文本域-->
+				<form >
+					<input type="hidden" name="bid" type="text" value="${listblog.bid}" readonly="readonly"/>
+					<input type="hidden" name="uid" type="text" value="${sessionScope.loginresult.uid}" readonly="readonly"/>
+					<textarea id="reason" name="reason" class="form-control" rows="3"></textarea><br/>
+					<input id="reportBlog" style="float: right;"  type="button" value="提交" />
+				</form>
+				<!--								-->
+            </div>
+            <div class="modal-footer">
+                <!--<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary">提交</button>-->
+            </div>
+        </div>
+    </div>
+</div>
+<!--end-->
 
 <script>
     $("#qqzone").click(function () {
@@ -478,5 +446,14 @@
 </body>
 <script>
     document.getElementById("time").value=new Date();
+    $(document).ready(function () {
+        $("#reportBlog").click(function () {
+            $.get("/blog/reportBlog?bid=${listblog.bid}&uid=${sessionScope.loginresult.uid}&reason="+$('#reason').val(),function (data,status) {
+                $("#modal-container-830220").modal('hide');
+                alert("举报成功");
+            })
+        })
+    })
+
 </script>
 </html>

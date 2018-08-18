@@ -113,38 +113,7 @@ public class ResourceControl {
             e.printStackTrace();
         }
     }*/
-   /* @ResponseBody
-    @RequestMapping(value="/getResourceComments",method = RequestMethod.POST)
-    public void getComments( @RequestParam("rid") Integer rid , HttpServletRequest request, HttpServletResponse response) {
-        ArrayList<ResourceComments> getResourceComments=(ArrayList<ResourceComments>)resourceService.getComments(rid);
 
-        System.out.println(getBlogcomments);
-        JSONArray jsonArray=new JSONArray();
-        JSONObject jsonObject;
-        for (int i=0;i<getBlogcomments.size();i++){
-            jsonObject=new JSONObject();
-            jsonObject.put("nickname",getBlogcomments.get(i).getUser().getNickname());
-            jsonObject.put("floor",getBlogcomments.get(i).getFloor());
-            jsonObject.put("time",getBlogcomments.get(i).getTime());
-            jsonObject.put("content",getBlogcomments.get(i).getContent());
-            jsonObject.put("commentid",getBlogcomments.get(i).getCommentid());
-            jsonObject.put("id",getBlogcomments.get(i).getId());
-            jsonObject.put("uid",getBlogcomments.get(i).getUid());
-            jsonObject.put("bid",getBlogcomments.get(i).getBid());
-            jsonArray.put(jsonObject);
-        }
-        System.out.println(getBlogcomments);
-        response.setContentType("text/json;charset=UTF-8");
-        try {
-            PrintWriter out=response.getWriter();
-            out.write(jsonArray.toString());
-            out.flush();
-            out.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-*/
     /**
  * 对资源进行收藏
  */
@@ -157,7 +126,7 @@ public class ResourceControl {
             response.getWriter().write(msg);
         }catch (Exception e){
             e.printStackTrace();
-            msg="收藏失败！";
+            msg="该资源已被收藏！";
             try {
                 response.getWriter().write(msg);
             } catch (IOException e1) {
@@ -261,8 +230,10 @@ public class ResourceControl {
                     request.setAttribute("isDowned","(已下载过，一小时内下载不扣积分)");
                 }
             }
+            ArrayList<ResourceComments> rcomments=resourceService.getresourceComments(rid);
+            System.out.println("XXXSSS"+rcomments);
 
-
+            request.setAttribute("rcomments",rcomments);//评论信息获取
             request.setAttribute("resouce",r);
             request.setAttribute("pushUser",pushUser);
 
@@ -355,15 +326,21 @@ public class ResourceControl {
 
     //资源举报
     @RequestMapping("/reportResource")
-    public ModelAndView reportResource(@ModelAttribute("reportResource")ReportResource reportResource) throws UnsupportedEncodingException {
-        ModelAndView mav=new ModelAndView("xq");
-        //String reason=new String(reportResource.getReason().getBytes("ISO-8859-1"),"UTF-8");
-        //reportResource.setReason(reason);
+    public void reportResource(HttpServletResponse response,
+                               int rid,int uid,String reason) throws IOException {
+        ReportResource reportResource=new ReportResource();
+        String r=new String(reason.getBytes("ISO-8859-1"),"UTF-8");
+        reportResource.setRid(rid);
+        reportResource.setUid(uid);
+        reportResource.setReason(r);
         System.out.println(reportResource);
-       boolean result=resourceService.reportResource(reportResource);
-        mav.getModel().put("result",result);
+        boolean result=resourceService.reportResource(reportResource);
         System.out.println("SSDD"+result);
-         return mav;
+        response.setContentType("textml;charset=UTF-8");//  textml     ,text/xml    ,text/json
+        PrintWriter out=response.getWriter();//获取响应对象中的输出流
+        out.write(result+"");
+        out.flush();
+        out.close();
     }
 
     /**

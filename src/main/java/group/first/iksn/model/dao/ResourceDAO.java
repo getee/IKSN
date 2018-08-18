@@ -63,5 +63,5 @@ public interface ResourceDAO {
 
     String getDownedTime(int rid, int uid);
 
-    /*ArrayList<ResourceComments> getresourceComments(Integer rid);*/
+    ArrayList<ResourceComments> getresourceComments(Integer rid);
 }

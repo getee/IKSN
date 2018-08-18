@@ -25,7 +25,7 @@
             /*
                         var bokeid="2";
             */
-            var ajaxUrl="/blog/getFloor?bid="+"2";
+            var ajaxUrl="/blog/getFloor?bid="+"${boke.bid}";
             $.ajax({
                 type:"post",
                 url:ajaxUrl,
@@ -52,7 +52,7 @@
 	</script>
     <script type="text/javascript">
         $(document).ready(function(){
-            var ajaxUrl="/blog/getComments?bid="+"2";
+            var ajaxUrl="/blog/getComments?bid="+"${boke.bid}";
             $.ajax({
                 type:"post",
                 url:ajaxUrl,
@@ -135,7 +135,7 @@
 			<%--<c:if test="${sessionScope.loginresult.isadmin eq '1'}">--%>
 			<c:if test="${sessionScope.loginresult.isadmin eq '1' && not empty reportBlog.id && !(reportBlog.id eq null)}">
 				<button id="comeback-button" type="button" class="btn btn-primary" disabled style="">返回举报页</button>
-				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#delete" style="">删除</button>
+				<button id="delete-button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#delete" style="">删除</button>
 				<button id="sendBack-button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#sendBack" style="">下架并禁言</button>
 				<h5 style="color: white">举报原因：${requestScope.reportBlog.reason}</h5>
 			</c:if>
@@ -204,6 +204,7 @@
                         $("#sendBack-ok-innerHtml").text("已下架");
                         $(this).prop("disabled","disabled");
                         $("#sendBack-button").prop("disabled","disabled");
+                        $("#delete-button").prop("disabled","disabled");
                         $("#comeback-button").removeAttr("disabled");
                     }else {
                         $("#sendBack-ok-innerHtml").text("按钮睡着了，请再点一次吧");
@@ -286,9 +287,17 @@
 						<div class="span12" style="background-color:#A29E9E;padding: 25px">
 							<!-- Button trigger modal -->
 							有疑问？就说一说
-							<button type="button" onmouseover="getFoor()" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-								我要评论
-							</button>
+							<c:if test="${sessionScope.loginresult eq null}">
+								<button type="button" onclick="tishilogin()" class="btn btn-primary btn-lg" >
+									我要评论
+								</button>
+							</c:if>
+							<c:if test="${sessionScope.loginresult != null}">
+								<button type="button" onmouseover="getFoor()" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+									我要评论
+								</button>
+							</c:if>
+
 
 							<!-- Modal -->
 							<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="margin-top: 20%">
@@ -301,12 +310,8 @@
                                         <%--  该功能需要隐藏标签，以及传入登录用户信息--%>
 
                                         <form action="/blog/discuss" method="post">
-											<div class="form-group" style="display: none">
-												uid:<input type="text" name="uid"><br>
-											</div>
-											<div class="form-group" style="display: none">
-												bid:<input type="text" name="bid" value="${boke.bid}"><br>
-											</div>
+												<input type="hidden" name="uid"value="${sessionScope.loginresult.uid}"><br>
+												<input type="hidden" name="bid" value="${boke.bid}"><br>
 											<div class="modal-body">
 												<!--文本域-->
 												<textarea class="form-control" rows="3" name="content"></textarea>
@@ -339,10 +344,10 @@
                                       <%--  该功能需要隐藏标签，以及传入登录用户信息--%>
 
 										<form action="/blog/answerComment" method="post">
-											<div class="form-group">
-												uid:<input id="" type="text" name="uid"><br>
+											<div class="form-group" style="display: none">
+												uid:<input id="" type="text" name="uid" value="${sessionScope.loginresult.uid}"><br>
 											</div>
-											<div class="form-group">
+											<div class="form-group"style="display: none">
 												bid:<input id="hfbid" type="text" name="bid"><br>
 											</div>
 											<div class="modal-body">
@@ -350,10 +355,10 @@
 												<textarea class="form-control" rows="3" name="content"></textarea>
 												<!---->
 											</div>
-											<div class="form-group">
+											<div class="form-group"style="display: none">
 												commentid:<input id="hfid" type="text" name="commentid"><br>
 											</div>
-											<div class="form-group">
+											<div class="form-group"style="display: none">
 												floor:<input id="hffoor" type="text" name="floor"><br>
 											</div>
 											<div class="modal-footer">
@@ -447,7 +452,7 @@
 									</thead>
 									<tbody>
 									<tr>
-										<td colspan="3"><h3><a href="tarenzhongxin.jsp">${yonghu.nickname}</a><small></small></h3></td>
+										<td colspan="3"><h3><a href="tarenzhongxin.jsp?uid=${yonghu.uid}">${yonghu.nickname}</a><small></small></h3></td>
 										<td>
 												<button id="gz" type="button" class="btn btn-primary" style="width: 100px" data-toggle="button" aria-pressed="false" autocomplete="off">+关注</button>
 										</td>
@@ -569,11 +574,11 @@
             </div>
             <div class="modal-body">
                 <!--								文本域-->
-                <form action="/blog/reportBlog" method="post">
+                <form>
                     <input type="hidden" name="bid" type="text" value="${boke.bid}" readonly="readonly"/>
                     <input type="hidden" name="uid" type="text" value="${sessionScope.loginresult.uid}" readonly="readonly"/>
-                    <textarea name="reason" class="form-control" rows="3"></textarea><br/>
-                    <input style="float: right;"  type="submit" value="提交" onclick="report(${result})" />
+                    <textarea id="reason" name="reason" class="form-control" rows="3"></textarea><br/>
+					<input id="reportBlog" style="float: right;"  type="button" value="提交" />
                 </form>
                 <!--								-->
 
@@ -713,10 +718,14 @@
 <a href="javascript:void(0)" id="toTop" style="border-radius: 20px"> </a>
 </body>
 <script>
-function report(result) {
-	alert("举报成功")
-}
-
+	$(document).ready(function () {
+        $("#reportBlog").click(function () {
+            $.get("/blog/reportBlog?bid=${boke.bid}&uid=${sessionScope.loginresult.uid}&reason="+$('#reason').val(),function (data,status) {
+                $("#modal-container-830220").modal('hide');
+                alert("举报成功");
+            })
+        })
+    })
 </script>
 <script>
     document.getElementById("time").value=new Date();

@@ -424,8 +424,8 @@
             });
             //特效,输入雷电试试
 
-            $("#topSearch").keyup(function(){
-                var input=$("#topSearch").val();
+            $("#q1").keyup(function(){
+                var input=$("#q1").val();
                 if(input=="雷电"||input=="闪电"){
                     $("#texiao").fadeIn(2000);
                     var audio = $("#audio").get(0);
@@ -436,8 +436,8 @@
             });
             //输入旋转
             var r=360;
-            $("#topSearch").keyup(function(){
-                var input=$("#topSearch").val();
+            $("#q1").keyup(function(){
+                var input=$("#q1").val();
 
                 if(input=="旋转"){
 
@@ -570,7 +570,7 @@
                     <li class="active"><a href="../index.jsp">首页 <span class="sr-only">(current)</span></a></li>
                     <li><a href="#">博客</a></li>
                     <li><a href="#">学院</a></li>
-                    <li><a href="../xiazai.jsp">下载</a></li>
+                    <li><a href="/resource/keywordSearch?keyword=1">下载</a></li>
                     <li><a href="#">GitChat</a></li>
                     <li><a href="#">TinyMind</a></li>
                     <li><a href="wenda.jsp">问答</a></li>
@@ -578,7 +578,7 @@
                 </ul>
                 <form class="navbar-form navbar-left" method="post" action="/blog/blogSearch">
                     <div class="form-group">
-                        <input  id="q1" class="quickQuery$focus" type="text" style="border: 3px solid #ccc;" name="content"/>
+                        <input  id="q1" class="quickQuery$focus form-control" type="text" style="border: 3px solid #ccc;" name="content"/>
                         <div class="quickQuery$focus"></div>
                     </div> <button id="bSearch" type="submit"  class="btn btn-default" >搜索</button>
 
@@ -642,7 +642,7 @@
 
 </div>
 <%--提示登录框--%>
-<div id="tsdl" class="alert alert-info alert-dismissible" role="alert" style="width:20%;position:fixed;top: 0%;left:35%;display: none">
+<div id="tsdl" class="alert alert-info alert-dismissible" role="alert" style="z-index: 99; width:20%;position:fixed;top: 0%;left:35%;display: none">
     <button type="button" class="close" id="guanbianniu"><span aria-hidden="true">&times;</span></button>
     <strong>提示!</strong>用户还未登录<p></p>
     <a class="btn btn-info" style="float: right" id="qdl">去登陆</a>.
@@ -746,10 +746,14 @@
     window.onload = function(){
         $.get("/blog/ajaxBlogSearch",function (data) {
             var json=eval(data);
-            $.each(json,function (index) {
-                keywordArray[10+index]= new Array("10"+index, json[index].word,chineseToPinYin(json[index].word) );
 
-               // alert(keywordArray[10+index]);
+            $.each(json,function (index) {
+                var ttt=json[index].word
+                var str=ttt.replace(/[0-9]/g, '');
+                var l1=str.replace(/[a-zA-Z]/g,'');
+
+                keywordArray[10+index*1]= new Array("10"+index, json[index].word,chineseToPinYin(json[index].word) );
+
             });
 
         })

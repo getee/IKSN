@@ -68,7 +68,6 @@ public class BlogControl {
         List<Blog> al=blogService.classifyPush(classify,page);
         System.out.println(al);
 
-
         JSONArray ja=new JSONArray();
         for(Blog bl:al){
             JSONObject jo=new JSONObject();
@@ -176,14 +175,15 @@ public class BlogControl {
         System.out.println("搜索的关键字:"+textcontent);
         ModelAndView mv=new ModelAndView();
 
-      //  List<Blog> b= blogService.detailedBlogSearchResultMap(textcontent);
-       // System.out.println("标签:"+b);
+       List<Blog> b= blogService.detailedBlogSearchResultMap(textcontent);
+        System.out.println("标签:"+b);
         //添加blog分List<Blog>类和标题搜索
-        List<Blog>  b=blogService.blogTitle(textcontent);
-       //  b.addAll(blogService.blogClassify(textcontent));
+         b=blogService.blogTitle(textcontent);
+       // b.addAll(blogService.blogClassify(textcontent));
         System.out.println("类型:"+b);
-       // b=blogService.blogClassify(textcontent);
-         b.addAll(blogService.blogTitle(textcontent));
+
+        b=blogService.blogClassify(textcontent);
+
         System.out.println("标题:"+b);
         mv.addObject("blogSearch",b);
         mv.addObject("keyWord",textcontent);
@@ -193,22 +193,22 @@ public class BlogControl {
 
 
 /**
- * 搜索框检索title
+ * 搜索框检索title转成拼音
  */
 @RequestMapping("/ajaxBlogSearch")
 public String ajaxBlogSearch(HttpServletResponse response, HttpServletRequest request ){
 
     List<String> a=getBlogService().ajaxBlogMohuSearch();
-    System.out.println(a);
+
     JSONArray ja=new JSONArray();
     for(String st:a){
-
         JSONObject jo=new JSONObject();
-        if(st.length()>7)
-            jo.put("word",  st.substring(0,7));//截取八位字符
+        if(st.length()>7){
+            jo.put("word",  st.substring(0,7));}//截取八位字符
+          else{jo.put("word",st);}
         ja.put(jo);
     }
-
+    System.out.println(ja.toString());
     try {
         Responser.responseToJson( response,request,ja.toString());
     }catch (Exception e){
@@ -347,7 +347,6 @@ public String ajaxBlogSearch(HttpServletResponse response, HttpServletRequest re
         model.addAttribute("original",map.get("original"));
         model.addAttribute("fans",map.get("fans"));
         model.addAttribute("attention",map.get("attention"));
-        System.out.println(listblog);
         return "blogDetail";
     }
 
@@ -421,7 +420,7 @@ public String ajaxBlogSearch(HttpServletResponse response, HttpServletRequest re
  * 博客评论
  */
     @RequestMapping("/discuss")
-    public String discuss(@ModelAttribute("discuss")BlogComments blogComments){
+    public String discuss(@ModelAttribute("discuss")BlogComments blogComments,Model model){
         System.out.println(blogComments);
         blogComments.setTime(LocalTime.getNowTime());
         boolean result=blogService.discuss(blogComments);
@@ -430,7 +429,41 @@ public String ajaxBlogSearch(HttpServletResponse response, HttpServletRequest re
             return "index";
         }else
         {
+            Date d = new Date();
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+            int bid=blogComments.getBid();
+
+            Map<String,Object> map=blogService.getBlogAndUser(bid);
+            model.addAttribute("boke",map.get("boke"));
+            model.addAttribute("yonghu",map.get("yonghu"));
+            model.addAttribute("original",map.get("original"));
+            model.addAttribute("fans",map.get("fans"));
+            model.addAttribute("attention",map.get("attention"));
+
             return "userArticle";
+        }
+    }
+
+    @RequestMapping("/personaldiscuss/{bid}")
+    public String personaldiscuss(@ModelAttribute("discuss")BlogComments blogComments,Model model,@PathVariable("bid") int bid){
+        System.out.println(blogComments);
+        blogComments.setTime(LocalTime.getNowTime());
+        boolean result=blogService.discuss(blogComments);
+        if(!result)
+        {
+            return "index";
+        }else
+        {
+            Blog listblog=blogService.listBlogService(bid);
+            model.addAttribute("listblog",listblog);
+            Map<String,Object> map=blogService.getBlogAndUser(bid);
+            model.addAttribute("boke",map.get("boke"));
+            model.addAttribute("yonghu",map.get("yonghu"));
+            model.addAttribute("original",map.get("original"));
+            model.addAttribute("fans",map.get("fans"));
+            model.addAttribute("attention",map.get("attention"));
+            return "blogDetail";
         }
     }
     /**
@@ -438,7 +471,7 @@ public String ajaxBlogSearch(HttpServletResponse response, HttpServletRequest re
      */
 
     @RequestMapping("/answerComment")
-    public String answerComment(@ModelAttribute("answerComment")BlogComments blogComments){
+    public String answerComment(@ModelAttribute("answerComment")BlogComments blogComments,Model model){
         System.out.println(blogComments);
         blogComments.setTime(LocalTime.getNowTime());
         boolean result=blogService.answerComment(blogComments);
@@ -447,23 +480,62 @@ public String ajaxBlogSearch(HttpServletResponse response, HttpServletRequest re
             return "index";
         }else
         {
+            Date d = new Date();
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+            int bid=blogComments.getBid();
+
+            Map<String,Object> map=blogService.getBlogAndUser(bid);
+            model.addAttribute("boke",map.get("boke"));
+            model.addAttribute("yonghu",map.get("yonghu"));
+            model.addAttribute("original",map.get("original"));
+            model.addAttribute("fans",map.get("fans"));
+            model.addAttribute("attention",map.get("attention"));
+
             return "userArticle";
+        }
+    }
+    @RequestMapping("/answerPersonalComment/{bid}")
+    public String answerPersonalComment(@ModelAttribute("answerComment")BlogComments blogComments,Model model,@PathVariable("bid") int bid){
+        System.out.println(blogComments);
+        blogComments.setTime(LocalTime.getNowTime());
+        boolean result=blogService.answerComment(blogComments);
+        if(!result)
+        {
+            return "index";
+        }else
+        {
+            Blog listblog=blogService.listBlogService(bid);
+            model.addAttribute("listblog",listblog);
+            Map<String,Object> map=blogService.getBlogAndUser(bid);
+            model.addAttribute("boke",map.get("boke"));
+            model.addAttribute("yonghu",map.get("yonghu"));
+            model.addAttribute("original",map.get("original"));
+            model.addAttribute("fans",map.get("fans"));
+            model.addAttribute("attention",map.get("attention"));
+            return "blogDetail";
         }
     }
     /**
      * 举报博客
-     * @param reportBlog
-     * @return
+     *
      */
     @RequestMapping("/reportBlog")
-    public ModelAndView reportBlog(@ModelAttribute("reportBlog")ReportBlog reportBlog) throws UnsupportedEncodingException {
-        ModelAndView mav=new ModelAndView("userArticle");
-        System.out.println(reportBlog);
+    public void reportBlog(HttpServletResponse response,
+    int bid,int uid,String reason) throws IOException {
+        ReportBlog reportBlog=new ReportBlog();
+        String r=new String(reason.getBytes("ISO-8859-1"),"UTF-8");
+        reportBlog.setBid(bid);
+        reportBlog.setUid(uid);
+        reportBlog.setReason(r);
+        System.out.println("举报博客："+reportBlog);
         boolean result=blogService.reportBlog(reportBlog);
-        mav.getModel().put("result",result);
         System.out.println(result);
-
-        return mav;
+        response.setContentType("textml;charset=UTF-8");//  textml     ,text/xml    ,text/json
+        PrintWriter out=response.getWriter();//获取响应对象中的输出流
+        out.write(result+"");
+        out.flush();
+        out.close();
     }
     /**
      * 管理员查看被举报的博客，进行审核
