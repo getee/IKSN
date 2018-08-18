@@ -67,12 +67,12 @@
 			});
 			//写私信时提交不合法时弹出的警告,ajax发送私信
 			$("#submitMessage").click(function(){
-				if($("#exampleInputEmail1").val()==""){
+				if($("#exampleInputEmail2").val()==""){
 					$("#alertDanger").css("display","block");
 				}else if($("#exampleInputText1").val()==""){
                     $("#alertDanger").css("display","block");
 				}else{
-				    var toid=$("#exampleInputEmail1").val();
+				    var toid=$("#exampleInputEmail2").val();
 				    var content=$("#exampleInputText1").val();
 				    $.post("/user/sendMessage/${sessionScope.loginresult.uid}?toid="+toid+"&content="+content,function (data) {
 				        if(data=="success"){
@@ -122,11 +122,13 @@
 			$(".checkbox").click(function(){
 
                 var friendId="";
+                var friendName="";
 			    $.each($("input:checkbox:checked"),function () {
 			        if($(this).val()!="on"){
-
+			            friendName+=$(this).attr("name")+" ";
                         friendId+=$(this).val()+",";
-                        $("#exampleInputEmail1").val(friendId);
+                        $("#exampleInputEmail1").val(friendName);
+                        $("#exampleInputEmail2").val(friendId);
 
 					}
 
@@ -161,7 +163,8 @@
             });
             //这里是当用户从收到的消息点击过来的
             <c:if test="${ not empty param.sendback}">
-				$("#exampleInputEmail1").val(${param.sendback});
+				$("#exampleInputEmail1").val('${param.sendName}');
+				$("#exampleInputEmail2").val(${param.sendback});
 				$("#exampleInputText1").focus();
 			</c:if>
 
@@ -169,10 +172,6 @@
 
 		});
 
-		//双击好友发送消息
-		function shuangji(uid){
-		    $("#exampleInputEmail1").val(uid);
-		}
 
 		//删除关注的好友
 		function deleteFriend(){
@@ -301,7 +300,7 @@
 		<div class="col-md-1">
 			<div class="checkbox" style="margin-top: 20px">
 				<label>
-				  <input id="check${friend.uid}" value="${friend.uid}" class="checkboxs" type="checkbox">
+				  <input id="check${friend.uid}" name="${friend.nickname}" value="${friend.uid}" class="checkboxs" type="checkbox">
 				</label>
 			  </div>
 		</div>
@@ -379,7 +378,11 @@
 		<%--<form action="/user/sendMessage/${sessionScope.loginresult.uid}" method="post">--%>
 		  <div class="form-group">
 			<label for="exampleInputEmail1">发送给</label>
-			<input type="text" name="toid" class="form-control" id="exampleInputEmail1" placeholder="发送给有效的收件人" required readonly>
+			  <%--显示用户的nickname--%>
+			<input type="text" name="" class="form-control" id="exampleInputEmail1" placeholder="发送给有效的收件人" required readonly>
+			<%--真实传过去的toid--%>
+			  <input type="hidden" name="toid" class="form-control" id="exampleInputEmail2" placeholder="发送给有效的收件人" >
+
 		  </div>
 		  <div class="form-group">
 			<label for="exampleInputText1">内容</label>
