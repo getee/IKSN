@@ -570,7 +570,7 @@
                     <li class="active"><a href="../index.jsp">首页 <span class="sr-only">(current)</span></a></li>
                     <li><a href="#">博客</a></li>
                     <li><a href="#">学院</a></li>
-                    <li><a href="../xiazai.jsp">下载</a></li>
+                    <li><a href="/resource/keywordSearch?keyword=1">下载</a></li>
                     <li><a href="#">GitChat</a></li>
                     <li><a href="#">TinyMind</a></li>
                     <li><a href="wenda.jsp">问答</a></li>
@@ -746,10 +746,14 @@
     window.onload = function(){
         $.get("/blog/ajaxBlogSearch",function (data) {
             var json=eval(data);
-            $.each(json,function (index) {
-                keywordArray[10+index]= new Array("10"+index, json[index].word,chineseToPinYin(json[index].word) );
 
-               // alert(keywordArray[10+index]);
+            $.each(json,function (index) {
+                var ttt=json[index].word
+                var str=ttt.replace(/[0-9]/g, '');
+                var l1=str.replace(/[a-zA-Z]/g,'');
+
+                keywordArray[10+index*1]= new Array("10"+index, json[index].word,chineseToPinYin(json[index].word) );
+
             });
 
         })

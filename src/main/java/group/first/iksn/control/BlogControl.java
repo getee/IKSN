@@ -67,7 +67,6 @@ public class BlogControl {
         List<Blog> al=blogService.classifyPush(classify,page);
         System.out.println(al);
 
-
         JSONArray ja=new JSONArray();
         for(Blog bl:al){
             JSONObject jo=new JSONObject();
@@ -157,14 +156,15 @@ public class BlogControl {
         System.out.println("搜索的关键字:"+textcontent);
         ModelAndView mv=new ModelAndView();
 
-      //  List<Blog> b= blogService.detailedBlogSearchResultMap(textcontent);
-       // System.out.println("标签:"+b);
+       List<Blog> b= blogService.detailedBlogSearchResultMap(textcontent);
+        System.out.println("标签:"+b);
         //添加blog分List<Blog>类和标题搜索
-        List<Blog>  b=blogService.blogTitle(textcontent);
-       //  b.addAll(blogService.blogClassify(textcontent));
+         b=blogService.blogTitle(textcontent);
+       // b.addAll(blogService.blogClassify(textcontent));
         System.out.println("类型:"+b);
-       // b=blogService.blogClassify(textcontent);
-         b.addAll(blogService.blogTitle(textcontent));
+
+        b=blogService.blogClassify(textcontent);
+
         System.out.println("标题:"+b);
         mv.addObject("blogSearch",b);
         mv.addObject("keyWord",textcontent);
@@ -174,22 +174,22 @@ public class BlogControl {
 
 
 /**
- * 搜索框检索title
+ * 搜索框检索title转成拼音
  */
 @RequestMapping("/ajaxBlogSearch")
 public String ajaxBlogSearch(HttpServletResponse response, HttpServletRequest request ){
 
     List<String> a=getBlogService().ajaxBlogMohuSearch();
-    System.out.println(a);
+
     JSONArray ja=new JSONArray();
     for(String st:a){
-
         JSONObject jo=new JSONObject();
-        if(st.length()>7)
-            jo.put("word",  st.substring(0,7));//截取八位字符
+        if(st.length()>7){
+            jo.put("word",  st.substring(0,7));}//截取八位字符
+          else{jo.put("word",st);}
         ja.put(jo);
     }
-
+    System.out.println(ja.toString());
     try {
         Responser.responseToJson( response,request,ja.toString());
     }catch (Exception e){
