@@ -424,8 +424,8 @@
             });
             //特效,输入雷电试试
 
-            $("#topSearch").keyup(function(){
-                var input=$("#topSearch").val();
+            $("#q1").keyup(function(){
+                var input=$("#q1").val();
                 if(input=="雷电"||input=="闪电"){
                     $("#texiao").fadeIn(2000);
                     var audio = $("#audio").get(0);
@@ -436,8 +436,8 @@
             });
             //输入旋转
             var r=360;
-            $("#topSearch").keyup(function(){
-                var input=$("#topSearch").val();
+            $("#q1").keyup(function(){
+                var input=$("#q1").val();
 
                 if(input=="旋转"){
 
@@ -578,7 +578,7 @@
                 </ul>
                 <form class="navbar-form navbar-left" method="post" action="/blog/blogSearch">
                     <div class="form-group">
-                        <input  id="q1" class="quickQuery$focus" type="text" style="border: 3px solid #ccc;" name="content"/>
+                        <input  id="q1" class="quickQuery$focus form-control" type="text" style="border: 3px solid #ccc;" name="content"/>
                         <div class="quickQuery$focus"></div>
                     </div> <button id="bSearch" type="submit"  class="btn btn-default" >搜索</button>
 

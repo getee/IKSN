@@ -135,7 +135,7 @@
 			<%--<c:if test="${sessionScope.loginresult.isadmin eq '1'}">--%>
 			<c:if test="${sessionScope.loginresult.isadmin eq '1' && not empty reportBlog.id && !(reportBlog.id eq null)}">
 				<button id="comeback-button" type="button" class="btn btn-primary" disabled style="">返回举报页</button>
-				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#delete" style="">删除</button>
+				<button id="delete-button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#delete" style="">删除</button>
 				<button id="sendBack-button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#sendBack" style="">下架并禁言</button>
 				<h5 style="color: white">举报原因：${requestScope.reportBlog.reason}</h5>
 			</c:if>
@@ -204,6 +204,7 @@
                         $("#sendBack-ok-innerHtml").text("已下架");
                         $(this).prop("disabled","disabled");
                         $("#sendBack-button").prop("disabled","disabled");
+                        $("#delete-button").prop("disabled","disabled");
                         $("#comeback-button").removeAttr("disabled");
                     }else {
                         $("#sendBack-ok-innerHtml").text("按钮睡着了，请再点一次吧");
