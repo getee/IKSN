@@ -402,7 +402,7 @@ public String ajaxBlogSearch(HttpServletResponse response, HttpServletRequest re
  * 博客评论
  */
     @RequestMapping("/discuss")
-    public String discuss(@ModelAttribute("discuss")BlogComments blogComments){
+    public String discuss(@ModelAttribute("discuss")BlogComments blogComments,Model model){
         System.out.println(blogComments);
         blogComments.setTime(LocalTime.getNowTime());
         boolean result=blogService.discuss(blogComments);
@@ -411,6 +411,18 @@ public String ajaxBlogSearch(HttpServletResponse response, HttpServletRequest re
             return "index";
         }else
         {
+            Date d = new Date();
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+            int bid=blogComments.getBid();
+
+            Map<String,Object> map=blogService.getBlogAndUser(bid);
+            model.addAttribute("boke",map.get("boke"));
+            model.addAttribute("yonghu",map.get("yonghu"));
+            model.addAttribute("original",map.get("original"));
+            model.addAttribute("fans",map.get("fans"));
+            model.addAttribute("attention",map.get("attention"));
+
             return "userArticle";
         }
     }
@@ -419,7 +431,7 @@ public String ajaxBlogSearch(HttpServletResponse response, HttpServletRequest re
      */
 
     @RequestMapping("/answerComment")
-    public String answerComment(@ModelAttribute("answerComment")BlogComments blogComments){
+    public String answerComment(@ModelAttribute("answerComment")BlogComments blogComments,Model model){
         System.out.println(blogComments);
         blogComments.setTime(LocalTime.getNowTime());
         boolean result=blogService.answerComment(blogComments);
@@ -428,6 +440,18 @@ public String ajaxBlogSearch(HttpServletResponse response, HttpServletRequest re
             return "index";
         }else
         {
+            Date d = new Date();
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+            int bid=blogComments.getBid();
+
+            Map<String,Object> map=blogService.getBlogAndUser(bid);
+            model.addAttribute("boke",map.get("boke"));
+            model.addAttribute("yonghu",map.get("yonghu"));
+            model.addAttribute("original",map.get("original"));
+            model.addAttribute("fans",map.get("fans"));
+            model.addAttribute("attention",map.get("attention"));
+
             return "userArticle";
         }
     }
