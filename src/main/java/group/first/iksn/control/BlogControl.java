@@ -1,6 +1,7 @@
 package group.first.iksn.control;
 
 
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import group.first.iksn.model.bean.*;
 import group.first.iksn.service.BlogService;
 import group.first.iksn.service.UserService;
@@ -144,8 +145,26 @@ public class BlogControl {
         }
         return  "index";
     }
-
-
+    /*
+    * 首页今日推荐
+    * */
+    @RequestMapping("/dayBlog")
+    public void dayBlog(HttpServletResponse response, HttpServletRequest request){
+        List<Blog> l= blogService.newBlogPush();
+        System.out.println(l);
+        JSONArray array=new JSONArray();
+        for(Blog blog:l){
+            JSONObject object=new JSONObject();
+            object.put("id",blog.getBid());
+            object.put("ti",blog.getTitle());
+            array.put(object);
+        }
+        try {
+            Responser.responseToJson(response,request,array.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * 这是搜索博客的方法
      * @param textcontent

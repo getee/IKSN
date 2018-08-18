@@ -38,7 +38,8 @@ public interface BlogService {
     List<Blog> classifyPush(int classify,int page);
     //ajax分页推送
     List<Blog> ajaxBlogPush(int page);
-
+    //首页今日推荐
+    List<Blog> newBlogPush();
 
     //添加BlogTag的服务层
     public boolean addBlogTagService(BlogTag blogTag);

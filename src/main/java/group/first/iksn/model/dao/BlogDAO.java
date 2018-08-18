@@ -23,7 +23,8 @@ public interface BlogDAO {
     List<Blog> ajaxBlogPush(int page);
     //首页博客分类推送
     List<Blog> classifyPush(int classify,int page);
-
+    //首页今日推荐
+    List<Blog> newBlogPush();
 
 
 
