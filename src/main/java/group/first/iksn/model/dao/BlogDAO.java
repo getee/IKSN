@@ -21,6 +21,8 @@ public interface BlogDAO {
     List<Blog> browsedPush(int classify);
     //ajax分页推送
     List<Blog> ajaxBlogPush(int page);
+    //首页博客分类推送
+    List<Blog> classifyPush(int classify,int page);
 
 
 

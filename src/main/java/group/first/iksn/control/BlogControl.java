@@ -54,34 +54,50 @@ public class BlogControl {
         this.blogService = blogService;
     }
 
+
     /**
-     * 这是首页推送博客的方法
-     * @return
+     * 首页分类推荐
      */
-    @RequestMapping("/blogPush")
-    public String blogPush(@RequestParam("page") String pp, Model m){
+    @RequestMapping("/classifyPush")
+    public String classifyPush(@RequestParam("classify") String classi,@RequestParam("page")String pp,HttpServletResponse response, HttpServletRequest request){
         int p=Integer.parseInt(pp);
+        int classify=Integer.parseInt(classi);
         System.out.println("page:"+p);
         int page=p*5-5;
-
-        List<Blog> al=blogService.detailedBlogPush(page);
-
+        List<Blog> al=blogService.classifyPush(classify,page);
         System.out.println(al);
-        m.addAttribute("BlogsPush",al);
-        return "index";
-    }
-    /**
-     * 首页浏览记录推送
-     */
-    @RequestMapping("/browsedPush")
-    public String browsedPush(Model m){
-        List<Blog> li=blogService.pointsPush();
 
-        for(Blog b:li){
-           /* ArrayList<Blog> list =blogService.browsedPush(b.getClassify());*/
+
+        JSONArray ja=new JSONArray();
+        for(Blog bl:al){
+            JSONObject jo=new JSONObject();
+            jo.put("bid",bl.getBid());
+            jo.put("title",bl.getTitle());
+            jo.put("content",bl.getContent().length()>100?bl.getContent().substring(0,100):bl.getContent());
+            jo.put("points",bl.getPoints());
+            jo.put("time",bl.getTime());
+            if(bl.getClassify()==1){  jo.put("classify","移动开发");}
+            else if(bl.getClassify()==2){  jo.put("classify","开发技术");}
+            else if(bl.getClassify()==3){  jo.put("classify","课程资源");}
+            else if(bl.getClassify()==4){  jo.put("classify","网络技术");}
+            else if(bl.getClassify()==5){  jo.put("classify","操作系统");}
+            else if(bl.getClassify()==6){  jo.put("classify","安全技术");}
+            else  if(bl.getClassify()==7){  jo.put("classify","数据库");}
+            else  if(bl.getClassify()==8){  jo.put("classify","服务器应用");}
+            else if(bl.getClassify()==9){  jo.put("classify","存储");}
+            else if(bl.getClassify()==10){  jo.put("classify","信息化");}
+            ja.put(jo) ;
         }
-        return "index";
+        try {
+            Responser.responseToJson( response,request,ja.toString());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return  "index";
+
+
     }
+
 
     /**
      * 这是首页ajax推送的方法
@@ -96,19 +112,30 @@ public class BlogControl {
         System.out.println("page:"+p);
         int page=p*5-5;
         System.out.println(page);
-        List<Blog> al=blogService.ajaxBlogPush(page);
-        System.out.println(al);
+
+            List<Blog> al=blogService.ajaxBlogPush(page);
+            System.out.println(al);
 
         JSONArray ja=new JSONArray();
         for(Blog bl:al){
             JSONObject jo=new JSONObject();
             jo.put("bid",bl.getBid());
             jo.put("title",bl.getTitle());
-            jo.put("content",bl.getContent().substring(0,2));
+            jo.put("content",bl.getContent().length()>100?bl.getContent().substring(0,100):bl.getContent());
             jo.put("points",bl.getPoints());
             jo.put("time",bl.getTime());
-            jo.put("classify",bl.getClassify());
-            ja.put(jo) ;
+            if(bl.getClassify()==1){  jo.put("classify","移动开发");}
+            else if(bl.getClassify()==2){  jo.put("classify","开发技术");}
+            else if(bl.getClassify()==3){  jo.put("classify","课程资源");}
+            else if(bl.getClassify()==4){  jo.put("classify","网络技术");}
+            else if(bl.getClassify()==5){  jo.put("classify","操作系统");}
+            else if(bl.getClassify()==6){  jo.put("classify","安全技术");}
+            else if(bl.getClassify()==7){  jo.put("classify","数据库");}
+            else  if(bl.getClassify()==8){  jo.put("classify","服务器应用");}
+            else  if(bl.getClassify()==9){  jo.put("classify","存储");}
+            else if(bl.getClassify()==10){  jo.put("classify","信息化");}
+            System.out.println();
+             ja.put(jo);
         }
         try {
             Responser.responseToJson( response,request,ja.toString());
@@ -275,9 +302,14 @@ public String ajaxBlogSearch(HttpServletResponse response, HttpServletRequest re
         boolean result2=blogService.updateUserToBlogService(userToBlog);
         System.out.println("修改博客");
         if(result==true&&result1==true&&result2==true){
-            Blog blogs=blogService.listBlogService(bid);
-            model.addAttribute("listblog",blogs);
-            System.out.println(blogs);
+            Map<String,Object> map=blogService.getBlogAndUser(bid);
+            Blog listblog=blogService.listBlogService(bid);
+            model.addAttribute("listblog",listblog);
+            model.addAttribute("boke",map.get("boke"));
+            model.addAttribute("yonghu",map.get("yonghu"));
+            model.addAttribute("original",map.get("original"));
+            model.addAttribute("fans",map.get("fans"));
+            model.addAttribute("attention",map.get("attention"));
             return "blogDetail";
         }
         else {
@@ -290,6 +322,12 @@ public String ajaxBlogSearch(HttpServletResponse response, HttpServletRequest re
     public String  listBlogByID(@PathVariable("bid") int bid,Model model){
         Blog listblog=blogService.listBlogService(bid);
         model.addAttribute("listblog",listblog);
+        Map<String,Object> map=blogService.getBlogAndUser(bid);
+        model.addAttribute("boke",map.get("boke"));
+        model.addAttribute("yonghu",map.get("yonghu"));
+        model.addAttribute("original",map.get("original"));
+        model.addAttribute("fans",map.get("fans"));
+        model.addAttribute("attention",map.get("attention"));
         System.out.println(listblog);
         return "blogDetail";
     }

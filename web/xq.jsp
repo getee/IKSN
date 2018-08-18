@@ -49,11 +49,7 @@
         }
 
     </style>
-<script>
-    function house() {
-              alert("已收藏");
-    }
-</script>
+
     <%--<script type="text/javascript">
         $(document).ready(function(){
             var ajaxUrl="/resource/getResourceComments?rid="+"3";
@@ -106,8 +102,9 @@
             <li ><a href="upload.jsp">上传资源赚积分</a></li>
             <li ><a href="myresource.jsp">已下载</a></li>
             <li ><a href="myresource.jsp">我的收藏</a></li>
-            <c:if test="${sessionScope.loginresult.isadmin eq '1'}">
-                <li style="margin-left: 5%"><a href="/blog/mGetAllReportBlog">返回举报页</a></li>
+            <%--<c:if test="${sessionScope.loginresult.isadmin eq '1'}">--%>
+            <c:if test="${sessionScope.loginresult.isadmin eq '1' && not empty reportRid && !(reportRid eq null)}">
+                <%--<li style="margin-left: 5%"><a href="/blog/mGetAllReportBlog">返回举报页</a></li>--%>
                 <li><a href="javascript:deleteResource('${requestScope.resouce.path}')">删除</a></li>
                 <li><a style="cursor: default">举报原因：${reportRReason}</a></li>
             </c:if>
@@ -185,10 +182,10 @@
                   </span>
                         <span> 综合评分：<em>7.9</em></span>
                         <div style="float:right; width:250px;">
-                                <form style="float:right; width:100px;" action="/resource/houseResource" method="post">
-                                        <input type="hidden" name="uid">
-                                        <input type="hidden" name="rid">
-                                    <button type="submit" onclick="house()" value="houseResource"><img src="img/sc.jpg">&nbsp;收藏</button>
+                                <form id="houseForm" style="float:right; width:100px;" >
+                                        <input type="hidden" name="uid" value="3">
+                                        <input type="hidden" name="rid" value="${requestScope.resouce.rid}">
+                                    <button type="submit" ><img src="img/sc.jpg">&nbsp;收藏</button>
                                 </form>
                             <a data-toggle="modal" data-target="#modal-container-830220" ><img src="img/jb.jpg" >&nbsp;举报</a><input type="hidden" value="${isReportOk}"/>
                             <!-- 模态框（Modal） -->
@@ -430,13 +427,27 @@
 </div>
 </body>
 <script type="text/javascript">
-    function shoucang()
-    {
-        alert("已收藏！")
-    }
    function report(result) {
        alert("举报成功！")
-   }
+   };
 
+   $("#houseForm").submit(function(){
+       var urll='/resource/houseResource';
+       var daa=$("#houseForm").serialize();
+       alert(daa);
+       $.ajax({
+           async: false,
+           type: "POST",
+           url:urll,
+           data:daa,
+           dataType: "text",
+           success: function (data) {
+               alert(data);
+           },
+           error: function (data) {
+               alert("该资源已被收藏");
+           }
+       })
+   })
 </script>
 </html>
