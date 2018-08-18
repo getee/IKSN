@@ -195,25 +195,6 @@
 
                 </c:forEach>
 
-
-            <%--<div class="col-md-4">
-                <c:forEach var="message" items="${allMessages}">
-                    <c:forEach var="user" items="${allSendMessageUsers}">
-                        <c:if test="${user.uid eq message.fromid}">
-                            <c:choose>
-                                <c:when test="${message.isread==0}">
-                                    <div class="row well noticeContext" style="background-color: black"><a><h4><small>${message.time}</small></h4></a></div>
-                                </c:when>
-                                <c:otherwise>
-                                    <div class="row well noticeContext"><a><h4><small>${message.time}</small></h4></a></div>
-                                </c:otherwise>
-                            </c:choose>
-                        </c:if>
-                    </c:forEach>
-
-                </c:forEach>
-
-            </div>--%>
         </div>
         <%--通知结束--%>
         <!--	分页-->
