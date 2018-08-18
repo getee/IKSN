@@ -195,7 +195,7 @@
         //接收到消息的回调方法
         websocket.onmessage = function (event) {
             oneNOtFriendNum+=1;
-            allNotReadNum+=oneNOtFriendNum;
+            allNotReadNum+=1;
             var str =$.parseJSON(event.data);
              webFromid=str.fromid;
              webToid=str.toid;
@@ -291,7 +291,20 @@
         //进聊天页面
         $(".chat-list-people").each(function () {
             $(this).click(function () {
+                allNotReadNum-=oneNOtFriendNum;
                 oneNOtFriendNum=0;
+                if(allNotReadNum==0){
+                    $("#allNotReadNum").html("");
+                }else{
+                    $("#allNotReadNum").html(allNotReadNum);
+                }
+                if(oneNOtFriendNum==0){
+                    $("#messagenum"+webFromid).html("");
+                }else{
+                    $("#messagenum"+webFromid).html(oneNOtFriendNum);
+
+                }
+
                 toid=$(this).attr("id");
                 var n = $(this).index();
                 $(".chatBox-head-one").toggle();
@@ -469,7 +482,7 @@
                         $("[data-toggle='popover']").popover({
                             title:"提示",
                             html:true,//为true时可以解析html标签
-                            content:"<a href='/user/receiveMessage/${sessionScope.loginresult.uid}'>有未读私信</a>"
+                            content:"<a href='/user/receiveMessage/${sessionScope.loginresult.uid}/1'>有未读私信</a>"
                         });
                         $("[data-toggle='popover']").popover('show')
                     }
@@ -560,7 +573,7 @@
                     <li><a href="../xiazai.jsp">下载</a></li>
                     <li><a href="#">GitChat</a></li>
                     <li><a href="#">TinyMind</a></li>
-                    <li><a href="#">问答</a></li>
+                    <li><a href="wenda.jsp">问答</a></li>
                     <li><a href="#">VIP</a></li>
                 </ul>
                 <form class="navbar-form navbar-left" method="post" action="/blog/blogSearch">

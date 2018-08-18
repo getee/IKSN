@@ -96,9 +96,12 @@
         insert into illegalblog(bid,illegalcause) values (#{bid},#{illegalcause})
     </insert>
 
-    <!--从reportBlog表中根据id删除一个选中行-->
+    <!--从reportBlog表中根据bid删除多个选中行-->
     <delete id="deleteBlogFromReport" parameterType="ReportBlog">
         delete from reportblog where BID = #{bid}
+    </delete>
+    <delete id="deleteOneReportBlog" parameterType="ReportBlog">
+        delete from reportblog where ID=#{id}
     </delete>
     <!--从blog表中根据id删除一个博客信息-->
     <delete id="deleteBlog" parameterType="Blog">
@@ -123,7 +126,7 @@
     </delete>
     <!--设置博客为不公开-->
     <update id="blogIsPublic" parameterType="UserToBlog">
-        update usertoblog set ISPUBLIC=1 where BID=#{bid};
+        update usertoblog set ISPUBLIC=1,BLOGTYPE=0 where BID=#{bid};
     </update>
 
 
@@ -137,6 +140,7 @@
         <association property="blog" column="bid" javaType="Blog">
             <id column="bid" property="bid"/>
             <result column="title" property="title"/>
+            <result column="time" property="time"/>
         </association>
     </resultMap>
     <select id="getAllReportBlog" resultMap="getBlogBy_Reportbid">
@@ -402,7 +406,7 @@
         select LINK from blog where BID=#{bid}
     </select>
     <!--对link进行加一-->
-    <update id="updateLink" parameterType="Integer">
-        update blog set LINK=#{numLink} where BID=#{bid}
+    <update id="updateLink" >
+        update blog set LINK=#{0} where BID=#{1}
     </update>
 </mapper>

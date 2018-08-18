@@ -62,4 +62,6 @@ public interface ResourceDAO {
     boolean addDownResource(int downId, int rid, String nowTime);
 
     String getDownedTime(int rid, int uid);
+
+    /*ArrayList<ResourceComments> getresourceComments(Integer rid);*/
 }
