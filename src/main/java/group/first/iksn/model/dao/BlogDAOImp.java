@@ -352,6 +352,7 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
         return isOK;
     }
 
+
     /**
      * 把前台举报的博客保存到数据库中
      * @param reportBlog

@@ -254,6 +254,7 @@ public class BlogServiceImp implements BlogService {
         return blogDAO.deleteBlog(bid);
     }
 
+
     @Override
     public boolean discuss(BlogComments blogComments) {
         System.out.println(blogComments);

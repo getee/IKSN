@@ -137,9 +137,10 @@
 		#div-left{
 			position: fixed;top: 30%;left: 2%;
 		}
-		#toTop {display: none;text-decoration: none;position: fixed;bottom: 10px;right: 10px;overflow: hidden;width: 40px;height: 40px;border: none;text-indent: 100%; background-image: url(image/goTop.jpg);background-size: 100% 100%;text-align: center;}
+		#toTop {display: none;text-decoration: none;position: fixed;bottom: 10px;right: 10px;overflow: hidden;width: 40px;height: 40px;border: none;text-indent: 100%; background-image: url("/img/goTop.jpg");background-size: 100% 100%;text-align: center;
 			display:block;width: 30px;height: 30px;border: none;background-size: 100% 100%;text-align: center;border-radius: 20px
 		}
+
 	</style>
 
 </head>
@@ -503,7 +504,7 @@
        $.post("/blog/twotui?uid=${yonghu.uid}",function (data) {
             var json=eval(data);
             $.each(json,function (index,item) {
-                var title=json[index].title.substring(0,17);
+                var title=json[index].title.substring(0,12);
                 var id=json[index].bid;
                // alert(title+id);
                 var ts="<div class=\"thumbnail\">\n" +
@@ -634,7 +635,7 @@
             });
         }
         else{
-            alert("您还没有登录哦！");
+            $("#tsdl").css("display","block");
         }
     });
     //关注
@@ -676,7 +677,7 @@
             }
         }
         else{
-            alert("您还没有登录哦！");
+            $("#tsdl").css("display","block");
         }
     })
 </script>
