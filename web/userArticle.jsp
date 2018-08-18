@@ -513,7 +513,7 @@
        $.post("/blog/twotui?uid=${yonghu.uid}",function (data) {
             var json=eval(data);
             $.each(json,function (index,item) {
-                var title=json[index].title.substring(0,17);
+                var title=json[index].title.substring(0,12);
                 var id=json[index].bid;
                // alert(title+id);
                 var ts="<div class=\"thumbnail\">\n" +
@@ -644,7 +644,7 @@
             });
         }
         else{
-            alert("您还没有登录哦！");
+            $("#tsdl").css("display","block");
         }
     });
     //关注
@@ -686,7 +686,7 @@
             }
         }
         else{
-            alert("您还没有登录哦！");
+            $("#tsdl").css("display","block");
         }
     })
 </script>

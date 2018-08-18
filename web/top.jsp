@@ -15,8 +15,8 @@
 <script src="../js/jquery.searchMeme.js" type="text/javascript"></script>--%>
 <script type="text/javascript" src="js/quickQuery-packer.js"></script>
 <link rel="stylesheet" type="text/css" href="css/quickQuery.css">
-<script src="js/select2.js"></script>
-<script src="js/pinyin.js"></script>
+<%--<script src="js/select2.js"></script>
+<script src="js/pinyin.js"></script>--%>
 <script src="js/chinese2pinyin.js"></script>
 
 <c:if test="${not empty sessionScope.loginresult}">
@@ -476,7 +476,6 @@
                         });
                         $("[data-toggle='popover']").popover('show')
                     }
-
                 });
                 $.get("/user/timingReceivingMessage/${sessionScope.loginresult.uid}",function(data){
                     if(data>0){
@@ -610,8 +609,79 @@
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav>
+    <%--<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">Small modal</button>--%>
+    <div class="modal fade bs-example-modal-sm" id="quicklogin" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">快速登录</h4>
+                </div>
+                <div class="modal-body">
+                        <div class="form-group">
+                            <label for="username">用户名</label>
+                            <input type="text" class="form-control" name="emailorphone" id="username" placeholder="username">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">密码</label>
+                            <input type="password" class="form-control" name="password" id="password" placeholder="Password">
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <div id="qdwa" class="alert alert-warning alert-dismissible" role="alert" style="display: none">
+                        <button type="button" class="close" id="deluts"><span aria-hidden="true">&times;</span></button>
+                        <strong>Warning!</strong>
+                        <p>用户名或密码错误登录失败.</p>
+                    </div>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" id="ksdl">登录</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>
+<%--提示登录框--%>
+<div id="tsdl" class="alert alert-info alert-dismissible" role="alert" style="width:20%;position:fixed;top: 0%;left:35%;display: none">
+    <button type="button" class="close" id="guanbianniu"><span aria-hidden="true">&times;</span></button>
+    <strong>提示!</strong>用户还未登录<p></p>
+    <a class="btn btn-info" style="float: right" id="qdl">去登陆</a>.
+</div>
+<script>
+    function tishilogin() {
+        $("#tsdl").css("display","block");
+
+    }
+    function quicklogin () {
+        $("#quicklogin").modal({
+            show:true,
+            keyboard:true
+        });
+    }
+    $("#deluts").click(function () {
+        $("#qdwa").css("display","none");
+    })
+    $("#guanbianniu").click(function () {
+        $("#tsdl").css("display","none");
+    })
+    $("#ksdl").click(function () {
+        $.post("/user/quicklogin?"+"emailorphone="+$("#username").val()+"&password="+$("#password").val(),function (msg) {
+
+            if(msg=="success"){
+                $("#quicklogin").modal('hide');
+                // 刷新当前页面.
+                window.location.reload();
+            }
+            if(msg=="fail"){
+                $("#qdwa").css("display","block");
+            }
+        })
+    })
+    $("#qdl").click(function () {
+        quicklogin ();
+        $("#tsdl").css("display","none")
+    })
+</script>
 <script>
     $("li[name='tx']").click(function () {
        var u="${sessionScope.loginresult}";
@@ -632,8 +702,8 @@
     });
     //退出登录
     $("#tc").click(function () {
-            $.post("/user/exit");
-            location.href="index.jsp";
+        $.post("/user/exit");
+        location.href="index.jsp";
     });
 
     $(document).ready(function () {
@@ -660,6 +730,7 @@
 
 <script>
 
+
     var keywordArray = new Array("","","")
     keywordArray[0] = new Array("0", "移动开发", "YIDONGKAIFA");
     keywordArray[1] = new Array("1", "开发技术", "KAIFAJISHU");
@@ -675,18 +746,17 @@
     window.onload = function(){
         $.get("/blog/ajaxBlogSearch",function (data) {
             var json=eval(data);
-            $.each(json,function (index,iteam) {
+            $.each(json,function (index) {
                 keywordArray[10+index]= new Array("10"+index, json[index].word,chineseToPinYin(json[index].word) );
-            });
 
-        for(var i=0;i<=keywordArray.length;i++){
-            alert(keywordArray);
-        }
+               // alert(keywordArray[10+index]);
+            });
 
         })
 
        $quickQuery(keywordArray);
     }
+
 
 </script>
 

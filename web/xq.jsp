@@ -49,11 +49,7 @@
         }
 
     </style>
-<script>
-    function house() {
-              alert("已收藏");
-    }
-</script>
+
     <%--<script type="text/javascript">
         $(document).ready(function(){
             var ajaxUrl="/resource/getResourceComments?rid="+"3";
@@ -186,10 +182,10 @@
                   </span>
                         <span> 综合评分：<em>7.9</em></span>
                         <div style="float:right; width:250px;">
-                                <form style="float:right; width:100px;" action="/resource/houseResource" method="post">
-                                        <input type="hidden" name="uid">
-                                        <input type="hidden" name="rid">
-                                    <button type="submit" onclick="house()" value="houseResource"><img src="img/sc.jpg">&nbsp;收藏</button>
+                                <form id="houseForm" style="float:right; width:100px;" >
+                                        <input type="hidden" name="uid" value="3">
+                                        <input type="hidden" name="rid" value="${requestScope.resouce.rid}">
+                                    <button type="submit" ><img src="img/sc.jpg">&nbsp;收藏</button>
                                 </form>
                             <a data-toggle="modal" data-target="#modal-container-830220" ><img src="img/jb.jpg" >&nbsp;举报</a><input type="hidden" value="${isReportOk}"/>
                             <!-- 模态框（Modal） -->
@@ -431,13 +427,27 @@
 </div>
 </body>
 <script type="text/javascript">
-    function shoucang()
-    {
-        alert("已收藏！")
-    }
    function report(result) {
        alert("举报成功！")
-   }
+   };
 
+   $("#houseForm").submit(function(){
+       var urll='/resource/houseResource';
+       var daa=$("#houseForm").serialize();
+       alert(daa);
+       $.ajax({
+           async: false,
+           type: "POST",
+           url:urll,
+           data:daa,
+           dataType: "text",
+           success: function (data) {
+               alert(data);
+           },
+           error: function (data) {
+               alert("该资源已被收藏");
+           }
+       })
+   })
 </script>
 </html>

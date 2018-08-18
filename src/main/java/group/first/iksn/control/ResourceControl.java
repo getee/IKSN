@@ -69,6 +69,24 @@ public class ResourceControl {
         }
 
     }
+
+    /**
+     *资源分类搜索
+     * @param
+     * @return
+     * @throws UnsupportedEncodingException
+     */
+    @RequestMapping("/keywordSearch")
+    public String keySearch(@RequestParam("keyword") String keyword,Model m){
+        System.out.println(keyword);
+        List<Resource> list=resourceService.ResourcekeywordSearch(keyword);
+        System.out.println(list);
+        m.addAttribute("keywordSearch",list);
+        return "xiazai";
+    }
+
+
+/**
     /**
      * 资源评论
      */
@@ -130,16 +148,21 @@ public class ResourceControl {
     /**
  * 对资源进行收藏
  */
-    @RequestMapping("/houseResource")
-    public String houseResource(@ModelAttribute("houseResource")CollectResource collectResource){
-        System.out.println(collectResource);
-        boolean result=resourceService.houseResource(collectResource);
-        if (!result)
-        {
-            return "success";
-        }else
-        {
-            return "xq";
+    @RequestMapping(value="/houseResource",method = RequestMethod.POST)
+    public void houseResource(CollectResource collectResource,HttpServletResponse response){
+        String msg="";
+        try {
+            boolean result = resourceService.houseResource(collectResource);
+            msg="收藏成功！";
+            response.getWriter().write(msg);
+        }catch (Exception e){
+            e.printStackTrace();
+            msg="收藏失败！";
+            try {
+                response.getWriter().write(msg);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
         }
     }
 
@@ -330,25 +353,9 @@ public class ResourceControl {
        return  mv;
     }
 
-    /**
-     *资源分类搜索
-     * @param
-     * @return
-     * @throws UnsupportedEncodingException
-     */
-    @RequestMapping("/keywordSearch")
-    public String keySearch(@RequestParam("keyword") String keyword,Model m){
-        System.out.println(keyword);
-        List<Resource> list=resourceService.ResourcekeywordSearch(keyword);
-        System.out.println(list);
-        m.addAttribute("keywordSearch",list);
-        return "xiazai";
-    }
-
     //资源举报
     @RequestMapping("/reportResource")
-    public ModelAndView reportResource(ReportResource reportResource) {
-        System.out.println(reportResource);
+    public ModelAndView reportResource(@ModelAttribute("reportResource")ReportResource reportResource) throws UnsupportedEncodingException {
         ModelAndView mav=new ModelAndView("xq");
         //String reason=new String(reportResource.getReason().getBytes("ISO-8859-1"),"UTF-8");
         //reportResource.setReason(reason);

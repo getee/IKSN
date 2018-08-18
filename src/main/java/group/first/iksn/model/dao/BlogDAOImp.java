@@ -73,6 +73,12 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
         return b;
     }
 
+    @Override
+    public List<Blog> classifyPush(int classify, int page) {
+        List<Blog> b=getSqlSession().getMapper(BlogDAO.class).classifyPush(classify,page);
+        return b;
+    }
+
 
     @Override
     public boolean processAddBlog(Blog blog) {
@@ -364,6 +370,7 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
         }
         return isOK;
     }
+
 
     /**
      * 把前台举报的博客保存到数据库中

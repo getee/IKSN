@@ -345,7 +345,12 @@
                                             <div style="width:250px; height:30px;  float:left">
                                                 <span> 上传者: ${r.user.nickname}  </span>&nbsp;&nbsp;&nbsp;&nbsp;
                                                 <span> 上传时间:${r.time}  </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                <span> 分类:${r.classify}  </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                                                    <c:choose>
+                                                        <c:when test="${r.classify}=2"> <span> 分类:移动开发 </span></c:when>
+                                                        <c:when test="${r.classify}=3"><span> 分类:开发技术</span></c:when>
+                                                    </c:choose>
+                                                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                 <%--<span>&nbsp;&nbsp;&nbsp;&nbsp;大小：<em>308KB</em></span>--%>
                                             </div>
                                                 <c:forEach items="${r.resourceTags}" var="tag">
