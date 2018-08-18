@@ -328,7 +328,6 @@ public String ajaxBlogSearch(HttpServletResponse response, HttpServletRequest re
         model.addAttribute("original",map.get("original"));
         model.addAttribute("fans",map.get("fans"));
         model.addAttribute("attention",map.get("attention"));
-        System.out.println(listblog);
         return "blogDetail";
     }
 
@@ -414,6 +413,28 @@ public String ajaxBlogSearch(HttpServletResponse response, HttpServletRequest re
             return "userArticle";
         }
     }
+
+    @RequestMapping("/personaldiscuss/{bid}")
+    public String personaldiscuss(@ModelAttribute("discuss")BlogComments blogComments,Model model,@PathVariable("bid") int bid){
+        System.out.println(blogComments);
+        blogComments.setTime(LocalTime.getNowTime());
+        boolean result=blogService.discuss(blogComments);
+        if(!result)
+        {
+            return "index";
+        }else
+        {
+            Blog listblog=blogService.listBlogService(bid);
+            model.addAttribute("listblog",listblog);
+            Map<String,Object> map=blogService.getBlogAndUser(bid);
+            model.addAttribute("boke",map.get("boke"));
+            model.addAttribute("yonghu",map.get("yonghu"));
+            model.addAttribute("original",map.get("original"));
+            model.addAttribute("fans",map.get("fans"));
+            model.addAttribute("attention",map.get("attention"));
+            return "blogDetail";
+        }
+    }
     /**
      * 博客评论回复
      */
@@ -429,6 +450,27 @@ public String ajaxBlogSearch(HttpServletResponse response, HttpServletRequest re
         }else
         {
             return "userArticle";
+        }
+    }
+    @RequestMapping("/answerPersonalComment/{bid}")
+    public String answerPersonalComment(@ModelAttribute("answerComment")BlogComments blogComments,Model model,@PathVariable("bid") int bid){
+        System.out.println(blogComments);
+        blogComments.setTime(LocalTime.getNowTime());
+        boolean result=blogService.answerComment(blogComments);
+        if(!result)
+        {
+            return "index";
+        }else
+        {
+            Blog listblog=blogService.listBlogService(bid);
+            model.addAttribute("listblog",listblog);
+            Map<String,Object> map=blogService.getBlogAndUser(bid);
+            model.addAttribute("boke",map.get("boke"));
+            model.addAttribute("yonghu",map.get("yonghu"));
+            model.addAttribute("original",map.get("original"));
+            model.addAttribute("fans",map.get("fans"));
+            model.addAttribute("attention",map.get("attention"));
+            return "blogDetail";
         }
     }
     /**

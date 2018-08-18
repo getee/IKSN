@@ -343,10 +343,10 @@
                                       <%--  该功能需要隐藏标签，以及传入登录用户信息--%>
 
 										<form action="/blog/answerComment" method="post">
-											<div class="form-group" >
+											<div class="form-group" style="display: none">
 												uid:<input id="" type="text" name="uid" value="${sessionScope.loginresult.uid}"><br>
 											</div>
-											<div class="form-group">
+											<div class="form-group"style="display: none">
 												bid:<input id="hfbid" type="text" name="bid"><br>
 											</div>
 											<div class="modal-body">
@@ -354,10 +354,10 @@
 												<textarea class="form-control" rows="3" name="content"></textarea>
 												<!---->
 											</div>
-											<div class="form-group">
+											<div class="form-group"style="display: none">
 												commentid:<input id="hfid" type="text" name="commentid"><br>
 											</div>
-											<div class="form-group">
+											<div class="form-group"style="display: none">
 												floor:<input id="hffoor" type="text" name="floor"><br>
 											</div>
 											<div class="modal-footer">
