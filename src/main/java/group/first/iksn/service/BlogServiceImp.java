@@ -3,6 +3,8 @@ package group.first.iksn.service;
 
 import group.first.iksn.model.bean.*;
 import group.first.iksn.model.dao.BlogDAO;
+
+import group.first.iksn.util.LocalTime;
 import group.first.iksn.model.dao.UserDAO;
 import group.first.iksn.util.LocalTime;
 import org.springframework.stereotype.Component;
@@ -122,12 +124,12 @@ public class BlogServiceImp implements BlogService {
      */
     @Override
     public boolean Reject_oneReportblog(int report_id) {
-        return blogDAO.deleteBlogFromReport(report_id);
+        return blogDAO.deleteOneReportBlog(report_id);
     }
 
     /**
      * 搜索资源的方法
-     * @param s
+     * @param
      * @return
      */
     public List<Blog> detailedBlogSearchResultMap(String s){
@@ -135,14 +137,44 @@ public class BlogServiceImp implements BlogService {
         return  blogDAO.detailedBlogSearchResultMap(s);
     }
 
+    @Override
+    public List<Blog> blogClassify(String s) {
+        return  blogDAO.blogClassify(s);
+    }
+
+    @Override
+    public List<Blog> blogTitle(String s) {
+        /*String[] keyword=s.split("\\s+");*/
+
+        return  blogDAO.blogTitle(s);
+    }
+
+    @Override
+    public  List<String> ajaxBlogMohuSearch() {
+        return blogDAO.ajaxBlogMohuSearch() ;
+    }
+
     /**
      * 首页推送的方法
      * @return
      */
     @Override
-    public List<Blog> detailedBlogPush() {
-        return blogDAO.detailedBlogPush();
+    public List<Blog> detailedBlogPush(int page) {
+        return blogDAO.detailedBlogPush(page);
     }
+    public List<Blog> pointsPush(){ return blogDAO.pointsPush();}
+
+    @Override
+    public List<Blog> browsedPush(int classify) {
+        return blogDAO.browsedPush(classify);
+    }
+
+    /**
+     *
+     * @param
+     * @return
+     */
+   public List<Blog> ajaxBlogPush(int page){return blogDAO.ajaxBlogPush(page);}
 
     @Override
     public boolean addBlogService(Blog blog) {
@@ -244,6 +276,11 @@ public class BlogServiceImp implements BlogService {
         boolean serviceResult=blogDAO.reportBlog(reportBlog);
         return serviceResult;
     }
+    //获取被举报的博客
+    @Override
+    public ReportBlog selectReportBlog(int id) {
+        return blogDAO.selectReportBlog(id);
+    }
 
     /**
      * 开启线程
@@ -262,6 +299,7 @@ public class BlogServiceImp implements BlogService {
             System.out.println("进入多次举报线程");
             IllegalBlog iblog=new IllegalBlog();
             iblog.setBid(bid);
+            iblog.setIllegalcause("多次被举报");
 
             Blog blog=blogDAO.selectLinkByBid(bid);
             int numLink=Integer.parseInt(blog.getLink());
@@ -292,11 +330,6 @@ public class BlogServiceImp implements BlogService {
         }
     }
 
-    //获取被举报的博客
-    @Override
-    public ReportBlog selectReportBlog(int id) {
-        return blogDAO.selectReportBlog(id);
-    }
 
     @Override
     public String getFloor(Integer bid) {

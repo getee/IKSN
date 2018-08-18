@@ -107,7 +107,7 @@
                         e.preventDefault()
                         $(this).tab('show')
             });
-		
+
 		});  
 	 
 	</script>
@@ -301,7 +301,7 @@
                 htm+="<div id=\"1"+data[i].id+"\" class=\"row\" style=\"margin:auto;border-bottom-style:solid;border-bottom-width:5px;border-bottom-color:#E9E9E9\">\n" +
                     "                <div class=\"col-xs-12 col-md-8\"><h4><a class=\"text-muted\" target=\"_blank\" href=\"javascript:clickName('"+data[i].bid+"')\">"+data[i].title+"</a></h4><small style=\"margin-left: 2% \">举报原因："+data[i].reason+"</small></div>\n" +
                     "                <div class=\"col-xs-6 col-md-4\"><small style=\"margin-right: 20% \">"+data[i].time+"</small>\n" +
-                    "                    <a href=\"javascript:delete_oneReportResource("+data[i].id+")\">\n" +
+                    "                    <a href=\"javascript:delete_oneReportBlog("+data[i].id+")\">\n" +
                     "                        <small id=\"del_oneReportResource\" data-toggle=\"modal\" style=\"margin-right:3%;cursor: pointer\" class=\"glyphicon glyphicon-trash\"></small>\n" +
                     "                    </a>\n" +
                     "                </div>\n" +
@@ -378,14 +378,14 @@
 
     function clickTitle(reportid) {
         var a="/blog/mCheckReportblog/"+reportid;
-        location.href=a;
-        //window.open(a);
+        //location.href=a;
+        window.open(a);
     }
     function clickName(resourceid,reportid,reason) {
         //alert(resourceid+reason+reportid)
         var a="/resource/mCheckReportResource/"+resourceid+"/"+reportid+"?reason="+reason;
-        location.href=a;
-        //window.open(a);
+        //location.href=a;
+        window.open(a);
     }
     function delete_oneReportBlog(url){
         var  userChoice=window.confirm("您确认要去除这个博客吗?");

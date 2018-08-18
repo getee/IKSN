@@ -52,8 +52,26 @@
           select r.*,u.*,t.* from resource as r
           inner join  user as u on r.uid=u.uid
           inner join  resourcetag as t on t.rid=r.rid
+          where r.name like '%' #{s} '%'
+
 
     </select>
+
+    <!--资源分类搜索-->
+    <select id="ResourcekeywordSearch" resultMap="ResourceS" parameterType="String">
+          select r.*,u.*,t.* from resource as r
+          inner join  user as u on r.uid=u.uid
+          inner join  resourcetag as t on t.rid=r.rid
+        <!--<where>
+              <if test="key=='1'.toString()">
+                  2=2
+              </if>
+              <if test="key!='1'.toString()">
+                 and r.CLASSIFY= #{key}
+              </if>
+          </where>-->
+    </select>
+
     <insert id="addResourceTag">
         <foreach collection="rtag" item="val" >
             INSERT INTO resourcetag(RID,RTAG) VALUES (#{rid},#{val});
@@ -92,6 +110,7 @@
         <association property="resource" column="rid" javaType="Resource">
             <id column="rid" property="rid"/>
             <result column="name" property="name"/>
+            <result column="time" property="time"/>
         </association>
     </resultMap>
     <select id="getAllReportResource" resultMap="getResourceBy_Reportrid">

@@ -22,11 +22,11 @@
 	<script src="/bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
 	<script src="/js/depend.js"></script>
 
-	
+
 <style>
-	#toTop {display: none;text-decoration: none;position: fixed;bottom: 10px;right: 10px;overflow: hidden;width: 40px;height: 40px;border: none;text-indent: 100%; background-image: url(img/goTop.jpg);background-size: 100% 100%;text-align: center;}
+	#toTop {display: none;text-decoration: none;position: fixed;bottom: 3%;right: 6%;overflow: hidden;width: 40px;height: 40px;border: none;text-indent: 100%; background-image: url(img/goTop.jpg);background-size: 100% 100%;text-align: center;}
 	#contact-us{
-		
+
 	}
 </style>
 <script>
@@ -40,10 +40,12 @@
 					"top":"0px",
 					"left":"2%",
 					"width":"14%"
-				})
+				});
+
             }else{
-                $("#leftDaohang").removeAttr("style")
+                $("#leftDaohang").removeAttr("style");
 			}
+
         })
 
 	})
@@ -53,9 +55,7 @@
 
 <body>
 
-<C:if test="${requestScope.BlogsPush eq null}">
-	<c:redirect url="/blog/blogPush"></c:redirect>
-</C:if>
+
 
 <div id="fluid_Div" class="container-fluid" style="background-color:#F4EEEE;">
 
@@ -98,7 +98,7 @@
 	  
 <!--	  下面一行分为714列-->
 		  <div class="row">
-				<div class="col-xs-6 col-md-8" >
+				<div  class="col-xs-6 col-md-8" >
 <!--				推送正文-->
 					
 <!--					图片轮播-->
@@ -150,9 +150,11 @@
 					</div>
 <!--					轮播结束-->
 <!--					博主发表的文章-->
+                    <input type="hidden"  id="nowPage" value="1"/>
 
+                    <div id="allBlogs" >
 
-					<c:forEach var="t" items="${BlogsPush}" >
+					<%--<c:forEach var="t" items="${BlogsPush}" >
 						<div class="span12" style="border-radius: 10px;background-color:#FFFFFF;margin-top: 30px">
 							<h2>
 								<a href="/blog/getBlogAndUser?blogid=${t.bid}">${t.title}</a>
@@ -160,12 +162,19 @@
 							<p>
 								${fn:substring(t.content,0,150)}.........
 							</p>
-							<h5 style="color:#928F8F;float: right">阅读数：${t.points}</h5>
+							<h5 style="color:#928F8F;float: right">
+                                类型: ${t.classify}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                时间: ${t.time}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                阅读数: ${t.points}</h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<a class="btn" href="userArticle.jsp?bid=${t.bid}">查看更多 »</a>
 							<p>
-								<a class="btn" href="userArticle.jsp">查看更多 »</a>
+
 							</p>
 						</div>
-					</c:forEach>
+					</c:forEach>--%>
+                    </div>
+                    <div style="margin: auto;display: none;position: fixed;bottom: 0%" id="loading"><img src="img/loading.gif"
+                       style="width: 40px;height: 40px;"/>正在拼命加载中.........</div>
 
 
 					<%--<div class="span12" style="border-radius: 10px;background-color:#D2D4D5;margin-top: 10px">
@@ -180,9 +189,8 @@
 							<a class="btn" href="#">查看更多 »</a>
 						</p>
 					</div>--%>
-
-					
 				</div>
+
 <!--			  <div class="col-xs-6 col-md-1" style="background-color:#F10609"></div>-->
 			  <div class="col-xs-6 col-md-3">
 <!--			  	登陆开始-->
@@ -518,7 +526,7 @@
 									<h5>请联系客服</h5>
 								<p>
 									<svg width="16" height="16" xmlns="http://www.w3.org/2000/svg"><path d="M2.167 2h11.666C14.478 2 15 2.576 15 3.286v9.428c0 .71-.522 1.286-1.167 1.286H2.167C1.522 14 1 13.424 1 12.714V3.286C1 2.576 1.522 2 2.167 2zm-.164 3v1L8 10l6-4V5L8 9 2.003 5z" fill="#B3B3B3" fill-rule="evenodd"></path></svg>
-									<a href="mailto:webmaster@csdn.net" target="_blank"><span class="txt">webmaster@csdn.net</span></a>
+									<a href="http://www.baidu.com" target="_blank"><span class="txt">webmaster@iksn.net</span></a>
 								</p>
 								<p>
 									<svg width="16" height="16" xmlns="http://www.w3.org/2000/svg"><path d="M14.999 13.355a.603.603 0 0 1-.609.645H1.61a.603.603 0 0 1-.609-.645l.139-1.47c.021-.355.25-.845.51-1.088 0 0 3.107-2.827 3.343-2.909 0 0-.029-2.46 1.2-2.46h3.635c1.112 0 1.202 2.469 1.202 2.469l3.32 2.9c.26.243.489.733.51 1.088l.139 1.47zM7 10a1 1 0 0 0 0 2h2a1 1 0 0 0 0-2H7zm7.806-5.674c.105.135.191.384.19.554l-.003 2.811c0 .17-.133.26-.295.2l-2.462-.999a.478.478 0 0 1-.296-.416V5.445c0-2.07-7.878-2.225-7.878 0v1.21c0 .17-.135.352-.3.404L1.3 7.904c-.165.052-.3-.044-.3-.213V4.88c0-.17.086-.42.191-.554C1.191 4.326 2.131 2 8 2s6.807 2.326 6.807 2.326z" fill="#B3B3B3"></path></svg>
@@ -526,7 +534,7 @@
 								</p>
 								<p>
 									<svg width="16" height="16" xmlns="http://www.w3.org/2000/svg"><path d="M14.496 10.35c-.301-1.705-1.565-2.822-1.565-2.822.18-1.548-.481-1.823-.481-1.823C12.31.915 8.089.998 8 1 7.91.998 3.689.915 3.55 5.705c0 0-.662.275-.481 1.823 0 0-1.264 1.117-1.565 2.822 0 0-.16 2.882 1.445.353 0 0 .36.96 1.022 1.823 0 0-1.183.392-1.083 1.412 0 0-.04 1.136 2.527 1.058 0 0 1.805-.137 2.347-.882h.476c.542.745 2.347.882 2.347.882 2.566.078 2.527-1.058 2.527-1.058.1-1.02-1.083-1.412-1.083-1.412a7.986 7.986 0 0 0 1.022-1.823c1.604 2.529 1.445-.353 1.445-.353z" fill="#B3B3B3" fill-rule="evenodd"></path></svg><a href="javascript:void(0);" class="qqcustomer_s" target="_blank"><span class="txt">QQ客服</span></a>        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg"><path d="M7.325 13.965a6.5 6.5 0 1 1 7.175-6.4C14.467 11.677 11.346 15 7.5 15c-.514 0-1.015-.06-1.498-.172.488-.178.922-.48 1.323-.863zM4 7.5a4 4 0 1 0 8 0 .5.5 0 1 0-1 0 3 3 0 1 1-6 0 .5.5 0 0 0-1 0z" fill="#B3B3B3" fill-rule="evenodd"></path></svg>
-									<a href="http://bbs.csdn.net/forums/Service" target="_blank"><span class="txt">客服论坛</span></a>        
+									<a href="http://www.baidu.com" target="_blank"><span class="txt">客服论坛</span></a>
 								</p>
 							  </div>
 							  <div class="col-xs-6 col-md-1"></div>
@@ -549,11 +557,80 @@
 </div>
 
 
-
-
-
 <!--返回顶部按钮，向下翻150px显示-->
 <a href="javascript:void(0)" id="toTop" style="border-radius: 20px"> </a>
+
+<script>
+
+
+    nowPage=1;
+    $(document).ready(function(){
+        $.get("/blog/ajaxPush?page=1",function(data){
+
+            for(var n=0;n<5;n++)
+            {
+                var newblog="<div class=\"span12\" style=\"border-radius: 10px;background-color:#FFFFFF;margin-top: 30px\">\n" +
+                    "\t\t\t\t\t\t\t<h2>\n" +
+                    "\t\t\t\t\t\t\t\t<a href=\"/blog/getBlogAndUser?blogid="+data[n].bid+"\">"+data[n].title+"</a>\n" +
+                    "\t\t\t\t\t\t\t</h2>\n" +
+                    "\t\t\t\t\t\t\t<p>\n" +
+                    "\t\t\t\t\t\t\t\t"+data[n].content+".........\n" +
+                    "\t\t\t\t\t\t\t</p>\n" +
+                    "\t\t\t\t\t\t\t<h5 style=\"color:#928F8F;float: right\">\n" +
+                    "                                类型: "+data[n].classify+" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n" +
+                    "                                时间: "+data[n].time+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n" +
+                    "                                阅读数: "+data[n].bid+"</h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n" +
+                    "\t\t\t\t\t\t\t<p>\n" +
+                    "\t\t\t\t\t\t\t\t<a class=\"btn\" href=\"/blog/getBlogAndUser?blogid="+data[n].bid+"\">查看更多 »</a>\n" +
+                    "\t\t\t\t\t\t\t</p>\n" +
+                    "\t\t\t\t\t\t</div>";
+
+                $("#allBlogs").append(newblog);
+            }
+        });
+        $(window).scroll(function(){
+            var scrollTop = $(this).scrollTop();
+            var scrollHeight = $(document).height();
+            var windowHeight = $(this).height();
+            if(Math.round(scrollTop) + windowHeight >= scrollHeight){
+
+                $("#loading").css("display","block");
+                setTimeout(function(){
+                    //1.当滚动到网页地步当时候应该发起ajax请求下一页当数据
+
+
+                    $.get("/blog/ajaxPush?page="+(nowPage+1),function(data){
+
+                        for(var n=0;n<5;n++)
+                        {
+                            var newblog="<div class=\"span12\" style=\"border-radius: 10px;background-color:#FFFFFF;margin-top: 30px\">\n" +
+                                "\t\t\t\t\t\t\t<h2>\n" +
+                                "\t\t\t\t\t\t\t\t<a href=\"/blog/getBlogAndUser?blogid="+data[n].bid+"\">"+data[n].title+"</a>\n" +
+                                "\t\t\t\t\t\t\t</h2>\n" +
+                                "\t\t\t\t\t\t\t<p>\n" +
+                                "\t\t\t\t\t\t\t\t"+data[n].content+".........\n" +
+                                "\t\t\t\t\t\t\t</p>\n" +
+                                "\t\t\t\t\t\t\t<h5 style=\"color:#928F8F;float: right\">\n" +
+                                "                                类型: "+data[n].classify+" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n" +
+                                "                                时间: "+data[n].time+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n" +
+                                "                                阅读数: "+data[n].bid+"</h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n" +
+                                "\t\t\t\t\t\t\t<p>\n" +
+                                "\t\t\t\t\t\t\t\t<a class=\"btn\" href=\"/blog/getBlogAndUser?blogid="+data[n].bid+"\">查看更多 »</a>\n" +
+                                "\t\t\t\t\t\t\t</p>\n" +
+                                "\t\t\t\t\t\t</div>";
+
+                            $("#allBlogs").append(newblog);
+                        }
+                        nowPage+=1;
+                    });
+                    $("#loading").css("display","none");
+                }, 2000);
+
+            }
+        })
+    })
+
+</script>
 </body>
 </html>
 
