@@ -357,8 +357,7 @@
            async: false,
            type: "POST",
            url:urll,
-           contentType : "application/x-www-form-urlencoded; charset=utf-8",
-           data:$("#houseForm").serialize(),
+           data:daa,
            dataType: "text",
            success: function (data) {
                alert(data);
