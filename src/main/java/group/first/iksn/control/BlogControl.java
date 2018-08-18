@@ -383,6 +383,7 @@ public String ajaxBlogSearch(HttpServletResponse response, HttpServletRequest re
     @RequestMapping("/answerComment")
     public String answerComment(@ModelAttribute("answerComment")BlogComments blogComments){
         System.out.println(blogComments);
+        blogComments.setTime(LocalTime.getNowTime());
         boolean result=blogService.answerComment(blogComments);
         if(!result)
         {

@@ -44,6 +44,11 @@
             });
             // alert("FFF+${requestScope.Foor}");
         }
+        function huifu(bid,id,floor){
+            $("#hfbid").attr("value",bid);
+            $("#hfid").attr("value",id);
+            $("#hffoor").attr("value",floor);
+        }
 	</script>
     <script type="text/javascript">
         $(document).ready(function(){
@@ -65,7 +70,7 @@
                         blogComments+='<li id="getpl">';
                         blogComments+= '<div style="">';
                         blogComments+='<div style="margin-top: 5px">';
-                        blogComments+='<a href="#">'+data[i].nickname+'</a>&nbsp;<a style="color: #CCCCCC" data-toggle="modal" data-target="#myModa">点击回复</a>';
+                        blogComments+='<a href="#">'+data[i].nickname+'</a>&nbsp;<a style="color: #CCCCCC" data-toggle="modal" onclick="huifu('+data[i].bid+','+data[i].id+','+data[i].floor+')" data-target="#myModa">点击回复</a>';
                         blogComments+='<h5 style="color:#928F8F;float: right">'+data[i].time +'</h5>&nbsp;&nbsp;&nbsp;';
                         if(data[i].commentid==0){
                             blogComments+='<h5 style="color:#928F8F;float: right">#'+data[i].floor +'楼&nbsp;&nbsp;&nbsp;</h5>';
@@ -80,40 +85,6 @@
                         blogComments+='</li>';
                         blogComments+='<hr>';
                         blogComments+='';
-                            <!-- Modal -->
-                        blogComments+='<div class="modal fade" id="myModa" tabindex="-1" role="dialog" aria-labelledby="myModalLabe" style="margin-top: 20%">';
-                        blogComments+='<div class="modal-dialog" role="document">';
-                        blogComments+='<div class="modal-content">';
-                        blogComments+='<div class="modal-header">';
-                        blogComments+='<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
-                        blogComments+='<h4 class="modal-title" id="myModalLabe">我的回复</h4>';
-                        blogComments+='</div>';
-                        blogComments+='<form action="/blog/answerComment" method="post">';
-                        blogComments+='<div class="form-group">';
-                        blogComments+='uid:<input type="text" name="uid"><br>';
-                        blogComments+='</div>';
-                        blogComments+='<div class="form-group">';
-                        blogComments+='bid:<input type="text" name="bid" value="'+data[i].bid+'"><br>';
-                        blogComments+='</div>';
-                        blogComments+='<div class="modal-body">';
-                            <!--文本域-->
-                        blogComments+='<textarea class="form-control" rows="3" name="content"></textarea>';
-                            <!---->
-                        blogComments+='</div>';
-                        blogComments+='<div class="form-group">';
-                        blogComments+='commentid:<input type="text" name="commentid" value="'+data[i].id+'"><br>';
-                        blogComments+='</div>';
-                        blogComments+='<div class="form-group">';
-                        blogComments+='floor:<input type="text" name="floor"value="'+data[i].floor+'"><br>';
-                        blogComments+='</div>';
-                        blogComments+='<div class="modal-footer">';
-                        blogComments+='<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>';
-                        blogComments+='<button type="submit" class="btn btn-primary"value="discuss">回复</button>';
-                        blogComments+='</div>';
-                        blogComments+='</form>';
-                        blogComments+='</div>';
-                        blogComments+='</div>';
-                        blogComments+='</div>';
                         blogComments+='</ul>';
                       }
                       $('#getcommrnts').append(blogComments);
@@ -328,19 +299,21 @@
 											<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 											<h4 class="modal-title" id="myModalLabel">我的评论</h4>
 										</div>
-										<form action="/blog/discuss" method="post">
-											<div class="form-group">
+                                        <%--  该功能需要隐藏标签，以及传入登录用户信息--%>
+
+                                        <form action="/blog/discuss" method="post">
+											<div class="form-group" style="display: none">
 												uid:<input type="text" name="uid"><br>
 											</div>
-											<div class="form-group">
-												bid:<input type="text" name="bid"><br>
+											<div class="form-group" style="display: none">
+												bid:<input type="text" name="bid" value="${boke.bid}"><br>
 											</div>
 											<div class="modal-body">
 												<!--文本域-->
 												<textarea class="form-control" rows="3" name="content"></textarea>
 												<!---->
 											</div>
-											<div class="form-group">
+											<div class="form-group" style="display: none">
 												floor:<input type="text" id="floor" name="floor"><br>
 											</div>
 											<div class="modal-footer">
@@ -354,6 +327,46 @@
 						</div>
 
 						<!--别人的品论-->
+						<div class="span12" style="background-color:white;padding: 25px"align="right">
+
+							<!-- Modal -->
+							<div class="modal fade" id="myModa" tabindex="-1" role="dialog" aria-labelledby="myModalLabe" style="margin-top: 20%">
+								<div class="modal-dialog" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+											<h4 class="modal-title" id="myModalLabe">我的回复</h4>
+										</div>
+                                      <%--  该功能需要隐藏标签，以及传入登录用户信息--%>
+
+										<form action="/blog/answerComment" method="post">
+											<div class="form-group">
+												uid:<input id="" type="text" name="uid"><br>
+											</div>
+											<div class="form-group">
+												bid:<input id="hfbid" type="text" name="bid"><br>
+											</div>
+											<div class="modal-body">
+												<!--文本域-->
+												<textarea class="form-control" rows="3" name="content"></textarea>
+												<!---->
+											</div>
+											<div class="form-group">
+												commentid:<input id="hfid" type="text" name="commentid"><br>
+											</div>
+											<div class="form-group">
+												floor:<input id="hffoor" type="text" name="floor"><br>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+												<button type="submit" class="btn btn-primary"value="discuss">回复</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+
 						<div class="span12" style="background-color:#FFFFFF;padding-left: 25px;padding-right: 25px" id="getcommrnts">
                             <%--<ul>
                                 <hr>

@@ -103,7 +103,7 @@
                                         <tr>
                                             <th>分数</th>
                                             <th>时间</th>
-                                            <th>下载资源</th>
+                                            <th>操作内容</th>
                                         </tr>
                                     </thead>
                                     <tbody id="biaoge">
