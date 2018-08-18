@@ -44,7 +44,6 @@ public class ResourceServiceImp  implements ResourceService{
 
     //收藏资源
     public boolean houseResource(CollectResource h) {
-        System.out.println(h);
         return resourceDAO.collectResource(h);
     }
 

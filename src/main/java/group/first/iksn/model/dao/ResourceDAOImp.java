@@ -29,7 +29,7 @@ public class ResourceDAOImp extends BaseDAOImp implements ResourceDAO {
      * @return
      */
     public boolean collectResource(CollectResource h) {
-        System.out.println(h);
+        System.out.println("ccc"+h);
         return getSqlSession().getMapper(ResourceDAO.class).collectResource(h);
     }
 
