@@ -8,6 +8,7 @@ import group.first.iksn.model.bean.ResourceComments;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import java.util.List;
 
@@ -17,8 +18,9 @@ public interface ResourceService {
     //收藏资源
     boolean houseResource(CollectResource h);
 
-    ArrayList<Resource> searchResource(String s);
-
+    List<Resource> searchResource(String s);
+   //资源分类搜索
+    List<Resource> ResourcekeywordSearch(String key);
     int downResource(Integer rid);
 
     //资源详情界面加载
@@ -33,6 +35,8 @@ public interface ResourceService {
 
     //资源表和资源标签表操作，resource.path
     boolean upLoadResourc(Resource resource,String[] rTag);
+
+
 
     //从reportResource表删除一行，处理违规资源的安置
     boolean Reject_oneReportResource(int report_id);

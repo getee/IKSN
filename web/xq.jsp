@@ -121,6 +121,7 @@
                         </div>
                         <div style="height:20px; width:420px; float:left; margin-top:15px; margin-left:40px;  font-size:20px ; color:#000000;">
                             <a>${requestScope.resouce.name}</a>
+
                         </div>
                         <div style="height:30px; width:700px; float:left;margin-top:12px; margin-left:40px;font-size:14px;">
                             <div style="width:250px; height:30px;  float:left">
