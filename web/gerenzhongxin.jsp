@@ -122,7 +122,7 @@
 	<div class="col-md-2 " >
 
 		<div class="up-img-cover" id="up-img-touch">
-			<img class="am-circle" alt="点击图片上传" src="${sessionScope.loginresult.picturepath}" data-am-popover="{content: &#39;点击上传&#39;, trigger: &#39;hover focus&#39;}">
+			<img class="am-circle img-responsive" alt="点击图片上传" src="${sessionScope.loginresult.picturepath}" data-am-popover="{content: &#39;点击上传&#39;, trigger: &#39;hover focus&#39;}">
 		</div>
 
 		<!--弹出框开始-->
