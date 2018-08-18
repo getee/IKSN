@@ -355,15 +355,21 @@ public class ResourceControl {
 
     //资源举报
     @RequestMapping("/reportResource")
-    public ModelAndView reportResource(@ModelAttribute("reportResource")ReportResource reportResource) throws UnsupportedEncodingException {
-        ModelAndView mav=new ModelAndView("xq");
-        //String reason=new String(reportResource.getReason().getBytes("ISO-8859-1"),"UTF-8");
-        //reportResource.setReason(reason);
+    public void reportResource(HttpServletResponse response,
+                               int rid,int uid,String reason) throws IOException {
+        ReportResource reportResource=new ReportResource();
+        String r=new String(reason.getBytes("ISO-8859-1"),"UTF-8");
+        reportResource.setRid(rid);
+        reportResource.setUid(uid);
+        reportResource.setReason(r);
         System.out.println(reportResource);
-       boolean result=resourceService.reportResource(reportResource);
-        mav.getModel().put("result",result);
+        boolean result=resourceService.reportResource(reportResource);
         System.out.println("SSDD"+result);
-         return mav;
+        response.setContentType("textml;charset=UTF-8");//  textml     ,text/xml    ,text/json
+        PrintWriter out=response.getWriter();//获取响应对象中的输出流
+        out.write(result+"");
+        out.flush();
+        out.close();
     }
 
     /**
