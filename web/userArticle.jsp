@@ -114,9 +114,6 @@
 </head>
 
 <body>
-<c:if test="${requestScope.blog} eq null">
-	<c:redirect url="http://localhost:8080/blog/listBlogByBid"></c:redirect>
-</c:if>
 <div id="fluid_Div" class="container-fluid" style="background-color:#574949">
 
 
