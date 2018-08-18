@@ -25,7 +25,7 @@
             /*
                         var bokeid="2";
             */
-            var ajaxUrl="/blog/getFloor?bid="+"2";
+            var ajaxUrl="/blog/getFloor?bid="+"${boke.bid}";
             $.ajax({
                 type:"post",
                 url:ajaxUrl,
@@ -44,10 +44,15 @@
             });
             // alert("FFF+${requestScope.Foor}");
         }
+        function huifu(bid,id,floor){
+            $("#hfbid").attr("value",bid);
+            $("#hfid").attr("value",id);
+            $("#hffoor").attr("value",floor);
+        }
 	</script>
     <script type="text/javascript">
         $(document).ready(function(){
-            var ajaxUrl="/blog/getComments?bid="+"2";
+            var ajaxUrl="/blog/getComments?bid="+"${boke.bid}";
             $.ajax({
                 type:"post",
                 url:ajaxUrl,
@@ -65,7 +70,7 @@
                         blogComments+='<li id="getpl">';
                         blogComments+= '<div style="">';
                         blogComments+='<div style="margin-top: 5px">';
-                        blogComments+='<a href="#">'+data[i].nickname+'</a>&nbsp;<a style="color: #CCCCCC" data-toggle="modal" data-target="#myModa">点击回复</a>';
+                        blogComments+='<a href="#">'+data[i].nickname+'</a>&nbsp;<a style="color: #CCCCCC" data-toggle="modal" onclick="huifu('+data[i].bid+','+data[i].id+','+data[i].floor+')" data-target="#myModa">点击回复</a>';
                         blogComments+='<h5 style="color:#928F8F;float: right">'+data[i].time +'</h5>&nbsp;&nbsp;&nbsp;';
                         if(data[i].commentid==0){
                             blogComments+='<h5 style="color:#928F8F;float: right">#'+data[i].floor +'楼&nbsp;&nbsp;&nbsp;</h5>';
@@ -80,40 +85,6 @@
                         blogComments+='</li>';
                         blogComments+='<hr>';
                         blogComments+='';
-                            <!-- Modal -->
-                        blogComments+='<div class="modal fade" id="myModa" tabindex="-1" role="dialog" aria-labelledby="myModalLabe" style="margin-top: 20%">';
-                        blogComments+='<div class="modal-dialog" role="document">';
-                        blogComments+='<div class="modal-content">';
-                        blogComments+='<div class="modal-header">';
-                        blogComments+='<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
-                        blogComments+='<h4 class="modal-title" id="myModalLabe">我的回复</h4>';
-                        blogComments+='</div>';
-                        blogComments+='<form action="/blog/answerComment" method="post">';
-                        blogComments+='<div class="form-group">';
-                        blogComments+='uid:<input type="text" name="uid"><br>';
-                        blogComments+='</div>';
-                        blogComments+='<div class="form-group">';
-                        blogComments+='bid:<input type="text" name="bid" value="'+data[i].bid+'"><br>';
-                        blogComments+='</div>';
-                        blogComments+='<div class="modal-body">';
-                            <!--文本域-->
-                        blogComments+='<textarea class="form-control" rows="3" name="content"></textarea>';
-                            <!---->
-                        blogComments+='</div>';
-                        blogComments+='<div class="form-group">';
-                        blogComments+='commentid:<input type="text" name="commentid" value="'+data[i].id+'"><br>';
-                        blogComments+='</div>';
-                        blogComments+='<div class="form-group">';
-                        blogComments+='floor:<input type="text" name="floor"value="'+data[i].floor+'"><br>';
-                        blogComments+='</div>';
-                        blogComments+='<div class="modal-footer">';
-                        blogComments+='<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>';
-                        blogComments+='<button type="submit" class="btn btn-primary"value="discuss">回复</button>';
-                        blogComments+='</div>';
-                        blogComments+='</form>';
-                        blogComments+='</div>';
-                        blogComments+='</div>';
-                        blogComments+='</div>';
                         blogComments+='</ul>';
                       }
                       $('#getcommrnts').append(blogComments);
@@ -143,9 +114,6 @@
 </head>
 
 <body>
-<c:if test="${requestScope.blog} eq null">
-	<c:redirect url="http://localhost:8080/blog/listBlogByBid"></c:redirect>
-</c:if>
 <div id="fluid_Div" class="container-fluid" style="background-color:#574949">
 
 
@@ -164,8 +132,9 @@
 			<button class="btn btn-primary" type="submit" value="1">
 				订阅 <span class="badge">+</span>
 			</button>
-			<c:if test="${sessionScope.loginresult.isadmin eq '1'}">
-				<button id="comeback-button" type="button" class="btn btn-primary" style="">返回举报页</button>
+			<%--<c:if test="${sessionScope.loginresult.isadmin eq '1'}">--%>
+			<c:if test="${sessionScope.loginresult.isadmin eq '1' && not empty reportBlog.id && !(reportBlog.id eq null)}">
+				<button id="comeback-button" type="button" class="btn btn-primary" disabled style="">返回举报页</button>
 				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#delete" style="">删除</button>
 				<button id="sendBack-button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#sendBack" style="">下架并禁言</button>
 				<h5 style="color: white">举报原因：${requestScope.reportBlog.reason}</h5>
@@ -227,15 +196,16 @@
             });
             $("#sendBack-ok").click(function(){
                 $("#bloadGif").show();
-               var a="/blog/mSendBackIllegalblog/${reportBlog.bid}/${reportBlog.id}/${reportBlog.uid}?reportReason=${reportBlog.reason}";
-               //alert(a);
+               var a="/blog/mSendBackIllegalblog/${reportBlog.bid}/${reportBlog.id}/${yonghu.uid}?reportReason=${reportBlog.reason}";
+               alert(a);
                 $.get(a,function(data,status){
                     $("#bloadGif").hide();
                     if(data=="success"){
                         $("#sendBack-ok-innerHtml").text("已下架");
                         $(this).prop("disabled","disabled");
                         $("#sendBack-button").prop("disabled","disabled");
-					}else {
+                        $("#comeback-button").removeAttr("disabled");
+                    }else {
                         $("#sendBack-ok-innerHtml").text("按钮睡着了，请再点一次吧");
                         $("#sendBack-ok-innerHtml").text("确定下架至用户草稿吗？");
 					}
@@ -316,9 +286,17 @@
 						<div class="span12" style="background-color:#A29E9E;padding: 25px">
 							<!-- Button trigger modal -->
 							有疑问？就说一说
-							<button type="button" onmouseover="getFoor()" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-								我要评论
-							</button>
+							<c:if test="${sessionScope.loginresult eq null}">
+								<button type="button" onclick="tishilogin()" class="btn btn-primary btn-lg" >
+									我要评论
+								</button>
+							</c:if>
+							<c:if test="${sessionScope.loginresult != null}">
+								<button type="button" onmouseover="getFoor()" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+									我要评论
+								</button>
+							</c:if>
+
 
 							<!-- Modal -->
 							<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="margin-top: 20%">
@@ -328,19 +306,17 @@
 											<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 											<h4 class="modal-title" id="myModalLabel">我的评论</h4>
 										</div>
-										<form action="/blog/discuss" method="post">
-											<div class="form-group">
-												uid:<input type="text" name="uid"><br>
-											</div>
-											<div class="form-group">
-												bid:<input type="text" name="bid"><br>
-											</div>
+                                        <%--  该功能需要隐藏标签，以及传入登录用户信息--%>
+
+                                        <form action="/blog/discuss" method="post">
+												<input type="hidden" name="uid"value="${sessionScope.loginresult.uid}"><br>
+												<input type="hidden" name="bid" value="${boke.bid}"><br>
 											<div class="modal-body">
 												<!--文本域-->
 												<textarea class="form-control" rows="3" name="content"></textarea>
 												<!---->
 											</div>
-											<div class="form-group">
+											<div class="form-group" style="display: none">
 												floor:<input type="text" id="floor" name="floor"><br>
 											</div>
 											<div class="modal-footer">
@@ -354,6 +330,46 @@
 						</div>
 
 						<!--别人的品论-->
+						<div class="span12" style="background-color:white;padding: 25px"align="right">
+
+							<!-- Modal -->
+							<div class="modal fade" id="myModa" tabindex="-1" role="dialog" aria-labelledby="myModalLabe" style="margin-top: 20%">
+								<div class="modal-dialog" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+											<h4 class="modal-title" id="myModalLabe">我的回复</h4>
+										</div>
+                                      <%--  该功能需要隐藏标签，以及传入登录用户信息--%>
+
+										<form action="/blog/answerComment" method="post">
+											<div class="form-group" >
+												uid:<input id="" type="text" name="uid" value="${sessionScope.loginresult.uid}"><br>
+											</div>
+											<div class="form-group">
+												bid:<input id="hfbid" type="text" name="bid"><br>
+											</div>
+											<div class="modal-body">
+												<!--文本域-->
+												<textarea class="form-control" rows="3" name="content"></textarea>
+												<!---->
+											</div>
+											<div class="form-group">
+												commentid:<input id="hfid" type="text" name="commentid"><br>
+											</div>
+											<div class="form-group">
+												floor:<input id="hffoor" type="text" name="floor"><br>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+												<button type="submit" class="btn btn-primary"value="discuss">回复</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+
 						<div class="span12" style="background-color:#FFFFFF;padding-left: 25px;padding-right: 25px" id="getcommrnts">
                             <%--<ul>
                                 <hr>
@@ -435,7 +451,7 @@
 									</thead>
 									<tbody>
 									<tr>
-										<td colspan="3"><h3><a href="tarenzhongxin.jsp">${yonghu.nickname}</a><small></small></h3></td>
+										<td colspan="3"><h3><a href="tarenzhongxin.jsp?uid=${yonghu.uid}">${yonghu.nickname}</a><small></small></h3></td>
 										<td>
 												<button id="gz" type="button" class="btn btn-primary" style="width: 100px" data-toggle="button" aria-pressed="false" autocomplete="off">+关注</button>
 										</td>
@@ -501,7 +517,7 @@
        $.post("/blog/twotui?uid=${yonghu.uid}",function (data) {
             var json=eval(data);
             $.each(json,function (index,item) {
-                var title=json[index].title.substring(0,17);
+                var title=json[index].title.substring(0,12);
                 var id=json[index].bid;
                // alert(title+id);
                 var ts="<div class=\"thumbnail\">\n" +
@@ -632,7 +648,7 @@
             });
         }
         else{
-            alert("您还没有登录哦！");
+            $("#tsdl").css("display","block");
         }
     });
     //关注
@@ -674,7 +690,7 @@
             }
         }
         else{
-            alert("您还没有登录哦！");
+            $("#tsdl").css("display","block");
         }
     })
 </script>

@@ -100,11 +100,38 @@ public class UserControl {
             }
         }
         else {
-            model.addAttribute("logmes",false);
+            model.addAttribute("logmes","false");
             System.out.println(model);
         }
 
         return "index";
+    }
+    //快速登陆
+    @RequestMapping(value = "/quicklogin",method = RequestMethod.POST)
+    public void quicklogin(@RequestParam("emailorphone")String emailorphone,@RequestParam("password") String password, HttpSession session, HttpServletResponse response){
+        User user=userService.login(emailorphone,password);
+        PrintWriter pw=null;
+        try {
+          pw =response.getWriter();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (user!=null){
+            session.setAttribute("loginresult",user);
+            List<User> allFriendOfThisUser=userService.FindAllFriendsOfThisUser(user.getUid());
+            List<User> allFansOfThisUser=userService.listAllFans(user.getUid());
+            //遍历筛选出我没有关注的粉丝
+//          使用Collection的removeAll方法删除两个集合中相同元素，泛型中的User必须重写HashCode
+            Collection notAttenedFans=new ArrayList<User>(allFansOfThisUser);
+            notAttenedFans.removeAll(allFriendOfThisUser);
+            System.out.println("未关注的粉丝"+notAttenedFans);
+            session.setAttribute("allFriendOfThisUser",allFriendOfThisUser);
+            session.setAttribute("notAttenedFans",notAttenedFans);
+            pw.print("success");
+        }
+        else {
+            pw.print("fail");
+        }
     }
     //退出登录
     @RequestMapping("/exit")

@@ -169,6 +169,11 @@ public class BlogServiceImp implements BlogService {
         return blogDAO.browsedPush(classify);
     }
 
+    @Override
+    public List<Blog> classifyPush(int classify, int page) {
+        return blogDAO.classifyPush(classify,page);
+    }
+
     /**
      *
      * @param
@@ -253,6 +258,7 @@ public class BlogServiceImp implements BlogService {
     public boolean deleteBlog(int bid) {
         return blogDAO.deleteBlog(bid);
     }
+
 
     @Override
     public boolean discuss(BlogComments blogComments) {
@@ -445,6 +451,7 @@ public class BlogServiceImp implements BlogService {
     public boolean collectBlog(int uid, int bid) {
         return blogDAO.collectBlog(uid,bid);
     }
+    //博客评论
     @Override
     public ArrayList<BlogComments> getComments(Integer bid) {
         ArrayList<BlogComments> keys=blogDAO.getComments(bid);

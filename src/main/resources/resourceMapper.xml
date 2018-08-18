@@ -11,6 +11,37 @@
     <insert id="collectResource" parameterType="CollectResource">
         insert into collectresource(uid,rid) values (#{uid},#{rid})
     </insert>
+    <!--资源评论-->
+   <!-- <select id="getresourceComments" resultMap="getresourceCommentsMap">
+        select * from resourcecomments inner join user u  on resourcecomments.UID = u.UID where RID=(#{rid})
+    </select>
+    <resultMap id="getresourceCommentsMap" type="ResourceComments">
+        <id property="rid" column="rid"></id>
+        <result column="comment" property="comment"></result>
+        <association property="user" javaType="User">
+            <id column="uid" property="uid"/>
+            <result column="nickname" property="nickname"/>
+        </association>
+    </resultMap>-->
+
+   <!-- &lt;!&ndash;获取评论&ndash;&gt;
+    <select id="getComments" resultMap="getCommmentsMap">
+      select * from blogcomments inner join user u on blogcomments.UID = u.UID where BID=(#{bid})
+    </select>
+    <resultMap id="getCommmentsMap" type="BlogComments">
+        <id property="id" column="id"/>
+        <result column="uid" property="uid"/>
+        <result property="bid" column="bid"/>
+        <result column="time" property="time"/>
+        <result column="content" property="content"/>
+        <result column="floor" property="floor"/>
+        <result column="commentid" property="commentid"/>
+        <association property="user" javaType="User">
+            <id column="uid" property="uid"/>
+            <result column="nickname" property="nickname"/>
+        </association>
+    </resultMap>-->
+
     <!-- 统计下载次数 -->
     <select id="downnum" resultType="Integer">
         select count(*) from downresources where RID=(#{rid})
@@ -54,22 +85,21 @@
           inner join  resourcetag as t on t.rid=r.rid
           where r.name like '%' #{s} '%'
 
-
     </select>
 
     <!--资源分类搜索-->
-    <select id="ResourcekeywordSearch" resultMap="ResourceS" parameterType="String">
+    <select id="ResourcekeywordSearch" resultMap="ResourceS" >
           select r.*,u.*,t.* from resource as r
           inner join  user as u on r.uid=u.uid
           inner join  resourcetag as t on t.rid=r.rid
-        <!--<where>
-              <if test="key=='1'.toString()">
-                  2=2
-              </if>
-              <if test="key!='1'.toString()">
-                 and r.CLASSIFY= #{key}
-              </if>
-          </where>-->
+        <where>
+            <if test='key!=1'>
+                and r.CLASSIFY= #{key}
+            </if>
+        </where>
+
+
+
     </select>
 
     <insert id="addResourceTag">

@@ -44,7 +44,6 @@ public class ResourceServiceImp  implements ResourceService{
 
     //收藏资源
     public boolean houseResource(CollectResource h) {
-        System.out.println(h);
         return resourceDAO.collectResource(h);
     }
 
@@ -65,8 +64,9 @@ public class ResourceServiceImp  implements ResourceService{
      * @return
      */
     @Override
-    public List<Resource> ResourcekeywordSearch(String key) {
-        return resourceDAO.ResourcekeywordSearch(key);
+    public List<Resource> ResourcekeywordSearch(String key)
+    {    int keyword=Integer.parseInt(key);
+        return resourceDAO.ResourcekeywordSearch(keyword);
     }
 
     @Override
@@ -265,6 +265,12 @@ public class ResourceServiceImp  implements ResourceService{
 
         return false;
     }
+
+ /*   @Override
+    public ArrayList<ResourceComments> getresourceComments(Integer rid) {
+        ArrayList<ResourceComments> k=resourceDAO.getresourceComments(rid);
+                return  k;
+    }*/
 
 
 }

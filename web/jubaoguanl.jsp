@@ -156,7 +156,7 @@
         </div>
         <div id="blog">
         <c:forEach var="item" items="${ReportBlogList}">
-            <div id="1${item.id}" class="row" style="margin:auto;border-bottom-style:solid;border-bottom-width:5px;border-bottom-color:#E9E9E9">
+            <div id="1${item.id}" class="row" style="margin:auto;border-bottom-style:solid;border-bottom-width:5px;border-bottom-color:#E9E9E9;border-radius: 3px">
                 <div class="col-xs-12 col-md-8"><h4><a class="text-muted" target="_blank" href="javascript:clickTitle('${item.id}')">${item.blog.title}</a></h4><small style="margin-left: 2% ">举报原因：${item.reason}</small></div>
                 <div class="col-xs-6 col-md-4"><small style="margin-right: 20% ">${item.blog.time}</small>
                     <a href="javascript:delete_oneReportBlog(${item.id})">
@@ -355,7 +355,7 @@
             var htm="";
             num=data[data.length-1].reportReNum;
             for(var i=0;i<data.length-1;i++){
-                htm+="<div id=\"2"+data[i].id+"\" class=\"row\" style=\"margin:auto;border-bottom-style:solid;border-bottom-width:5px;border-bottom-color:#E9E9E9\">\n" +
+                htm+="<div id=\"2"+data[i].id+"\" class=\"row\" style=\"margin:auto;border-bottom-style:solid;border-bottom-width:5px;border-bottom-color:#E9E9E9;border-radius: 3px\">\n" +
                     "                <div class=\"col-xs-6 col-md-1\">\n" +
                     "                    <div><a href=\"xq.jsp\"><img src=\"img/2.svg\"></a></div>\n" +
                     "                </div>\n" +
@@ -377,18 +377,20 @@
     }
 
     function clickTitle(reportid) {
+        $("#1"+reportid).css("background-color","#9acfea");
         var a="/blog/mCheckReportblog/"+reportid;
         //location.href=a;
         window.open(a);
     }
     function clickName(resourceid,reportid,reason) {
         //alert(resourceid+reason+reportid)
+        $("#2"+reportid).css("background-color","#9acfea");
         var a="/resource/mCheckReportResource/"+resourceid+"/"+reportid+"?reason="+reason;
         //location.href=a;
         window.open(a);
     }
     function delete_oneReportBlog(url){
-        var  userChoice=window.confirm("您确认要去除这个博客吗?");
+        var  userChoice=window.confirm("您确认要去除这个举报吗?");
         var a="blog/mReject_oneReportblog/"+url;
         if(userChoice)
         {
@@ -400,7 +402,7 @@
         }
     }
     function delete_oneReportResource(url) {
-        var userChoice=window.confirm("您确认要去除这个资源吗？");
+        var userChoice=window.confirm("您确认要去除这个举报吗？");
         var a="/resource/mReject_oneReportResource/"+url;
         if(userChoice){
             $.get(a,function (data) {
@@ -449,7 +451,7 @@
                 var sex=data[i].sex;
                 if(sex==0){sex="男";}else {sex="女";}
 
-                htm+="<div id=\"3"+data[i].uid+"\" class=\"row\" style=\"margin:auto;border-bottom-style:solid;border-bottom-width:5px;border-bottom-color:#E9E9E9\">\n" +
+                htm+="<div id=\"3"+data[i].uid+"\" class=\"row\" style=\"margin:auto;border-bottom-style:solid;border-bottom-width:5px;border-bottom-color:#E9E9E9;border-radius: 3px\">\n" +
                     "                  <div class=\"col-xs-12 col-md-8\"><h4><a class=\"text-muted\" style=\" \" target=\"_blank\" href=\"gerenzhongxin.jsp\">"+data[i].nickName+"</a></h4><small style=\"margin-left: 2% \">sex:"+sex+"</small><small style=\"margin-left: 2% \">EMAIL:"+data[i].email+"</small></div>\n" +
                     "                  <div class=\"col-xs-6 col-md-4\"><small style=\"margin-right: 20% \">截禁时间："+data[i].time+"</small>\n" +
                     "                      <h4><a href=\"javascript:update_isspeakUser("+data[i].uid+")\">\n" +

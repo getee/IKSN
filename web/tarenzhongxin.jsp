@@ -116,7 +116,6 @@
   <div  class="col-xs-6 col-md-4">
 		<!-- Indicates caution should be taken with this action -->
 		<button style="margin-left: 20%;outline: none" type="button" class="btn btn-danger">发表的博客</button>
-		<button type="button" class="btn btn-default" style="outline: none;">发布的帖子</button>
 		<button type="button" class="btn btn-default" style="outline: none;">贡献的资源</button>
 		<h3 style="margin-left: 100px;">h3. Bootstrap heading</h3>
 		<h3 style="margin-left: 100px;">h3. Bootstrap heading</h3>
@@ -128,28 +127,7 @@
   <h3 style="margin-left: 100px;"><small>10人阅读 &nbsp;&nbsp;</small><small class="glyphicon glyphicon-comment" style="cursor: pointer">评论(0)</small></h3>
   <h3 style="margin-left: 100px;"><small>22人阅读 &nbsp;&nbsp;</small><small class="glyphicon glyphicon-comment" style="cursor: pointer">评论(0)</small></h3>
   </div>
-  <div  class="col-xs-6 col-md-4">
-  	<h3 class="well" style="padding-left: 150px;">Ta的关系</h3>
-  	<div class="table-responsive">
-  <table class="table">
-   <tr>
-   	<td><div class="well" style="cursor: pointer;width: 100px;height: 100px;"><img src="img/adminIcon.jpg" class="img-responsive img-rounded" alt="Responsive image"></div></td>
-   	<td><div class="well" style="cursor: pointer;width: 100px;height: 100px;"><img src="img/adminIcon.jpg" class="img-responsive img-rounded" alt="Responsive image"></div></td>
-   	<td><div class="well" style="cursor: pointer;width: 100px;height: 100px;"><img src="img/adminIcon.jpg" class="img-responsive img-rounded" alt="Responsive image"></div></td>
-   	<td><div class="well" style="cursor: pointer;width: 100px;height: 100px;"><img src="img/adminIcon.jpg" class="img-responsive img-rounded" alt="Responsive image"></div></td>
-   </tr><tr>
-   	<td><div class="well" style="cursor: pointer;width: 100px;height: 100px;"><img src="img/adminIcon.jpg" class="img-responsive img-rounded" alt="Responsive image"></div></td>
-   	<td><div class="well" style="cursor: pointer;width: 100px;height: 100px;"><img src="img/adminIcon.jpg" class="img-responsive img-rounded" alt="Responsive image"></div></td>
-   	<td><div class="well" style="cursor: pointer;width: 100px;height: 100px;"><img src="img/adminIcon.jpg" class="img-responsive img-rounded" alt="Responsive image"></div></td>
-   	<td><div class="well" style="cursor: pointer;width: 100px;height: 100px;"><img src="img/adminIcon.jpg" class="img-responsive img-rounded" alt="Responsive image"></div></td>
-   </tr>
-  </table>
-</div>
-  	
-  	
-  	
-  
-  </div>
+
 </div>
 
 <!-- Columns are always 50% wide, on mobile and desktop -->

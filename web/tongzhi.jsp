@@ -185,10 +185,10 @@
 			<c:forEach var="notice" items="${allNotices}">
 				<c:choose>
 					<c:when test="${notice.isread==0}">
-					<div  class="row well noticeContext" style="background-color: black"><a href=""><h4>${notice.content}</h4></a></div>
+					<div  class="row well noticeContext" style="background-color: black"><a href="writingCenter.jsp"><h4>${notice.content}</h4></a></div>
 					</c:when>
 					<c:otherwise>
-					<div  class="row well noticeContext"><a href=""><h4>${notice.content}</h4></a></div>
+					<div  class="row well noticeContext"><a href="writingCenter.jsp"><h4>${notice.content}</h4></a></div>
 
 					</c:otherwise>
 				</c:choose>
