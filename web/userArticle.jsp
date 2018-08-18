@@ -286,9 +286,17 @@
 						<div class="span12" style="background-color:#A29E9E;padding: 25px">
 							<!-- Button trigger modal -->
 							有疑问？就说一说
-							<button type="button" onmouseover="getFoor()" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-								我要评论
-							</button>
+							<c:if test="${sessionScope.loginresult eq null}">
+								<button type="button" onclick="tishilogin()" class="btn btn-primary btn-lg" >
+									我要评论
+								</button>
+							</c:if>
+							<c:if test="${sessionScope.loginresult != null}">
+								<button type="button" onmouseover="getFoor()" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+									我要评论
+								</button>
+							</c:if>
+
 
 							<!-- Modal -->
 							<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="margin-top: 20%">
@@ -301,12 +309,8 @@
                                         <%--  该功能需要隐藏标签，以及传入登录用户信息--%>
 
                                         <form action="/blog/discuss" method="post">
-											<div class="form-group" >
-												uid:<input type="text" name="uid"value="${sessionScope.loginresult.uid}"><br>
-											</div>
-											<div class="form-group" style="display: none">
-												bid:<input type="text" name="bid" value="${boke.bid}"><br>
-											</div>
+												<input type="hidden" name="uid"value="${sessionScope.loginresult.uid}"><br>
+												<input type="hidden" name="bid" value="${boke.bid}"><br>
 											<div class="modal-body">
 												<!--文本域-->
 												<textarea class="form-control" rows="3" name="content"></textarea>
