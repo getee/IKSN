@@ -34,8 +34,10 @@ public interface BlogService {
     List<Blog> detailedBlogPush(int page);
     List<Blog> pointsPush();
     List<Blog> browsedPush(int classify);
-    //ajax推送首页
-    public List<Blog> ajaxBlogPush(int page);
+    //首页博客分类推送
+    List<Blog> classifyPush(int classify,int page);
+    //ajax分页推送
+    List<Blog> ajaxBlogPush(int page);
 
 
     //添加BlogTag的服务层

@@ -69,6 +69,24 @@ public class ResourceControl {
         }
 
     }
+
+    /**
+     *资源分类搜索
+     * @param
+     * @return
+     * @throws UnsupportedEncodingException
+     */
+    @RequestMapping("/keywordSearch")
+    public String keySearch(@RequestParam("keyword") String keyword,Model m){
+        System.out.println(keyword);
+        List<Resource> list=resourceService.ResourcekeywordSearch(keyword);
+        System.out.println(list);
+        m.addAttribute("keywordSearch",list);
+        return "xiazai";
+    }
+
+
+/**
     /**
      * 资源评论
      */

@@ -73,6 +73,12 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
         return b;
     }
 
+    @Override
+    public List<Blog> classifyPush(int classify, int page) {
+        List<Blog> b=getSqlSession().getMapper(BlogDAO.class).classifyPush(classify,page);
+        return b;
+    }
+
 
     @Override
     public boolean processAddBlog(Blog blog) {

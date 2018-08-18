@@ -65,8 +65,9 @@ public class ResourceServiceImp  implements ResourceService{
      * @return
      */
     @Override
-    public List<Resource> ResourcekeywordSearch(String key) {
-        return resourceDAO.ResourcekeywordSearch(key);
+    public List<Resource> ResourcekeywordSearch(String key)
+    {    int keyword=Integer.parseInt(key);
+        return resourceDAO.ResourcekeywordSearch(keyword);
     }
 
     @Override

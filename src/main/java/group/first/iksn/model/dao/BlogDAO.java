@@ -21,6 +21,11 @@ public interface BlogDAO {
     List<Blog> browsedPush(int classify);
     //ajax分页推送
     List<Blog> ajaxBlogPush(int page);
+    //首页博客分类推送
+    List<Blog> classifyPush(int classify,int page);
+
+
+
 
     //处理添加博客dao
     public  boolean processAddBlog(Blog blog);
@@ -68,6 +73,7 @@ public interface BlogDAO {
     boolean deleteBlogOther(int bid);
     //设置博客为不公开
     boolean blogIsPublic(int bid);
+
     boolean answerDiscuss(BlogComments blogComments);
 
     //举报博客

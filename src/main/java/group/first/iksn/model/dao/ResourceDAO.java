@@ -50,7 +50,7 @@ public interface ResourceDAO {
     //更改积分数（更改者，更改后积分）
     boolean changeScore(int uid, int scoring);
 
-    List<Resource> ResourcekeywordSearch(String key);
+    List<Resource> ResourcekeywordSearch(@Param("key") int key);
 
     //上传的资源查询
     List<Resource> getUploadResource(int uid);

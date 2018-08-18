@@ -40,7 +40,6 @@ public class ResourceDAOImp extends BaseDAOImp implements ResourceDAO {
        return  num;
     }
 
-
     @Override
     public Resource getResource(int rid) {
         Resource r=getSqlSession().getMapper(ResourceDAO.class).getResource(rid);
@@ -134,16 +133,18 @@ public class ResourceDAOImp extends BaseDAOImp implements ResourceDAO {
         return allReportResource;
     }
 
+
     /**
      * 博客分类搜索
      * @param key
      * @return
      */
     @Override
-    public List<Resource> ResourcekeywordSearch(String key) {
+    public List<Resource> ResourcekeywordSearch(int key) {
         List<Resource> list=getSqlSession().getMapper(ResourceDAO.class).ResourcekeywordSearch(key);
         return list;
     }
+
 
     @Override
     public Resource selectUidByRid(int rid) {
@@ -193,6 +194,7 @@ public class ResourceDAOImp extends BaseDAOImp implements ResourceDAO {
     public String getDownedTime(int rid, int uid) {
         return getSqlSession().getMapper(ResourceDAO.class).getDownedTime(rid,uid);
     }
+
 
     /**
      * 举报的资源保存到表中

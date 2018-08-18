@@ -15,8 +15,8 @@
 <script src="../js/jquery.searchMeme.js" type="text/javascript"></script>--%>
 <script type="text/javascript" src="js/quickQuery-packer.js"></script>
 <link rel="stylesheet" type="text/css" href="css/quickQuery.css">
-<script src="js/select2.js"></script>
-<script src="js/pinyin.js"></script>
+<%--<script src="js/select2.js"></script>
+<script src="js/pinyin.js"></script>--%>
 <script src="js/chinese2pinyin.js"></script>
 
 <c:if test="${not empty sessionScope.loginresult}">
@@ -730,6 +730,7 @@
 
 <script>
 
+
     var keywordArray = new Array("","","")
     keywordArray[0] = new Array("0", "移动开发", "YIDONGKAIFA");
     keywordArray[1] = new Array("1", "开发技术", "KAIFAJISHU");
@@ -745,18 +746,17 @@
     window.onload = function(){
         $.get("/blog/ajaxBlogSearch",function (data) {
             var json=eval(data);
-            $.each(json,function (index,iteam) {
+            $.each(json,function (index) {
                 keywordArray[10+index]= new Array("10"+index, json[index].word,chineseToPinYin(json[index].word) );
-            });
 
-        for(var i=0;i<=keywordArray.length;i++){
-            alert(keywordArray);
-        }
+               // alert(keywordArray[10+index]);
+            });
 
         })
 
        $quickQuery(keywordArray);
     }
+
 
 </script>
 

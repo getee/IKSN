@@ -77,10 +77,9 @@
 			  <div id="leftDaohang" class="col-md-10">
 			  	<ul class="nav nav-pills nav-stacked">
 				  <li class="active"><a href="#">推荐</a></li>
-				  <li><a href="#">最新文章</a></li>
-				  <li><a href="#">关注</a></li>
+				  <li><a href="">关注</a></li>
 				  <li><a href="#">咨询</a></li>
-				  <li><a href="#">人工智能</a></li>
+				<%--<li><a href="/blog/ajaxPush?classify=1&page=1">人工智能</a></li>--%>
 				  <li><a href="#">云计算</a></li>
 				  <li><a href="#">区块链</a></li>
 				  <li><a href="#">数据库</a></li>
@@ -154,26 +153,9 @@
 
                     <div id="allBlogs" >
 
-					<%--<c:forEach var="t" items="${BlogsPush}" >
-						<div class="span12" style="border-radius: 10px;background-color:#FFFFFF;margin-top: 30px">
-							<h2>
-								<a href="/blog/getBlogAndUser?blogid=${t.bid}">${t.title}</a>
-							</h2>
-							<p>
-								${fn:substring(t.content,0,150)}.........
-							</p>
-							<h5 style="color:#928F8F;float: right">
-                                类型: ${t.classify}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                时间: ${t.time}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                阅读数: ${t.points}</h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							<a class="btn" href="userArticle.jsp?bid=${t.bid}">查看更多 »</a>
-							<p>
 
-							</p>
-						</div>
-					</c:forEach>--%>
                     </div>
-                    <div style="margin: auto;display: none;position: fixed;bottom: 0%" id="loading"><img src="img/loading.gif"
+                    <div style="margin: auto;display: none;position: fixed;bottom: 0%;left: 40%" id="loading"><img src="img/loading.gif"
                        style="width: 40px;height: 40px;"/>正在拼命加载中.........</div>
 
 
@@ -561,7 +543,6 @@
 
 <script>
 
-
     nowPage=1;
     $(document).ready(function(){
         $.get("/blog/ajaxPush?page=1",function(data){
@@ -578,7 +559,7 @@
                     "\t\t\t\t\t\t\t<h5 style=\"color:#928F8F;float: right\">\n" +
                     "                                类型: "+data[n].classify+" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n" +
                     "                                时间: "+data[n].time+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n" +
-                    "                                阅读数: "+data[n].bid+"</h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n" +
+                    "                                阅读数: "+data[n].points+"</h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n" +
                     "\t\t\t\t\t\t\t<p>\n" +
                     "\t\t\t\t\t\t\t\t<a class=\"btn\" href=\"/blog/getBlogAndUser?blogid="+data[n].bid+"\">查看更多 »</a>\n" +
                     "\t\t\t\t\t\t\t</p>\n" +
@@ -612,7 +593,7 @@
                                 "\t\t\t\t\t\t\t<h5 style=\"color:#928F8F;float: right\">\n" +
                                 "                                类型: "+data[n].classify+" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n" +
                                 "                                时间: "+data[n].time+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n" +
-                                "                                阅读数: "+data[n].bid+"</h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n" +
+                                "                                阅读数: "+data[n].points+"</h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n" +
                                 "\t\t\t\t\t\t\t<p>\n" +
                                 "\t\t\t\t\t\t\t\t<a class=\"btn\" href=\"/blog/getBlogAndUser?blogid="+data[n].bid+"\">查看更多 »</a>\n" +
                                 "\t\t\t\t\t\t\t</p>\n" +

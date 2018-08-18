@@ -158,7 +158,7 @@ public class Blog {
         return "Blog{" +
                 "bid=" + bid +
                 ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
+
                 ", time='" + time + '\'' +
                 ", link='" + link + '\'' +
                 ", points=" + points +

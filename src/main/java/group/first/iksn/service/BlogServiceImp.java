@@ -169,6 +169,11 @@ public class BlogServiceImp implements BlogService {
         return blogDAO.browsedPush(classify);
     }
 
+    @Override
+    public List<Blog> classifyPush(int classify, int page) {
+        return blogDAO.classifyPush(classify,page);
+    }
+
     /**
      *
      * @param
