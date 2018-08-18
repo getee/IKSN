@@ -53,7 +53,7 @@
 
 <body  style="background-color:#EBEBEB">
 	<c:if test="${requestScope.blogs eq null}">
-		<c:redirect url='/listBlogByUid/${sessionScope.loginresult.uid}'></c:redirect>
+		<c:redirect url='/blog/listBlogByUid/${sessionScope.loginresult.uid}'></c:redirect>
 	</c:if>
 	<div class="container-fluid">
 
@@ -130,6 +130,16 @@
                                             }
 										</script>
 										<c:forEach var="b" items="${requestScope.blogs}">
+											<c:if test="${b.userToBlog.ispublic ==1  } ">
+												<script>
+                                                    $("#notcomment").css("display","none");
+												</script>
+											</c:if>
+											<c:if test="${b.userToBlog.isdraft==0 } ">
+												<script>
+                                                    $("#notcomment").css("display","none");
+												</script>
+											</c:if>
                                     <div id="blogdiv${b.bid}">
 										<li>
 											<div  style="padding-bottom: 3px;overflow: hidden" class="showAndHide_box">
@@ -139,12 +149,16 @@
 												&nbsp;&nbsp;</h5>
                                                 <h5 style="color:#928F8F;float: left">${b.userToBlog.isdraft ==0 ? "草稿": "已发表"}
                                                     &nbsp;&nbsp;</h5>
+												<h5 style="color:#928F8F;float: left">${b.userToBlog.ispublic ==0 ? "公开": "私密"}
+													&nbsp;&nbsp;</h5>
 												<h5 style="color:#928F8F;float: left">${b.time}&nbsp;&nbsp;</h5>
 <!--												被阅读数-->
 												<span style="color:#928F8F;margin-left: 10px"><span class="glyphicon glyphicon-eye-open" style="margin-top: 7px"></span>&nbsp;${b.points}</span>
 <!--												博客设置-->
+
 												<div style="float: right">
-													<a href="/blog/listBlogByBid/${b.bid}">查看&nbsp;&nbsp;|</a><a href="#">禁止评论&nbsp;&nbsp;|</a>
+													<a href="/blog/listBlogByBid/${b.bid}">查看&nbsp;&nbsp;|</a>
+													<a href="#" id="notcomment" >禁止评论&nbsp;&nbsp;|</a>
 													<a class="operation" id="blogzd${b.bid}" onClick="setHot(this)" style="cursor: pointer">置顶&nbsp;&nbsp;|</a>
 													<a style="color: red;cursor: pointer"onclick="delet(${b.bid})" >删除</a>
 												</div>
@@ -180,7 +194,8 @@
                                                     <span style="color:#928F8F;margin-left: 10px"><span class="glyphicon glyphicon-eye-open" style="margin-top: 7px"></span>&nbsp;${b.points}</span>
                                                     <!--												博客设置-->
                                                     <div style="float: right">
-                                                        <a href="/blog/listBlogByBid/${b.bid}">查看&nbsp;&nbsp;|</a><a href="#">禁止评论&nbsp;&nbsp;|</a>
+                                                        <a href="/blog/listBlogByBid/${b.bid}">查看&nbsp;&nbsp;|</a>
+														<a href="#" >禁止评论&nbsp;&nbsp;|</a>
                                                         <a style="color: red;cursor: pointer"onclick="delet(${b.bid})" >删除</a>
                                                     </div>
                                                 </div>
@@ -201,6 +216,7 @@
                                         <ul>
 
                                             <c:forEach var="b" items="${requestScope.simiblogs}">
+
                                                 <div id="blogdiv${b.bid}">
                                                 <li>
                                                     <div style="padding-bottom: 3px;overflow: hidden">
@@ -213,7 +229,8 @@
                                                         <span style="color:#928F8F;margin-left: 10px"><span class="glyphicon glyphicon-eye-open" style="margin-top: 7px"></span>&nbsp;${b.points}</span>
                                                         <!--												博客设置-->
                                                         <div style="float: right">
-                                                            <a href="/blog/listBlogByBid/${b.bid}">查看&nbsp;&nbsp;|</a><a href="#">禁止评论&nbsp;&nbsp;|</a>
+                                                            <a href="/blog/listBlogByBid/${b.bid}">查看&nbsp;&nbsp;|</a>
+																<a href="#">禁止评论&nbsp;&nbsp;|</a>
                                                             <a style="color: red;cursor: pointer"onclick="delet(${b.bid})" >删除</a>
                                                         </div>
                                                     </div>
@@ -232,6 +249,7 @@
                                     <div class="span12" style="padding-left: 25px;padding-right: 25px">
                                         <ul>
                                             <c:forEach var="b" items="${requestScope.draftblogs}">
+
                                             <div id="blogdiv${b.bid}">
                                                 <li>
                                                     <div style="padding-bottom: 3px;overflow: hidden" >
@@ -244,7 +262,8 @@
                                                         <span style="color:#928F8F;margin-left: 10px"><span class="glyphicon glyphicon-eye-open" style="margin-top: 7px"></span>&nbsp;${b.points}</span>
                                                         <!--												博客设置-->
                                                         <div style="float: right">
-                                                            <a href="/blog/listBlogByBid/${b.bid}">查看&nbsp;&nbsp;|</a><a href="#">禁止评论&nbsp;&nbsp;|</a>
+                                                            <a href="/blog/listBlogByBid/${b.bid}">查看&nbsp;&nbsp;|</a>
+																<a href="#" >禁止评论&nbsp;&nbsp;|</a>
                                                             <a style="color: red;cursor: pointer"onclick="delet(${b.bid})" >删除</a>
                                                         </div>
                                                     </div>

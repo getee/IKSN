@@ -62,14 +62,72 @@ public class ResourceControl {
         boolean result=resourceService.assess(resourceComments);
         if(!result)
         {
-            return "assess";
+            return "index";
         }else
         {
             return "xq";
         }
 
     }
-/**
+    /**
+     * 资源评论
+     */
+/*    @ResponseBody
+    @RequestMapping(value = "/getResourceComments",method = RequestMethod.POST)
+    public void  getResourceComments(@RequestParam("rid") Integer rid,HttpServletRequest request,HttpServletResponse response){
+        ArrayList<ResourceComments> reslut=(ArrayList<ResourceComments>)resourceService.getresourceComments(rid);
+        System.out.println(reslut);
+        JSONArray jsonArray=new JSONArray();
+        JSONObject jsonObject;
+        for (int c=0;c<reslut.size();c++){
+            jsonObject=new JSONObject();
+            jsonObject.put("nickname",reslut.get(c).getUser().getNickname());
+            jsonObject.put("comment",reslut.get(c).getComment());
+            jsonArray.put(jsonObject);
+        }
+        response.setContentType("text/json;charset=UTF-8");
+        try {
+            PrintWriter out=response.getWriter();
+            out.write(jsonArray.toString());
+            out.flush();
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }*/
+   /* @ResponseBody
+    @RequestMapping(value="/getResourceComments",method = RequestMethod.POST)
+    public void getComments( @RequestParam("rid") Integer rid , HttpServletRequest request, HttpServletResponse response) {
+        ArrayList<ResourceComments> getResourceComments=(ArrayList<ResourceComments>)resourceService.getComments(rid);
+
+        System.out.println(getBlogcomments);
+        JSONArray jsonArray=new JSONArray();
+        JSONObject jsonObject;
+        for (int i=0;i<getBlogcomments.size();i++){
+            jsonObject=new JSONObject();
+            jsonObject.put("nickname",getBlogcomments.get(i).getUser().getNickname());
+            jsonObject.put("floor",getBlogcomments.get(i).getFloor());
+            jsonObject.put("time",getBlogcomments.get(i).getTime());
+            jsonObject.put("content",getBlogcomments.get(i).getContent());
+            jsonObject.put("commentid",getBlogcomments.get(i).getCommentid());
+            jsonObject.put("id",getBlogcomments.get(i).getId());
+            jsonObject.put("uid",getBlogcomments.get(i).getUid());
+            jsonObject.put("bid",getBlogcomments.get(i).getBid());
+            jsonArray.put(jsonObject);
+        }
+        System.out.println(getBlogcomments);
+        response.setContentType("text/json;charset=UTF-8");
+        try {
+            PrintWriter out=response.getWriter();
+            out.write(jsonArray.toString());
+            out.flush();
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+*/
+    /**
  * 对资源进行收藏
  */
     @RequestMapping(value="/houseResource",method = RequestMethod.POST)
@@ -252,13 +310,12 @@ public class ResourceControl {
     @RequestMapping("/mDeleteResourceForReport/{resourceid}")
     @ResponseBody
     public String mDeleteResourceForReport(@PathVariable int resourceid){
-//        boolean delResult= resourceService.deleteIllegalResource(resourceid);
-//        if(delResult){
-//            return "success";
-//        }else {
-//            return "error";
-//        }
-        return "success";
+        boolean delResult= resourceService.deleteIllegalResource(resourceid);
+        if(delResult){
+            return "success";
+        }else {
+            return "error";
+        }
     }
 
 

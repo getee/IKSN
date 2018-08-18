@@ -8,7 +8,6 @@ import group.first.iksn.model.bean.ResourceComments;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import java.util.List;
 
@@ -57,4 +56,6 @@ public interface ResourceService {
 
     //获取上次资源下载时间判断是否下载过且不满足一小时true,false扣积分
     boolean downHour(int rid,int uid);
+
+    /*ArrayList<ResourceComments> getresourceComments(Integer rid);*/
 }
