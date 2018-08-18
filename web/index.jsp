@@ -569,7 +569,7 @@
             {
                 var newblog="<div class=\"span12\" style=\"border-radius: 10px;background-color:#FFFFFF;margin-top: 30px\">\n" +
                     "\t\t\t\t\t\t\t<h2>\n" +
-                    "\t\t\t\t\t\t\t\t<a href=\"userArticle.jsp?bid="+data[n].bid+"\">"+data[n].title+"</a>\n" +
+                    "\t\t\t\t\t\t\t\t<a href=\"/blog/getBlogAndUser?blogid="+data[n].bid+"\">"+data[n].title+"</a>\n" +
                     "\t\t\t\t\t\t\t</h2>\n" +
                     "\t\t\t\t\t\t\t<p>\n" +
                     "\t\t\t\t\t\t\t\t"+data[n].content+".........\n" +
@@ -579,7 +579,7 @@
                     "                                时间: "+data[n].time+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n" +
                     "                                阅读数: "+data[n].bid+"</h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n" +
                     "\t\t\t\t\t\t\t<p>\n" +
-                    "\t\t\t\t\t\t\t\t<a class=\"btn\" href=\"userArticle.jsp?bid="+data[n].bid+"\">查看更多 »</a>\n" +
+                    "\t\t\t\t\t\t\t\t<a class=\"btn\" href=\"/blog/getBlogAndUser?blogid="+data[n].bid+"\">查看更多 »</a>\n" +
                     "\t\t\t\t\t\t\t</p>\n" +
                     "\t\t\t\t\t\t</div>";
 
@@ -603,7 +603,7 @@
                         {
                             var newblog="<div class=\"span12\" style=\"border-radius: 10px;background-color:#FFFFFF;margin-top: 30px\">\n" +
                                 "\t\t\t\t\t\t\t<h2>\n" +
-                                "\t\t\t\t\t\t\t\t<a href=\"userArticle.jsp?bid="+data[n].bid+"\">"+data[n].title+"</a>\n" +
+                                "\t\t\t\t\t\t\t\t<a href=\"/blog/getBlogAndUser?blogid="+data[n].bid+"\">"+data[n].title+"</a>\n" +
                                 "\t\t\t\t\t\t\t</h2>\n" +
                                 "\t\t\t\t\t\t\t<p>\n" +
                                 "\t\t\t\t\t\t\t\t"+data[n].content+".........\n" +
@@ -613,7 +613,7 @@
                                 "                                时间: "+data[n].time+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n" +
                                 "                                阅读数: "+data[n].bid+"</h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n" +
                                 "\t\t\t\t\t\t\t<p>\n" +
-                                "\t\t\t\t\t\t\t\t<a class=\"btn\" href=\"userArticle.jsp?bid="+data[n].bid+"\">查看更多 »</a>\n" +
+                                "\t\t\t\t\t\t\t\t<a class=\"btn\" href=\"/blog/getBlogAndUser?blogid="+data[n].bid+"\">查看更多 »</a>\n" +
                                 "\t\t\t\t\t\t\t</p>\n" +
                                 "\t\t\t\t\t\t</div>";
 

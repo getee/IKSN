@@ -340,7 +340,7 @@
                                         </div>
                                         <div style="height:20px; width:66%; float:left; margin-top:15px; margin-left:40px;  font-size:20px ; color:#000000;">
                                             <a href="/resource/loadResource?rid=${r.rid}"> ${r.name}</a>
-                                            <a href="xq.jsp?rid=${r.rid}"> ${r.name}</a>
+
                                         </div>
                                         <div style="height:30px; width:82%; float:left;margin-top:12px; margin-left:40px;font-size:14px;">
                                             <div style="width:250px; height:30px;  float:left">
@@ -349,12 +349,12 @@
                                                 <span> 分类:${r.classify}  </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                 <%--<span>&nbsp;&nbsp;&nbsp;&nbsp;大小：<em>308KB</em></span>--%>
                                             </div>
-                                            <div style="height:23px;width:60px;float:left;margin-left:30px;border:1px solid;;border-radius:                                           10px; border-color:#F75D47; color:#F75D47;text-align:center;">
-
-                                                <a href=" ${r.path}">下载</a>
-
-                                            </div>
-                                           <%-- <span> 下载积分:${r.scoring}  </span>--%>
+                                                <c:forEach items="${r.resourceTags}" var="tag">
+                                                    <div style="height:23px;min-width:60px;float:left;margin-left:30px;border:1px solid;;border-radius:10px; border-color:#F75D47; color:#F75D47;text-align:center;">
+                                                        <a href="#">${tag.rtag}</a>
+                                                    </div>
+                                                </c:forEach>
+                                                <%-- <span> 下载积分:${r.scoring}  </span>--%>
                                         </div>
                                     </div>
                                     </c:forEach>
@@ -362,10 +362,10 @@
                                     <c:forEach items="${keywordSearch}" var="r">
                                         <div style="height:85px; width:90%; margin-left:20px;">
                                             <div style="height:48px; width:5%; float:left; margin-top:15px ">
-                                                <a href="xq.jsp"> <img src="img/2.svg"></a>
+                                               <a href="/resource/loadResource?rid=${r.rid}"> <img src="img/2.svg"></a>
                                             </div>
                                             <div style="height:20px; width:66%; float:left; margin-top:15px; margin-left:40px;  font-size:20px ; color:#000000;">
-                                                <a href="xq.jsp?rid=${r.rid}"> ${r.name}</a>
+                                                <a href="/resource/loadResource?rid=${r.rid}"> ${r.name}</a>
                                             </div>
                                             <div style="height:30px; width:82%; float:left;margin-top:12px; margin-left:40px;font-size:14px;">
                                                 <div style="width:250px; height:30px;  float:left">
@@ -374,11 +374,11 @@
                                                     <span> 分类:${r.classify}  </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                         <%--<span>&nbsp;&nbsp;&nbsp;&nbsp;大小：<em>308KB</em></span>--%>
                                                 </div>
-                                                <div style="height:23px;width:60px;float:left;margin-left:30px;border:1px solid;;border-radius:                                           10px; border-color:#F75D47; color:#F75D47;text-align:center;">
-
-                                                    <a href=" ${r.path}">下载</a>
-
-                                                </div>
+                                                <c:forEach items="${r.resourceTags}" var="tag">
+                                                    <div style="height:23px;min-width:60px;float:left;margin-left:30px;border:1px solid;;border-radius:10px; border-color:#F75D47; color:#F75D47;text-align:center;">
+                                                        <a href="#">${tag.rtag}</a>
+                                                    </div>
+                                                </c:forEach>
                                                     <%-- <span> 下载积分:${r.scoring}  </span>--%>
                                             </div>
                                         </div>

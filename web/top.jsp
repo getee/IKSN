@@ -566,7 +566,7 @@
                 <form class="navbar-form navbar-left" method="post" action="/blog/blogSearch">
                     <div class="form-group">
 
-                        <input id="q1" type="text" class="quickQuery$focus form-control" placeholder="Search" name="content"/>
+                      <%--  <input id="q1" type="text" class="quickQuery$focus form-control" placeholder="Search" name="content"/>--%>
                        <%-- <input class="quickQuery$focus" id="" style="border: 3px solid #ccc;" />--%>
                        <%-- <input id="q1" type="text" &lt;%&ndash;class="quickQuery$focus"&ndash;%&gt; placeholder="Search" name="content"/>--%>
                         <input  id="q1" class="quickQuery$focus" style="border: 3px solid #ccc;" name="content"/>
