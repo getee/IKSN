@@ -199,11 +199,11 @@
                                         </div>
                                         <div class="modal-body">
                                             <!--								文本域-->
-                                            <form action="/resource/reportResource" method="post">
+                                            <form >
                                                 <input name="rid" type="hidden" value="${requestScope.resouce.rid}" readonly="readonly"/>
                                                 <input name="uid" type="hidden" value="${sessionScope.loginresult.uid}" readonly="readonly"/>
-                                                <textarea name="reason" class="form-control" rows="3"></textarea><br/>
-                                                <input style="margin-left: 92%;"  type="submit" value="提交" onclick="report(${result})" />
+                                                <textarea id="reason" name="reason" class="form-control" rows="3"></textarea><br/>
+                                                <input id="reportResource" style="margin-left: 92%;"  type="button" value="提交"/>
                                             </form>
                                             <!--								-->
 
@@ -427,9 +427,15 @@
 </div>
 </body>
 <script type="text/javascript">
-   function report(result) {
-       alert("举报成功！")
-   };
+
+    $(document).ready(function () {
+        $("#reportResource").click(function () {
+            $.get("/resource/reportResource?rid=${requestScope.resouce.rid}&uid=${sessionScope.loginresult.uid}&reason="+$('#reason').val(),function (data,status) {
+                $("#modal-container-830220").modal('hide');
+                alert("举报成功");
+            })
+        })
+    });
 
    $("#houseForm").submit(function(){
        var urll='/resource/houseResource';

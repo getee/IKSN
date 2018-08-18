@@ -7,7 +7,8 @@ var PinYin = {"a":"\u554a\u963f\u9515","ai":"\u57c3\u6328\u54ce\u5509\u54c0\u769
 *   参数l1:需要转化的英文(传入的拼音不会被转换)
 *   例如：参数为他们xiao   输出TaMenxiao
 */
-function chineseToPinYin(l1) {
+function chineseToPinYin(ttt) {
+
     var l2 = l1.length;
     var I1 = "";
     var reg = new RegExp('[a-zA-Z0-9\- ]');
