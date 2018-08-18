@@ -125,7 +125,7 @@ public class ResourceControl {
             msg="收藏成功！";
             response.getWriter().write(msg);
         }catch (Exception e){
-            e.printStackTrace();
+            System.out.println("收藏插入失败，唯一约束异常");
             msg="该资源已被收藏！";
             try {
                 response.getWriter().write(msg);
@@ -231,7 +231,6 @@ public class ResourceControl {
                 }
             }
             ArrayList<ResourceComments> rcomments=resourceService.getresourceComments(rid);
-            System.out.println("XXXSSS"+rcomments);
 
             request.setAttribute("rcomments",rcomments);//评论信息获取
             request.setAttribute("resouce",r);
