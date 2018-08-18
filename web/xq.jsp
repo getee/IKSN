@@ -80,6 +80,26 @@
             });
         });
     </script>--%>
+    <script type="text/javascript">
+        function conrid() {
+            var urll='/resource/houseResource';
+            var daa=$("#houseForm").serialize();
+            alert(daa);
+            $.ajax({
+                async: false,
+                type: "POST",
+                url:urll,
+                data:daa,
+                dataType: "text",
+                success: function (data) {
+                    alert(data);
+                },
+                error: function (data) {
+                    alert("资源收藏失败");
+                }
+            })
+        };
+    </script>
 </head>
 <body  style="background-color:#F7F8F9">
 <c:if test="${requestScope.resouce eq null}">
@@ -185,7 +205,7 @@
                                 <form id="houseForm" style="float:right; width:100px;" >
                                         <input type="hidden" name="uid" value="3">
                                         <input type="hidden" name="rid" value="${requestScope.resouce.rid}">
-                                    <button type="submit" ><img src="img/sc.jpg">&nbsp;收藏</button>
+                                    <button type="button" onclick="conrid()" ><img src="img/sc.jpg">&nbsp;收藏</button>
                                 </form>
                             <a data-toggle="modal" data-target="#modal-container-830220" ><img src="img/jb.jpg" >&nbsp;举报</a><input type="hidden" value="${isReportOk}"/>
                             <!-- 模态框（Modal） -->
@@ -437,23 +457,6 @@
         })
     });
 
-   $("#houseForm").submit(function(){
-       var urll='/resource/houseResource';
-       var daa=$("#houseForm").serialize();
-       alert(daa);
-       $.ajax({
-           async: false,
-           type: "POST",
-           url:urll,
-           data:daa,
-           dataType: "text",
-           success: function (data) {
-               alert(data);
-           },
-           error: function (data) {
-               alert("该资源已被收藏");
-           }
-       })
-   })
+
 </script>
 </html>

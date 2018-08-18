@@ -157,7 +157,7 @@ public class ResourceControl {
             response.getWriter().write(msg);
         }catch (Exception e){
             e.printStackTrace();
-            msg="收藏失败！";
+            msg="该资源已被收藏！";
             try {
                 response.getWriter().write(msg);
             } catch (IOException e1) {
