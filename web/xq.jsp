@@ -17,6 +17,7 @@
     <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
     <script type="text/javascript" src="js/jquery-3.3.1.js"></script>
     <script type="text/javascript" src="bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
+
     <!--CSS-->
     <style type="text/css">
 
@@ -53,7 +54,36 @@
               alert("已收藏");
     }
 </script>
-
+    <%--<script type="text/javascript">
+        $(document).ready(function(){
+            var ajaxUrl="/resource/getResourceComments?rid="+"3";
+            $.ajax({
+                type:"post",
+                url:ajaxUrl,
+                //data:bokeid,
+                async: false,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    var blogComments="";
+                    for(var c=0;c<data.length;c++){
+                        blogComments+='';
+                        blogComments+='<div style="">';
+                        blogComments+='<div style="margin-top: 5px">';
+                        blogComments+='<a href="#">'+data[c].nickname+'</a>';
+                        blogComments+='</div>';
+                        blogComments+='</div>';
+                        blogComments+='<h5 style="margin: 25px 10px 10px 50px">'+data[c].comment+'</h5>';
+                    }
+                    $('#getpl').append(blogComments);
+                },
+                error: function(data) {
+                    alert("error:");
+                }
+            });
+        });
+    </script>--%>
 </head>
 <body  style="background-color:#F7F8F9">
 <c:if test="${requestScope.resouce eq null}">
@@ -246,14 +276,65 @@
 
             <!--左第二个div-->
             <div  style="height:55px; margin-top:10px; background-color:#FFFFFF">
-                <h4 style=" padding:16px 20px; margin-bottom:0; font-weight:normal">
-                    评论
-                    <span  style="font-size:14px; margin-left:20px; font-weight:normal;">共有0条</span>
-                </h4>
+                <div class="span12" style="background-color:#A29E9E;padding: 25px">
+                    <!-- Button trigger modal -->
+                    有疑问？就说一说
+                    <button type="button"  class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModa">
+                        我要评论
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="myModa" tabindex="-1" role="dialog" aria-labelledby="myModalLabe" style="margin-top: 20%">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModalLabe">我的评论</h4>
+                                </div>
+                                <form action="/resource/assess" method="post">
+                                    <div class="form-group">
+                                        uid:<input type="text" name="uid"><br>
+                                    </div>
+                                    <div class="form-group">
+                                        rid:<input type="text" name="rid" ><br>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">评价</label>
+                                        <input type="text" class="form-control" id="name" name="comment">
+                                    </div>
+                                    <div class="form-group">
+                                        评分:<select name="star">
+                                        <c:forEach var="a" begin="1" end="10">
+                                            <option value="${a}">${a}分</option>
+                                        </c:forEach>
+                                    </select><br/>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                        <button type="submit" class="btn btn-primary"value="discuss">评论</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!--左第三个div-->
             <div  style="height:400px; margin-top:10px; background-color:#FFFFFF">
+                <ul>
+                    <hr>
+                <li id="getpl">
+                    <%--<div style="">
+                        <div style="float: left"><a class="icon-observer" href="#" style="background-image: url(image/3_qq.jpg)"></a></div>
+                        <div style="margin-top: 5px">
+                            <a href="#">用户名</a>
+                        </div>
+                    </div>
+                    <h5 style="margin: 25px 10px 10px 50px">作者写的666</h5>--%>
+                </li>
+                    <hr>
+                </ul>
             </div>
         </div>
 

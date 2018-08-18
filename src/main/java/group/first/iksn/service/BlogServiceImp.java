@@ -360,6 +360,7 @@ public class BlogServiceImp implements BlogService {
     public boolean collectBlog(int uid, int bid) {
         return blogDAO.collectBlog(uid,bid);
     }
+    //博客评论
     @Override
     public ArrayList<BlogComments> getComments(Integer bid) {
         ArrayList<BlogComments> keys=blogDAO.getComments(bid);

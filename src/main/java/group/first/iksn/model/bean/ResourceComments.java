@@ -6,6 +6,27 @@ public class ResourceComments {
     private  int uid;//下载者id
     private  int star;//打星星评价
     private  String comment;//评论
+    private  User user;
+
+    @Override
+    public String toString() {
+        return "ResourceComments{" +
+                "id=" + id +
+                ", rid=" + rid +
+                ", uid=" + uid +
+                ", star=" + star +
+                ", comment='" + comment + '\'' +
+                ", user=" + user +
+                '}';
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public ResourceComments(int id, int rid, int uid, int star, String comment) {
         this.id = id;
@@ -17,17 +38,6 @@ public class ResourceComments {
 
     public ResourceComments() {
         super();
-    }
-
-    @Override
-    public String toString() {
-        return "ResourceComments{" +
-                "id=" + id +
-                ", rid=" + rid +
-                ", uid=" + uid +
-                ", star=" + star +
-                ", comment='" + comment + '\'' +
-                '}';
     }
 
     public int getId() {

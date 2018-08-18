@@ -55,4 +55,6 @@ public interface ResourceDAO {
     List<Resource> downloadResource(int uid);
     //我收藏的资源
     List<Resource> myCollectResource(int uid);
+
+    /*ArrayList<ResourceComments> getresourceComments(Integer rid);*/
 }
