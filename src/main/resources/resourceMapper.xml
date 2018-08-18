@@ -180,4 +180,8 @@
     <select id="getDownedTime" resultType="java.lang.String">
         SELECT MAX(TIME) FROM downresources WHERE uid=#{1} and rid=#{0}
     </select>
+    <!--他人上传的资源查询-->
+    <select id="allPublishedResource" resultType="Resource">
+        select * from resource where uid=#{uid}
+    </select>
 </mapper>

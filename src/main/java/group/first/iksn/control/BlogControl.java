@@ -278,10 +278,12 @@ public String ajaxBlogSearch(HttpServletResponse response, HttpServletRequest re
         List<Blog> reportedblogs=blogService.scanReportedBlogService(uid);
         List<Blog> simiblogs=blogService.scanSimiBlogService(uid);
         List<Blog> draftblogs=blogService.scanDraftBlogService(uid);
+
         model.addAttribute("blogs",blogs);
         model.addAttribute("reportedblogs",reportedblogs);
         model.addAttribute("simiblogs",simiblogs);
         model.addAttribute("draftblogs",draftblogs);
+
         System.out.println(blogs);
              return "writingCenter";
     }
@@ -337,7 +339,7 @@ public String ajaxBlogSearch(HttpServletResponse response, HttpServletRequest re
     }
 
     //根据bid博客ID来查询博客的相应数据
-    @RequestMapping("/listBlogByBid/{bid}")
+    @RequestMapping("/listBlogByBid/")
     public String  listBlogByID(@PathVariable("bid") int bid,Model model){
         Blog listblog=blogService.listBlogService(bid);
         model.addAttribute("listblog",listblog);
@@ -634,6 +636,8 @@ public String ajaxBlogSearch(HttpServletResponse response, HttpServletRequest re
             try{
                 jsonObject.put("title",collectblog.get(i).getTitle());
                 jsonObject.put("time",collectblog.get(i).getTime());
+                jsonObject.put("bid",collectblog.get(i).getBid());
+                System.out.println(collectblog.get(i).getBid());
                 jsonArray.put(jsonObject);
             }catch (JSONException e){
                 e.printStackTrace();

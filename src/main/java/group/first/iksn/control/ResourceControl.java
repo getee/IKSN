@@ -475,4 +475,35 @@ public class ResourceControl {
         out.close();
     }
 
+
+    //他人上传的所有资源
+    @RequestMapping("/allPublishedResource")
+    public void allPublishedResource(HttpServletResponse response,int uid,Model model) throws IOException {
+        ArrayList<Resource> allPublishedResource=(ArrayList<Resource>)resourceService.allPublishedResource(uid);
+        //model.addAttribute("allPublishedBlog",allPublishedBlog);
+        //return "tarenzhongxin";
+        JSONArray jsonArray=new JSONArray();
+        JSONObject jsonObject;
+        for (int i=0;i<allPublishedResource.size();i++){
+            jsonObject=new JSONObject();
+            try{
+                jsonObject.put("name",allPublishedResource.get(i).getName());
+                jsonObject.put("rid",allPublishedResource.get(i).getRid());
+                jsonObject.put("time",allPublishedResource.get(i).getTime());
+                jsonObject.put("scoring",allPublishedResource.get(i).getScoring());
+                jsonArray.put(jsonObject);
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+        }
+        System.out.println(jsonArray);
+        //悄悄把数据会给他
+        //用response（响应）对象中的输出流将处理好的结果输出给ajax请求对象
+        response.setContentType("textml;charset=UTF-8");//  textml     ,text/xml    ,text/json
+        PrintWriter out=response.getWriter();//获取响应对象中的输出流
+        out.write(jsonArray.toString());
+        out.flush();
+        out.close();
+    }
+
 }

@@ -418,11 +418,11 @@
 
     <!--我收藏的博客-->
        <select id="myCollectBlog" resultType="Blog">
-        SELECT title, time FROM blog WHERE  BID IN ( SELECT BID FROM  collectblog WHERE UID=#{uid})
+        SELECT * FROM blog WHERE  BID IN ( SELECT BID FROM  collectblog WHERE UID=#{uid})
     </select>
     <!--我发布的博客-->
     <select id="myBlog" resultType="Blog">
-      SELECT title, time FROM blog WHERE  BID IN ( SELECT BID FROM  usertoblog WHERE UID=#{uid})
+      SELECT * FROM blog WHERE  BID IN ( SELECT BID FROM  usertoblog WHERE UID=#{uid})
     </select>
     <!--根据bid查uid-->
     <select id="selectUidByBid" parameterType="Integer" resultType="UserToBlog">
@@ -441,4 +441,5 @@
     <select id="allPublishedBlog" resultType="Blog">
         select * from blog where bid in (select bid from usertoblog where uid=#{uid})
     </select>
+
 </mapper>

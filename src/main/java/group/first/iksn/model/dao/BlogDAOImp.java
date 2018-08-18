@@ -279,13 +279,8 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
         return isOk;
     }
 
-    /*
-    查询他人发布的所有博客
-     */
-    @Override
-    public List<Blog> allPublishedBlog(int uid) {
-        return getSqlSession().getMapper(BlogDAO.class).allPublishedBlog(uid);
-    }
+
+
 
     @Override
     public int reportBlogNum() {
@@ -492,4 +487,12 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
     public List<Blog> myBlog(int uid) {
         return getSqlSession().getMapper(BlogDAO.class).myBlog(uid);
     }
+    /*
+       查询他人发布的所有博客
+        */
+    @Override
+    public List<Blog> allPublishedBlog(int uid) {
+        return getSqlSession().getMapper(BlogDAO.class).allPublishedBlog(uid);
+    }
+
 }

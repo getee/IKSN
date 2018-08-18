@@ -30,7 +30,7 @@
     <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
     <script src="bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
     <script>
-		$(document).ready(function(){
+		/*$(document).ready(function(){
 			//所有li元素的点击事件
 			$("li").click(function(){
 				if($(this).click){
@@ -38,8 +38,18 @@
 					$(this).addClass("active");
 					
 				}
-			});
-			
+			});*/
+        $(document).ready(function(){
+            //标签页选项卡
+            $('#myTabs1 a').click(function (e) {
+                e.preventDefault()
+                $(this).tab('show')
+            });
+            $('#myTabs2 a').click(function (e) {
+                e.preventDefault()
+                $(this).tab('show')
+            });
+
 			//特效,输入雷电试试
 			
 			$("#topSearch").keyup(function(){
@@ -82,7 +92,7 @@
         <%@ include file="top.jsp"%>
 	<!--	导航栏结束-->
 		<!-- Stack the columns on mobile by making one full-width and the other half-width -->
-<div style="background-color:#F8F8F8; margin: 30px;padding: 10px;" class="row well-lg">
+<div style="background-color:#F8F8F8;margin-left: 15%; margin-right:15%;padding: 10px;" class="row well-lg">
   <div  class="col-xs-12 col-md-8">
 		<div  class="col-xs-6 col-md-1"></div>
 		<div  class="col-xs-6 col-md-3">
@@ -105,18 +115,18 @@
   <div class="col-xs-6"></div>
   <div class="col-xs-6">
 	  <button  type="button" class="btn btn-success">+关注</button>
-	  <button  type="button" class="btn btn-success" style="outline: none">发私信</button>
+	  <button  type="button" class="btn btn-success" style="margin-top: 10px;">发私信</button>
   </div>
   
   </div>
 </div>
 
 <!-- Columns start at 50% wide on mobile and bump up to 33.3% wide on desktop -->
-<div class="row well-lg" style="margin: 30px;padding: 10px; background-color:#F8F8F8 ">
-  <div  class="col-xs-6 col-md-4">
-		<!-- Indicates caution should be taken with this action -->
-		<button id="publishedBlog" style="margin-left: 20%;outline: none" type="button" class="btn btn-danger">发表的博客</button>
-		<button type="button" class="btn btn-default" style="outline: none;">贡献的资源</button>
+		<!--<div class="row well-lg" style="margin: 30px;padding: 10px; background-color:#F8F8F8 ">
+          <div  class="col-xs-6 col-md-4">
+                <!-- Indicates caution should be taken with this action -->
+		<!--<button id="publishedBlog" style="margin-left: 20%;outline: none" type="button" class="btn btn-danger">发表的博客</button>
+		<button id="publisheResource" type="button" class="btn btn-default" style="outline: none;">贡献的资源</button>
 		<%--<h3 style="margin-left: 100px;">h3. Bootstrap heading</h3>
 		<h3 style="margin-left: 100px;">h3. Bootstrap heading</h3>
 		<h3 style="margin-left: 100px;">h3. Bootstrap heading</h3>--%>
@@ -126,19 +136,37 @@
 	<div id="blogarea" class="col-md-12 well" style="margin-top:2%;width:80%;margin-left:10%;margin-right: 10%;">
 
 	</div>
+
   <%--<div style="padding-top: 30px;" class="col-xs-6 col-md-4">
   <h3 style="margin-left: 100px;"><small>30人阅读 &nbsp;&nbsp;</small><small class="glyphicon glyphicon-comment" style="cursor: pointer">评论(0)</small></h3>
   <h3 style="margin-left: 100px;"><small>10人阅读 &nbsp;&nbsp;</small><small class="glyphicon glyphicon-comment" style="cursor: pointer">评论(0)</small></h3>
   <h3 style="margin-left: 100px;"><small>22人阅读 &nbsp;&nbsp;</small><small class="glyphicon glyphicon-comment" style="cursor: pointer">评论(0)</small></h3>
   </div>--%>
 
-</div>
+</div>-->
+		<!--面板-->
+		<div class="row well" style="margin-left: 15%;margin-right: 15%;margin-top: 2%">
+			<div style="margin-top: -1%">
 
-<!-- Columns are always 50% wide, on mobile and desktop -->
-<div class="row">
-  <div class="col-xs-6"></div>
-  <div class="col-xs-6"></div>
-</div>
+				<!-- Nav tabs -->
+				<ul class="nav nav-tabs" role="tablist">
+					<li id="myTabs1" role="presentation" class="active"><a id="blogarea" href="#publishedBlog" aria-controls="home" role="tab" data-toggle="tab">发表的博客</a></li>
+					<li id="myTabs2" role="presentation"><a id="resource" href="#publisheResource" aria-controls="profile" role="tab" data-toggle="tab">贡献的资源</a></li>
+				</ul>
+
+				<div class="tab-content">
+					<div role="tabpanel" class="tab-pane active" id="publishedBlog">
+
+					</div>
+
+					<div role="tabpanel" class="tab-pane" id="publisheResource">
+
+					</div>
+					<!-- Columns are always 50% wide, on mobile and desktop -->
+				</div>
+			</div>
+		</div>
+
 <!--底部信息-->
 <div class="row">
 	<nav class="navbar navbar-default navbar-static-bottom">
@@ -156,7 +184,7 @@
 <script>
 	$(document).ready(function () {
 	    var a=1;
-        $("#publishedBlog").ready(function () {
+        $("#blogarea").ready(function () {
             $.getJSON("/blog/allPublishedBlog?uid=${requestScope.user.uid}",function (data) {
                 var html=""
 				for(var i=0;i< data.length;i++ ){
@@ -166,7 +194,7 @@
                 	html+='</div>';
 				}
                 if(a==1){
-                    $("#blogarea").append(html);
+                    $("#publishedBlog").append(html);
                     a++;
                 }
 			});
@@ -174,4 +202,27 @@
         });
     });
 </script>
+
+<!--资源贡献-->
+  <script>
+      $(document).ready(function () {
+          var a=1;
+          $("#resource").click(function () {
+              $.getJSON("/resource/allPublishedResource?uid=${requestScope.user.uid}",function (data) {
+                  var html=""
+                  for(var i=0;i< data.length;i++ ){
+                      html+='<div class="col-md-12" >';
+                      html+='<div style=" font-size:20px ; color:#000000;height: 40px;"><a href="/blog/listBlogByBid/'+data[i].bid+'">'+data[i].name+'</a></div>';
+                      html+='<span>发布时间：'+data[i].time+'</span><span style="margin-left: 20px;">获得积分：'+data[i].scoring+'</span>';
+                      html+='</div>';
+                  }
+                  if(a==1){
+                      $("#publisheResource").append(html);
+                      a++;
+                  }
+              });
+
+          });
+      });
+  </script>
 </html>

@@ -178,6 +178,7 @@ public class ResourceDAOImp extends BaseDAOImp implements ResourceDAO {
     }
 
 
+
     //更改积分
     @Override
     public boolean changeScore(int uid, int scoring) {
@@ -206,5 +207,10 @@ public class ResourceDAOImp extends BaseDAOImp implements ResourceDAO {
         System.out.println(reportResource);
         boolean result= getSqlSession().getMapper(ResourceDAO.class).reportResource(reportResource);
         return result;
+    }
+    //他人上传的所有资源
+    @Override
+    public List<Resource> allPublishedResource(int uid) {
+        return  getSqlSession().getMapper(ResourceDAO.class).allPublishedResource(uid);
     }
 }

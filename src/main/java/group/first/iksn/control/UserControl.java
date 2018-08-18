@@ -435,7 +435,7 @@ public class UserControl {
         //使用Spring中的帮助类来解析base64
         BASE64Decoder decoder = new BASE64Decoder();
 
-        String savePath=request.getServletContext().getRealPath("/img");
+        String savePath=request.getSession().getServletContext().getRealPath("/img");
         String fileName=UUID.randomUUID().toString().replace("-","");
         String suffix = "";//文件后缀名
         String dataPrix = "";
