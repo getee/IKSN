@@ -108,7 +108,7 @@ public class UserControl {
     }
     //快速登陆
     @RequestMapping(value = "/quicklogin",method = RequestMethod.POST)
-    public void quicklogin(@RequestParam("iscollect") String iscollect, @RequestParam("emailorphone")String emailorphone,@RequestParam("password") String password, HttpSession session, HttpServletResponse response){
+    public void quicklogin(@RequestParam("emailorphone")String emailorphone,@RequestParam("password") String password, HttpSession session, HttpServletResponse response){
         User user=userService.login(emailorphone,password);
         PrintWriter pw=null;
         try {

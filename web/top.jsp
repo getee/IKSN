@@ -629,8 +629,9 @@
                 </div>
                 <div class="modal-footer">
                     <div id="qdwa" class="alert alert-warning alert-dismissible" role="alert" style="display: none">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <strong>Warning!</strong>用户名或密码错误登录失败.
+                        <button type="button" class="close" id="deluts"><span aria-hidden="true">&times;</span></button>
+                        <strong>Warning!</strong>
+                        <p>用户名或密码错误登录失败.</p>
                     </div>
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                     <button type="button" class="btn btn-primary" id="ksdl">登录</button>
@@ -657,14 +658,16 @@
             keyboard:true
         });
     }
+    $("#deluts").click(function () {
+        $("#qdwa").css("display","none");
+    })
     $("#guanbianniu").click(function () {
         $("#tsdl").css("display","none");
     })
     $("#ksdl").click(function () {
-        $.post("/user/quicklogin?iscollect="+$("#iscollect").val()+"&emailorphone="+$("#username").val()+"&password="+$("#password").val(),function (msg) {
+        $.post("/user/quicklogin?"+"emailorphone="+$("#username").val()+"&password="+$("#password").val(),function (msg) {
 
             if(msg=="success"){
-                alert(msg)
                 $("#quicklogin").modal('hide');
                 // 刷新当前页面.
                 window.location.reload();
