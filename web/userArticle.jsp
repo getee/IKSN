@@ -452,7 +452,7 @@
 									</thead>
 									<tbody>
 									<tr>
-										<td colspan="3"><h3><a href="tarenzhongxin.jsp">${yonghu.nickname}</a><small></small></h3></td>
+										<td colspan="3"><h3><a href="tarenzhongxin.jsp?uid=${yonghu.uid}">${yonghu.nickname}</a><small></small></h3></td>
 										<td>
 												<button id="gz" type="button" class="btn btn-primary" style="width: 100px" data-toggle="button" aria-pressed="false" autocomplete="off">+关注</button>
 										</td>
@@ -583,11 +583,11 @@
             </div>
             <div class="modal-body">
                 <!--								文本域-->
-                <form action="/blog/reportBlog" method="post">
+                <form>
                     <input type="hidden" name="bid" type="text" value="${boke.bid}" readonly="readonly"/>
                     <input type="hidden" name="uid" type="text" value="${sessionScope.loginresult.uid}" readonly="readonly"/>
-                    <textarea name="reason" class="form-control" rows="3"></textarea><br/>
-                    <input style="float: right;"  type="submit" value="提交" onclick="report(${result})" />
+                    <textarea id="reason" name="reason" class="form-control" rows="3"></textarea><br/>
+					<input id="reportBlog" style="float: right;"  type="button" value="提交" />
                 </form>
                 <!--								-->
 
@@ -728,10 +728,14 @@
 <a href="javascript:void(0)" id="toTop" style="border-radius: 20px"> </a>
 </body>
 <script>
-function report(result) {
-	alert("举报成功")
-}
-
+	$(document).ready(function () {
+        $("#reportBlog").click(function () {
+            $.get("/blog/reportBlog?bid=${boke.bid}&uid=${sessionScope.loginresult.uid}&reason="+$('#reason').val(),function (data,status) {
+                $("#modal-container-830220").modal('hide');
+                alert("举报成功");
+            })
+        })
+    })
 </script>
 <script>
     document.getElementById("time").value=new Date();

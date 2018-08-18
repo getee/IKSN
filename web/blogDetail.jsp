@@ -444,7 +444,32 @@
 	})
 })
 </script>
-
+<!-- Modal -->
+<div class="modal fade" id="modal-container-830220" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="margin-top: 20%">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">举报原因</h4>
+			</div>
+			<div class="modal-body">
+				<!--								文本域-->
+				<form >
+					<input type="hidden" name="bid" type="text" value="${listblog.bid}" readonly="readonly"/>
+					<input type="hidden" name="uid" type="text" value="${sessionScope.loginresult.uid}" readonly="readonly"/>
+					<textarea id="reason" name="reason" class="form-control" rows="3"></textarea><br/>
+					<input id="reportBlog" style="float: right;"  type="button" value="提交" />
+				</form>
+				<!--								-->
+            </div>
+            <div class="modal-footer">
+                <!--<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary">提交</button>-->
+            </div>
+        </div>
+    </div>
+</div>
+<!--end-->
 
 <script>
     $("#qqzone").click(function () {
@@ -478,5 +503,14 @@
 </body>
 <script>
     document.getElementById("time").value=new Date();
+    $(document).ready(function () {
+        $("#reportBlog").click(function () {
+            $.get("/blog/reportBlog?bid=${listblog.bid}&uid=${sessionScope.loginresult.uid}&reason="+$('#reason').val(),function (data,status) {
+                $("#modal-container-830220").modal('hide');
+                alert("举报成功");
+            })
+        })
+    })
+
 </script>
 </html>
