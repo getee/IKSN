@@ -401,7 +401,7 @@
 			</div>
 			<div class="modal-body">
 				<!--								文本域-->
-				<form >
+				<form>
 					<input type="hidden" name="bid" type="text" value="${listblog.bid}" readonly="readonly"/>
 					<input type="hidden" name="uid" type="text" value="${sessionScope.loginresult.uid}" readonly="readonly"/>
 					<textarea id="reason" name="reason" class="form-control" rows="3"></textarea><br/>
@@ -449,7 +449,6 @@
 <a href="javascript:void(0)" id="toTop" style="border-radius: 20px"> </a>
 </body>
 <script>
-    document.getElementById("time").value=new Date();
     $(document).ready(function () {
         $("#reportBlog").click(function () {
             $.get("/blog/reportBlog?bid=${listblog.bid}&uid=${sessionScope.loginresult.uid}&reason="+$('#reason').val(),function (data,status) {
