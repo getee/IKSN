@@ -84,7 +84,6 @@
         function conrid() {
             var urll='/resource/houseResource';
             var daa=$("#houseForm").serialize();
-            alert(daa);
             $.ajax({
                 async: false,
                 type: "POST",
@@ -348,27 +347,33 @@
                 </div>
             </div>
 
-            <!--左第三个div-->
+            <!--资源评论输出div-->
+            <c:if test="${requestScope.rcomments !=null}">
+
             <div  style="height:400px; margin-top:10px; background-color:#FFFFFF">
                 <ul>
                     <hr>
-                <li id="getpl">
-                    <%--<div style="">
-                        <div style="float: left"><a class="icon-observer" href="#" style="background-image: url(image/3_qq.jpg)"></a></div>
-                        <div style="margin-top: 5px">
-                            <a href="#">用户名</a>
+
+                    <c:forEach items="${requestScope.rcomments}" var="rc">
+                    <li id="getpl">
+                        <div style="">
+                            <div style="float: left"><a class="icon-observer" href="#" style="background-image: url('img/3_qq.jpg')"></a></div>
+                            <div style="margin-top: 5px">
+                                <a href="#">${rc.user.nickname}</a>
+                            </div>
                         </div>
-                    </div>
-                    <h5 style="margin: 25px 10px 10px 50px">作者写的666</h5>--%>
-                </li>
+                        <h5 style="margin: 25px 10px 10px 50px">${rc.comment}</h5>
+                    </li>
+                    </c:forEach>
+
                     <hr>
                 </ul>
             </div>
+            </c:if>
+
         </div>
 
-
-
-        <div class="col-xs-4 well">
+            <div class="col-xs-4 well">
             <!--右边第一块上传资源的div-->
             <div style="height:50px; width:300px; background-color:#E33F3F">
                 <div class="row-fluid">
