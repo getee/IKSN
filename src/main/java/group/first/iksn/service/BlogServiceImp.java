@@ -182,6 +182,11 @@ public class BlogServiceImp implements BlogService {
    public List<Blog> ajaxBlogPush(int page){return blogDAO.ajaxBlogPush(page);}
 
     @Override
+    public List<Blog> newBlogPush() {
+        return blogDAO.newBlogPush();
+    }
+
+    @Override
     public boolean addBlogService(Blog blog) {
         return blogDAO.processAddBlog(blog);
     }
@@ -457,6 +462,13 @@ public class BlogServiceImp implements BlogService {
         ArrayList<BlogComments> keys=blogDAO.getComments(bid);
         System.out.println("KKKK"+keys);
         return keys;
+    }
+    /*
+    查询他人发布的所有博客
+     */
+    @Override
+    public List<Blog> allPublishedBlog(int uid) {
+        return blogDAO.allPublishedBlog(uid);
     }
 
 

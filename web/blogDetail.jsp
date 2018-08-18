@@ -280,7 +280,7 @@
 									</thead>
 									<tbody>
 									<tr>
-										<td colspan="3"><h3><a href="tarenzhongxin.jsp">${yonghu.nickname}</a><small></small></h3></td>
+										<td colspan="3"><h3><a href="/user/getUserInfo?uid=${yonghu.uid}">${yonghu.nickname}</a><small></small></h3></td>
 
 									</tr>
 									<tr>
@@ -351,6 +351,10 @@
 
 			</li>
 		</div>
+		<li class="li-left">
+			<a data-toggle="modal" data-target="#modal-container-830220"  class="glyphicon glyphicon-warning-sign" style="color: black;width: 25px;height: 25px"></a>
+			<p style="font-size: 2px">举报</p>
+		</li>
 	</ul>
 </div>
 <!--点赞结束-->
@@ -397,7 +401,7 @@
 			</div>
 			<div class="modal-body">
 				<!--								文本域-->
-				<form >
+				<form>
 					<input type="hidden" name="bid" type="text" value="${listblog.bid}" readonly="readonly"/>
 					<input type="hidden" name="uid" type="text" value="${sessionScope.loginresult.uid}" readonly="readonly"/>
 					<textarea id="reason" name="reason" class="form-control" rows="3"></textarea><br/>
@@ -445,7 +449,6 @@
 <a href="javascript:void(0)" id="toTop" style="border-radius: 20px"> </a>
 </body>
 <script>
-    document.getElementById("time").value=new Date();
     $(document).ready(function () {
         $("#reportBlog").click(function () {
             $.get("/blog/reportBlog?bid=${listblog.bid}&uid=${sessionScope.loginresult.uid}&reason="+$('#reason').val(),function (data,status) {

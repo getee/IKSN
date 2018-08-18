@@ -1,6 +1,7 @@
 package group.first.iksn.control;
 
 
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import group.first.iksn.model.bean.*;
 import group.first.iksn.service.BlogService;
 import group.first.iksn.service.UserService;
@@ -143,8 +144,26 @@ public class BlogControl {
         }
         return  "index";
     }
-
-
+    /*
+    * 首页今日推荐
+    * */
+    @RequestMapping("/dayBlog")
+    public void dayBlog(HttpServletResponse response, HttpServletRequest request){
+        List<Blog> l= blogService.newBlogPush();
+        System.out.println(l);
+        JSONArray array=new JSONArray();
+        for(Blog blog:l){
+            JSONObject object=new JSONObject();
+            object.put("id",blog.getBid());
+            object.put("ti",blog.getTitle());
+            array.put(object);
+        }
+        try {
+            Responser.responseToJson(response,request,array.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * 这是搜索博客的方法
      * @param textcontent
@@ -841,5 +860,35 @@ public String ajaxBlogSearch(HttpServletResponse response, HttpServletRequest re
         }
     }
 
-
+    /*
+    查询他人发布的所有博客
+     */
+    @RequestMapping("/allPublishedBlog")
+    public void allPublishedBlog(HttpServletResponse response,int uid,Model model) throws IOException {
+        ArrayList<Blog> allPublishedBlog=(ArrayList<Blog>)blogService.allPublishedBlog(uid);
+        //model.addAttribute("allPublishedBlog",allPublishedBlog);
+        //return "tarenzhongxin";
+       JSONArray jsonArray=new JSONArray();
+        JSONObject jsonObject;
+        for (int i=0;i<allPublishedBlog.size();i++){
+            jsonObject=new JSONObject();
+            try{
+                jsonObject.put("bid",allPublishedBlog.get(i).getBid());
+                jsonObject.put("title",allPublishedBlog.get(i).getTitle());
+                jsonObject.put("time",allPublishedBlog.get(i).getTime());
+                jsonObject.put("points",allPublishedBlog.get(i).getPoints());
+                jsonArray.put(jsonObject);
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+        }
+        System.out.println(jsonArray);
+        //悄悄把数据会给他
+        //用response（响应）对象中的输出流将处理好的结果输出给ajax请求对象
+        response.setContentType("textml;charset=UTF-8");//  textml     ,text/xml    ,text/json
+        PrintWriter out=response.getWriter();//获取响应对象中的输出流
+        out.write(jsonArray.toString());
+        out.flush();
+        out.close();
+    }
 }

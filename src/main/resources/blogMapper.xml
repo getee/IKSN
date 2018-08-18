@@ -258,7 +258,10 @@
     <select id="ajaxBlogMohuSearch" resultType="java.lang.String">
       select title from blog
     </select>
-
+<!--推送最新的5个博客在首页-->
+    <select id="newBlogPush" resultType="Blog">
+        SELECT * FROM blog ORDER BY BID DESC LIMIT 0,4;
+    </select>
 
 
     <!--关于blog首页推送的查询-->
@@ -434,4 +437,8 @@
     <update id="updateLink" parameterType="Integer">
         update blog set LINK=#{numLink} where BID=#{bid}
     </update>
+    <!--他人发布所有的博客-->
+    <select id="allPublishedBlog" resultType="Blog">
+        select * from blog where bid in (select bid from usertoblog where uid=#{uid})
+    </select>
 </mapper>

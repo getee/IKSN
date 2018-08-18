@@ -263,6 +263,11 @@ public class UserServiceImp implements UserService {
         return userDAO.getIsspeakNum();
     }
 
+    @Override
+    public User getUserInfo(int uid) {
+        return userDAO.getUserInfo(uid);
+    }
+
     //修改用户资料
     @Override
     public User updateUser(User user) {
