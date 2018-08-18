@@ -245,9 +245,6 @@
         select count(*) from reportblog
     </select>
 
-    <select id="ajaxBlogPush" resultType="Blog" >
-        select * from blog order by points desc limit #{page},5
-    </select>
    <!-- <select id="sUser" resultMap="sUser">
         select u.*,ub.* from usertoblog as ub
         inner join user as u on u.uid=ub.uid
