@@ -447,7 +447,7 @@
 									</thead>
 									<tbody>
 									<tr>
-										<td colspan="3"><h3><a href="tarenzhongxin.jsp">${yonghu.nickname}</a><small></small></h3></td>
+										<td colspan="3"><h3><a href="tarenzhongxin.jsp?uid=${yonghu.uid}">${yonghu.nickname}</a><small></small></h3></td>
 										<td>
 												<button id="gz" type="button" class="btn btn-primary" style="width: 100px" data-toggle="button" aria-pressed="false" autocomplete="off">+关注</button>
 										</td>
