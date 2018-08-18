@@ -107,7 +107,7 @@
             <li ><a href="myresource.jsp">已下载</a></li>
             <li ><a href="myresource.jsp">我的收藏</a></li>
             <%--<c:if test="${sessionScope.loginresult.isadmin eq '1'}">--%>
-            <c:if test="${not empty reportRid && !(reportRid eq null)}">
+            <c:if test="${sessionScope.loginresult.isadmin eq '1' && not empty reportRid && !(reportRid eq null)}">
                 <%--<li style="margin-left: 5%"><a href="/blog/mGetAllReportBlog">返回举报页</a></li>--%>
                 <li><a href="javascript:deleteResource('${requestScope.resouce.path}')">删除</a></li>
                 <li><a style="cursor: default">举报原因：${reportRReason}</a></li>

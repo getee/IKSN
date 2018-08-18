@@ -133,7 +133,7 @@
 				订阅 <span class="badge">+</span>
 			</button>
 			<%--<c:if test="${sessionScope.loginresult.isadmin eq '1'}">--%>
-			<c:if test="${not empty reportBlog.id && !(reportBlog.id eq null)}">
+			<c:if test="${sessionScope.loginresult.isadmin eq '1' && not empty reportBlog.id && !(reportBlog.id eq null)}">
 				<button id="comeback-button" type="button" class="btn btn-primary" disabled style="">返回举报页</button>
 				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#delete" style="">删除</button>
 				<button id="sendBack-button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#sendBack" style="">下架并禁言</button>
@@ -196,8 +196,8 @@
             });
             $("#sendBack-ok").click(function(){
                 $("#bloadGif").show();
-               var a="/blog/mSendBackIllegalblog/${reportBlog.bid}/${reportBlog.id}/${reportBlog.uid}?reportReason=${reportBlog.reason}";
-               //alert(a);
+               var a="/blog/mSendBackIllegalblog/${reportBlog.bid}/${reportBlog.id}/${yonghu.uid}?reportReason=${reportBlog.reason}";
+               alert(a);
                 $.get(a,function(data,status){
                     $("#bloadGif").hide();
                     if(data=="success"){
