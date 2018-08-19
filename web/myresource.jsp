@@ -262,7 +262,7 @@
                 var html="";
                 for(var i=0;i< data.length;i++){
                     html+='<div class="col-md-12 well">';
-                    html+='<div class="col-md-2 "><a href="xq.jsp"><img src="img/2.svg"></a></div>';
+                    html+='<div class="col-md-2 "><a href="/resource/loadResource?rid='+data[i].rid+'"><img src="img/2.svg"></a></div>';
                     html+='<div class="col-md-10"><div style=" font-size:20px ; color:#000000;height: 40px;">'+data[i].name+'</div>';
                     html+='<div>';
                     html+='<div style=" float: left"><a>所需积分:&nbsp;&nbsp;&nbsp;</a>'+data[i].scoring+'</div>';

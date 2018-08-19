@@ -395,6 +395,7 @@ public class ResourceControl {
                 jsonObject.put("introduce",resources.get(i).getIntroduce());
                 jsonObject.put("time",resources.get(i).getTime());
                 jsonObject.put("scoring",resources.get(i).getScoring());
+                jsonObject.put("rid",resources.get(i).getRid());
                 jsonArray.put(jsonObject);
             }catch (JSONException e){
                 e.printStackTrace();

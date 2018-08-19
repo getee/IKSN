@@ -485,7 +485,7 @@
 
     $(document).ready(function () {
         $("#reportResource").click(function () {
-            $.get("/resource/reportResource?rid=${requestScope.resouce.rid}&amp;uid=${sessionScope.loginresult.uid}&amp;reason="+$('#reason').val(),function (data,status) {
+            $.get("/resource/reportResource?rid=${requestScope.resouce.rid}&uid=${sessionScope.loginresult.uid}&reason="+$('#reason').val(),function (data,status) {
                 $("#modal-container-830220").modal('hide');
                 alert("举报成功");
             })
