@@ -86,4 +86,5 @@ public interface UserService {
     boolean isSpeaktoTrue(int uid);
     //禁言的数量
     int getIsspeakNum();
+    User getUserInfo(int uid);
 }

@@ -125,7 +125,7 @@ public class ResourceControl {
             msg="收藏成功！";
             response.getWriter().write(msg);
         }catch (Exception e){
-            e.printStackTrace();
+            System.out.println("收藏插入失败，唯一约束异常");
             msg="该资源已被收藏！";
             try {
                 response.getWriter().write(msg);
@@ -231,7 +231,6 @@ public class ResourceControl {
                 }
             }
             ArrayList<ResourceComments> rcomments=resourceService.getresourceComments(rid);
-            System.out.println("XXXSSS"+rcomments);
 
             request.setAttribute("rcomments",rcomments);//评论信息获取
             request.setAttribute("resouce",r);
@@ -460,6 +459,37 @@ public class ResourceControl {
                 jsonObject.put("title",collect.get(i).getName());
                 jsonObject.put("scoring",collect.get(i).getScoring());
                 jsonObject.put("time",collect.get(i).getTime());
+                jsonArray.put(jsonObject);
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+        }
+        System.out.println(jsonArray);
+        //悄悄把数据会给他
+        //用response（响应）对象中的输出流将处理好的结果输出给ajax请求对象
+        response.setContentType("textml;charset=UTF-8");//  textml     ,text/xml    ,text/json
+        PrintWriter out=response.getWriter();//获取响应对象中的输出流
+        out.write(jsonArray.toString());
+        out.flush();
+        out.close();
+    }
+
+
+    //他人上传的所有资源
+    @RequestMapping("/allPublishedResource")
+    public void allPublishedResource(HttpServletResponse response,int uid,Model model) throws IOException {
+        ArrayList<Resource> allPublishedResource=(ArrayList<Resource>)resourceService.allPublishedResource(uid);
+        //model.addAttribute("allPublishedBlog",allPublishedBlog);
+        //return "tarenzhongxin";
+        JSONArray jsonArray=new JSONArray();
+        JSONObject jsonObject;
+        for (int i=0;i<allPublishedResource.size();i++){
+            jsonObject=new JSONObject();
+            try{
+                jsonObject.put("name",allPublishedResource.get(i).getName());
+                jsonObject.put("rid",allPublishedResource.get(i).getRid());
+                jsonObject.put("time",allPublishedResource.get(i).getTime());
+                jsonObject.put("scoring",allPublishedResource.get(i).getScoring());
                 jsonArray.put(jsonObject);
             }catch (JSONException e){
                 e.printStackTrace();

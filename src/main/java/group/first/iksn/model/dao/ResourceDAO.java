@@ -64,4 +64,6 @@ public interface ResourceDAO {
     String getDownedTime(int rid, int uid);
 
     ArrayList<ResourceComments> getresourceComments(Integer rid);
+    //他人上传的所有资源
+    List<Resource> allPublishedResource(int uid);
 }

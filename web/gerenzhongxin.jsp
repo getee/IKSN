@@ -286,10 +286,7 @@
     <li id="myTabs3" role="presentation"><a id="attention" href="#messages" aria-controls="messages" role="tab" data-toggle="tab">我的关注</a></li>
     <li id="myTabs4" role="presentation"><a id="fans" href="#settings" aria-controls="settings" role="tab" data-toggle="tab">我的粉丝</a></li>
 
-    <li id="myTabs5" role="presentation"><a href="#jubao" aria-controls="jubao" role="tab" data-toggle="tab">举报管理</a></li>
-  </ul>
-
-
+    <li id="myTabs5" role="presentation"><a href="#jubao" aria-controls="jubao" role="tab" data-toggle="tab">举报管理</a></li p
   <!-- Tab panes -->
   <div class="tab-content">
 
@@ -399,9 +396,21 @@
          var a=1;
           $("#collect").click(function () {
               $.getJSON("/blog/myCollectBlog?uid=${sessionScope.loginresult.uid}",function (data) {
+
                   var html="";
                   for(var i=0;i<data.length;i++){
-                      html+='<div class="col-md-12 well"><div class="col-md-8 "><h4>'+data[i].title+'</h4></div><div class="col-md-4"><h4>' + data[i].time + '</h4></div></div>';
+
+                      html+='<div id="blogdiv">';
+                      html+='<div class="col-md-12 well" style="cursor: pointer" >'
+                      html+='<div ><a href="/blog/listBlogByBid/'+data[i].bid+'"><h4 >'+data[i].title+'</h4></a></div>'
+                      html+='<div>';
+                      html+= '<div style="float: left"><a href="/blog/listBlogByBid?'+data[i].bid+' ">查看&nbsp;&nbsp;&nbsp;</a><a style="color: red;cursor: pointer"onclick="delet('+data[i].bid+')">删除</a></div>';
+                      html+='<div style="float: left; margin-left: 500px"><h4>'+data[i].time+'</h4></div>'
+                      html+='</div>';
+                      html+='</div>';
+                      html+='<hr id="bloghr('+data[i].bid+')"/>';
+                      html+='</div>';
+
                   }
                   if (a==1){
                       $("#profile").append(html);a++;
@@ -452,4 +461,21 @@
         });
     })
 </script>
+  <script>
+      function delet(bid) {
+          var ajaxUrl = "/blog/deleteBlog?bid="+bid;
+          //alert(ajaxUrl);
+          $.post(ajaxUrl,function (data) {
+              if(data=="success"){
+                  $("div").remove("#blogdiv"+bid+" div");
+                  $("#bloghr"+bid+"").remove();
+                  alert("删除成功")
+              }
+              else {
+                  alert("删除失败")
+              }
+          })
+      }
+  </script>
+
 </html>

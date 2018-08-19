@@ -22,11 +22,11 @@
 	<script src="/bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
 	<script src="/js/depend.js"></script>
 
-	
+
 <style>
 	#toTop {display: none;text-decoration: none;position: fixed;bottom: 3%;right: 6%;overflow: hidden;width: 40px;height: 40px;border: none;text-indent: 100%; background-image: url(img/goTop.jpg);background-size: 100% 100%;text-align: center;}
 	#contact-us{
-		
+
 	}
 </style>
 <script>
@@ -76,20 +76,25 @@
 			  <div class="col-md-1"></div>
 			  <div id="leftDaohang" class="col-md-10">
 			  	<ul class="nav nav-pills nav-stacked">
-				  <li class="active"><a href="#">推荐</a></li>
-				  <li><a href="">关注</a></li>
-				  <li><a href="#">咨询</a></li>
-				<%--<li><a href="/blog/ajaxPush?classify=1&page=1">人工智能</a></li>--%>
-				  <li><a href="#">云计算</a></li>
-				  <li><a href="#">区块链</a></li>
-				  <li><a href="#">数据库</a></li>
-				  <li><a href="#">程序人生</a></li>
+				  <li class="active"><a href="index.jsp">推荐</a></li>
+				  <li><a href="javascript:xuanze(1)">移动开发</a></li>
+				  <li><a href="javascript:xuanze(2)">开发技术</a></li>
+				  <li><a href="javascript:xuanze(3)">课程资源</a></li>
+					<li><a href="javascript:xuanze(4)">网络技术</a></li>
+				  <li><a href="javascript:xuanze(5)">操作系统</a></li>
+					<li><a href="javascript:xuanze(6)">安全技术</a></li>
+				  <li><a href="javascript:xuanze(7)">数据库</a></li>
+					<li><a href="javascript:xuanze(8)">服务器应用</a></li>
+					<li><a href="javascript:xuanze(9)">存储</a></li>
+					<li><a href="javascript:xuanze(10)">信息化</a></li>
+
 				</ul>
 			  </div>
 			  <div class="col-md-1"></div>
 		  </div>
 		</div>
 	  </div>
+	  <script src="js/shouyejiazai.js"></script>
 <!--	  左边栏结束-->
 	  <div class="col-xs-6 col-md-10">
 <!--	10  -->
@@ -150,28 +155,19 @@
 <!--					轮播结束-->
 <!--					博主发表的文章-->
                     <input type="hidden"  id="nowPage" value="1"/>
+					<div style="width:300px;margin:auto;display: none;color: #ebebeb;" id="jztp">
+						<img src="img/load111.gif" style="width: 50%;height:50%;margin: auto">
+					</div>
+					<div id="all">
 
-                    <div id="allBlogs" >
+						<div id="allBlogs" >
 
+						</div>
+					</div>
 
-                    </div>
-                    <div style="margin: auto;display: none;position: fixed;bottom: 0%;left: 40%" id="loading"><img src="img/loading.gif"
-                       style="width: 40px;height: 40px;"/>正在拼命加载中.........</div>
-
-
-					<%--<div class="span12" style="border-radius: 10px;background-color:#D2D4D5;margin-top: 10px">
-						<h2>
-							<a href="#">标题</a>
-						</h2>
-						<p>
-							本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
-						</p>
-						<h5 style="color:#928F8F;float: right">阅读数：3555</h5>
-						<p>
-							<a class="btn" href="#">查看更多 »</a>
-						</p>
-					</div>--%>
+                    <div style="margin: auto;display: none;position: fixed;bottom: 0%;left: 40%" id="loading"><img src="img/loading.gif" style="width: 40px;height: 40px;"/>正在拼命加载中.........</div>
 				</div>
+
 <!--			  <div class="col-xs-6 col-md-1" style="background-color:#F10609"></div>-->
 			  <div class="col-xs-6 col-md-3">
 <!--			  	登陆开始-->
@@ -448,47 +444,34 @@
 <!--			  	今日推荐开始-->
 				  <div id="jinrituijian" class="span12" style="margin-top: 30px; background-color:#FFFFFF">
 				  	<span>今日推荐</span>
-				  	
-				  	<div class="thumbnail">
-					  <div style="float: left;width: 60px;height: 80px"><img style="width: 60px;height: 80px" src="img/timg.jpg" alt="..." ></div>
-					  <div style="background-color:#C2CBC8">
-					  	<a href="#">
-							<h3>Thumbnail label</h3>
-							<p>...</p>
-						</a>
-					  </div>
-					</div>
-					
-					<div class="thumbnail">
-					  <div style="float: left;width: 60px;height: 80px"><img style="width: 60px;height: 80px" src="img/timg.jpg" alt="..." ></div>
-					  <div style="background-color:#C2CBC8">
-					  	<a href="#">
-							<h3>Thumbnail label</h3>
-							<p>...</p>
-						</a>
-					  </div>
-					</div>
-					<div class="thumbnail">
-					  <div style="float: left;width: 60px;height: 80px"><img style="width: 60px;height: 80px" src="img/timg.jpg" alt="..." ></div>
-					  <div style="background-color:#C2CBC8">
-					  	<a href="#">
-							<h3>Thumbnail label</h3>
-							<p>...</p>
-						</a>
-					  </div>
-					</div>
-					<div class="thumbnail">
-					  <div style="float: left;width: 60px;height: 80px"><img style="width: 60px;height: 80px" src="img/timg.jpg" alt="..." ></div>
-					  <div style="background-color:#C2CBC8">
-					  	<a href="#">
-							<h3>Thumbnail label</h3>
-							<p>...</p>
-						</a>
-					  </div>
-					</div>
+
 				  </div>
 <!--			  推荐结束-->
-		  
+ <%--今日推荐--%>
+				  <a href="/blog/getBlogAndUser?blogid="+bid></a>
+<script>
+    $(document).ready(function () {
+        $(window).off('scroll',qitascroll);
+        $(window).scroll(tsscroll);
+        $.post("/blog/dayBlog",function (data) {
+            var json=eval(data);
+            $.each(json,function (index,item) {
+                var title=json[index].ti.substring(0,12);
+                //alert(title+id);
+                var ts="<div class=\"thumbnail\" style='height:100px;'>\n" +
+                    "\t\t\t\t\t\t\t\t<div style=\"float: left;width: 60px;height: 80px\"><img style=\"width: 60px;height: 80px\" src=\"../img/blogmoren.jpg\"></div>\n" +
+                    "\t\t\t\t\t\t\t\t<div>\n" +
+                    "\t\t\t\t\t\t\t\t<a href=\"/blog/getBlogAndUser?blogid="+json[index].id+"\">\n" +
+                    "\t\t\t\t\t\t\t\t\t\t<h3>"+title+"..."+"</h3>\n" +
+                    "\t\t\t\t\t\t\t\t\t</a>\n" +
+                    "\t\t\t\t\t\t\t\t</div>\n" +
+                    "\t\t\t\t\t\t\t</div>";
+                $("#jinrituijian").append(ts);
+            })
+        }) ;
+
+    });
+</script>
 		  			<!--联系我们-->
 					<div id="contact-us" class="span12" style="margin-top: 30px; background-color:#DDDDDD">
 						<span>联系我们</span>
@@ -546,7 +529,6 @@
     nowPage=1;
     $(document).ready(function(){
         $.get("/blog/ajaxPush?page=1",function(data){
-
             for(var n=0;n<5;n++)
             {
                 var newblog="<div class=\"span12\" style=\"border-radius: 10px;background-color:#FFFFFF;margin-top: 30px\">\n" +
@@ -568,49 +550,48 @@
                 $("#allBlogs").append(newblog);
             }
         });
-        $(window).scroll(function(){
-            var scrollTop = $(this).scrollTop();
-            var scrollHeight = $(document).height();
-            var windowHeight = $(this).height();
-            if(Math.round(scrollTop) + windowHeight >= scrollHeight){
 
-                $("#loading").css("display","block");
-                setTimeout(function(){
-                    //1.当滚动到网页地步当时候应该发起ajax请求下一页当数据
+    });
+    function tsscroll() {
+        var scrollTop = $(this).scrollTop();
+        var scrollHeight = $(document).height();
+        var windowHeight = $(this).height();
+        //alert(Math.round(scrollTop) + windowHeight -scrollHeight)
+        if(Math.round(scrollTop) + windowHeight >= scrollHeight){
 
+            $("#loading").css("display","block");
+            setTimeout(function(){
+                //1.当滚动到网页地步当时候应该发起ajax请求下一页当数据
+                $.get("/blog/ajaxPush?page="+(nowPage+1),function(data){
+                    for(var n=0;n<5;n++)
+                    {
+                        var newblog="<div class=\"span12\" style=\"border-radius: 10px;background-color:#FFFFFF;margin-top: 30px\">\n" +
+                            "\t\t\t\t\t\t\t<h2>\n" +
+                            "\t\t\t\t\t\t\t\t<a href=\"/blog/getBlogAndUser?blogid="+data[n].bid+"\">"+data[n].title+"</a>\n" +
+                            "\t\t\t\t\t\t\t</h2>\n" +
+                            "\t\t\t\t\t\t\t<p>\n" +
+                            "\t\t\t\t\t\t\t\t"+data[n].content+".........\n" +
+                            "\t\t\t\t\t\t\t</p>\n" +
+                            "\t\t\t\t\t\t\t<h5 style=\"color:#928F8F;float: right\">\n" +
+                            "                                类型: "+data[n].classify+" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n" +
+                            "                                时间: "+data[n].time+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n" +
+                            "                                阅读数: "+data[n].points+"</h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n" +
+                            "\t\t\t\t\t\t\t<p>\n" +
+                            "\t\t\t\t\t\t\t\t<a class=\"btn\" href=\"/blog/getBlogAndUser?blogid="+data[n].bid+"\">查看更多 »</a>\n" +
+                            "\t\t\t\t\t\t\t</p>\n" +
+                            "\t\t\t\t\t\t</div>";
+						$("#allBlogs").append(newblog);
+                    }
+                    nowPage+=1;
 
-                    $.get("/blog/ajaxPush?page="+(nowPage+1),function(data){
+                });
+                $("#loading").css("display","none");
+            }, 2000);
 
-                        for(var n=0;n<5;n++)
-                        {
-                            var newblog="<div class=\"span12\" style=\"border-radius: 10px;background-color:#FFFFFF;margin-top: 30px\">\n" +
-                                "\t\t\t\t\t\t\t<h2>\n" +
-                                "\t\t\t\t\t\t\t\t<a href=\"/blog/getBlogAndUser?blogid="+data[n].bid+"\">"+data[n].title+"</a>\n" +
-                                "\t\t\t\t\t\t\t</h2>\n" +
-                                "\t\t\t\t\t\t\t<p>\n" +
-                                "\t\t\t\t\t\t\t\t"+data[n].content+".........\n" +
-                                "\t\t\t\t\t\t\t</p>\n" +
-                                "\t\t\t\t\t\t\t<h5 style=\"color:#928F8F;float: right\">\n" +
-                                "                                类型: "+data[n].classify+" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n" +
-                                "                                时间: "+data[n].time+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n" +
-                                "                                阅读数: "+data[n].points+"</h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n" +
-                                "\t\t\t\t\t\t\t<p>\n" +
-                                "\t\t\t\t\t\t\t\t<a class=\"btn\" href=\"/blog/getBlogAndUser?blogid="+data[n].bid+"\">查看更多 »</a>\n" +
-                                "\t\t\t\t\t\t\t</p>\n" +
-                                "\t\t\t\t\t\t</div>";
-
-                            $("#allBlogs").append(newblog);
-                        }
-                        nowPage+=1;
-                    });
-                    $("#loading").css("display","none");
-                }, 2000);
-
-            }
-        })
-    })
-
+        }
+    }
 </script>
+
 </body>
 </html>
 

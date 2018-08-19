@@ -154,4 +154,7 @@ select * from user where NICKNAME=#{nickname} and  UID in (select ATTENID from a
     <select id="getIsspeakNum" resultType="integer">
         select count(*) from user where ISSPEAK = 1
     </select>
+    <select id="getUserInfo" resultType="User">
+        select * from user where uid=#{uid}
+    </select>
 </mapper>
