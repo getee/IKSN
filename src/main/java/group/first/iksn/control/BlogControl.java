@@ -274,11 +274,11 @@ public String ajaxBlogSearch(HttpServletResponse response, HttpServletRequest re
         List<Blog> simiblogs=blogService.scanSimiBlogService(uid);
         List<Blog> draftblogs=blogService.scanDraftBlogService(uid);
 
+
         model.addAttribute("blogs",blogs);
         model.addAttribute("reportedblogs",reportedblogs);
         model.addAttribute("simiblogs",simiblogs);
         model.addAttribute("draftblogs",draftblogs);
-
         System.out.println(blogs);
              return "writingCenter";
     }

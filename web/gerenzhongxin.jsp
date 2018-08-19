@@ -381,10 +381,10 @@
                   var html="";
                   for(var i=0;i<data.length;i++){
                       html+='<div class="col-md-12 well" style="cursor: pointer" >'
-                      html+='<div ><a href="/blog/listBlogByBid/'+data[i].bid+'"><h3>'+data[i].title+'</h3></a></div>'
+                      html+='<div ><a href="/blog/getBlogAndUser?blogid='+data[i].bid+'"><h3>'+data[i].title+'</h3></a></div>'
                       html+='<div>';
                       html+='<div style="float: left; "><h4>'+data[i].time+'</h4></div>'
-                      html+= '<div style="float: left;margin-left: 500px"><a href="/blog/listBlogByBid/'+data[i].bid+'">查看</a></div>';
+                      html+= '<div style="float: left;margin-left: 500px"><a href="/blog/getBlogAndUser?blogid='+data[i].bid+'">查看</a></div>';
                       html+='</div>';
                       html+='</div>';
 
