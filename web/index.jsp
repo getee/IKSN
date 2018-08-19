@@ -550,11 +550,8 @@
                 $("#allBlogs").append(newblog);
             }
         });
-        // $(window).scroll(function(){
-        //
-        // })
 
-    })
+    });
     function tsscroll() {
         var scrollTop = $(this).scrollTop();
         var scrollHeight = $(document).height();
@@ -566,7 +563,6 @@
             setTimeout(function(){
                 //1.当滚动到网页地步当时候应该发起ajax请求下一页当数据
                 $.get("/blog/ajaxPush?page="+(nowPage+1),function(data){
-						var sss="";
                     for(var n=0;n<5;n++)
                     {
                         var newblog="<div class=\"span12\" style=\"border-radius: 10px;background-color:#FFFFFF;margin-top: 30px\">\n" +
@@ -584,11 +580,10 @@
                             "\t\t\t\t\t\t\t\t<a class=\"btn\" href=\"/blog/getBlogAndUser?blogid="+data[n].bid+"\">查看更多 »</a>\n" +
                             "\t\t\t\t\t\t\t</p>\n" +
                             "\t\t\t\t\t\t</div>";
-
-                       sss=sss+newblog;
+						$("#allBlogs").append(newblog);
                     }
                     nowPage+=1;
-                    $("#allBlogs").append(sss);
+
                 });
                 $("#loading").css("display","none");
             }, 2000);
