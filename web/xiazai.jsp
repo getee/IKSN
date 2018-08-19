@@ -330,65 +330,74 @@
 
                                 </li>
                             </ul>
+
                             <div class="tab-content">
                                 <div class="tab-pane active" id="00">
                                     <p>
                                         <!--资源详情部分-->
                                     <div id="resources">
-                                   <c:forEach items="${resource}" var="r">
-                                    <div style="height:85px; width:90%; margin-left:20px;">
-                                        <div style="height:48px; width:5%; float:left; margin-top:15px ">
-                                            <a href="/resource/loadResource?rid=${r.rid}"> <img src="img/2.svg"></a>
-                                        </div>
-                                        <div style="height:20px; width:66%; float:left; margin-top:15px; margin-left:40px;  font-size:20px ; color:#000000;">
-                                            <a href="/resource/loadResource?rid=${r.rid}"> ${r.name}</a>
-                                        </div>
-                                        <div style="height:30px; width:82%; float:left;margin-top:12px; margin-left:40px;font-size:14px;">
-                                            <div style="width:250px; height:30px;  float:left">
-                                                <span> 上传者: ${r.user.nickname}  </span>&nbsp;&nbsp;&nbsp;&nbsp;
-                                                <span> 上传时间:${r.time}  </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-                                                    <c:choose>
-                                                        <c:when test="${r.classify}=2"> <span> 分类:移动开发 </span></c:when>
-                                                        <c:when test="${r.classify}=3"><span> 分类:开发技术</span></c:when>
-                                                    </c:choose>
-                                                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                <%--<span>&nbsp;&nbsp;&nbsp;&nbsp;大小：<em>308KB</em></span>--%>
-                                            </div>
-                                                <c:forEach items="${r.resourceTags}" var="tag">
-                                                    <div style="height:23px;min-width:60px;float:left;margin-left:30px;border:1px solid;;border-radius:10px; border-color:#F75D47; color:#F75D47;text-align:center;">
-                                                        <a href="#">${tag.rtag}</a>
+                                            <c:forEach items="${resource}" var="r">
+                                                <div style="height:85px; width:90%; margin-left:20px;">
+                                                    <div style="height:48px; width:5%; float:left; margin-top:15px ">
+                                                        <a href="/resource/loadResource?rid=${r.rid}"> <img src="img/2.svg"></a>
                                                     </div>
-                                                </c:forEach>
-                                                <%-- <span> 下载积分:${r.scoring}  </span>--%>
-                                        </div>
-                                    </div>
-                                    </c:forEach>
+                                                    <div style="height:20px; width:66%; float:left; margin-top:15px; margin-left:40px;  font-size:20px ; color:#000000;">
+                                                        <a href="/resource/loadResource?rid=${r.rid}"> ${r.name}</a>
+                                                    </div>
+                                                    <div style="height:30px; width:82%; float:left;margin-top:12px; margin-left:40px;font-size:14px;">
+                                                        <div style="width:250px; height:30px;  float:left">
+                                                            <span> 上传者: ${r.user.nickname}  </span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                            <span> 上传时间:${r.time}  </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                            <span> 分类:${r.classify} </span>
 
-                                    <c:forEach items="${keywordSearch}" var="r">
-                                        <div style="height:85px; width:90%; margin-left:20px;">
-                                            <div style="height:48px; width:5%; float:left; margin-top:15px ">
-                                               <a href="/resource/loadResource?rid=${r.rid}"> <img src="img/2.svg"></a>
-                                            </div>
-                                            <div style="height:20px; width:66%; float:left; margin-top:15px; margin-left:40px;  font-size:20px ; color:#000000;">
-                                                <a href="/resource/loadResource?rid=${r.rid}"> ${r.name}</a>
-                                            </div>
-                                            <div style="height:30px; width:82%; float:left;margin-top:12px; margin-left:40px;font-size:14px;">
-                                                <div style="width:250px; height:30px;  float:left">
-                                                    <span> 上传者: ${r.user.nickname}  </span>&nbsp;&nbsp;&nbsp;&nbsp;
-                                                    <span> 上传时间:${r.time}  </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                    <span> 分类:${r.classify}  </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                        <%--<span>&nbsp;&nbsp;&nbsp;&nbsp;大小：<em>308KB</em></span>--%>
+                                                        </div>
+                                                        <c:forEach items="${r.resourceTags}" var="tag">
+                                                            <div style="height:23px;min-width:60px;float:left;margin-left:30px;border:1px solid;;border-radius:10px; border-color:#F75D47; color:#F75D47;text-align:center;">
+                                                                <a href="#">${tag.rtag}</a>
+                                                            </div>
+                                                        </c:forEach>
+                                                            <%-- <span> 下载积分:${r.scoring}  </span>--%>
+                                                    </div>
                                                 </div>
-                                                <c:forEach items="${r.resourceTags}" var="tag">
-                                                    <div style="height:23px;min-width:60px;float:left;margin-left:30px;border:1px solid;;border-radius:10px; border-color:#F75D47; color:#F75D47;text-align:center;">
-                                                        <a href="#">${tag.rtag}</a>
+                                            </c:forEach>
+
+
+
+                                    <%--另一个--%>
+
+
+
+                                            <c:forEach items="${keywordSearch}" var="r">
+                                                <div style="height:85px; width:90%; margin-left:20px;">
+                                                    <div style="height:48px; width:5%; float:left; margin-top:15px ">
+                                                        <a href="/resource/loadResource?rid=${r.rid}"> <img src="img/2.svg"></a>
                                                     </div>
-                                                </c:forEach>
-                                                    <%-- <span> 下载积分:${r.scoring}  </span>--%>
-                                            </div>
-                                        </div>
-                                    </c:forEach>
+                                                    <div style="height:20px; width:66%; float:left; margin-top:15px; margin-left:40px;  font-size:20px ; color:#000000;">
+                                                        <a href="/resource/loadResource?rid=${r.rid}"> ${r.name}</a>
+                                                    </div>
+                                                    <div style="height:30px; width:82%; float:left;margin-top:12px; margin-left:40px;font-size:14px;">
+                                                        <div style="width:250px; height:30px;  float:left">
+                                                            <span> 上传者: ${r.user.nickname}  </span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                            <span> 上传时间:${r.time}  </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                            <c:choose>
+                                                                <c:when test="${r.classify}==2"> <span> 分类:移动开发 </span></c:when>
+                                                                <c:when test="${r.classify}==3"><span> 分类:开发技术</span></c:when>
+                                                            </c:choose>
+
+                                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                                                        </div>
+                                                        <c:forEach items="${r.resourceTags}" var="tag">
+                                                            <div style="height:23px;min-width:60px;float:left;margin-left:30px;border:1px solid;;border-radius:10px; border-color:#F75D47; color:#F75D47;text-align:center;">
+                                                                <a href="#">${tag.rtag}</a>
+                                                            </div>
+                                                        </c:forEach>
+                                                            <%-- <span> 下载积分:${r.scoring}  </span>--%>
+                                                    </div>
+                                                </div>
+                                            </c:forEach>
+
                                       </div>
                                     <!--资源详情部分-->
 

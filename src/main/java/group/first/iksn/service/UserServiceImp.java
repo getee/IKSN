@@ -268,6 +268,8 @@ public class UserServiceImp implements UserService {
         return userDAO.getUserInfo(uid);
     }
 
+
+
     //修改用户资料
     @Override
     public User updateUser(User user) {
@@ -312,7 +314,6 @@ public class UserServiceImp implements UserService {
         int grade=score/100;
         return grade;
     }
-
 
 
 }

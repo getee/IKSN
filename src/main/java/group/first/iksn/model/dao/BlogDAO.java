@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public interface BlogDAO {
     //搜索博客
     public List<Blog> detailedBlogSearchResultMap(String s);
-    List<Blog> blogClassify(String s);
+    List<Blog> blogClassify(int s);
     List<Blog> blogTitle(String s);
     List<String> ajaxBlogMohuSearch();
 

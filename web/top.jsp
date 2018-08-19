@@ -731,7 +731,7 @@
 <script>
 
 
-    var keywordArray = new Array("","","")
+    var keywordArray = new Array("index","name","pinyin")
     keywordArray[0] = new Array("0", "移动开发", "YIDONGKAIFA");
     keywordArray[1] = new Array("1", "开发技术", "KAIFAJISHU");
     keywordArray[2] = new Array("2", "课程资源", "KECHENGZIYUAN");
@@ -746,13 +746,11 @@
     window.onload = function(){
         $.get("/blog/ajaxBlogSearch",function (data) {
             var json=eval(data);
-
             $.each(json,function (index) {
                 var ttt=json[index].word
-                var str=ttt.replace(/[0-9]/g, '');
+                var str=ttt.replace(/[0-9]/g, '');  //去掉数字
                 var l1=str.replace(/[a-zA-Z]/g,'');
-
-                keywordArray[10+index*1]= new Array("10"+index, json[index].word,chineseToPinYin(json[index].word) );
+                keywordArray[10+index*1]= new Array("10"+index, json[index].word,chineseToPinYin(l1) );
 
             });
 

@@ -228,7 +228,6 @@
             <result property="bid" column="bid"></result>
             <result property="btag" column="btag"></result>
         </collection>
-
     </resultMap>
     <select id="detailedBlogSearchResultMap" resultMap="searchResultMap" >
        select b.* ,ub.*,t.* from blog as b
@@ -237,26 +236,31 @@
        where  ub.ispublic=0
        and t.BTAG like '%'#{s}'%'
     </select>
-   <!--博客按分类classify搜索-->
-    <select id="blogClassify" resultType="Blog">
-        select * from blog as b where b.CLASSIFY like '%' #{s} '%'
-    </select>
 
     <select id="reportBlogNum" resultType="Integer">
         select count(*) from reportblog
     </select>
 
-   <!-- <select id="sUser" resultMap="sUser">
-        select u.*,ub.* from usertoblog as ub
-        inner join user as u on u.uid=ub.uid
-    </select>-->
+    <!--博客按分类classify搜索-->
+    <select id="blogClassify" resultMap="qqqqq">
+      select b.*,ub.* from blog as b
+        inner join usertoblog as ub on ub.BID = b.BID
+        where ub.ISPUBLIC=0
+        and b.CLASSIFY =#{s}
+    </select>
+
     <!--博客按title搜索-->
-    <select id="blogTitle" resultType="Blog">
-        select * from blog as b where b.TITLE like '%'#{s}'%'
+    <select id="blogTitle" resultMap="qqqqq">
+     select b.*,ub.* from blog as b
+        inner join usertoblog as ub on ub.BID = b.BID
+        where ub.ISPUBLIC=0
+        and b.TITLE like '%' #{0} '%'
     </select>
     <!--博客搜索框关键字匹配-->
-    <select id="ajaxBlogMohuSearch" resultType="java.lang.String">
-      select title from blog
+    <select id="ajaxBlogMohuSearch" resultType="java.lang.String" >
+      select title from blog as b
+        inner join usertoblog as ub on ub.BID = b.BID
+        where ub.ISPUBLIC=0
     </select>
 <!--推送最新的5个博客在首页-->
     <select id="newBlogPush" resultType="Blog">
@@ -327,6 +331,8 @@
         select * from blog as b where b.CLASSIFY=#{classify}
     </select>
 -->
+
+    <!--blog关联usertoblog对象的有关blog查询-->
     <resultMap id="qqqqq" type="Blog">
         <id property="bid" column="bid"></id>
         <result property="title" column="title"></result>
@@ -356,7 +362,7 @@
 
     <!--首页分类推送-->
     <select id="classifyPush" resultType="Blog" parameterType="java.lang.Integer">
-        select * from blog where CLASSIFY=#{0} limit #{1},5
+        select * from blog where CLASSIFY=#{0} GROUP BY BID DESC limit #{1},5
     </select>
 
      <!--点赞-->
@@ -389,7 +395,6 @@
             <result property="bid" column="bid"></result>
             <result property="uid" column="uid"></result>
         </association>
-
     </resultMap>
     <select id="selectTwoBlogByUser" resultMap="getTwoBlogBYUid">
        SELECT * from blog INNER JOIN usertoblog u ON blog.BID = u.BID WHERE u.uid=#{uid} ORDER BY blog.BID DESC LIMIT 0,2
