@@ -82,8 +82,8 @@ public class BlogControl {
             else if(bl.getClassify()==4){  jo.put("classify","网络技术");}
             else if(bl.getClassify()==5){  jo.put("classify","操作系统");}
             else if(bl.getClassify()==6){  jo.put("classify","安全技术");}
-            else  if(bl.getClassify()==7){  jo.put("classify","数据库");}
-            else  if(bl.getClassify()==8){  jo.put("classify","服务器应用");}
+            else  if(bl.getClassify()==7){ jo.put("classify","数据库");}
+            else  if(bl.getClassify()==8){ jo.put("classify","服务器应用");}
             else if(bl.getClassify()==9){  jo.put("classify","存储");}
             else if(bl.getClassify()==10){  jo.put("classify","信息化");}
             ja.put(jo) ;
@@ -170,25 +170,20 @@ public class BlogControl {
      * @return
      */
     @RequestMapping(value = "/blogSearch")
-    public ModelAndView blogSearch(@RequestParam("content") String textcontent ){
+    public ModelAndView blogSearch(@RequestParam("content") String textcontent){
        // textcontent=EncodingTool.encodeStr(textcontent);//先将中文码ISO-8859-1转成UTF-8
-        System.out.println("搜索的关键字:"+textcontent);
         ModelAndView mv=new ModelAndView();
-
-       List<Blog> b= blogService.detailedBlogSearchResultMap(textcontent);
-        System.out.println("标签:"+b);
-        //添加blog分List<Blog>类和标题搜索
-         b=blogService.blogTitle(textcontent);
-       // b.addAll(blogService.blogClassify(textcontent));
-        System.out.println("类型:"+b);
-
-        b=blogService.blogClassify(textcontent);
-
+        System.out.println("搜索的关键字:"+textcontent);
+        List<Blog> b=blogService.blogTitle(textcontent);
         System.out.println("标题:"+b);
+     /*   b= blogService.detailedBlogSearchResultMap(textcontent);*/
+        //添加blog分List<Blog>类和标题搜索
+       /*  b=blogService.blogClassify(textcontent);*/
+      /*  System.out.println("类型:"+b);*/
         mv.addObject("blogSearch",b);
         mv.addObject("keyWord",textcontent);
         mv.setViewName("sousuo");
-        return  mv;
+        return mv;
     }
 
 
@@ -208,7 +203,7 @@ public String ajaxBlogSearch(HttpServletResponse response, HttpServletRequest re
           else{jo.put("word",st);}
         ja.put(jo);
     }
-    System.out.println(ja.toString());
+   // System.out.println(ja.toString());
     try {
         Responser.responseToJson( response,request,ja.toString());
     }catch (Exception e){

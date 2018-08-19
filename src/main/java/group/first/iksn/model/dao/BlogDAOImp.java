@@ -17,18 +17,20 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
      * @return
      */
     public List<Blog> detailedBlogSearchResultMap(String s) {
+
         List<Blog> b=getSqlSession().getMapper(BlogDAO.class).detailedBlogSearchResultMap(s);
         return b;
     }
 
     @Override
-    public List<Blog> blogClassify(String s) {
+    public List<Blog> blogClassify(int s) {
         List<Blog> b=getSqlSession().getMapper(BlogDAO.class).blogClassify(s);
         return b;
     }
 
     @Override
     public List<Blog> blogTitle(String s) {
+        System.out.println("blogdaoimp:"+s);
         List<Blog> b=getSqlSession().getMapper(BlogDAO.class).blogTitle(s);
         return b;
     }
@@ -271,10 +273,10 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
     }
 
     @Override
-    public boolean updateLink(@Param("link") String link,@Param("bid") int bid) {
+    public boolean updateLink(@Param("reportnum") int reportnum,@Param("bid") int bid) {
         boolean isOk=false;
         try {
-            isOk=getSqlSession().getMapper(BlogDAO.class).updateLink(link,bid);
+            isOk=getSqlSession().getMapper(BlogDAO.class).updateLink(reportnum,bid);
         }catch (Exception e){e.printStackTrace();}
         return isOk;
     }

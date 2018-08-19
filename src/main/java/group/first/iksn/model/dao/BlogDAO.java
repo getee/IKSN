@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public interface BlogDAO {
     //搜索博客
     public List<Blog> detailedBlogSearchResultMap(String s);
-    List<Blog> blogClassify(String s);
+    List<Blog> blogClassify(int s);
     List<Blog> blogTitle(String s);
     List<String> ajaxBlogMohuSearch();
 
@@ -115,7 +115,7 @@ public interface BlogDAO {
     //根据bid查询link
     Blog selectLinkByBid(int bid);
     //对blog.link加一
-    boolean updateLink(String numLink,int bid);
+    boolean updateLink(int reportnum,int bid);
     //查询他人发布的所有博客
     List<Blog> allPublishedBlog(int uid);
 }
