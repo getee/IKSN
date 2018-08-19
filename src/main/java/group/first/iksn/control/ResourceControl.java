@@ -308,7 +308,7 @@ public class ResourceControl {
 
 
     /**
-     * 搜索资源
+     * 搜索框资源搜索
      * @param content
      * @return
      */

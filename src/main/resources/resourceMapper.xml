@@ -79,10 +79,8 @@
                 and r.CLASSIFY= #{key}
             </if>
         </where>
-
-
-
     </select>
+
 
     <insert id="addResourceTag">
         <foreach collection="rtag" item="val" >
