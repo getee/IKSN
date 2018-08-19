@@ -49,8 +49,8 @@
      			<div class="row well" style="background-color:#FFF;margin-left: 10%;margin-right: 10%;margin-top: 2%;min-width: 1024px; ">
                       <div>	
                       	   	
-                            <img style="width:100px;height:100px;margin-top:3%;margin-left:3%;" alt="140x140" src="img/log.jpg" class="img-circle" />
-                      		<div style="margin-left:14.7%; margin-top:-9%;">qq_41581629</div>
+                            <img style="width:100px;height:100px;margin-top:3%;margin-left:3%;" alt="140x140" src="${sessionScope.loginresult.picturepath}" class="img-circle" />
+                      		<div style="margin-left:14.7%; margin-top:-9%;">${sessionScope.loginresult.nickname}</div>
                             <div style="margin-left:14.7%; padding-top:1%;">
                             	<span class="label" contenteditable="true" style="background-color:#9DC75F;">下载
                                 <span id="tag" class="badge" contenteditable="true" style="background-color:#2D5315;"></span></span> 上传权限：<span>220MB</span>
