@@ -66,7 +66,13 @@
           inner join  user as u on r.uid=u.uid
           inner join  resourcetag as t on t.rid=r.rid
           where r.name like '%' #{s} '%'
+    </select>
 
+    <select id="searchTag" resultMap="ResourceS">
+            select r.*,u.*,t.* from resource as r
+          inner join  user as u on r.uid=u.uid
+          inner join  resourcetag as t on t.rid=r.rid
+          where t.RTAG like '%' #{s} '%'
     </select>
 
     <!--资源分类搜索-->
@@ -79,6 +85,11 @@
                 and r.CLASSIFY= #{key}
             </if>
         </where>
+    </select>
+
+    <!--ajax资源name搜索-->
+    <select id="ajaxResourceName" resultType="java.lang.String">
+        select name from resource
     </select>
 
 
@@ -166,11 +177,11 @@
     </select>
     <!--下载资源-->
     <select id="downloadResource" resultType="Resource">
-        SELECT name,scoring,time FROM  resource WHERE  rid IN (SELECT  rid FROM  downresources WHERE uid=#{uid})
+        SELECT * FROM  resource WHERE  rid IN (SELECT  rid FROM  downresources WHERE uid=#{uid})
     </select>
     <!--我收藏的资源-->
     <select id="myCollectResource" resultType="Resource">
-        SELECT name,scoring,time FROM  resource WHERE  rid IN (SELECT  rid FROM  collectresource WHERE uid=#{uid})
+        SELECT * FROM  resource WHERE  rid IN (SELECT  rid FROM  collectresource WHERE uid=#{uid})
     </select>
     <insert id="addDownResource" >
         INSERT INTO downresources(UID,RID,TIME) VALUES(#{0},#{1},#{2})

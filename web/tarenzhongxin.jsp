@@ -39,6 +39,7 @@
 
             }
         });*/
+
     $(document).ready(function(){
         //标签页选项卡
         $('#myTabs1 a').click(function (e) {
@@ -212,7 +213,7 @@
                 var html=""
                 for(var i=0;i< data.length;i++ ){
                     html+='<div class="col-md-12" >';
-                    html+='<div style=" font-size:20px ; color:#000000;height: 40px;"><a href="#">'+data[i].name+'</a></div>';
+                    html+='<div style=" font-size:20px ; color:#000000;height: 40px;"><a href="/resource/loadResource/'+data[i].rid+'">'+data[i].name+'</a></div>';
                     html+='<span>发布时间：'+data[i].time+'</span><span style="margin-left: 20px;">获得积分：'+data[i].scoring+'</span>';
                     html+='</div>';
                 }

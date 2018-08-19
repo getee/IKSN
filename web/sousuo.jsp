@@ -89,7 +89,39 @@
                                 </p>
 
                                 <h5 style="color:#928F8F;float: right">
-                                    类型:${t.classify} &nbsp&nbsp&nbsp&nbsp
+                                    <c:choose>
+                                        <c:when test="${t.classify==1}">
+                                            类型:移动开发 &nbsp&nbsp&nbsp&nbsp
+                                        </c:when>
+                                        <c:when test="${t.classify==2}">
+                                            类型:开发技术 &nbsp&nbsp&nbsp&nbsp
+                                        </c:when>
+                                        <c:when test="${t.classify==3}">
+                                            类型:课程资源 &nbsp&nbsp&nbsp&nbsp
+                                        </c:when>
+                                        <c:when test="${t.classify==4}">
+                                            类型:网络技术 &nbsp&nbsp&nbsp&nbsp
+                                        </c:when>
+                                        <c:when test="${t.classify==5}">
+                                            类型:操作系统 &nbsp&nbsp&nbsp&nbsp
+                                        </c:when>
+                                        <c:when test="${t.classify==6}">
+                                            类型:安全技术 &nbsp&nbsp&nbsp&nbsp
+                                        </c:when>
+                                        <c:when test="${t.classify==7}">
+                                            类型:数据库 &nbsp&nbsp&nbsp&nbsp
+                                        </c:when>
+                                        <c:when test="${t.classify==8}">
+                                            类型:服务器应用 &nbsp&nbsp&nbsp&nbsp
+                                        </c:when>
+                                        <c:when test="${t.classify==9}">
+                                            类型:存储 &nbsp&nbsp&nbsp&nbsp
+                                        </c:when>
+                                        <c:otherwise>
+                                            类型:信息化 &nbsp&nbsp&nbsp&nbsp
+                                        </c:otherwise>
+                                    </c:choose>
+
                                     时间:${t.time}&nbsp&nbsp&nbsp&nbsp
                                     阅读数：${t.points}
                                 </h5>
