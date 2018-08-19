@@ -166,6 +166,8 @@
 					</div>
 
                     <div style="margin: auto;display: none;position: fixed;bottom: 0%;left: 40%" id="loading"><img src="img/loading.gif" style="width: 40px;height: 40px;"/>正在拼命加载中.........</div>
+					<div style="margin: auto;display: none;position: fixed;bottom: 0%;left: 40%" id="tishi">已经到底了</div>
+
 				</div>
 
 <!--			  <div class="col-xs-6 col-md-1" style="background-color:#F10609"></div>-->
@@ -209,7 +211,7 @@
 					<c:when test="${logmes==true}">
 							<script>
 								$("#dl").attr("disabled",true);
-								$("#dlks").html("<img src='img/gg.jpg' width='280px' height='202px'/>")
+								$("#dlks").html("<img src='img/gg.jpg' width='100%' height='100%'/>")
                             </script>
 					</c:when>
 					<c:otherwise>
@@ -553,6 +555,7 @@
 
     });
     function tsscroll() {
+        $("#tishi").css("display","none");
         var scrollTop = $(this).scrollTop();
         var scrollHeight = $(document).height();
         var windowHeight = $(this).height();
@@ -563,6 +566,10 @@
             setTimeout(function(){
                 //1.当滚动到网页地步当时候应该发起ajax请求下一页当数据
                 $.get("/blog/ajaxPush?page="+(nowPage+1),function(data){
+                   // alert(nowPage)
+                    if(data.length==0){
+                        $("#tishi").css("display","block");
+                    }
                     for(var n=0;n<5;n++)
                     {
                         var newblog="<div class=\"span12\" style=\"border-radius: 10px;background-color:#FFFFFF;margin-top: 30px\">\n" +
@@ -582,12 +589,10 @@
                             "\t\t\t\t\t\t</div>";
 						$("#allBlogs").append(newblog);
                     }
-                    nowPage+=1;
-
                 });
                 $("#loading").css("display","none");
+                nowPage=nowPage+1;
             }, 2000);
-
         }
     }
 </script>

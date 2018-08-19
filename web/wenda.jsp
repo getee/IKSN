@@ -12,7 +12,12 @@
     <link rel="stylesheet" href="css/wenda.css">
     <script src="js/jquery-3.3.1.js"></script>
     <script src="js/wenda.js"></script>
-
+<script>
+    $(document).ready(function () {
+        $(".active").removeClass("active");
+        $("#li-4").addClass("active");
+    });
+</script>
 </head>
 <body style="overflow: hidden" onkeydown="onKeyDown(document.getElementById('search').value)"  >
     <div id="container">

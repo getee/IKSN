@@ -307,6 +307,7 @@ public String ajaxBlogSearch(HttpServletResponse response, HttpServletRequest re
     public String deleteBlog(@Param("bid") int bid) {
         System.out.println("222222");
        boolean result1=blogService.deleteBlogOther(bid);
+        System.out.println(bid);
         System.out.println(result1);
         if(result1){
             return "success";
@@ -642,8 +643,9 @@ public String ajaxBlogSearch(HttpServletResponse response, HttpServletRequest re
                 jsonObject.put("title",collectblog.get(i).getTitle());
                 jsonObject.put("time",collectblog.get(i).getTime());
                 jsonObject.put("bid",collectblog.get(i).getBid());
-                System.out.println(collectblog.get(i).getBid());
                 jsonArray.put(jsonObject);
+                System.out.println(jsonObject);
+
             }catch (JSONException e){
                 e.printStackTrace();
             }
@@ -817,6 +819,7 @@ public String ajaxBlogSearch(HttpServletResponse response, HttpServletRequest re
             try{
                 jsonObject.put("title",blog.get(i).getTitle());
                 jsonObject.put("time",blog.get(i).getTime());
+                jsonObject.put("bid",blog.get(i).getBid());
                 jsonArray.put(jsonObject);
             }catch (JSONException e){
                 e.printStackTrace();
