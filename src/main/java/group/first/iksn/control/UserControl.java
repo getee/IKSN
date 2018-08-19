@@ -628,7 +628,7 @@ public class UserControl {
         response.getWriter().write(""+result);
     }
 
-    //查询用户密码
+    //查询用户邮箱
     @RequestMapping(value="/checkEmail", method = RequestMethod.POST)
     public void checkEmail(
             HttpServletRequest request, HttpServletResponse response) throws IOException {

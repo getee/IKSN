@@ -108,27 +108,27 @@
 
 									<ul>
 										<script>
-                                            function delet(bid) {
-                                                var ajaxUrl = "/blog/deleteBlog?bid="+bid;
-                                                //alert(ajaxUrl);
-                                                $.post(ajaxUrl,function (data) {
-                                                    if(data=="success"){
-                                                        $("div").remove("#blogdiv"+bid+" div");
-                                                        $("#bloghr"+bid+"").remove();
-                                                        alert("删除成功")
-                                                    }
-                                                    else {
-                                                        alert("删除失败")
-                                                    }
-                                                })
-                                            }
-                                            function setHot(t){
-                                                var bar = 'showAndHide_box';
-                                                var obj = $(t).parents('.'+bar).clone(true);
-                                                $(t).parents('.'+bar).remove();
-                                                $(".span12 ").prepend(obj);
-                                            }
-										</script>
+                                        function delet(bid) {
+                                            var ajaxUrl = "/blog/deleteBlog?bid="+bid;
+                                            //alert(ajaxUrl);
+                                            $.post(ajaxUrl,function (data) {
+                                                if(data=="success"){
+                                                    $("div").remove("#blogdiv"+bid+" div");
+                                                    $("#bloghr"+bid+"").remove();
+                                                    alert("删除成功")
+                                                }
+                                                else {
+                                                    alert("删除失败")
+                                                }
+                                            })
+                                        }
+                                        function setHot(t){
+                                            var bar = 'showAndHide_box';
+                                            var obj = $(t).parents('.'+bar).clone(true);
+                                            $(t).parents('.'+bar).remove();
+                                            $(".span12 ").prepend(obj);
+                                        }
+									</script>
 										<c:forEach var="b" items="${requestScope.blogs}">
 											<c:if test="${b.userToBlog.ispublic ==1  } ">
 												<script>
