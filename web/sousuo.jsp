@@ -29,11 +29,12 @@
     <div class="row"  style="margin-top: -1.2%; font-size:16px;background-color:#EAEBEC; min-width:1024px;" >
 
         <ul class="nav nav-tabs"  style="margin-left:15%;" >
-            <li ><a href="#">全部</a></li>
-            <li ><a href="#">博客</a></li>
+            <li ><a href="#"></a></li>
+            <%--<li ><a href="#">博客</a></li>
             <li ><a href="#">标签</a></li>
-            <li ><a href="#">博主</a></li>
+            <li ><a href="#">博主</a></li>--%>
         </ul>
+
 
     </div>
     <!--二级导航结束-->
@@ -55,7 +56,8 @@
                                 <span>关键词:</span>
                             </div>
                             <form class="form-search" action="/blog/blogSearch" method="post">
-                                <input name="content" style="height:30px; width:400px; margin-top:15px; float:left" class="input-medium search-query" type="text"/>
+                                <input name="content" style="height:30px; width:400px; margin-top:15px; float:left" class="quickQuery$focus" type="text" name="content"/>
+                                <div class="quickQuery$focus"></div>
                                 <button style="height:30px; margin-top:15px; margin-left:10px" class="btn" contenteditable="true" type="submit">查找</button>
                             </form>
                         </div>
@@ -71,26 +73,35 @@
 
             <!--左边第二大块div开始-->
             <div  style="background-color:#FFFFFF; margin-top:30px; width:940px" >
-                <c:forEach var="t" items="${blogSearch}">
-                   <div class="span12" style="border-radius: 10px; background-color:#f8f1ff">
-                       <h2>
-                           <a href="userArticle.jsp?searchB=${t.bid}"> ${t.title}</a>
-                       </h2>
-                       <p>
-                               ${fn:substring(t.content, 0, 100)}.........
-                       </p>
 
-                        <h5 style="color:#928F8F;float: right">
-                            类型:${t.classify} &nbsp&nbsp&nbsp&nbsp
-                            时间:${t.time}&nbsp&nbsp&nbsp&nbsp
-                            阅读数：${t.points}
-                            </h5>
+                <c:choose><%--先判断搜索到结果的是否为空--%>
+                    <c:when test="${empty blogSearch}" >
+                        <img style="width: 500px;height: 500px" src="img/notFound.jpg">
+                    </c:when>
+                    <c:otherwise>
+                        <c:forEach var="t" items="${blogSearch}">
+                            <div class="span12" style="border-radius: 10px; background-color:#f8f1ff">
+                                <h2>
+                                    <a href="userArticle.jsp?searchB=${t.bid}"> ${t.title}</a>
+                                </h2>
+                                <p>
+                                        ${fn:substring(t.content, 0, 100)}.........
+                                </p>
 
-                       <p>
-                           <a class="btn" href="userArticle.jsp?searchB=${t.bid}">查看更多 »</a>
-                       </p>
-                   </div>
-              </c:forEach>
+                                <h5 style="color:#928F8F;float: right">
+                                    类型:${t.classify} &nbsp&nbsp&nbsp&nbsp
+                                    时间:${t.time}&nbsp&nbsp&nbsp&nbsp
+                                    阅读数：${t.points}
+                                </h5>
+
+                                <p>
+                                    <a class="btn" href="userArticle.jsp?searchB=${t.bid}">查看更多 »</a>
+                                </p>
+                            </div>
+                        </c:forEach>
+                    </c:otherwise>
+                </c:choose>
+
 
             </div>
         </div>

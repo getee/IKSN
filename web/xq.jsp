@@ -98,6 +98,34 @@
                 }
             })
         };
+        function toassess() {
+            var urll='/resource/assess';
+            var daa=$("#assessForm").serialize();
+            $.ajax({
+                async: false,
+                type: "POST",
+                url:urll,
+                data:daa,
+                dataType: "text",
+                success: function (data) {
+                    alert(data);
+                    var blogComments="";
+                    blogComments+='<ul><hr><li id="getpl"><br>' +
+                        '<div style=""><br>' +
+                        '                            <div style="float: left"><a class="icon-observer" href="#" style="background-image: url(\'img/3_qq.jpg\')"></a></div><br>' +
+                        '                            <div style="margin-top: 5px"><br>' +
+                        '                                <a href="#">'+data.slice(3)+'</a><br>' +
+                        '                            </div><br>' +
+                        '</div><br>' +
+                        '<h5 style="margin: 25px 10px 10px 50px">'+data.substring(1,5)+'</h5><br>' +
+                        '</li></hr></ul>'
+                    $('#addAssess').append(blogComments);
+                },
+                error: function (data) {
+                    alert("没有评论权限");
+                }
+            })
+        };
     </script>
 </head>
 <body  style="background-color:#F7F8F9">
@@ -342,23 +370,18 @@
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                     <h4 class="modal-title" id="myModalLabe">我的评论</h4>
                                 </div>
-                                <form action="/resource/assess" method="post">
+                                <form id="assessForm" action="/resource/assess" method="post">
                                         <input type="hidden" name="uid" value="${sessionScope.loginresult.uid}"><br>
                                         <input type="hidden" name="rid" value="${requestScope.resouce.rid}"><br>
-                                    <div class="form-group">
-                                        <label for="name">评价</label>
-                                        <input type="text" class="form-control" id="name" name="comment">
-                                    </div>
-                                    <div class="form-group">
+                                        <textarea id="name" name="comment" class="form-control" rows="3"></textarea>
                                         评分:<select name="star">
                                         <c:forEach var="a" begin="1" end="10">
                                             <option value="${a}">${a}分</option>
                                         </c:forEach>
                                     </select><br/>
-                                    </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                                        <button type="submit" class="btn btn-primary"value="discuss">评论</button>
+                                        <button type="button" class="btn btn-primary" onclick="toassess()" value="discuss">评论</button>
                                     </div>
                                 </form>
                             </div>
@@ -370,9 +393,9 @@
             <!--资源评论输出div-->
             <c:if test="${requestScope.rcomments !=null}">
 
-            <div  style="height:400px; margin-top:10px; background-color:#FFFFFF">
+            <div id="addAssess" style="height:400px; margin-top:10px; background-color:#FFFFFF">
                 <ul>
-                    <hr>
+                    <hr >
 
                     <c:forEach items="${requestScope.rcomments}" var="rc">
                     <li id="getpl">
@@ -398,7 +421,7 @@
             <div style="height:50px; width:300px; background-color:#E33F3F">
                 <div class="row-fluid">
                     <div class="span12"  style=" height:30px;; font-size:18px;text-align:center;padding:11px;">
-                        <a href="#" ><img src="img/shangc.jpg">&nbsp;<font color="#FFFFFF">上传资源</font></a>
+                        <a href="/upload.jsp" ><img src="img/shangc.jpg">&nbsp;<font color="#FFFFFF">上传资源</font></a>
                     </div>
                 </div>
             </div>
@@ -485,7 +508,7 @@
 
     $(document).ready(function () {
         $("#reportResource").click(function () {
-            $.get("/resource/reportResource?rid=${requestScope.resouce.rid}&amp;uid=${sessionScope.loginresult.uid}&amp;reason="+$('#reason').val(),function (data,status) {
+            $.get("/resource/reportResource?rid=${requestScope.resouce.rid}&uid=${sessionScope.loginresult.uid}&reason="+$('#reason').val(),function (data,status) {
                 $("#modal-container-830220").modal('hide');
                 alert("举报成功");
             })

@@ -139,13 +139,23 @@ public class BlogServiceImp implements BlogService {
 
     @Override
     public List<Blog> blogClassify(String s) {
-        return  blogDAO.blogClassify(s);
+        if(s.equals("移动开发")){s="1";}
+        else if(s.equals("开发技术")){s="2";}
+        else if(s.equals("课程资源")){s="3";}
+        else if(s.equals("网络技术")){s="4";}
+        else if(s.equals("操作系统")){s="5";}
+        else if(s.equals("安全技术")){s="6";}
+        else if(s.equals("数据库")){s="7";}
+        else if(s.equals("服务器应用")){s="8";}
+        else if(s.equals("存储")){s="9";}
+        else if(s.equals("信息化")){s="10";}
+        int str=Integer.parseInt(s);
+        return  blogDAO.blogClassify(str);
     }
 
     @Override
     public List<Blog> blogTitle(String s) {
-        /*String[] keyword=s.split("\\s+");*/
-
+        System.out.println("blogServiceImp层："+s);
         return  blogDAO.blogTitle(s);
     }
 
@@ -311,21 +321,24 @@ public class BlogServiceImp implements BlogService {
             IllegalBlog iblog=new IllegalBlog();
             iblog.setBid(bid);
             iblog.setIllegalcause("多次被举报");
-
+            //获取被举报数
             Blog blog=blogDAO.selectLinkByBid(bid);
-            int numLink=Integer.parseInt(blog.getLink());
-            numLink++;
-            if(numLink>=5){
+            //int numLink=Integer.parseInt(blog.getLink());
+            int reportnum=blog.getReportnum();
+            reportnum++;
+            if(reportnum>=5){
                 boolean sendBack=blogDAO.addIllegalblog(iblog);
                 if (sendBack){
                     //插入illegalblog成功，将reportblog表对应数据删除
                     blogDAO.deleteBlogFromReport(blog.getBid());
                     //设置博客为不可见
                     boolean b=blogDAO.blogIsPublic(blog.getBid());
+                    //获取博客的uid
+                    UserToBlog buid=blogDAO.selectUidByBid(bid);
                     //添加通知
                     Notice notice=new Notice();
                     String time=LocalTime.getNowTime();
-                    notice.setUid(uid);
+                    notice.setUid(buid.getUid());
                     notice.setContent("您有一个违规博客，已被下架");
                     notice.setTime(time);
                     userDAO.addNotice(notice);
@@ -334,8 +347,8 @@ public class BlogServiceImp implements BlogService {
                     System.out.println("reportBlog线程"+sendBack);
                 }
             }else {
-                    String link=""+numLink;
-                    blogDAO.updateLink(link,bid);
+                    //String link=""+numLink;
+                    blogDAO.updateLink(reportnum,bid);
                 System.out.println("reportBlog线程更新link成功了");
             }
         }
