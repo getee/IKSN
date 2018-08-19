@@ -209,16 +209,21 @@
                 <!--    	修改手机号-->
                 <div role="tabpanel" class="tab-pane" id="profile">
                <form >
-                    <div>
-                        <input type="text" class="form-control" placeholder="请输入旧手机号" style="width:30%;margin:2% 15%; float:left">
-                        <input type="button" class="form-control" value="获取验证码" style="width:12%;margin:2% -13%; float:left; background-color:#F4132F; color:#FFFFFF">
+                   <div id="old">
+                    <div >
+                        <input id="oldphone" type="text" class="form-control" placeholder="请输入旧手机号" style="width:30%;margin:2% 15%; float:left">
+                        <input id="getphone" type="button" class="form-control" value="获取验证码" style="width:12%;margin:2% -13%; float:left; background-color:#F4132F; color:#FFFFFF">
                     </div>
                     <div  style=" width:30%; margin:2% 15%">
-                        <input type="text" class="form-control" placeholder="短信验证码" >
+                        <input id="phoneca" type="text" class="form-control" placeholder="短信验证码" >
                     </div>
-                    <input type="submit" class="form-control"  value="下一步" style="width:10%; margin:2% 22%; background-color:#F4132F; color:#FFFFFF">
-
+                    <input id="next" type="button" class="form-control"  value="下一步" style="width:10%; margin:2% 22%; background-color:#F4132F; color:#FFFFFF">
+                   </div>
                </form>
+                    <div id="warning" class="alert alert-warning alert-dismissible" role="alert" style="display: none">
+                        <button type="button" class="close" id="closebtn"><span aria-hidden="true">&times;</span></button>
+                        <strong id="message"></strong>
+                    </div>
                 </div>
 
                 <!--    修改邮箱-->
@@ -407,4 +412,87 @@
         }
     }
 </script>
+<script>
+    $("#closebtn").click(function () {
+        $("#warning").css("display","none");
+    })
+    captcha="";//验证码
+    $("#getphone").click(function () {
+        //验证是否为11位手机号
+        var myreg=/^[1][3,4,5,7,8,9][0-9]{9}$/;
+        var p=$("#oldphone").val();
+        if (myreg.test(p)){
+                    t=60;
+                    $.get("/user/captcha?to="+$("#oldphone").val(),function (msg) {
+                        captcha=msg;
+                    });
+                    $("#getphone").attr("disabled",true);
+                    //定时器
+                    timeraaa=setInterval(timecount,1000);
+        }
+        else {
+           $("#warning").css("display","block");
+           $("#message").html("请输入正确的手机号！")
+        }
+    });
+    function timecount() {
+        $("#getphone").val(t);
+        t=t-1;
+        if(t==-1){
+            clearInterval(timeraaa);
+            $("#getphone").val("再次发送");
+            $("#getphone").attr("disabled",false);
+        }
+    }
+</script>
+<script>
+        $("#next").click(function () {
+               //判断手机号
+            if($("#oldphone").val()==''){
+                $("#warning").css("display","block");
+                $("#message").html("请输入手机号！");
 
+            }
+            else {
+                //判断验证码
+                if($("#phoneca").val().length ==0) {
+                    $("#warning").css("display", "block");
+                    $("#message").html("请输入验证码！")
+                }
+                else {
+                    if($("#next").val()=="下一步"){
+                        if(captcha==$("#phoneca").val()){
+                            $("#oldphone").val("");
+                            $("#phoneca").val("");
+                            $("#oldphone").attr("placeholder","请输入新手机号");
+                            $("#next").val("确定");
+                            clearInterval(timeraaa);
+                            $("#getphone").val("获取验证码");
+                            $("#getphone").attr("disabled",false);
+                        }
+                    }
+                    else {
+                        if(captcha==$("#phoneca").val()){
+                            $.post("/user/updatephone?phone="+$("#oldphone").val()+"&uid="+"${sessionScope.loginresult.uid}",function (msg) {
+                                if(msg=="success"){
+                                    alert("修改成功")
+                                    $("#oldphone").val("");
+                                    $("#phoneca").val("");
+                                }
+                                else
+                                    alert("修改失败")
+                            })
+                        }
+                    }
+
+                }
+
+            }
+
+
+
+
+
+
+        })
+</script>

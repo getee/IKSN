@@ -555,7 +555,24 @@ public class UserControl {
             }
         return "zhanghao";
     }
-
+    //修改用户手机号
+    @RequestMapping("updatephone")
+    public  void updatePhone(@RequestParam("phone")String phone,@RequestParam("uid")int uid,HttpServletResponse response){
+        boolean flag=userService.updatePhone(phone, uid);
+        PrintWriter pw=null;
+        try{
+            pw=response.getWriter();
+            if(flag==true) {
+                pw.print("success");
+            }
+            else {
+                pw.print("fail");
+            }
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+    }
     //用户等级
     @RequestMapping(value = "userGrade")
     public int  userGrade(@RequestParam("uid") int uid, Model model) {

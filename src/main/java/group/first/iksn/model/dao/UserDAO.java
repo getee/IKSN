@@ -45,6 +45,8 @@ public interface UserDAO {
     boolean updatePassword(User user);
     //修改用户邮箱
     boolean updateEmail(User user);
+    //修改用户手机号
+    boolean updatePhone(String phone,int uid);
     //用户等级
     int userGrade(int uid);
     //获取用户的积分明细

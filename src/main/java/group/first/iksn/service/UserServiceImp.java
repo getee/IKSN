@@ -300,6 +300,12 @@ public class UserServiceImp implements UserService {
         userDAO.updateEmail(user);
 
     }
+
+    @Override
+    public boolean updatePhone(String phone, int uid) {
+        return userDAO.updatePhone(phone, uid);
+    }
+
     //根据提供的id获取用户
     @Override
     public User getId(int uid) {

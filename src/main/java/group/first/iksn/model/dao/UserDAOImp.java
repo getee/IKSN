@@ -1,6 +1,7 @@
 package group.first.iksn.model.dao;
 
 import group.first.iksn.model.bean.*;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -393,6 +394,11 @@ public class UserDAOImp extends BaseDAOImp implements UserDAO {
     public boolean updateEmail(User user) {
         boolean b=getSqlSession().getMapper(UserDAO.class).updateEmail(user);
         return b;
+    }
+
+    @Override
+    public boolean updatePhone(@Param("phone") String phone,@Param("uid") int uid) {
+        return getSqlSession().getMapper(UserDAO.class).updatePhone(phone, uid);
     }
 
     //用户等级

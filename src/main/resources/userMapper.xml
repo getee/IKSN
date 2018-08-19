@@ -121,7 +121,10 @@ select * from user where NICKNAME=#{nickname} and  UID in (select ATTENID from a
     <update id="updateEmail" parameterType="User">
         update user set email=#{email} where UID=#{uid}
     </update>
-
+<!--修改用户手机号-->
+    <update id="updatePhone" parameterType="User">
+        update user set PHONE=#{param1} where UID=#{param2}
+    </update>
     <!--获取积分明细-->
     <select id="getScoring" resultType="Scoring">
         select * from scoring where uid=#{uid}

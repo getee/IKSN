@@ -38,7 +38,8 @@ public interface UserService {
 
     //修改用户邮箱
     public void updateEmail(int uid,String newemail );
-
+//修改用户手机号
+    boolean updatePhone(String phone,int uid);
     //获取用户id
     public User getId(int uid);
     //用户等级
