@@ -339,7 +339,7 @@ public String ajaxBlogSearch(HttpServletResponse response, HttpServletRequest re
     }
 
     //根据bid博客ID来查询博客的相应数据
-    @RequestMapping("/listBlogByBid/")
+    @RequestMapping("/listBlogByBid/{bid}")
     public String  listBlogByID(@PathVariable("bid") int bid,Model model){
         Blog listblog=blogService.listBlogService(bid);
         model.addAttribute("listblog",listblog);
