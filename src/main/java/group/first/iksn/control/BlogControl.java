@@ -174,11 +174,21 @@ public class BlogControl {
        // textcontent=EncodingTool.encodeStr(textcontent);//先将中文码ISO-8859-1转成UTF-8
         ModelAndView mv=new ModelAndView();
         System.out.println("搜索的关键字:"+textcontent);
+
+
         List<Blog> b=blogService.blogTitle(textcontent);
         System.out.println("标题:"+b);
      /*   b= blogService.detailedBlogSearchResultMap(textcontent);*/
         //添加blog分List<Blog>类和标题搜索
-       /*  b=blogService.blogClassify(textcontent);*/
+
+        List<Blog> a=blogService.blogClassify(textcontent);
+        System.out.println("aaaaa"+a);
+        if(a.isEmpty()){
+            System.out.println("classif为空");
+        }else{
+           b.addAll(a);
+        }
+
       /*  System.out.println("类型:"+b);*/
         mv.addObject("blogSearch",b);
         mv.addObject("keyWord",textcontent);

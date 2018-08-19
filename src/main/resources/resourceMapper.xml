@@ -66,7 +66,13 @@
           inner join  user as u on r.uid=u.uid
           inner join  resourcetag as t on t.rid=r.rid
           where r.name like '%' #{s} '%'
+    </select>
 
+    <select id="searchTag" resultMap="ResourceS">
+            select r.*,u.*,t.* from resource as r
+          inner join  user as u on r.uid=u.uid
+          inner join  resourcetag as t on t.rid=r.rid
+          where t.RTAG like '%' #{s} '%'
     </select>
 
     <!--资源分类搜索-->
@@ -79,6 +85,11 @@
                 and r.CLASSIFY= #{key}
             </if>
         </where>
+    </select>
+
+    <!--ajax资源name搜索-->
+    <select id="ajaxResourceName" resultType="java.lang.String">
+        select name from resource
     </select>
 
 

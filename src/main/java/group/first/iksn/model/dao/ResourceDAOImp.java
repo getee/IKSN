@@ -107,6 +107,19 @@ public class ResourceDAOImp extends BaseDAOImp implements ResourceDAO {
         System.out.println("resourceDAOImp:"+re);
         return re;
     }
+
+    @Override
+    public List<Resource> searchTag(String s) {
+        List<Resource> r=getSqlSession().getMapper(ResourceDAO.class).searchTag(s);
+        return r;
+    }
+
+    @Override
+    public List<String> ajaxResourceName() {
+        List<String> r=getSqlSession().getMapper(ResourceDAO.class).ajaxResourceName();
+        return r;
+    }
+
     @Override
     public int reportResourceNum() {
         int num=getSqlSession().getMapper(ResourceDAO.class).reportResourceNum();

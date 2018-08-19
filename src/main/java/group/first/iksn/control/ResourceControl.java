@@ -1,5 +1,6 @@
 package group.first.iksn.control;
 
+import com.sun.org.apache.regexp.internal.RE;
 import group.first.iksn.model.bean.*;
 import group.first.iksn.service.ResourceService;
 import group.first.iksn.service.UserService;
@@ -85,8 +86,28 @@ public class ResourceControl {
         return "xiazai";
     }
 
+    /**
+     * 资源name检索
+     */
+    @RequestMapping("/ajaxResourceName")
+    public  String ajaxResourceName(HttpServletResponse response, HttpServletRequest request){
+        List<String> a=resourceService.ajaxResourceName();
+        JSONArray ja=new JSONArray();
+        for(String st:a){
+            JSONObject jo=new JSONObject();
+            jo.put("word",st);
+            ja.put(jo);
+        }
+         System.out.println("资源name"+ja.toString());
+        try {
+            Responser.responseToJson( response,request,ja.toString());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
-/**
+        return "xiazai";
+    }
+
     /**
      * 资源评论
      */
@@ -317,7 +338,15 @@ public class ResourceControl {
        ModelAndView mv=new ModelAndView();
         System.out.println("keyeord:"+content);
         List<Resource> re=resourceService.searchResource(content);
-       System.out.println(re);
+
+        List<Resource> tag=resourceService.searchTag(content);
+        if(tag.isEmpty()){}else{
+            re.addAll(tag);
+        }
+
+
+       System.out.println("tag:"+tag);
+       System.out.println("re:"+re);
        mv.addObject("resource",re);
        mv.setViewName("xiazai");
        return  mv;

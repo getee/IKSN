@@ -354,7 +354,7 @@
 
     <!--首页ajax推送-->
     <select id="ajaxBlogPush" resultMap="qqqqq" >
-        select * from blog as b
+        select b.*,ub.* from blog as b
         inner join usertoblog as ub on ub.BID = b.BID
         where ub.ISPUBLIC=0
         order by points desc limit #{page},5

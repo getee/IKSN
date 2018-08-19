@@ -17,10 +17,12 @@ public interface ResourceService {
     //收藏资源
     boolean houseResource(CollectResource h);
 
+    List<Resource> searchTag(String s);
     List<Resource> searchResource(String s);
    //资源分类搜索
     List<Resource> ResourcekeywordSearch(String key);
     int downResource(Integer rid);
+    List<String> ajaxResourceName();
 
     //资源详情界面加载
     Resource loadResource(int rid);

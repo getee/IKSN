@@ -149,7 +149,12 @@ public class BlogServiceImp implements BlogService {
         else if(s.equals("服务器应用")){s="8";}
         else if(s.equals("存储")){s="9";}
         else if(s.equals("信息化")){s="10";}
+        else{
+            s="0";
+        }
         int str=Integer.parseInt(s);
+        System.out.println("classify的类型："+s);
+
         return  blogDAO.blogClassify(str);
     }
 

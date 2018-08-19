@@ -568,12 +568,13 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="../index.jsp">首页 <span class="sr-only">(current)</span></a></li>
-                    <li><a href="#">博客</a></li>
-                    <li><a href="#">学院</a></li>
+                    <li><a href="/blog/blogSearch?content=">博客</a></li>
+                    <li><a href="wenda.jsp">问答</a></li>
                     <li><a href="/resource/keywordSearch?keyword=1">下载</a></li>
+                    <li><a href="#">学院</a></li>
                     <li><a href="#">GitChat</a></li>
                     <li><a href="#">TinyMind</a></li>
-                    <li><a href="wenda.jsp">问答</a></li>
+
                     <li><a href="#">VIP</a></li>
                 </ul>
                 <form class="navbar-form navbar-left" method="post" action="/blog/blogSearch">
