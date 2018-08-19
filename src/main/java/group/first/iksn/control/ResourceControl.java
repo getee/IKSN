@@ -56,17 +56,40 @@ public class ResourceControl {
      * @return
      */
     @RequestMapping("/assess")
-    public String assess(@ModelAttribute("assess") ResourceComments resourceComments) {
+    public void assess(ResourceComments resourceComments,HttpServletResponse response,HttpSession session) {
         System.out.println("assess resourceComments");
         System.out.println(resourceComments);
         boolean result=resourceService.assess(resourceComments);
+        String msg="";
+
         if(!result)
         {
-            return "index";
+            msg="评论失败";
+            try {
+                response.getWriter().write(msg);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }else
         {
-            return "xq";
+            msg="评论成功";
+            JSONArray jsonArray=new JSONArray();
+            JSONObject jsonObject=new JSONObject();
+            User u=(User)session.getAttribute("loginresult");
+            jsonObject.put("nickname",u.getNickname());
+            jsonObject.put("comment",resourceComments.getComment());
+            jsonArray.put(jsonObject);
+            response.setContentType("text/json;charset=UTF-8");
+            try {
+                PrintWriter out=response.getWriter();
+                out.write(jsonArray.toString());
+                out.flush();
+                out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+
 
     }
 
@@ -231,7 +254,7 @@ public class ResourceControl {
                 }
             }
             ArrayList<ResourceComments> rcomments=resourceService.getresourceComments(rid);
-
+            System.out.println("PPVVV"+rcomments);
             request.setAttribute("rcomments",rcomments);//评论信息获取
             request.setAttribute("resouce",r);
             request.setAttribute("pushUser",pushUser);

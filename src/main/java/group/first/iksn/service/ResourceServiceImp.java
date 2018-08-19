@@ -242,7 +242,7 @@ public class ResourceServiceImp  implements ResourceService{
     public boolean downHour(int rid, int uid) {
         String nowTime=LocalTime.getNowTime();
         String oldTime=resourceDAO.getDownedTime(rid,uid);//获取最大时间判断
-        if(oldTime == null){
+        if(oldTime == null || oldTime.equals("")){
             return false;
         }
         SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
