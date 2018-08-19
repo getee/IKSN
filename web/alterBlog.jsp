@@ -134,17 +134,9 @@
                                         <option value="5">操作系统</option>
                                         <option value="6">安全技术</option>
                                         <option value="7">数据库</option>
-                                        <option value="8">行业</option>
-                                        <option value="9">服务器应用</option>
-                                        <option value="10">存储</option>
-                                        <option value="11">信息化</option>
-                                        <option value="12">云计算</option>
-                                        <option value="13">大数据</option>
-                                        <option value="14">人工智能</option>
-                                        <option value="15">区块链</option>
-                                        <option value="16">音视频</option>
-                                        <option value="17">游戏开发</option>
-                                        <option value="18">跨平台</option>
+                                        <option value="8">服务器应用</option>
+                                        <option value="9">存储</option>
+                                        <option value="10">信息化</option>
                                     </select>
                                     <span class="required">*</span>
                                 </div>

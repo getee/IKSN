@@ -197,7 +197,6 @@
             $("#sendBack-ok").click(function(){
                 $("#bloadGif").show();
                var a="/blog/mSendBackIllegalblog/${reportBlog.bid}/${reportBlog.id}/${yonghu.uid}?reportReason=${reportBlog.reason}";
-               alert(a);
                 $.get(a,function(data,status){
                     $("#bloadGif").hide();
                     if(data=="success"){

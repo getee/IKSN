@@ -92,33 +92,6 @@
     </style>
 </head>
 
-<script>
-    $(document).ready(function(){
-
-        //标签页选项卡
-        $('#myTabs1 a').click(function (e) {
-            e.preventDefault()
-
-            $(this).tab('show')
-        });
-        $('#myTabs2 a').click(function (e) {
-            e.preventDefault()
-            $(this).tab('show')
-        });
-        $('#myTabs3 a').click(function (e) {
-            e.preventDefault()
-            $(this).tab('show')
-        });
-        $('#myTabs4 a').click(function (e) {
-            e.preventDefault()
-            $(this).tab('show')
-        });
-
-
-
-    });
-
-</script>
 
 <body  style="background-color:#F7F8F9">
 <div class="container-fluid">
@@ -336,23 +309,7 @@
 </html>
 <!--修改用户密码-->
 <script >
-    $(document).ready(function(){
-        $('#password').blur(function(){
-            data={"uid":${sessionScope.loginresult.uid},"password":$("#password").val()};
-            $.post("/user/checkPassword?uid=${sessionScope.loginresult.uid}&password="+$("#password").val(),function(data){
-                if(data=='true'){
-                    $("#userExtist").css("color","green");
-                    $("#userExtist").html("密码与原密码一样");
 
-                }else
-                {
-                    $("#userExtist").css("color","red");
-                    $("#userExtist").html("密码与原密码不一样");
-
-                }
-            });
-        });
-    });
     function validate() {
         var pwd = $("#newpassword").val();
         var pwd1 = $("#equelspassword").val();
@@ -375,6 +332,41 @@
 <script >
 
     $(document).ready(function(){
+        $('#password').blur(function(){
+            data={"uid":${sessionScope.loginresult.uid},"password":$("#password").val()};
+            $.post("/user/checkPassword?uid=${sessionScope.loginresult.uid}&password="+$("#password").val(),function(data){
+                if(data=='true'){
+                    $("#userExtist").css("color","green");
+                    $("#userExtist").html("密码与原密码一样");
+
+                }else
+                {
+                    $("#userExtist").css("color","red");
+                    $("#userExtist").html("密码与原密码不一样");
+
+                }
+            });
+        });
+
+        //标签页选项卡
+        $('#myTabs1 a').click(function (e) {
+            e.preventDefault()
+
+            $(this).tab('show')
+        });
+        $('#myTabs2 a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        });
+        $('#myTabs3 a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        });
+        $('#myTabs4 a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        });
+
         /**
          登录用户mima的ajax代码
          **/

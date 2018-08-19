@@ -152,7 +152,7 @@
 
         </div>
     </div>
-
+<input type="hidden" value="<%=basePath%>" id="netIP">
     <script>
         var toid;
         var webFromid;
@@ -177,7 +177,7 @@
         var websocket=null;
         //判断当前浏览器是否支持WebSocket
         if ('WebSocket' in window) {
-            websocket = new WebSocket("ws://172.19.22.45:8080/websocket/${sessionScope.loginresult.uid}");
+            websocket = new WebSocket("ws://172.19.22.167:8088/websocket/${sessionScope.loginresult.uid}");
         }
         else {
             alert('当前浏览器 Not support websocket')
@@ -709,7 +709,7 @@
     //退出登录
     $("#tc").click(function () {
         $.post("/user/exit");
-        location.href="index.jsp";
+        location.href="/index.jsp";
     });
 
     $(document).ready(function () {

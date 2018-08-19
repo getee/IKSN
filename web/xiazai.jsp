@@ -23,8 +23,7 @@
 
 <script>
     $(document).ready(function(){
-        // $(".active").removeClass("active");
-        // $("#li-4").addClass("active");
+
         //标签页选项卡
         $('#b1 a').click(function (e) {
             e.preventDefault()

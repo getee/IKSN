@@ -722,6 +722,7 @@ public String ajaxBlogSearch(HttpServletResponse response, HttpServletRequest re
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         notice.setUid(attenid);
         notice.setTime(df.format(d));
+        nickname=EncodingTool.encodeStr(nickname);
         notice.setContent(nickname+"关注了你");
         PrintWriter pw = null;
         try{
