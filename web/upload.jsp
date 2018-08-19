@@ -30,7 +30,6 @@
                 return o.substring(pos+1);
 
             }
-           alert(fileName);
 //=======================================================================================================================
 
             var formData = new FormData($( "#upFileForm" )[0]);
@@ -47,8 +46,10 @@
                 contentType: false,
                 processData: false,
                 success: function (data) {
-                    alert("check");
                     $("#filepath").attr("value",data);
+                    if(data == "0"){
+                        alert("文件重复");
+                    }
                 },
                 error: function(data) {
                     alert("error:"+data);

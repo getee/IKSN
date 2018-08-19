@@ -152,7 +152,7 @@
 
         </div>
     </div>
-<input type="hidden" value="<%=basePath%>" id="netIP">
+<%--<input type="hidden" value="<%=basePath%>" id="netIP">--%>
     <script>
         var toid;
         var webFromid;
