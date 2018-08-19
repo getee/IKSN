@@ -356,7 +356,7 @@
 
     <!--首页分类推送-->
     <select id="classifyPush" resultType="Blog" parameterType="java.lang.Integer">
-        select * from blog where CLASSIFY=#{0} limit #{1},5
+        select * from blog where CLASSIFY=#{0} GROUP BY BID DESC limit #{1},5
     </select>
 
      <!--点赞-->
