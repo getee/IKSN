@@ -30,6 +30,15 @@
 <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
 <script src="bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
 <script>
+    /*$(document).ready(function(){
+        //所有li元素的点击事件
+        $("li").click(function(){
+            if($(this).click){
+                $("li").removeClass("active");
+                $(this).addClass("active");
+
+            }
+        });*/
     $(document).ready(function(){
         //标签页选项卡
         $('#myTabs1 a').click(function (e) {
@@ -112,6 +121,15 @@
 		</div>
 	</div>
 
+	<!-- Columns start at 50% wide on mobile and bump up to 33.3% wide on desktop -->
+	<!--<div class="row well-lg" style="margin: 30px;padding: 10px; background-color:#F8F8F8 ">
+      <div  class="col-xs-6 col-md-4">
+            <!-- Indicates caution should be taken with this action -->
+	<!--<button id="publishedBlog" style="margin-left: 20%;outline: none" type="button" class="btn btn-danger">发表的博客</button>
+		<button id="publisheResource" type="button" class="btn btn-default" style="outline: none;">贡献的资源</button>
+		<%--<h3 style="margin-left: 100px;">h3. Bootstrap heading</h3>
+		<h3 style="margin-left: 100px;">h3. Bootstrap heading</h3>
+		<h3 style="margin-left: 100px;">h3. Bootstrap heading</h3>--%>
 
 
 	</div>
@@ -119,7 +137,11 @@
 
 	</div>
 
-
+  <%--<div style="padding-top: 30px;" class="col-xs-6 col-md-4">
+  <h3 style="margin-left: 100px;"><small>30人阅读 &nbsp;&nbsp;</small><small class="glyphicon glyphicon-comment" style="cursor: pointer">评论(0)</small></h3>
+  <h3 style="margin-left: 100px;"><small>10人阅读 &nbsp;&nbsp;</small><small class="glyphicon glyphicon-comment" style="cursor: pointer">评论(0)</small></h3>
+  <h3 style="margin-left: 100px;"><small>22人阅读 &nbsp;&nbsp;</small><small class="glyphicon glyphicon-comment" style="cursor: pointer">评论(0)</small></h3>
+  </div>--%>
 
 </div>-->
 	<!--面板-->
@@ -167,7 +189,7 @@
                 var html=""
                 for(var i=0;i< data.length;i++ ){
                     html+='<div class="col-md-12" >';
-                    html+='<div style=" font-size:20px ; color:#000000;height: 40px;"><a href="/blog/listBlogByBid/'+data[i].bid+'">'+data[i].title+'</a></div>';
+                    html+='<div style=" font-size:20px ; color:#000000;height: 40px;"><a href="/blog/getBlogAndUser?blogid='+data[i].bid+'">'+data[i].title+'</a></div>';
                     html+='<span>发布时间：'+data[i].time+'</span><span style="margin-left: 20px;">点赞：'+data[i].points+'</span>';
                     html+='</div>';
                 }

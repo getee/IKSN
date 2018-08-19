@@ -10,6 +10,7 @@ public class Blog {
     private  String link;//博客链接
     private  int points;//博客点赞数
     private int classify;//博客分类
+    private int reportnum;
     private Set<BlogTag> blogTags;
     private BlogTag blogTag;
     private  UserToBlog userToBlog;
@@ -18,6 +19,13 @@ public class Blog {
     private  CollectBlog collectBlog;
     private  ReportBlog reportBlog;
 
+    public int getReportnum() {
+        return reportnum;
+    }
+
+    public void setReportnum(int reportnum) {
+        this.reportnum = reportnum;
+    }
 
     public BlogBrowsed getBlogBrowsed() {
         return blogBrowsed;
