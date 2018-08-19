@@ -72,7 +72,7 @@
     </script>
 </head>
 <body style="background-color:#F7F8F9">
-<c:if test="${requestScope.loginresult eq null}">
+<c:if test="${sessionScope.loginresult eq null}">
     <c:redirect url="/index.jsp"></c:redirect>
 </c:if>
 <!--  导航栏-->
