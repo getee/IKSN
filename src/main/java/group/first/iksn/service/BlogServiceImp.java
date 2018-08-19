@@ -513,4 +513,6 @@ public class BlogServiceImp implements BlogService {
         return blogDAO.allPublishedBlog(uid);
     }
 
+
+
 }

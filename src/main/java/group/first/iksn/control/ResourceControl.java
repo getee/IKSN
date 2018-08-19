@@ -480,6 +480,7 @@ public class ResourceControl {
                 jsonObject.put("title",resource.get(i).getName());
                 jsonObject.put("scoring",resource.get(i).getScoring());
                 jsonObject.put("time",resource.get(i).getTime());
+                jsonObject.put("rid",resource.get(i).getRid());
                 jsonArray.put(jsonObject);
             }catch (JSONException e){
                 e.printStackTrace();
@@ -512,6 +513,7 @@ public class ResourceControl {
                 jsonObject.put("title",collect.get(i).getName());
                 jsonObject.put("scoring",collect.get(i).getScoring());
                 jsonObject.put("time",collect.get(i).getTime());
+                jsonObject.put("rid",collect.get(i).getRid());
                 jsonArray.put(jsonObject);
             }catch (JSONException e){
                 e.printStackTrace();
