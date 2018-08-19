@@ -31,13 +31,14 @@
 <script src="bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
 <script>
     $(document).ready(function(){
-        //所有li元素的点击事件
-        $("li").click(function(){
-            if($(this).click){
-                $("li").removeClass("active");
-                $(this).addClass("active");
-
-            }
+        //标签页选项卡
+        $('#myTabs1 a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        });
+        $('#myTabs2 a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
         });
 
         //特效,输入雷电试试
@@ -81,54 +82,69 @@
 	<!--	导航栏-->
 	<%@ include file="top.jsp"%>
 	<!--	导航栏结束-->
-
-	<div style="background-color:#F8F8F8; margin: 30px;padding: 10px;" class="row well-lg">
+	<!-- Stack the columns on mobile by making one full-width and the other half-width -->
+	<div style="background-color:#F8F8F8;margin-left: 15%; margin-right:15%;padding: 10px;" class="row well-lg">
 		<div  class="col-xs-12 col-md-8">
 			<div  class="col-xs-6 col-md-1"></div>
 			<div  class="col-xs-6 col-md-3">
-				<div class="well" style="width: 150px;height: 150px;"><img src="img/adminIcon.jpg" class="img-responsive img-rounded" alt="Responsive image"></div>
+				<div class="well" style="width: 150px;height: 150px;"><img src="${requestScope.user.picturepath}" class="img-responsive img-rounded" alt="Responsive image"></div>
 
-				<ul class="nav nav-pills" role="tablist">
-					<li role="presentation" ><a href="#">关注 <span class="badge">42</span></a></li>
-					<li role="presentation"><a href="#">粉丝<span class="badge">3</span></a></li>
-				</ul></div>
+			</div>
 			<div style=" margin-top: 10px;" class="col-xs-6 col-md-4">
 				<blockquote>
 					<p>${requestScope.user.nickname}</p>
 					<footer>Provience <cite title="Source Title">City</cite></footer>
 				</blockquote>
-				<h3><span class="label label-success">博客2</span></h3>
+				<h3><span class="label label-success" style="margin-left: 15px">博客2</span></h3>
 			</div>
 			<div  class="col-xs-6 col-md-4"></div>
 		</div>
+
 		<div style="margin-top: 30px;" class="col-xs-6 col-md-4">
 			<div class="col-xs-6"></div>
 			<div class="col-xs-6">
-				<button  type="button" class="btn btn-success">+关注</button>
-				<button  type="button" class="btn btn-success" style="outline: none">发私信</button>
+				<ul class="nav nav-pills" role="tablist">
+					<li role="presentation" ><a >关注 <span class="badge">43</span></a></li>
+					<li role="presentation"><a >粉丝<span class="badge">3</span></a></li>
+				</ul>
 			</div>
 
 		</div>
 	</div>
 
 
-	<div class="row well-lg" style="margin: 30px;padding: 10px; background-color:#F8F8F8 ">
-		<div  class="col-xs-6 col-md-4">
-			<button id="publishedBlog" style="margin-left: 20%;outline: none" type="button" class="btn btn-danger">发表的博客</button>
-			<button id="publisheResource" type="button" class="btn btn-default" style="outline: none;">贡献的资源</button>
 
-		</div>
-		<div id="blogarea" class="col-md-12 well" style="margin-top:2%;width:80%;margin-left:10%;margin-right: 10%;">
-
-		</div>
+	</div>
+	<div id="blogarea" class="col-md-12 well" style="margin-top:2%;width:80%;margin-left:10%;margin-right: 10%;">
 
 	</div>
 
-	<!-- Columns are always 50% wide, on mobile and desktop -->
-	<div class="row">
-		<div class="col-xs-6"></div>
-		<div class="col-xs-6"></div>
+
+
+</div>-->
+	<!--面板-->
+	<div class="row well" style="margin-left: 15%;margin-right: 15%;margin-top: 2%">
+		<div style="margin-top: -1%">
+
+			<!-- Nav tabs -->
+			<ul class="nav nav-tabs" role="tablist">
+				<li id="myTabs1" role="presentation" class="active"><a id="blogarea" href="#publishedBlog" aria-controls="home" role="tab" data-toggle="tab">发表的博客</a></li>
+				<li id="myTabs2" role="presentation"><a id="resource" href="#publisheResource" aria-controls="profile" role="tab" data-toggle="tab">贡献的资源</a></li>
+			</ul>
+
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane active" id="publishedBlog">
+
+				</div>
+
+				<div role="tabpanel" class="tab-pane" id="publisheResource">
+
+				</div>
+				<!-- Columns are always 50% wide, on mobile and desktop -->
+			</div>
+		</div>
 	</div>
+
 	<!--底部信息-->
 	<div class="row">
 		<nav class="navbar navbar-default navbar-static-bottom">
@@ -146,9 +162,8 @@
 <script>
     $(document).ready(function () {
         var a=1;
-        $("#publishedBlog").ready(function () {
+        $("#blogarea").ready(function () {
             $.getJSON("/blog/allPublishedBlog?uid=${requestScope.user.uid}",function (data) {
-
                 var html=""
                 for(var i=0;i< data.length;i++ ){
                     html+='<div class="col-md-12" >';
@@ -157,7 +172,7 @@
                     html+='</div>';
                 }
                 if(a==1){
-                    $("#blogarea").append(html);
+                    $("#publishedBlog").append(html);
                     a++;
                 }
             });
@@ -166,28 +181,26 @@
     });
 </script>
 
-
 <!--资源贡献-->
-  <script>
-      $(document).ready(function () {
-          var a=1;
-          $("#publisheResource").click(function () {
-              $("#publishedBlog").hide();
-              $.getJSON("/resource/allPublishedResource?uid=${requestScope.user.uid}",function (data) {
-                  var html=""
-                  for(var i=0;i< data.length;i++ ){
-                      html+='<div class="col-md-12" >';
-                      html+='<div style=" font-size:20px ; color:#000000;height: 40px;"><a href="#">'+data[i].name+'</a></div>';
-                      html+='<span>发布时间：'+data[i].time+'</span><span style="margin-left: 20px;">获得积分：'+data[i].scoring+'</span>';
-                      html+='</div>';
-                  }
-                  if(a==1){
-                      $("#blogarea").append(html);
-                      a++;
-                  }
-              });
+<script>
+    $(document).ready(function () {
+        var a=1;
+        $("#resource").click(function () {
+            $.getJSON("/resource/allPublishedResource?uid=${requestScope.user.uid}",function (data) {
+                var html=""
+                for(var i=0;i< data.length;i++ ){
+                    html+='<div class="col-md-12" >';
+                    html+='<div style=" font-size:20px ; color:#000000;height: 40px;"><a href="#">'+data[i].name+'</a></div>';
+                    html+='<span>发布时间：'+data[i].time+'</span><span style="margin-left: 20px;">获得积分：'+data[i].scoring+'</span>';
+                    html+='</div>';
+                }
+                if(a==1){
+                    $("#publisheResource").append(html);
+                    a++;
+                }
+            });
 
-          });
-      });
-  </script>
+        });
+    });
+</script>
 </html>
