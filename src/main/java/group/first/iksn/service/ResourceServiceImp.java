@@ -272,5 +272,11 @@ public class ResourceServiceImp  implements ResourceService{
         return  k;
     }
 
+    //他人上传的所有资源
+    @Override
+    public List<Resource> allPublishedResource(int uid) {
+        return resourceDAO.allPublishedResource(uid);
+    }
+
 
 }

@@ -113,4 +113,5 @@ public interface BlogService {
     ArrayList<BlogComments> getComments(Integer bid);
     //查询他人发布的所有博客
     List<Blog> allPublishedBlog(int uid);
+
 }
