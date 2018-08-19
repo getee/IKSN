@@ -23,8 +23,8 @@
 
 <script>
     $(document).ready(function(){
-        $(".active").removeClass("active");
-        $("#li-4").addClass("active");
+        // $(".active").removeClass("active");
+        // $("#li-4").addClass("active");
         //标签页选项卡
         $('#b1 a').click(function (e) {
             e.preventDefault()
@@ -447,7 +447,25 @@
 
 
                                     <!--分页部分-->
-
+                                    <nav aria-label="Page navigation">
+                                        <ul class="pagination">
+                                            <li>
+                                                <a href="#" aria-label="Previous">
+                                                    <span aria-hidden="true">&laquo;</span>
+                                                </a>
+                                            </li>
+                                            <li><a href="#">1</a></li>
+                                            <li><a href="#">2</a></li>
+                                            <li><a href="#">3</a></li>
+                                            <li><a href="#">4</a></li>
+                                            <li><a href="#">5</a></li>
+                                            <li>
+                                                <a href="#" aria-label="Next">
+                                                    <span aria-hidden="true">&raquo;</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </nav>
                                     <!--分页部分结束-->
                                     </p>
                                 </div>
