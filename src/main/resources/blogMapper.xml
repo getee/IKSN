@@ -361,11 +361,8 @@
     </select>
 
     <!--首页分类推送-->
-    <select id="classifyPush" resultMap="qqqqq" >
-        select * from blog as b
-        inner join usertoblog as ub on ub.BID = b.BID
-        where ub.ISPUBLIC=0
-        and b.CLASSIFY=#{0} limit #{1},5
+    <select id="classifyPush" resultType="Blog" parameterType="java.lang.Integer">
+        select * from blog where CLASSIFY=#{0} GROUP BY BID DESC limit #{1},5
     </select>
 
      <!--点赞-->
