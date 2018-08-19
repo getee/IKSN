@@ -234,6 +234,10 @@
 
             websocket.send(JSON.stringify({'content':bq,'toid':toid}))
         }
+        function sendImg(img){
+
+            websocket.send(JSON.stringify({'content':img,'toid':toid}))
+        }
 
 
 
@@ -396,6 +400,7 @@
                     "<div class=\"author-name\"><small class=\"chat-date\">"+now+"</small> </div> " +
                     "<div class=\"right\"> <div class=\"chat-message\"><img src=" + images + "></div> " +
                     "<div class=\"chat-avatars\"><img src=\"${sessionScope.loginresult.picturepath}\" alt=\"头像\" /></div> </div> </div>");
+
                 //聊天框默认最底部
                 $(document).ready(function () {
                     $("#chatBox-content-demo").scrollTop($("#chatBox-content-demo")[0].scrollHeight);

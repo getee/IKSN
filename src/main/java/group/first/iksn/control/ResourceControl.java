@@ -78,11 +78,11 @@ public class ResourceControl {
             User u=(User)session.getAttribute("loginresult");
             jsonObject.put("nickname",u.getNickname());
             jsonObject.put("comment",resourceComments.getComment());
-            jsonArray.put(jsonObject);
+            //jsonArray.put(jsonObject);
             response.setContentType("text/json;charset=UTF-8");
             try {
                 PrintWriter out=response.getWriter();
-                out.write(jsonArray.toString());
+                out.write(jsonObject.toString());
                 out.flush();
                 out.close();
             } catch (IOException e) {

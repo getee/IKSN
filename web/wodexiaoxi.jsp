@@ -133,6 +133,15 @@
 					}
 
                 })
+				var checkboxNum=0;
+				$.each($("input:checkbox"),function () {
+				    alert(checkboxNum)
+					if($(".checkboxs").prop("checked")==false){
+                        $("#exampleInputEmail1").val("");
+					}
+					checkboxNum++;
+                })
+
                 $("#exampleInputText1").focus();
 			});
 			//搜索好友

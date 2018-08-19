@@ -822,7 +822,7 @@ public String ajaxBlogSearch(HttpServletResponse response, HttpServletRequest re
         out.close();
     }
     /**
-     *
+     * 评论输出到前台
      * @param bid
      * @param request
      * @param response
@@ -832,6 +832,9 @@ public String ajaxBlogSearch(HttpServletResponse response, HttpServletRequest re
     public void getComments( @RequestParam("bid") Integer bid , HttpServletRequest request, HttpServletResponse response) {
         ArrayList<BlogComments> getBlogcomments=(ArrayList<BlogComments>)blogService.getComments(bid);
         Collections.sort(getBlogcomments );
+
+
+
         System.out.println(getBlogcomments);
         JSONArray jsonArray=new JSONArray();
         JSONObject jsonObject;
