@@ -101,24 +101,18 @@
         function toassess() {
             var urll='/resource/assess';
             var daa=$("#assessForm").serialize();
+            // $.post(urll,function(data){
+            //
+            // })
             $.ajax({
-                async: false,
+                //async: false,
                 type: "POST",
                 url:urll,
                 data:daa,
-                dataType: "text",
+                dataType:"json",
                 success: function (data) {
-                    alert(data);
                     var blogComments="";
-                    blogComments+='<ul><hr><li id="getpl"><br>' +
-                        '<div style=""><br>' +
-                        '                            <div style="float: left"><a class="icon-observer" href="#" style="background-image: url(\'img/3_qq.jpg\')"></a></div><br>' +
-                        '                            <div style="margin-top: 5px"><br>' +
-                        '                                <a href="#">'+data.slice(3)+'</a><br>' +
-                        '                            </div><br>' +
-                        '</div><br>' +
-                        '<h5 style="margin: 25px 10px 10px 50px">'+data.substring(1,5)+'</h5><br>' +
-                        '</li></hr></ul>'
+                    blogComments+="<ul><hr><li id='getpl'><div style='><div style='float: left'><a class='icon-observer' href='#' style='background-image: url('img/3_qq.jpg')'></a></div><div style='margin-top: 5px'><a href='#'>"+data.nickname+"</a></div></div><h5 style='margin: 25px 10px 10px 50px'>"+data.comment+"</h5></li><hr></ul>";
                     $('#addAssess').append(blogComments);
                 },
                 error: function (data) {

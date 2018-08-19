@@ -68,4 +68,5 @@ public interface UserDAO {
     //禁言数量
     int getIsspeakNum();
     User getUserInfo(int uid);
+
 }

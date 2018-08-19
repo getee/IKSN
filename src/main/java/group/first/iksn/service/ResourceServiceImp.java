@@ -47,6 +47,12 @@ public class ResourceServiceImp  implements ResourceService{
         return resourceDAO.collectResource(h);
     }
 
+    @Override
+    public List<Resource> searchTag(String s) {
+
+        return resourceDAO.searchTag(s);
+    }
+
     /**
      * 资源搜索
      * @param
@@ -72,6 +78,11 @@ public class ResourceServiceImp  implements ResourceService{
     @Override
     public int downResource(Integer rid) {
         return resourceDAO.downnum(rid);
+    }
+
+    @Override
+    public List<String> ajaxResourceName() {
+        return resourceDAO.ajaxResourceName();
     }
 
     @Override

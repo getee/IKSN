@@ -23,6 +23,8 @@
 
 <script>
     $(document).ready(function(){
+        // $(".active").removeClass("active");
+        // $("#li-4").addClass("active");
         //标签页选项卡
         $('#b1 a').click(function (e) {
             e.preventDefault()
@@ -67,7 +69,7 @@
     <div class="row"  style="margin-top: -1.2%; font-size:16px;background-color:#EAEBEC; min-width:1024px;" >
 
         <ul class="nav nav-tabs"  style="margin-left:15%;" >
-            <li ><a href="xiazai.jsp">下载首页</a></li>
+            <li ><a href="/resource/keywordSearch?keyword=1">下载首页</a></li>
             <li ><a href="myresource.jsp">我的资源</a></li>
             <li ><a href="upload.jsp">上传资源赚积分</a></li>
             <li ><a href="myresource.jsp">已下载</a></li>
@@ -307,7 +309,8 @@
                             <span>关键词：</span>
                         </div>
                         <form class="form-search" action="/resource/resourceSearch" method="post">
-                            <input style="height:30px; width:400px; margin-top:15px; float:left" class="input-medium search-query" type="text" name="content"/>
+                            <input style="height:30px; width:400px; margin-top:15px; float:left"  type="text" name="content"/>
+                            <div  style="" ></div>
                             <button style="height:30px; margin-top:15px; margin-left:10px" class="btn" contenteditable="true" type="submit">查找</button></form>
                     </div>
                 </div>
@@ -334,37 +337,61 @@
                                     <p>
                                         <!--资源详情部分-->
                                     <div id="resources">
+                                    <%--<c:choose>
+                                        <c:when test="${empty resource}">
+                                            <img style="width: 500px;height: 500px" src="img/notFound.jpg">
+                                        </c:when>
+                                        <c:otherwise>
+                                        </c:otherwise>
+                                    </c:choose>--%>
 
-                                            <c:forEach items="${resource}" var="r">
-                                                <div style="height:85px; width:90%; margin-left:20px;">
-                                                    <div style="height:48px; width:5%; float:left; margin-top:15px ">
-                                                        <a href="/resource/loadResource?rid=${r.rid}"> <img src="img/2.svg"></a>
-                                                    </div>
-                                                    <div style="height:20px; width:66%; float:left; margin-top:15px; margin-left:40px;  font-size:20px ; color:#000000;">
-                                                        <a href="/resource/loadResource?rid=${r.rid}"> ${r.name}</a>
-                                                    </div>
-                                                    <div style="height:30px; width:82%; float:left;margin-top:12px; margin-left:40px;font-size:14px;">
-                                                        <div style="width:250px; height:30px;  float:left">
-                                                            <span> 上传者: ${r.user.nickname}  </span>&nbsp;&nbsp;&nbsp;&nbsp;
-                                                            <span> 上传时间:${r.time}  </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                            <span> 分类:${r.classify} </span>
+                                    <c:forEach items="${resource}" var="r">
+                                                   <div style="height:85px; width:90%; margin-left:20px;">
+                                                       <div style="height:48px; width:5%; float:left; margin-top:15px ">
+                                                           <a href="/resource/loadResource?rid=${r.rid}"> <img src="img/2.svg"></a>
+                                                       </div>
+                                                       <div style="height:20px; width:66%; float:left; margin-top:15px; margin-left:40px;  font-size:20px ; color:#000000;">
+                                                           <a href="/resource/loadResource?rid=${r.rid}"> ${r.name}</a>
+                                                       </div>
+                                                       <div style="height:30px; width:82%; float:left;margin-top:12px; margin-left:40px;font-size:14px;">
+                                                           <div style="width:250px; height:30px;  float:left">
 
-                                                        </div>
-                                                        <c:forEach items="${r.resourceTags}" var="tag">
-                                                            <div style="height:23px;min-width:60px;float:left;margin-left:30px;border:1px solid;;border-radius:10px; border-color:#F75D47; color:#F75D47;text-align:center;">
-                                                                <a href="#">${tag.rtag}</a>
-                                                            </div>
-                                                        </c:forEach>
-                                                            <%-- <span> 下载积分:${r.scoring}  </span>--%>
-                                                    </div>
-                                                </div>
-                                            </c:forEach>
+                                                               <span> 上传者: ${r.user.nickname}  </span>&nbsp;&nbsp;
+                                                               <span> 上传时间:${r.time}  </span>&nbsp;&nbsp;
+                                                               <c:choose>
+                                                                   <c:when test="${r.classify==2}"><span> 分类:移动开发 </span></c:when>
+                                                                   <c:when test="${r.classify==3}"><span> 分类:开发技术 </span></c:when>
+                                                                   <c:when test="${r.classify==4}"><span> 分类:课程资源 </span></c:when>
+                                                                   <c:when test="${r.classify==5}"><span> 分类:网络技术 </span></c:when>
+                                                                   <c:when test="${r.classify==6}"><span> 分类:操作系统 </span></c:when>
+                                                                   <c:when test="${r.classify==7}"><span> 分类:安全技术 </span></c:when>
+                                                                   <c:when test="${r.classify==8}"><span> 分类:数据库 </span></c:when>
+                                                                   <c:when test="${r.classify==9}"><span> 分类:行业 </span></c:when>
+                                                                   <c:when test="${r.classify==10}"><span>分类:服务器应用 </span></c:when>
+                                                                   <c:when test="${r.classify==11}"><span> 分类:存储 </span></c:when>
+                                                                   <c:when test="${r.classify==12}"><span> 分类:信息化 </span></c:when>
+                                                                   <c:when test="${r.classify==13}"><span> 分类:云计算 </span></c:when>
+                                                                   <c:when test="${r.classify==14}"><span> 分类:大数据 </span></c:when>
+                                                                   <c:when test="${r.classify==15}"><span> 分类:人工智能 </span></c:when>
+                                                                   <c:when test="${r.classify==16}"><span> 分类:区块链 </span></c:when>
+                                                                   <c:when test="${r.classify==17}"><span> 分类:音视频 </span></c:when>
+                                                                   <c:when test="${r.classify==18}"><span> 分类:游戏开发 </span></c:when>
+                                                                   <c:when test="${r.classify==19}"><span> 分类:跨平台 </span></c:when>
+                                                               </c:choose>
+                                                           </div>
+                                                           <c:forEach items="${r.resourceTags}" var="tag">
+                                                               <div style="height:23px;min-width:60px;float:left;margin-left:30px;border:1px solid;;border-radius:10px; border-color:#F75D47; color:#F75D47;text-align:center;">
+                                                                  ${tag.rtag}
+                                                               </div>
+                                                           </c:forEach>
+
+                                                       </div>
+                                                   </div>
+                                               </c:forEach>
 
 
 
-                                    <%--另一个--%>
-
-
+                                               <%--另一个--%>
 
                                             <c:forEach items="${keywordSearch}" var="r">
                                                 <div style="height:85px; width:90%; margin-left:20px;">
@@ -376,11 +403,27 @@
                                                     </div>
                                                     <div style="height:30px; width:82%; float:left;margin-top:12px; margin-left:40px;font-size:14px;">
                                                         <div style="width:250px; height:30px;  float:left">
-                                                            <span> 上传者: ${r.user.nickname}  </span>&nbsp;&nbsp;&nbsp;&nbsp;
-                                                            <span> 上传时间:${r.time}  </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                            <span> 上传者: ${r.user.nickname}  </span>&nbsp;&nbsp;
+                                                            <span> 上传时间:${r.time}  </span>&nbsp;&nbsp;
                                                             <c:choose>
-                                                                <c:when test="${r.classify}==2"> <span> 分类:移动开发 </span></c:when>
-                                                                <c:when test="${r.classify}==3"><span> 分类:开发技术</span></c:when>
+                                                                <c:when test="${r.classify==2}"><span> 分类:移动开发 </span></c:when>
+                                                                <c:when test="${r.classify==3}"><span> 分类:开发技术 </span></c:when>
+                                                                <c:when test="${r.classify==4}"><span> 分类:课程资源 </span></c:when>
+                                                                <c:when test="${r.classify==5}"><span> 分类:网络技术 </span></c:when>
+                                                                <c:when test="${r.classify==6}"><span> 分类:操作系统 </span></c:when>
+                                                                <c:when test="${r.classify==7}"><span> 分类:安全技术 </span></c:when>
+                                                                <c:when test="${r.classify==8}"><span> 分类:数据库 </span></c:when>
+                                                                <c:when test="${r.classify==9}"><span> 分类:行业 </span></c:when>
+                                                                <c:when test="${r.classify==10}"><span> 分类:服务器应用 </span></c:when>
+                                                                <c:when test="${r.classify==11}"><span> 分类:存储 </span></c:when>
+                                                                <c:when test="${r.classify==12}"><span> 分类:信息化 </span></c:when>
+                                                                <c:when test="${r.classify==13}"><span> 分类:云计算 </span></c:when>
+                                                                <c:when test="${r.classify==14}"><span> 分类:大数据 </span></c:when>
+                                                                <c:when test="${r.classify==15}"><span> 分类:人工智能 </span></c:when>
+                                                                <c:when test="${r.classify==16}"><span> 分类:区块链 </span></c:when>
+                                                                <c:when test="${r.classify==17}"><span> 分类:音视频 </span></c:when>
+                                                                <c:when test="${r.classify==18}"><span> 分类:游戏开发 </span></c:when>
+                                                                <c:when test="${r.classify==19}"><span> 分类:跨平台 </span></c:when>
                                                             </c:choose>
 
                                                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -388,13 +431,16 @@
                                                         </div>
                                                         <c:forEach items="${r.resourceTags}" var="tag">
                                                             <div style="height:23px;min-width:60px;float:left;margin-left:30px;border:1px solid;;border-radius:10px; border-color:#F75D47; color:#F75D47;text-align:center;">
-                                                                <a href="#">${tag.rtag}</a>
+                                                                ${tag.rtag}
                                                             </div>
                                                         </c:forEach>
-                                                            <%-- <span> 下载积分:${r.scoring}  </span>--%>
+
                                                     </div>
                                                 </div>
                                             </c:forEach>
+
+
+
 
                                       </div>
                                     <!--资源详情部分-->
@@ -442,7 +488,26 @@
     </div>
 </div>
 
-
-
 </body>
 </html>
+<%--
+<script>
+    var keywordArray1 = new Array("index","name","pinyin")
+
+
+    window.onload = function(){
+        $.get("/resource/ajaxResourceName",function (data) {
+            var json=eval(data);
+            $.each(json,function (index) {
+                var ttt=json[index].word
+                var str=ttt.replace(/[0-9]/g, '');  //去掉数字
+                var l1=str.replace(/[a-zA-Z]/g,'');
+                keywordArray1[0+index*1]= new Array(0+index, json[index].word,chineseToPinYin(l1) );
+             alert(keywordArray1[10+index*1]);
+            });
+
+        })
+
+        $quickQuery(keywordArray1);
+    }
+</script>--%>

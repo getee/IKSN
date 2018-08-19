@@ -40,6 +40,8 @@ public interface ResourceDAO {
 
     //搜索资源
     List<Resource> searchResource(String s);
+    List<Resource> searchTag(String s);
+      List<String> ajaxResourceName();
 
     //被举报资源的数量
     int reportResourceNum();

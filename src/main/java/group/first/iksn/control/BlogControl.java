@@ -174,11 +174,21 @@ public class BlogControl {
        // textcontent=EncodingTool.encodeStr(textcontent);//先将中文码ISO-8859-1转成UTF-8
         ModelAndView mv=new ModelAndView();
         System.out.println("搜索的关键字:"+textcontent);
+
+
         List<Blog> b=blogService.blogTitle(textcontent);
         System.out.println("标题:"+b);
      /*   b= blogService.detailedBlogSearchResultMap(textcontent);*/
         //添加blog分List<Blog>类和标题搜索
-       /*  b=blogService.blogClassify(textcontent);*/
+
+        List<Blog> a=blogService.blogClassify(textcontent);
+        System.out.println("aaaaa"+a);
+        if(a.isEmpty()){
+            System.out.println("classif为空");
+        }else{
+           b.addAll(a);
+        }
+
       /*  System.out.println("类型:"+b);*/
         mv.addObject("blogSearch",b);
         mv.addObject("keyWord",textcontent);
@@ -274,11 +284,11 @@ public String ajaxBlogSearch(HttpServletResponse response, HttpServletRequest re
         List<Blog> simiblogs=blogService.scanSimiBlogService(uid);
         List<Blog> draftblogs=blogService.scanDraftBlogService(uid);
 
+
         model.addAttribute("blogs",blogs);
         model.addAttribute("reportedblogs",reportedblogs);
         model.addAttribute("simiblogs",simiblogs);
         model.addAttribute("draftblogs",draftblogs);
-
         System.out.println(blogs);
              return "writingCenter";
     }
@@ -297,6 +307,7 @@ public String ajaxBlogSearch(HttpServletResponse response, HttpServletRequest re
     public String deleteBlog(@Param("bid") int bid) {
         System.out.println("222222");
        boolean result1=blogService.deleteBlogOther(bid);
+        System.out.println(bid);
         System.out.println(result1);
         if(result1){
             return "success";
@@ -632,8 +643,9 @@ public String ajaxBlogSearch(HttpServletResponse response, HttpServletRequest re
                 jsonObject.put("title",collectblog.get(i).getTitle());
                 jsonObject.put("time",collectblog.get(i).getTime());
                 jsonObject.put("bid",collectblog.get(i).getBid());
-                System.out.println(collectblog.get(i).getBid());
                 jsonArray.put(jsonObject);
+                System.out.println(jsonObject);
+
             }catch (JSONException e){
                 e.printStackTrace();
             }
@@ -807,6 +819,7 @@ public String ajaxBlogSearch(HttpServletResponse response, HttpServletRequest re
             try{
                 jsonObject.put("title",blog.get(i).getTitle());
                 jsonObject.put("time",blog.get(i).getTime());
+                jsonObject.put("bid",blog.get(i).getBid());
                 jsonArray.put(jsonObject);
             }catch (JSONException e){
                 e.printStackTrace();
@@ -822,7 +835,7 @@ public String ajaxBlogSearch(HttpServletResponse response, HttpServletRequest re
         out.close();
     }
     /**
-     *
+     * 评论输出到前台
      * @param bid
      * @param request
      * @param response
@@ -832,6 +845,9 @@ public String ajaxBlogSearch(HttpServletResponse response, HttpServletRequest re
     public void getComments( @RequestParam("bid") Integer bid , HttpServletRequest request, HttpServletResponse response) {
         ArrayList<BlogComments> getBlogcomments=(ArrayList<BlogComments>)blogService.getComments(bid);
         Collections.sort(getBlogcomments );
+
+
+
         System.out.println(getBlogcomments);
         JSONArray jsonArray=new JSONArray();
         JSONObject jsonObject;

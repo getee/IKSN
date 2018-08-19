@@ -38,6 +38,9 @@ public interface BlogDAO {
     //添加下架博客
     //根据uid来查询Blog
     public List<Blog> processScanBlog(int uid);
+
+
+
     //查询已经发表的博客
     public List<Blog> processScanReportedBlog(int uid);
     //查询私密个人的博客
@@ -118,4 +121,5 @@ public interface BlogDAO {
     boolean updateLink(int reportnum,int bid);
     //查询他人发布的所有博客
     List<Blog> allPublishedBlog(int uid);
+
 }

@@ -166,6 +166,7 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
         return blog;
     }
 
+
     @Override
     public List<Blog> processScanReportedBlog(int uid) {
         return getSqlSession().getMapper(BlogDAO.class).processScanReportedBlog(uid);
