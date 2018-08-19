@@ -428,10 +428,10 @@
 
     <!--根据bid查询link-->
     <select id="selectLinkByBid" parameterType="Integer" resultType="Blog">
-        select LINK from blog where BID=#{bid}
+        select reportnum from blog where BID=#{bid}
     </select>
     <!--对link进行加一-->
-    <update id="updateLink" parameterType="Integer">
-        update blog set LINK=#{numLink} where BID=#{bid}
+    <update id="updateLink" parameterType="Blog">
+        update blog set reportnum=#{0} where BID=#{1}
     </update>
 </mapper>

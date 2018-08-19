@@ -266,10 +266,10 @@ public class BlogDAOImp extends BaseDAOImp implements BlogDAO {
     }
 
     @Override
-    public boolean updateLink(@Param("link") String link,@Param("bid") int bid) {
+    public boolean updateLink(@Param("reportnum") int reportnum,@Param("bid") int bid) {
         boolean isOk=false;
         try {
-            isOk=getSqlSession().getMapper(BlogDAO.class).updateLink(link,bid);
+            isOk=getSqlSession().getMapper(BlogDAO.class).updateLink(reportnum,bid);
         }catch (Exception e){e.printStackTrace();}
         return isOk;
     }

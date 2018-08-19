@@ -114,6 +114,6 @@ public interface BlogDAO {
     //根据bid查询link
     Blog selectLinkByBid(int bid);
     //对blog.link加一
-    boolean updateLink(String numLink,int bid);
+    boolean updateLink(int reportnum,int bid);
 
 }
