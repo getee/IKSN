@@ -344,10 +344,10 @@
                                       <%--  该功能需要隐藏标签，以及传入登录用户信息--%>
 
 										<form action="/blog/answerComment" method="post">
-											<div class="form-group" >
+											<div class="form-group" style="display: none">
 												uid:<input id="" type="text" name="uid" value="${sessionScope.loginresult.uid}"><br>
 											</div>
-											<div class="form-group">
+											<div class="form-group"style="display: none">
 												bid:<input id="hfbid" type="text" name="bid"><br>
 											</div>
 											<div class="modal-body">
@@ -355,10 +355,10 @@
 												<textarea class="form-control" rows="3" name="content"></textarea>
 												<!---->
 											</div>
-											<div class="form-group">
+											<div class="form-group"style="display: none">
 												commentid:<input id="hfid" type="text" name="commentid"><br>
 											</div>
-											<div class="form-group">
+											<div class="form-group"style="display: none">
 												floor:<input id="hffoor" type="text" name="floor"><br>
 											</div>
 											<div class="modal-footer">
@@ -452,7 +452,7 @@
 									</thead>
 									<tbody>
 									<tr>
-										<td colspan="3"><h3><a href="tarenzhongxin.jsp?uid=${yonghu.uid}">${yonghu.nickname}</a><small></small></h3></td>
+										<td colspan="3"><h3><a href="/user/getUserInfo?uid=${yonghu.uid}">${yonghu.nickname}</a><small></small></h3></td>
 										<td>
 												<button id="gz" type="button" class="btn btn-primary" style="width: 100px" data-toggle="button" aria-pressed="false" autocomplete="off">+关注</button>
 										</td>
@@ -490,15 +490,6 @@
 
                             </div>
 
-							<%--<div class="thumbnail">--%>
-								<%--<div style="float: left;width: 60px;height: 80px"><img style="width: 60px;height: 80px" src="../img/timg.jpg" alt="..." ></div>--%>
-								<%--<div style="background-color:#C2CBC8">--%>
-									<%--<a href="#">--%>
-										<%--<h3 id="tui">Thumbnail label</h3>--%>
-										<%--<p>...</p>--%>
-									<%--</a>--%>
-								<%--</div>--%>
-							<%--</div>--%>
 
 						</div>
 						<!--博主专栏结束-->
@@ -521,10 +512,10 @@
                 var title=json[index].title.substring(0,12);
                 var id=json[index].bid;
                // alert(title+id);
-                var ts="<div class=\"thumbnail\">\n" +
+                var ts="<div class=\"thumbnail\" style='height:100px;'>\n" +
                     "\t\t\t\t\t\t\t\t<div style=\"float: left;width: 60px;height: 80px\"><img style=\"width: 60px;height: 80px\" src=\"../img/blogmoren.jpg\"></div>\n" +
                     "\t\t\t\t\t\t\t\t<div>\n" +
-                    "\t\t\t\t\t\t\t\t\t<a href=\"#\">\n" +
+                    "\t\t\t\t\t\t\t\t<a href=\"/blog/getBlogAndUser?blogid="+id+"\">\n" +
                     "\t\t\t\t\t\t\t\t\t\t<h3>"+title+"..."+"</h3>\n" +
                     "\t\t\t\t\t\t\t\t\t</a>\n" +
                     "\t\t\t\t\t\t\t\t</div>\n" +
@@ -701,7 +692,6 @@
     $("#qqzone").click(function () {
        window._bd_share_config.common.bdText="${boke.title}---IKSN";
         window._bd_share_config.common.bdUrl="localhost:8080/blog/getBlogAndUser?blogid=${boke.bid}";
-        alert( window._bd_share_config.common.bdUrl);
     });
     window._bd_share_config = {
         common : {

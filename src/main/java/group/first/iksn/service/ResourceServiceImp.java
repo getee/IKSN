@@ -266,11 +266,17 @@ public class ResourceServiceImp  implements ResourceService{
         return false;
     }
 
- /*   @Override
+    @Override
     public ArrayList<ResourceComments> getresourceComments(Integer rid) {
         ArrayList<ResourceComments> k=resourceDAO.getresourceComments(rid);
-                return  k;
-    }*/
+        return  k;
+    }
+
+    //他人上传的所有资源
+    @Override
+    public List<Resource> allPublishedResource(int uid) {
+        return resourceDAO.allPublishedResource(uid);
+    }
 
 
 }

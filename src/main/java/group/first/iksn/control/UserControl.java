@@ -435,7 +435,7 @@ public class UserControl {
         //使用Spring中的帮助类来解析base64
         BASE64Decoder decoder = new BASE64Decoder();
 
-        String savePath=request.getServletContext().getRealPath("/img");
+        String savePath=request.getSession().getServletContext().getRealPath("/img");
         String fileName=UUID.randomUUID().toString().replace("-","");
         String suffix = "";//文件后缀名
         String dataPrix = "";
@@ -759,5 +759,15 @@ public class UserControl {
         }else {
             return "error";
         }
+    }
+
+    /*
+    点击博客页面昵称通过ID获取他人的信息到他人中心页面
+     */
+    @RequestMapping("/getUserInfo")
+    public String getUserInfo(int uid,Model model){
+        User user=userService.getUserInfo(uid);
+        model.addAttribute("user",user);
+        return "tarenzhongxin";
     }
 }

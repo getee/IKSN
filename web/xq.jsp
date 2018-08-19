@@ -80,6 +80,25 @@
             });
         });
     </script>--%>
+    <script type="text/javascript">
+        function conrid() {
+            var urll='/resource/houseResource';
+            var daa=$("#houseForm").serialize();
+            $.ajax({
+                async: false,
+                type: "POST",
+                url:urll,
+                data:daa,
+                dataType: "text",
+                success: function (data) {
+                    alert(data);
+                },
+                error: function (data) {
+                    alert("资源收藏失败");
+                }
+            })
+        };
+    </script>
 </head>
 <body  style="background-color:#F7F8F9">
 <c:if test="${requestScope.resouce eq null}">
@@ -183,11 +202,21 @@
                         <span> 综合评分：<em>7.9</em></span>
                         <div style="float:right; width:250px;">
                                 <form id="houseForm" style="float:right; width:100px;" >
-                                        <input type="hidden" name="uid" value="3">
+                                    <c:if test="${sessionScope.loginresult !=null}">
+                                        <input type="hidden" name="uid" value="${sessionScope.loginresult.uid}">
                                         <input type="hidden" name="rid" value="${requestScope.resouce.rid}">
-                                    <button type="submit" ><img src="img/sc.jpg">&nbsp;收藏</button>
+                                        <button type="button" onclick="conrid()" ><img src="img/sc.jpg">&nbsp;收藏</button>
+                                    </c:if>
+                                    <c:if test="${sessionScope.loginresult eq null}">
+                                        <button type="button" onclick="tishilogin()" ><img src="img/sc.jpg">&nbsp;收藏</button>
+                                    </c:if>
                                 </form>
-                            <a data-toggle="modal" data-target="#modal-container-830220" ><img src="img/jb.jpg" >&nbsp;举报</a><input type="hidden" value="${isReportOk}"/>
+                            <c:if test="${sessionScope.loginresult !=null}">
+                                <a data-toggle="modal" data-target="#modal-container-830220" ><img src="img/jb.jpg" >&nbsp;举报</a><input type="hidden" value="${isReportOk}"/>
+                            </c:if>
+                            <c:if test="${sessionScope.loginresult eq null}">
+                                <a onclick="tishilogin()" ><img src="img/jb.jpg" >&nbsp;举报</a><input type="hidden" value="${isReportOk}"/>
+                            </c:if>
                             <!-- 模态框（Modal） -->
                             <!-- Modal -->
                             <div class="modal fade" id="modal-container-830220" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="margin-top: 20%">
@@ -243,10 +272,17 @@
                         <%--<a  href="assess.jsp" onclick="downLoad()" >
                             <div style="height:20px; margin-top:8px">立即下载</div>
                         </a>--%>
-                        <!--需要在点击时候进行判断登录操作,举报和下载需要登录方法-->
-                        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-                            立即下载
-                        </button>
+                            <c:if test="${sessionScope.loginresult != null}">
+                                <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                                    立即下载
+                                </button>
+                            </c:if>
+                            <c:if test="${sessionScope.loginresult eq null}">
+                                <button type="button" class="btn btn-primary btn-lg" onclick="tishilogin()">
+                                    立即下载
+                                </button>
+                            </c:if>
+
                     </div>
 
                 </div>
@@ -287,9 +323,16 @@
                 <div class="span12" style="background-color:#A29E9E;padding: 25px">
                     <!-- Button trigger modal -->
                     有疑问？就说一说
-                    <button type="button"  class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModa">
-                        我要评论
-                    </button>
+                    <c:if test="${sessionScope.loginresult != null}">
+                        <button type="button"  class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModa">
+                            我要评论
+                        </button>
+                    </c:if>
+                    <c:if test="${sessionScope.loginresult eq null}">
+                        <button type="button"  class="btn btn-primary btn-xs" onclick="tishilogin()">
+                            我要评论
+                        </button>
+                    </c:if>
 
                     <!-- Modal -->
                     <div class="modal fade" id="myModa" tabindex="-1" role="dialog" aria-labelledby="myModalLabe" style="margin-top: 20%">
@@ -300,12 +343,8 @@
                                     <h4 class="modal-title" id="myModalLabe">我的评论</h4>
                                 </div>
                                 <form action="/resource/assess" method="post">
-                                    <div class="form-group">
-                                        uid:<input type="text" name="uid"><br>
-                                    </div>
-                                    <div class="form-group">
-                                        rid:<input type="text" name="rid" ><br>
-                                    </div>
+                                        <input type="hidden" name="uid" value="${sessionScope.loginresult.uid}"><br>
+                                        <input type="hidden" name="rid" value="${requestScope.resouce.rid}"><br>
                                     <div class="form-group">
                                         <label for="name">评价</label>
                                         <input type="text" class="form-control" id="name" name="comment">
@@ -328,27 +367,33 @@
                 </div>
             </div>
 
-            <!--左第三个div-->
+            <!--资源评论输出div-->
+            <c:if test="${requestScope.rcomments !=null}">
+
             <div  style="height:400px; margin-top:10px; background-color:#FFFFFF">
                 <ul>
                     <hr>
-                <li id="getpl">
-                    <%--<div style="">
-                        <div style="float: left"><a class="icon-observer" href="#" style="background-image: url(image/3_qq.jpg)"></a></div>
-                        <div style="margin-top: 5px">
-                            <a href="#">用户名</a>
+
+                    <c:forEach items="${requestScope.rcomments}" var="rc">
+                    <li id="getpl">
+                        <div style="">
+                            <div style="float: left"><a class="icon-observer" href="#" style="background-image: url('img/3_qq.jpg')"></a></div>
+                            <div style="margin-top: 5px">
+                                <a href="#">${rc.user.nickname}</a>
+                            </div>
                         </div>
-                    </div>
-                    <h5 style="margin: 25px 10px 10px 50px">作者写的666</h5>--%>
-                </li>
+                        <h5 style="margin: 25px 10px 10px 50px">${rc.comment}</h5>
+                    </li>
+                    </c:forEach>
+
                     <hr>
                 </ul>
             </div>
+            </c:if>
+
         </div>
 
-
-
-        <div class="col-xs-4 well">
+            <div class="col-xs-4 well">
             <!--右边第一块上传资源的div-->
             <div style="height:50px; width:300px; background-color:#E33F3F">
                 <div class="row-fluid">
@@ -380,10 +425,20 @@
                 <!--最右边-->
                 <div style="height:50px; width:100px; float:left; margin-top:11px; margin-left:15px">
                     <div style="height:20px;width:60px; margin-top:6px; font-size:14px;border:2px solid; border-radius:15px; border-color:#F50105;text-align:center;">
-                        <a href="#">关注</a>
+                        <c:if test="${sessionScope.loginresult eq null}">
+                            <a onclick="tishilogin()">关注</a>
+                        </c:if>
+                        <c:if test="${sessionScope.loginresult != null}">
+                            <a >关注</a>
+                        </c:if>
                     </div>
                     <div style="height:25px; margin-top:5px; font-size:14px">
-                        <a href="#">查看TA的资源</a>
+                        <c:if test="${sessionScope.loginresult eq null}">
+                            <a onclick="tishilogin()">查看TA的资源</a>
+                        </c:if>
+                        <c:if test="${sessionScope.loginresult != null}">
+                            <a >查看TA的资源</a>
+                        </c:if>
                     </div>
                 </div>
             </div>
@@ -430,30 +485,13 @@
 
     $(document).ready(function () {
         $("#reportResource").click(function () {
-            $.get("/resource/reportResource?rid=${requestScope.resouce.rid}&uid=${sessionScope.loginresult.uid}&reason="+$('#reason').val(),function (data,status) {
+            $.get("/resource/reportResource?rid=${requestScope.resouce.rid}&amp;uid=${sessionScope.loginresult.uid}&amp;reason="+$('#reason').val(),function (data,status) {
                 $("#modal-container-830220").modal('hide');
                 alert("举报成功");
             })
         })
     });
 
-   $("#houseForm").submit(function(){
-       var urll='/resource/houseResource';
-       var daa=$("#houseForm").serialize();
-       alert(daa);
-       $.ajax({
-           async: false,
-           type: "POST",
-           url:urll,
-           data:daa,
-           dataType: "text",
-           success: function (data) {
-               alert(data);
-           },
-           error: function (data) {
-               alert("该资源已被收藏");
-           }
-       })
-   })
+
 </script>
 </html>

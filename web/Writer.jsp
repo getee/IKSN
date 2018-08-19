@@ -21,24 +21,37 @@
     <link rel="stylesheet" href="bootstrap-3.3.7/dist/css/bootstrap-theme.min.css" crossorigin="anonymous">
     <link rel="stylesheet" href="themes/iframe.css" crossorigin="anonymous">
     <script src="js/depend.js"></script>
+
 </head>
-<body  style="background-color:#EBEBEB">
-    <div class="container-fluid">
+<body  style="background-color:#EBEBEB>
+
+   <div class="container-fluid">
         <!--   导航栏-->
-        <%@ include file="top.jsp"%>
+    <%@ include file="top.jsp"%>
 
     <div>
         <form id="form" action="/blog/addBlog" method="post">
             <input type="hidden" name="uid" value="${sessionScope.loginresult.uid}"/>
             <input type="hidden" name="isdraft" value="0" id="panduan">
             <div class="input-group input-group-lg" style="width: 1024px;height:15px; margin: auto;">
-                <input type="text" class="form-control" id="biaoti"name="title" placeholder="请输入文章标题" >
+                <input type="text" class="form-control" id="biaoti"name="title" placeholder="请输入文章标题(15字内)" >
             </div>
+            <script>
+                $(document).ready(function() {
+                    $("#biaoti").keyup(function() {
+                        if ($.trim(this.value).length > 15)
+                        {
+                            alert("输入字符大于15个,请重新输入!");
+                            $("#biaoti").val("");
+                        }
+                    });
+                });
+            </script>
             <div style="width:1024px;height:430px;margin:auto;margin-top: 10px;">
                 <textarea id="editor" type="text/plain" name="content"></textarea>
             </div>
 
-            <div class="col-md-12" style="left: 460px;top: 20px">
+            <div class="col-md-12" style="top: 20px">
                 <div class="row">
                     <div class="col-md-10">
         <script>
@@ -53,11 +66,12 @@
                 }
             }
         </script>
-
-                        <button type="button" class="btn btn-info" >返回</button>
+                        <div style="position: absolute;left: 50%">
+                         <button type="button" class="btn btn-info" onClick="javascript:history.back(-1);">返回</button>
                         <!-- 表示一个成功的或积极的动作 -->
                         <button type="button" id="fbblog" class="btn btn-primary"  data-toggle="modal" data-target="#myModal" onmousemove="check()" >发布博客</button>
-                    </div>
+                        </div>
+                        </div>
                 </div>
             </div>
 
@@ -133,8 +147,8 @@
                     }
                 </script>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" style="margin-top: 10px">返回</button>
-                    <button type="submit" class="btn btn-primary"style="margin-top: 10px" >保存</button>
+                   <%-- <button type="button" class="btn btn-default" style="margin-top: 10px">返回</button>--%>
+                    <button type="submit" class="btn btn-primary"style="margin-top: 10px" >保存为草稿</button>
                     <button type="submit" class="btn btn-success"style="margin-top: 10px" onclick="report()">发表博客</button>
                 </div>
             </div>
@@ -175,12 +189,10 @@
         var ue = UE.getEditor('editor',{
             toolbars: [[
                 'fullscreen', 'source', '|', 'undo', 'redo', '|',
-                'bold', 'italic', 'underline', 'rowspacingtop', 'rowspacingbottom', 'lineheight', '|',
-                'customstyle', 'paragraph', 'fontfamily', 'fontsize', '|',
+                'bold', 'italic', 'underline', 'rowspacingtop', 'rowspacingbottom', 'lineheight', '|', 'fontfamily', 'fontsize', '|',
                 'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|', 'touppercase', 'tolowercase', '|',
-                'link', 'unlink', 'simpleupload', 'insertimage', 'emotion', 'scrawl', 'attachment', 'map', 'gmap', 'insertframe', 'insertcode', 'webapp', 'pagebreak', 'template', 'background', '|',
-                'horizontal', 'date', 'time', 'spechars', 'snapscreen', 'wordimage', '|',
-                'inserttable', 'deletetable', 'preview',  'help'
+                'link', 'unlink', 'simpleupload', 'insertimage', 'emotion', 'scrawl',' background', 
+                'horizontal', 'date', 'time', 'inserttable', 'deletetable', 'preview',  'help'
             ]],
             //关闭字数统计
             wordCount:true,

@@ -12,7 +12,7 @@
         insert into collectresource(uid,rid) values (#{uid},#{rid})
     </insert>
     <!--资源评论-->
-   <!-- <select id="getresourceComments" resultMap="getresourceCommentsMap">
+    <select id="getresourceComments" resultMap="getresourceCommentsMap">
         select * from resourcecomments inner join user u  on resourcecomments.UID = u.UID where RID=(#{rid})
     </select>
     <resultMap id="getresourceCommentsMap" type="ResourceComments">
@@ -22,25 +22,7 @@
             <id column="uid" property="uid"/>
             <result column="nickname" property="nickname"/>
         </association>
-    </resultMap>-->
-
-   <!-- &lt;!&ndash;获取评论&ndash;&gt;
-    <select id="getComments" resultMap="getCommmentsMap">
-      select * from blogcomments inner join user u on blogcomments.UID = u.UID where BID=(#{bid})
-    </select>
-    <resultMap id="getCommmentsMap" type="BlogComments">
-        <id property="id" column="id"/>
-        <result column="uid" property="uid"/>
-        <result property="bid" column="bid"/>
-        <result column="time" property="time"/>
-        <result column="content" property="content"/>
-        <result column="floor" property="floor"/>
-        <result column="commentid" property="commentid"/>
-        <association property="user" javaType="User">
-            <id column="uid" property="uid"/>
-            <result column="nickname" property="nickname"/>
-        </association>
-    </resultMap>-->
+    </resultMap>
 
     <!-- 统计下载次数 -->
     <select id="downnum" resultType="Integer">
@@ -197,5 +179,9 @@
     </insert>
     <select id="getDownedTime" resultType="java.lang.String">
         SELECT MAX(TIME) FROM downresources WHERE uid=#{1} and rid=#{0}
+    </select>
+    <!--他人上传的资源查询-->
+    <select id="allPublishedResource" resultType="Resource">
+        select * from resource where uid=#{uid}
     </select>
 </mapper>

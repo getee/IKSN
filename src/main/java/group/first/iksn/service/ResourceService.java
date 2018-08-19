@@ -57,5 +57,7 @@ public interface ResourceService {
     //获取上次资源下载时间判断是否下载过且不满足一小时true,false扣积分
     boolean downHour(int rid,int uid);
 
-    /*ArrayList<ResourceComments> getresourceComments(Integer rid);*/
+    ArrayList<ResourceComments> getresourceComments(Integer rid);
+ //他人上传的所有资源
+ List<Resource> allPublishedResource(int uid);
 }

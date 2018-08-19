@@ -182,6 +182,11 @@ public class BlogServiceImp implements BlogService {
    public List<Blog> ajaxBlogPush(int page){return blogDAO.ajaxBlogPush(page);}
 
     @Override
+    public List<Blog> newBlogPush() {
+        return blogDAO.newBlogPush();
+    }
+
+    @Override
     public boolean addBlogService(Blog blog) {
         return blogDAO.processAddBlog(blog);
     }
@@ -416,17 +421,13 @@ public class BlogServiceImp implements BlogService {
         Map<String,Object> map=new HashMap<String, Object>();
         //取页面博客
         Blog blog=blogDAO.getbokeByid(bid);
-
         List<UserToBlog> l=blogDAO.getBlogAndUser(bid);
         UserToBlog ub=l.get(0);
         User user=userDAO.getId(ub.getUid());
-
         map.put("boke",blog);
         map.put("yonghu",user);
         map.put("original",getOriginalBlog(user.getUid()));
         map.put("fans",getFans(user.getUid()));
-        map.put("attention",getAttention(user.getUid()));
-
         return  map;
     }
 
@@ -463,6 +464,7 @@ public class BlogServiceImp implements BlogService {
     }
 
 
+
     @Override
     public boolean addAttention(int selfid, int attenid) {
         return blogDAO.addAttention(selfid,attenid);
@@ -487,4 +489,13 @@ public class BlogServiceImp implements BlogService {
     public boolean insertBlogBrowse(int uid, int bid, String browsetime) {
         return blogDAO.insertBlogBrowse(uid, bid, browsetime);
     }
+
+    /*
+       查询他人发布的所有博客
+        */
+    @Override
+    public List<Blog> allPublishedBlog(int uid) {
+        return blogDAO.allPublishedBlog(uid);
+    }
+
 }

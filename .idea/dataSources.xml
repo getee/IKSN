@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="iks" uuid="2bfd14ea-9f88-4581-833c-e24817e18513">
+    <data-source source="LOCAL" name="@rm-wz97w0rps07c1wrg0ao.mysql.rds.aliyuncs.com" uuid="2dc1d55c-af75-4031-ab06-5b7470572051">
       <driver-ref>mysql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://rm-wz97w0rps07c1wrg0ao.mysql.rds.aliyuncs.com:3306/iksn</jdbc-url>
+      <jdbc-url>jdbc:mysql://rm-wz97w0rps07c1wrg0ao.mysql.rds.aliyuncs.com:3306</jdbc-url>
       <driver-properties>
         <property name="autoReconnect" value="true" />
         <property name="zeroDateTimeBehavior" value="convertToNull" />
