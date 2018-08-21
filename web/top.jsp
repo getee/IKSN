@@ -174,8 +174,7 @@
 
         var now=year+'-'+p(month)+"-"+p(date)+" "+p(h)+':'+p(m)+":"+p(s);
         //当用户登录后，就开始创建Socket
-        var netIP=$("#netIP").attr("value");
-        alert(netIP);//http://localhost:8088/
+        var netIP=$("#netIP").attr("value");//http://localhost:8088/
         var websocket=null;
         //判断当前浏览器是否支持WebSocket
         if ('WebSocket' in window) {
