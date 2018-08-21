@@ -13,10 +13,10 @@
 - [x] 管理员处理举报博客，资源
 
 ## 附加说明
-[SQL文件](http://note.youdao.com/)
+[SQL文件](https://github.com/getee/IKSN/blob/master/web/WEB-INF/iksn.sql)
 
-[ueditor 配置文件:](http://note.youdao.com/)
+[ueditor 配置文件:](https://github.com/getee/IKSN/blob/master/web/jsp/config.json)
 
 文件上传路径设置(添加额外资源引用路径):
-![image](http://note.youdao.com/favicon.ico)
+![image](https://github.com/getee/IKSN/blob/master/web/WEB-INF/%E4%B8%8A%E4%BC%A0%E8%B7%AF%E5%BE%84%E8%AE%BE%E7%BD%AE.png)
 
