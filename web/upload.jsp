@@ -48,7 +48,7 @@
                 success: function (data) {
                     $("#filepath").attr("value",data);
                     if(data == "0"){
-                        alert("文件重复");
+                        alert("已存在用户上传该文件，请勿上传重复资源！");
                     }
                 },
                 error: function(data) {

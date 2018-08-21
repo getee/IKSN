@@ -152,7 +152,7 @@
 
         </div>
     </div>
-<%--<input type="hidden" value="<%=basePath%>" id="netIP">--%>
+    <input type="hidden" value="<%=basePath%>" id="netIP">
     <script>
         var toid;
         var webFromid;
@@ -174,10 +174,12 @@
 
         var now=year+'-'+p(month)+"-"+p(date)+" "+p(h)+':'+p(m)+":"+p(s);
         //当用户登录后，就开始创建Socket
+        var netIP=$("#netIP").attr("value");
+        alert(netIP);//http://localhost:8088/
         var websocket=null;
         //判断当前浏览器是否支持WebSocket
         if ('WebSocket' in window) {
-            websocket = new WebSocket("ws://172.19.22.167:8088/websocket/${sessionScope.loginresult.uid}");
+            websocket = new WebSocket("ws://"+netIP.substring(netIP.lastIndexOf("://")+3)+"websocket/${sessionScope.loginresult.uid}");
         }
         else {
             alert('当前浏览器 Not support websocket')

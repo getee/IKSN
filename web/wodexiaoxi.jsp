@@ -125,7 +125,7 @@
                 var friendName="";
 			    $.each($("input:checkbox:checked"),function () {
 			        if($(this).val()!="on"){
-			            friendName+=$(this).attr("name")+" ";
+			            friendName+="@"+$(this).attr("name")+" ";
                         friendId+=$(this).val()+",";
                         $("#exampleInputEmail1").val(friendName);
                         $("#exampleInputEmail2").val(friendId);
@@ -135,7 +135,7 @@
                 })
 				var checkboxNum=0;
 				$.each($("input:checkbox"),function () {
-				    alert(checkboxNum)
+
 					if($(".checkboxs").prop("checked")==false){
                         $("#exampleInputEmail1").val("");
 					}
